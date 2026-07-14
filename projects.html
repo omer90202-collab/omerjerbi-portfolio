@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>כל הפרויקטים — עומר ג'רבי</title>
+<!--
+  ═══════════════════════════════════════════════
+  עמוד: כל הפרויקטים — קיר "זרוק"
+  אופי: מייסונרי מעורב 9:16 + 16:9, סיבובים קלים אקראיים,
+        וידאו מתנגן כשנכנס למסך, לחיצה = סאונד.
+  תמונות: להוסיף כ-<img> בתוך .p-it — אותו גריד בדיוק.
+  ═══════════════════════════════════════════════
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@200;300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0a0908; --ink:#f5f0e6; --dim:#5c564c; --gold:#FDBF2D;
+    --line:rgba(245,240,230,.12);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--bg);color:var(--ink);font-family:'Heebo',sans-serif;overflow-x:hidden;line-height:1.5}
+  ::selection{background:var(--gold);color:#0a0908}
+  img,video{display:block;width:100%;object-fit:cover}
+  a{color:inherit;text-decoration:none}
+
+  header{position:fixed;inset-inline:0;top:0;z-index:90;mix-blend-mode:difference}
+  .nav{display:flex;justify-content:space-between;align-items:center;padding:22px 4vw;font-size:14px;letter-spacing:.06em}
+  .nav .logo{font-weight:900;font-size:18px}
+  .nav a.back{font-weight:300;color:#bbb;transition:.25s}
+  .nav a.back:hover{color:var(--gold)}
+
+  /* ── ראש העמוד ── */
+  .head{padding:20vh 6vw 8vh;text-align:center}
+  .head small{display:block;font-size:13px;letter-spacing:.42em;color:var(--dim);margin-bottom:16px}
+  .head h1{font-weight:900;font-size:clamp(44px,9vw,130px);line-height:1;letter-spacing:-.02em}
+  .head h1 em{font-style:normal;color:transparent;-webkit-text-stroke:1.5px var(--gold)}
+  .head p{margin-top:20px;color:var(--dim);font-weight:300;font-size:17px}
+
+  /* ── קיר זרוק: מייסונרי עמודות — כל יחס גובה נשמר טבעי ── */
+  .wall{columns:3;column-gap:22px;padding:4vh 5vw 14vh}
+  @media(max-width:1000px){.wall{columns:2}}
+  @media(max-width:620px){.wall{columns:1;padding-inline:6vw}}
+  .p-it{break-inside:avoid;margin-bottom:22px;border-radius:14px;overflow:hidden;position:relative;
+    border:1px solid var(--line);cursor:pointer;will-change:transform;
+    transition:transform .45s cubic-bezier(.2,.8,.2,1), box-shadow .45s}
+  .p-it:hover{transform:scale(1.02) rotate(0deg) !important;box-shadow:0 24px 60px rgba(0,0,0,.55);z-index:2}
+  /* סיבובים קלים "זרוקים" — מתאפסים בהובר */
+  .p-it:nth-child(4n+1){transform:rotate(-1.1deg)}
+  .p-it:nth-child(4n+2){transform:rotate(.9deg)}
+  .p-it:nth-child(4n+3){transform:rotate(-.6deg)}
+  .p-it:nth-child(4n+4){transform:rotate(1.2deg)}
+  .p-it b{position:absolute;bottom:12px;right:14px;z-index:2;font-size:14px;font-weight:500;text-shadow:0 2px 12px rgba(0,0,0,.85)}
+  .p-it .kind{position:absolute;top:12px;left:14px;z-index:2;font-size:11px;letter-spacing:.18em;color:var(--gold);
+    background:rgba(10,9,8,.55);border:1px solid rgba(253,191,45,.35);border-radius:99px;padding:4px 12px}
+  .p-it::after{content:"";position:absolute;inset:0;background:linear-gradient(transparent 70%,rgba(0,0,0,.5));pointer-events:none}
+  .p-it.sound{outline:2px solid var(--gold);outline-offset:-2px}
+
+  .hint{position:fixed;bottom:22px;inset-inline:0;text-align:center;font-size:12px;letter-spacing:.3em;color:var(--dim);z-index:5;pointer-events:none;transition:opacity .5s}
+  footer{display:flex;justify-content:space-between;padding:26px 4vw;font-size:13px;color:var(--dim);border-top:1px solid var(--line);flex-wrap:wrap;gap:8px}
+</style>
+</head>
+<body>
+
+<header>
+  <nav class="nav">
+    <div class="logo">עומר ג'רבי</div>
+    <a class="back" href="index.html">→ חזרה לתיק</a>
+  </nav>
+</header>
+
+<div class="head">
+  <small>הארכיון</small>
+  <h1>כל <em>הפרויקטים.</em></h1>
+  <p>פרסומות, השתלות וניסויים — הכל נוצר בבינה מלאכותית, מהמחשב שלי.</p>
+</div>
+
+<div class="wall" id="wall">
+  <div class="p-it"><video src="videos/raw-arak.mp4" muted loop playsinline preload="metadata"></video><span class="kind">פרסומת</span><b>ערק נוח</b></div>
+  <div class="p-it"><video src="videos/hj-haborer.mp4" muted loop playsinline preload="metadata"></video><span class="kind">השתלה</span><b>הבורר</b></div>
+  <div class="p-it"><video src="videos/raw-shoko.mp4" muted loop playsinline preload="metadata"></video><span class="kind">פרסומת</span><b>שוקו</b></div>
+  <div class="p-it"><video src="videos/raw-magnum.mp4" muted loop playsinline preload="metadata"></video><span class="kind">פרסומת</span><b>מגנום</b></div>
+  <div class="p-it"><video src="videos/hj-obsession.mp4" muted loop playsinline preload="metadata"></video><span class="kind">השתלה</span><b>אובססיה</b></div>
+  <div class="p-it"><video src="videos/raw-goldstar.mp4" muted loop playsinline preload="metadata"></video><span class="kind">פרסומת</span><b>גולדסטאר</b></div>
+  <div class="p-it"><video src="videos/raw-shampoo.mp4" muted loop playsinline preload="metadata"></video><span class="kind">פרסומת</span><b>שמפו</b></div>
+  <div class="p-it"><video src="videos/hj-asfur.mp4" muted loop playsinline preload="metadata"></video><span class="kind">השתלה</span><b>עספור</b></div>
+  <div class="p-it"><video src="videos/raw-coffee.mp4" muted loop playsinline preload="metadata"></video><span class="kind">פרסומת</span><b>חלב קפה</b></div>
+  <div class="p-it"><video src="videos/raw-muller.mp4" muted loop playsinline preload="metadata"></video><span class="kind">פרסומת</span><b>מולר</b></div>
+  <div class="p-it"><video src="videos/hj-shuli.mp4" muted loop playsinline preload="metadata"></video><span class="kind">השתלה</span><b>לשחרר את שולי</b></div>
+  <div class="p-it"><video src="videos/raw-neviot.mp4" muted loop playsinline preload="metadata"></video><span class="kind">פרסומת</span><b>נביעות</b></div>
+</div>
+
+<div class="hint" id="hint">לחיצה על פרויקט = סאונד</div>
+
+<footer>
+  <span>עומר ג'רבי © 2026</span>
+  <span>תוכן AI · ברמה של הפקה</span>
+  <span><a href="https://instagram.com/omerjerbi" target="_blank" rel="noopener">@omerjerbi</a></span>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
+<script src="https://unpkg.com/lenis@1.3.4/dist/lenis.min.js"></script>
+<script>
+gsap.registerPlugin(ScrollTrigger);
+const lenis = new Lenis({ lerp:.09 });
+lenis.on('scroll', ScrollTrigger.update);
+gsap.ticker.add(t => lenis.raf(t*1000));
+gsap.ticker.lagSmoothing(0);
+
+/* כניסת כותרת */
+gsap.from('.head > *', { opacity:0, y:40, duration:1, stagger:.12, ease:'power3.out', delay:.15 });
+
+/* חשיפת פריטים בגלילה */
+ScrollTrigger.batch('.p-it', {
+  start:'top 92%',
+  onEnter:els => gsap.from(els, { opacity:0, y:70, duration:.9, stagger:.09, ease:'power3.out' })
+});
+
+/* וידאו מתנגן רק כשנראה */
+const vids = [...document.querySelectorAll('video')];
+const io = new IntersectionObserver(es => es.forEach(e => {
+  if (e.isIntersecting) e.target.play().catch(()=>{});
+  else e.target.pause();
+}), { threshold:.2 });
+vids.forEach(v => io.observe(v));
+
+/* לחיצה = סאונד בלעדי */
+document.querySelectorAll('.p-it').forEach(box => {
+  box.addEventListener('click', () => {
+    const v = box.querySelector('video');
+    const wasMuted = v.muted;
+    vids.forEach(x => x.muted = true);
+    document.querySelectorAll('.p-it.sound').forEach(s => s.classList.remove('sound'));
+    if (wasMuted) { v.muted = false; box.classList.add('sound'); v.play().catch(()=>{}); }
+  });
+});
+
+/* הרמז נעלם אחרי אינטראקציה ראשונה */
+addEventListener('click', () => gsap.to('#hint', { opacity:0, duration:.6 }), { once:true });
+
+window.addEventListener('load', () => ScrollTrigger.refresh());
+</script>
+</body>
+</html>
