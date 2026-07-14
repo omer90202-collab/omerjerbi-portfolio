@@ -8,11 +8,12 @@
   ═══════════════════════════════════════════════
   אתר: תיק עבודות — עומר ג'רבי (מומחה תוכן AI)
   אופי: Dark Luxury — שחור עמוק + זהב, טיפוגרפיה ענקית, וידאו אמיתי בכל סצנה
+  עיקרון: כמה שפחות טקסט — העבודות מדברות. אין סצנת מניפסטו.
   סצנות:
-  1. הירו חלון — וידאו ערק נוח קטן מתרחב למסך מלא — pin
-  2. מניפסטו — נצבע מילה-מילה בגלילה
+  1. הירו קיר-וידאו — 12 חלוניות אמיתיות מנגנות בלי סאונד, שם ענק מעל. לחיצה = מתמלא/מקבל סאונד. pin+scrub עדין
+  2. מניפת פרסומות א' — 4 קלפי וידאו תלת-ממדיים — pin
   3. קיר לקוחות — אייל גולן/האח הגדול/הישרדות/הכנסת + velocity skew
-  4. הפרסומות — מניפת קלפי וידאו תלת-ממדית — pin
+  4. מניפת פרסומות ב' — עוד 4 קלפים — pin
   5. מספרים — counters
   6. ההשתלות — גלריה אופקית מוצמדת של Memory Hijack — pin
   7. אאוטרו — "בואו נדבר" קונטור זום → CTA
@@ -37,29 +38,30 @@
   .nav .logo{font-weight:900;font-size:18px}
   .nav .idx{font-weight:300;color:#bbb}
 
-  /* ════ סצנה 1 — הירו חלון ════ */
-  .sc-hero{height:100vh;position:relative;overflow:hidden}
-  .hero-stage{position:absolute;inset:0;display:grid;place-items:center}
-  .hero-window{width:22vw;max-width:320px;aspect-ratio:9/16;border-radius:14vw;overflow:hidden;position:relative;will-change:transform,border-radius;box-shadow:0 0 0 1.5px rgba(253,191,45,.55),0 30px 90px rgba(0,0,0,.65)}
-  .hero-window video{transform:scale(1.25);will-change:transform}
-  .hero-window::after{content:"";position:absolute;inset:0;background:rgba(10,9,8,.15)}
-  .hero-t1,.hero-t2{position:absolute;inset-inline:0;text-align:center;font-weight:900;font-size:clamp(50px,10.5vw,150px);line-height:1;letter-spacing:-.02em;pointer-events:none;z-index:2}
-  .hero-t1{top:13vh}
-  .hero-t2{bottom:11vh;color:transparent;-webkit-text-stroke:1.5px var(--gold)}
-  .hero-hint{position:absolute;bottom:4vh;inset-inline:0;text-align:center;z-index:3;font-size:12px;letter-spacing:.4em;color:var(--dim)}
-  .hero-meta{position:absolute;top:50%;transform:translateY(-50%);font-size:13px;color:var(--dim);letter-spacing:.14em;line-height:2;z-index:2}
-  .hero-meta.r{right:4vw;text-align:right}
-  .hero-meta.l{left:4vw;text-align:left}
-  @media(max-width:760px){.hero-meta{display:none}.hero-window{width:52vw}}
+  /* ════ סצנה 1 — הירו: קיר וידאו ════ */
+  .sc-hero{height:100vh;position:relative;overflow:hidden;background:var(--bg)}
+  .wall-grid{position:absolute;inset:0;display:grid;grid-template-columns:repeat(6,1fr);grid-template-rows:repeat(2,1fr);gap:5px;padding:5px;will-change:transform}
+  @media(max-width:900px){.wall-grid{grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(4,1fr)}}
+  .wtile{position:relative;overflow:hidden;border-radius:4px;cursor:pointer}
+  .wtile video{transition:transform .6s ease}
+  .wtile::after{content:"";position:absolute;inset:0;background:rgba(10,9,8,.4);transition:background .4s}
+  .wtile:hover::after{background:rgba(10,9,8,.12)}
+  .wtile:hover video{transform:scale(1.07)}
+  .hero-textwrap{position:absolute;inset:0;z-index:5;display:grid;place-items:center;text-align:center;pointer-events:none}
+  .hero-textwrap::before{content:"";position:absolute;inset:-15%;background:radial-gradient(closest-side,rgba(10,9,8,.75),transparent 68%)}
+  .hero-kicker{position:relative;font-size:13px;letter-spacing:.42em;color:var(--gold);margin-bottom:20px;font-weight:600}
+  .hero-title{position:relative;font-weight:900;font-size:clamp(52px,10vw,150px);line-height:.95;letter-spacing:-.02em;color:var(--ink);text-shadow:0 14px 60px rgba(0,0,0,.85)}
+  .hero-sub{position:relative;margin-top:16px;font-size:clamp(15px,1.9vw,24px);font-weight:900;letter-spacing:.03em;color:transparent;-webkit-text-stroke:1px var(--gold)}
+  .hero-hint{position:absolute;bottom:4vh;inset-inline:0;text-align:center;z-index:6;font-size:12px;letter-spacing:.4em;color:var(--dim);pointer-events:none}
 
-  /* ════ סצנה 2 — מניפסטו ════ */
-  .sc-manifesto{position:relative}
-  .manifesto-inner{min-height:100vh;display:flex;align-items:center;padding:18vh 8vw}
-  p.manifesto{font-size:clamp(28px,4.4vw,60px);font-weight:700;line-height:1.5;letter-spacing:-.01em}
-  .manifesto .w{color:var(--dim);display:inline-block}
-  .manifesto .w.hot{color:var(--ink)}
-  .manifesto .w.accent.hot{color:var(--gold)}
-  .sc-label{position:absolute;top:8vh;right:8vw;font-size:12px;letter-spacing:.4em;color:var(--dim)}
+  /* ── תצוגה מוגדלת בלחיצה ── */
+  .lightbox{position:fixed;inset:0;z-index:200;display:grid;place-items:center;background:rgba(6,5,4,.94);opacity:0;pointer-events:none;transition:opacity .35s}
+  .lightbox.show{opacity:1;pointer-events:auto}
+  .lightbox video{width:min(92vw,520px);max-height:84vh;border-radius:16px;box-shadow:0 40px 120px rgba(0,0,0,.7);background:#000;transform:scale(.92);transition:transform .35s}
+  .lightbox.show video{transform:scale(1)}
+  .lb-close{position:absolute;top:26px;left:26px;width:46px;height:46px;border-radius:99px;border:1px solid var(--line);color:var(--ink);background:rgba(255,255,255,.06);font-size:18px;cursor:pointer;display:grid;place-items:center;transition:.25s}
+  .lb-close:hover{border-color:var(--gold);color:var(--gold)}
+  .lb-label{position:absolute;bottom:30px;inset-inline:0;text-align:center;font-size:13px;letter-spacing:.3em;color:var(--dim)}
 
   /* ════ סצנה 3 — קיר לקוחות ════ */
   .sc-wall{height:110vh;position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:center;gap:1.2vw;background:var(--gold)}
@@ -126,32 +128,43 @@
   </nav>
 </header>
 
-<!-- ═ 1 ═ הירו חלון -->
+<!-- ═ 1 ═ הירו: קיר וידאו -->
 <section class="sc-hero" id="scHero">
-  <div class="hero-stage">
-    <div class="hero-t1" id="heroT1">עומר ג'רבי</div>
-    <div class="hero-window" id="heroWindow">
-      <video src="videos/hero-bg.mp4" autoplay muted loop playsinline></video>
+  <div class="wall-grid" id="wallGrid">
+    <div class="wtile" data-label="ערק נוח"><video src="videos/raw-arak.mp4" muted loop playsinline preload="auto" autoplay></video></div>
+    <div class="wtile" data-label="הבורר"><video src="videos/hj-haborer.mp4" muted loop playsinline preload="auto" autoplay></video></div>
+    <div class="wtile" data-label="גולדסטאר"><video src="videos/raw-goldstar.mp4" muted loop playsinline preload="auto" autoplay></video></div>
+    <div class="wtile" data-label="שוקו"><video src="videos/raw-shoko.mp4" muted loop playsinline preload="auto" autoplay></video></div>
+    <div class="wtile" data-label="אובססיה"><video src="videos/hj-obsession.mp4" muted loop playsinline preload="auto" autoplay></video></div>
+    <div class="wtile" data-label="נביעות"><video src="videos/raw-neviot.mp4" muted loop playsinline preload="auto" autoplay></video></div>
+    <div class="wtile" data-label="מגנום"><video src="videos/raw-magnum.mp4" muted loop playsinline preload="auto" autoplay></video></div>
+    <div class="wtile" data-label="עספור"><video src="videos/hj-asfur.mp4" muted loop playsinline preload="auto" autoplay></video></div>
+    <div class="wtile" data-label="שמפו"><video src="videos/raw-shampoo.mp4" muted loop playsinline preload="auto" autoplay></video></div>
+    <div class="wtile" data-label="חלב קפה"><video src="videos/raw-coffee.mp4" muted loop playsinline preload="auto" autoplay></video></div>
+    <div class="wtile" data-label="לשחרר את שולי"><video src="videos/hj-shuli.mp4" muted loop playsinline preload="auto" autoplay></video></div>
+    <div class="wtile" data-label="מולר"><video src="videos/raw-muller.mp4" muted loop playsinline preload="auto" autoplay></video></div>
+  </div>
+  <div class="hero-textwrap">
+    <div>
+      <div class="hero-kicker">תיק עבודות · 2026</div>
+      <h1 class="hero-title">עומר ג'רבי</h1>
+      <div class="hero-sub">מומחה תוכן AI</div>
     </div>
-    <div class="hero-t2" id="heroT2">מומחה תוכן AI</div>
-    <div class="hero-meta r">תוכן AI למותגים<br>ברמה של הפקה</div>
-    <div class="hero-meta l">תיק עבודות<br>2026</div>
   </div>
-  <div class="hero-hint">גלול לאט</div>
+  <div class="hero-hint">גלול</div>
 </section>
 
-<!-- ═ 2 ═ מניפסטו -->
-<section class="sc-manifesto" id="scManifesto">
-  <span class="sc-label">(02) — בקצרה</span>
-  <div class="manifesto-inner">
-    <p class="manifesto" id="manifestoTxt">אני יוצר סרטונים בבינה מלאכותית שנראים כמו <em>הפקות אמיתיות</em>. בלי סט, בלי צוות צילום — רעיון חד, תהליך מסודר, ותשומת לב לכל פריים. התוצאה: תוכן <em>שעוצר את הגלילה</em>.</p>
-  </div>
-</section>
+<!-- תצוגה מוגדלת -->
+<div class="lightbox" id="lightbox">
+  <video id="lightboxVideo" playsinline controls></video>
+  <button class="lb-close" id="lbClose" aria-label="סגור">✕</button>
+  <div class="lb-label" id="lbLabel"></div>
+</div>
 
-<!-- ═ 3 ═ מניפת פרסומות א' -->
+<!-- ═ 2 ═ מניפת פרסומות א' -->
 <section class="sc-fan" id="scFan">
   <div class="fan-stage" data-fan>
-    <div class="fan-title"><small>(03) — פרסומות שיצרתי</small>מוצר אמיתי.<br>פרסומת AI.</div>
+    <div class="fan-title"><small>(02) — פרסומות שיצרתי</small>מוצר אמיתי.<br>פרסומת AI.</div>
     <div class="card"><video src="videos/raw-arak.mp4" muted loop playsinline preload="metadata"></video><div class="tag"><span>ערק נוח</span><span>01</span></div></div>
     <div class="card"><video src="videos/raw-shoko.mp4" muted loop playsinline preload="metadata"></video><div class="tag"><span>שוקו</span><span>02</span></div></div>
     <div class="card"><video src="videos/raw-magnum.mp4" muted loop playsinline preload="metadata"></video><div class="tag"><span>מגנום</span><span>03</span></div></div>
@@ -162,7 +175,7 @@
 
 <!-- ═ 4 ═ קיר לקוחות (הרשימה תושלם ע"י עומר — TODO) -->
 <section class="sc-wall" id="scWall">
-  <div class="wall-kicker">(04) — עבדתי עם</div>
+  <div class="wall-kicker">(03) — עבדתי עם</div>
   <div class="wall-line" data-dir="1"><span>אייל גולן</span><span>✦</span><span>אייל גולן</span><span>✦</span><span>אייל גולן</span><span>✦</span><span>אייל גולן</span><span>✦</span></div>
   <div class="wall-line ghost" data-dir="-1"><span>האח הגדול</span><span>✦</span><span>האח הגדול</span><span>✦</span><span>האח הגדול</span><span>✦</span><span>האח הגדול</span><span>✦</span></div>
   <div class="wall-line" data-dir="1"><span>הישרדות</span><span>✦</span><span>הישרדות</span><span>✦</span><span>הישרדות</span><span>✦</span><span>הישרדות</span><span>✦</span><span>הישרדות</span><span>✦</span></div>
@@ -172,7 +185,7 @@
 <!-- ═ 5 ═ מניפת פרסומות ב' -->
 <section class="sc-fan" id="scFan2">
   <div class="fan-stage" data-fan>
-    <div class="fan-title"><small>(05) — עוד מהמדף</small>כל מוצר.<br>כל סגנון.</div>
+    <div class="fan-title"><small>(04) — עוד מהמדף</small>כל מוצר.<br>כל סגנון.</div>
     <div class="card"><video src="videos/raw-shampoo.mp4" muted loop playsinline preload="metadata"></video><div class="tag"><span>שמפו</span><span>05</span></div></div>
     <div class="card"><video src="videos/raw-coffee.mp4" muted loop playsinline preload="metadata"></video><div class="tag"><span>חלב קפה</span><span>06</span></div></div>
     <div class="card"><video src="videos/raw-muller.mp4" muted loop playsinline preload="metadata"></video><div class="tag"><span>מולר</span><span>07</span></div></div>
@@ -183,7 +196,7 @@
 
 <!-- ═ 6 ═ מספרים -->
 <section class="sc-nums" id="scNums">
-  <div class="nums-head">(06) — במספרים</div>
+  <div class="nums-head">(05) — במספרים</div>
   <div class="nums-grid">
     <div class="num"><b><span data-countup="40000">0</span><span class="unit">₪+</span></b><p>הכנסה מתוכן AI בחודש שיא</p></div>
     <div class="num"><b><span data-countup="13000">0</span><span class="unit">₪</span></b><p>הפרויקט הגדול ביותר — סרטון אחד</p></div>
@@ -196,7 +209,7 @@
 <section class="sc-hijack" id="scHijack">
   <div class="h-pin" id="hPin">
     <div class="h-head">
-      <small>(07) — הסדרה שלי</small>
+      <small>(06) — הסדרה שלי</small>
       <h2>אני נכנס לסצנות<br>הכי מוכרות <em>בישראל.</em></h2>
     </div>
     <div class="h-track" id="hTrack">
@@ -243,32 +256,10 @@ lenis.on('scroll', ScrollTrigger.update);
 gsap.ticker.add(t => lenis.raf(t*1000));
 gsap.ticker.lagSmoothing(0);
 
-/* ── פיצול מילים בטוח ל-RTL (כולל סימון em כ-accent) ── */
-function splitWords(el){
-  const out = [];
-  (function walk(node, accent){
-    [...node.childNodes].forEach(n => {
-      if (n.nodeType === 3) {
-        const frag = document.createDocumentFragment();
-        n.textContent.split(/(\s+)/).forEach(part => {
-          if (!part) return;
-          if (/^\s+$/.test(part)) frag.appendChild(document.createTextNode(part));
-          else {
-            const s = document.createElement('span'); s.className = 'w' + (accent ? ' accent' : '');
-            s.textContent = part; out.push(s); frag.appendChild(s);
-          }
-        });
-        n.replaceWith(frag);
-      } else if (n.nodeType === 1) walk(n, accent || n.tagName === 'EM');
-    });
-  })(el, false);
-  return out;
-}
-
 const isMobile = matchMedia('(max-width: 760px)').matches;
 
 /* ── וידאו: ניגון רק כשעל המסך + לחיצה לסאונד ── */
-const allVids = [...document.querySelectorAll('video')];
+const allVids = [...document.querySelectorAll('video')].filter(v => v.id !== 'lightboxVideo');
 const io = new IntersectionObserver(es => es.forEach(e => {
   const v = e.target;
   if (e.isIntersecting) v.play().catch(()=>{});
@@ -286,39 +277,45 @@ document.querySelectorAll('.card, .h-it').forEach(box => {
   });
 });
 
-/* ════ סצנה 1 — הירו חלון: מסגרת קטנה → מסך מלא ════ */
+/* ════ סצנה 1 — הירו קיר-וידאו: כניסה מפוזרת + scrub עדין + תצוגה מוגדלת ════ */
 {
-  const tl = gsap.timeline({
-    scrollTrigger:{ trigger:'#scHero', start:'top top', end:'+=180%', pin:true, scrub:.6 }
+  /* כניסה — חלוניות מגיחות בפיזור אקראי, הכותרת אחריהן */
+  gsap.from('.wtile', {
+    opacity:0, scale:.35, duration:1.1, ease:'power3.out',
+    stagger:{ amount:1, from:'random', grid:isMobile ? [4,3] : [2,6] }
   });
-  tl.to('#heroWindow', {
-      width:'100vw', maxWidth:'100vw', borderRadius:0, aspectRatio:'auto',
-      height:'100vh', ease:'power2.inOut', duration:1
-    }, 0)
-    .to('#heroWindow video', { scale:1, ease:'power2.out', duration:1 }, 0)
-    .to('#heroT1', { yPercent:-160, opacity:.9, ease:'none', duration:1 }, 0)
-    .to('#heroT2', { yPercent:160, ease:'none', duration:1 }, 0)
-    .to('.hero-meta, .hero-hint', { opacity:0, duration:.3 }, 0)
-    .to('#heroT1', { yPercent:-40, opacity:1, color:'#fff', duration:.5 }, .62)
-    .to('#heroT2', { yPercent:40, '-webkit-text-stroke':'1.5px #fff', duration:.5 }, .62);
-
-  gsap.from('#heroWindow', { scale:.6, opacity:0, duration:1.4, ease:'power4.out', delay:.2 });
-  gsap.from('#heroT1', { y:60, opacity:0, duration:1.1, ease:'power4.out', delay:.35 });
-  gsap.from('#heroT2', { y:-60, opacity:0, duration:1.1, ease:'power4.out', delay:.45 });
-}
-
-/* ════ סצנה 2 — מניפסטו: מילים נצבעות בקריאה ════ */
-{
-  const words = splitWords(document.getElementById('manifestoTxt'));
-  const st = { p:0 };
-  gsap.to(st, {
-    p:1, ease:'none',
-    scrollTrigger:{ trigger:'#scManifesto', start:'top 70%', end:'bottom 65%', scrub:.4 },
-    onUpdate:() => {
-      const upto = Math.floor(st.p * words.length);
-      words.forEach((w,i) => w.classList.toggle('hot', i <= upto));
-    }
+  gsap.from('.hero-kicker, .hero-title, .hero-sub', {
+    opacity:0, y:26, duration:1, ease:'power3.out', stagger:.1, delay:.35
   });
+
+  /* גלילה: הקיר מתרחק מעט, הכותרת דוהה — pin קצר */
+  gsap.timeline({
+    scrollTrigger:{ trigger:'#scHero', start:'top top', end:'+=70%', pin:true, scrub:.6 }
+  })
+  .to('#wallGrid', { scale:1.08, ease:'none', duration:1 }, 0)
+  .to('.hero-textwrap', { opacity:0, scale:.92, ease:'none', duration:.6 }, 0)
+  .to('.hero-hint', { opacity:0, duration:.2 }, 0);
+
+  /* לחיצה על חלונית = תצוגה מוגדלת עם סאונד */
+  const lightbox = document.getElementById('lightbox');
+  const lbVideo = document.getElementById('lightboxVideo');
+  const lbLabel = document.getElementById('lbLabel');
+  const closeLB = () => { lightbox.classList.remove('show'); lbVideo.pause(); };
+  document.querySelectorAll('.wtile').forEach(tile => {
+    tile.addEventListener('click', () => {
+      const v = tile.querySelector('video');
+      allVids.forEach(x => x.muted = true);
+      if (lbVideo.src !== v.currentSrc) lbVideo.src = v.currentSrc;
+      lbVideo.currentTime = v.currentTime;
+      lbLabel.textContent = tile.dataset.label || '';
+      lightbox.classList.add('show');
+      lbVideo.muted = false;
+      lbVideo.play().catch(()=>{});
+    });
+  });
+  document.getElementById('lbClose').addEventListener('click', closeLB);
+  lightbox.addEventListener('click', e => { if (e.target === lightbox) closeLB(); });
+  addEventListener('keydown', e => { if (e.key === 'Escape') closeLB(); });
 }
 
 /* ════ סצנה 3 — קיר לקוחות: כיוונים מנוגדים + skew ════ */
