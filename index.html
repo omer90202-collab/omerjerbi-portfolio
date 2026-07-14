@@ -7,22 +7,20 @@
 <!--
   ═══════════════════════════════════════════════
   אתר: תיק עבודות — עומר ג'רבי (מומחה תוכן AI)
-  גרסה: ניסוי עיצוב #2 — קומפוננטות שונות לגמרי מהגרסה הקודמת
-  אופי: Dark Luxury — שחור עמוק + זהב, מגע סריפי (Frank Ruhl Libre) על טקסטים נבחרים
+  אופי: Dark Luxury — שחור עמוק + זהב, טיפוגרפיה ענקית, וידאו אמיתי בכל סצנה
+  עיקרון: כמה שפחות טקסט — העבודות מדברות. אין סצנת מניפסטו.
   סצנות:
-  0. פרילואודר — אחוזים → שם ענק
-  1. הירו חלון-זום — חלונית וידאו קטנה גדלה למסך מלא
-  2. מניפסט — משפט אחד נצבע מילה-מילה
-  3. קולאז' — 8 וידאו מתפזרים ומתכנסים לטבעת סביב כותרת
-  4. לקוחות — רשימה עם תצוגה מקדימה שעוקבת אחרי העכבר
-  5. מה אני עושה — sticky steps (וידאו נעוץ מתחלף לפי שלב)
-  6. עוד מהארכיון — מרקיזה מואצת לפי מהירות גלילה
-  7. מספרים — counters
-  8. אאוטרו — קונטור זום → CTA
+  1. הירו קיר-וידאו — 12 חלוניות אמיתיות מנגנות בלי סאונד, שם ענק מעל. לחיצה = מתמלא/מקבל סאונד. pin+scrub עדין
+  2. מניפת פרסומות א' — 4 קלפי וידאו תלת-ממדיים — pin
+  3. קיר לקוחות — אייל גולן/האח הגדול/הישרדות/הכנסת + velocity skew
+  4. מניפת פרסומות ב' — עוד 4 קלפים — pin
+  5. מספרים — counters
+  6. ארכיון — גלריה אופקית מוצמדת עם עוד עבודות — pin
+  7. אאוטרו — "בואו נדבר" קונטור זום → CTA
   ═══════════════════════════════════════════════
 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@200;300;400;500;700;900&family=Frank+Ruhl+Libre:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@200;300;400;500;700;900&display=swap" rel="stylesheet">
 <style>
   :root{
     --bg:#0a0908; --ink:#f5f0e6; --dim:#5c564c; --gold:#FDBF2D;
@@ -34,12 +32,29 @@
   img,video{display:block;width:100%;height:100%;object-fit:cover}
   a{color:inherit;text-decoration:none}
 
+  /* ── ניווט ── */
   header{position:fixed;inset-inline:0;top:0;z-index:90;mix-blend-mode:difference}
   .nav{display:flex;justify-content:space-between;align-items:center;padding:22px 4vw;font-size:14px;letter-spacing:.06em}
   .nav .logo{font-weight:900;font-size:18px}
   .nav .idx{font-weight:300;color:#bbb}
 
-  /* ── תצוגה מוגדלת בלחיצה (משותף לכל הסצנות) ── */
+  /* ════ סצנה 1 — הירו: קיר וידאו ════ */
+  .sc-hero{height:100vh;position:relative;overflow:hidden;background:var(--bg)}
+  .wall-grid{position:absolute;inset:0;display:grid;grid-template-columns:repeat(6,1fr);grid-template-rows:repeat(2,1fr);gap:5px;padding:5px;will-change:transform}
+  @media(max-width:900px){.wall-grid{grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(4,1fr)}}
+  .wtile{position:relative;overflow:hidden;border-radius:4px;cursor:pointer}
+  .wtile video{transition:transform .6s ease}
+  .wtile::after{content:"";position:absolute;inset:0;background:rgba(10,9,8,.4);transition:background .4s}
+  .wtile:hover::after{background:rgba(10,9,8,.12)}
+  .wtile:hover video{transform:scale(1.07)}
+  .hero-textwrap{position:absolute;inset:0;z-index:5;display:grid;place-items:center;text-align:center;pointer-events:none}
+  .hero-textwrap::before{content:"";position:absolute;inset:-15%;background:radial-gradient(closest-side,rgba(10,9,8,.75),transparent 68%)}
+  .hero-kicker{position:relative;font-size:13px;letter-spacing:.42em;color:var(--gold);margin-bottom:20px;font-weight:600}
+  .hero-title{position:relative;font-weight:900;font-size:clamp(52px,10vw,150px);line-height:.95;letter-spacing:-.02em;color:var(--ink);text-shadow:0 14px 60px rgba(0,0,0,.85)}
+  .hero-sub{position:relative;margin-top:16px;font-size:clamp(15px,1.9vw,24px);font-weight:900;letter-spacing:.03em;color:transparent;-webkit-text-stroke:1px var(--gold)}
+  .hero-hint{position:absolute;bottom:4vh;inset-inline:0;text-align:center;z-index:6;font-size:12px;letter-spacing:.4em;color:var(--dim);pointer-events:none}
+
+  /* ── תצוגה מוגדלת בלחיצה ── */
   .lightbox{position:fixed;inset:0;z-index:200;display:grid;place-items:center;background:rgba(6,5,4,.94);opacity:0;pointer-events:none;transition:opacity .35s}
   .lightbox.show{opacity:1;pointer-events:auto}
   .lightbox video{width:min(92vw,520px);max-height:84vh;border-radius:16px;box-shadow:0 40px 120px rgba(0,0,0,.7);background:#000;transform:scale(.92);transition:transform .35s}
@@ -48,88 +63,46 @@
   .lb-close:hover{border-color:var(--gold);color:var(--gold)}
   .lb-label{position:absolute;bottom:30px;inset-inline:0;text-align:center;font-size:13px;letter-spacing:.3em;color:var(--dim)}
 
-  /* ════ 0 — פרילואודר ════ */
-  .loader{position:fixed;inset:0;z-index:300;background:var(--bg);display:flex;align-items:flex-end;padding:6vh 6vw}
-  .loader-pct{font-weight:900;font-size:clamp(60px,10vw,140px);color:var(--gold);line-height:1;letter-spacing:-.02em}
-  .loader-pct::after{content:"%"}
+  /* ════ סצנה 3 — קיר לקוחות ════ */
+  .sc-wall{height:110vh;position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:center;gap:1.2vw;background:var(--gold)}
+  .wall-kicker{position:absolute;top:7vh;inset-inline:0;text-align:center;font-size:13px;letter-spacing:.42em;color:rgba(20,14,2,.55);font-weight:500;z-index:2}
+  .wall-line{white-space:nowrap;font-weight:900;font-size:clamp(56px,9vw,140px);line-height:1;color:#140e02;will-change:transform;flex-shrink:0}
+  .wall-line.ghost{color:transparent;-webkit-text-stroke:1.5px #140e02}
+  .wall-line span{display:inline-block;padding-inline:1.5vw}
 
-  /* ════ 1 — הירו: חלון-זום ════ */
-  .sc-hero{height:100vh;position:relative;overflow:hidden;background:var(--bg)}
-  .hero-stage{position:absolute;inset:0;display:grid;place-items:center}
-  .hero-window{width:26vw;max-width:360px;aspect-ratio:3/4;border-radius:16vw;overflow:hidden;position:relative;will-change:transform,border-radius}
-  .hero-window video{transform:scale(1.35);will-change:transform}
-  .hero-t1,.hero-t2{position:absolute;inset-inline:0;text-align:center;font-weight:900;pointer-events:none;z-index:2}
-  .hero-t1{top:12vh;font-size:clamp(48px,10vw,150px);line-height:1;overflow:hidden}
-  .hero-t1 span{display:inline-block}
-  .hero-t2{bottom:11vh;font-size:clamp(17px,2.4vw,30px);letter-spacing:.08em;color:transparent;-webkit-text-stroke:1px var(--gold);opacity:0}
-  .hero-hint{position:absolute;bottom:4vh;inset-inline:0;text-align:center;z-index:6;font-size:12px;letter-spacing:.4em;color:var(--dim);pointer-events:none}
+  /* ════ סצנה 4 — מניפת פרסומות ════ */
+  .sc-fan{position:relative}
+  .fan-stage{height:100vh;overflow:hidden;display:grid;place-items:center;perspective:1200px}
+  .fan-title{position:absolute;top:9vh;inset-inline:0;text-align:center;font-weight:900;font-size:clamp(34px,5vw,72px);z-index:1}
+  .fan-title small{display:block;font-size:13px;letter-spacing:.4em;color:var(--dim);font-weight:300;margin-bottom:12px}
+  .card{position:absolute;width:min(290px,54vw);aspect-ratio:9/16;border-radius:14px;overflow:hidden;will-change:transform;transform-origin:center 130%;box-shadow:0 30px 70px rgba(0,0,0,.6);border:1px solid var(--line);cursor:pointer}
+  .card .tag{position:absolute;bottom:0;inset-inline:0;padding:14px 16px;background:linear-gradient(transparent,rgba(0,0,0,.8));font-size:14px;font-weight:500;display:flex;justify-content:space-between;z-index:2;pointer-events:none}
+  .card.sound{outline:2px solid var(--gold);outline-offset:-2px}
+  .fan-hint{position:absolute;bottom:5vh;inset-inline:0;text-align:center;font-size:12px;letter-spacing:.3em;color:var(--dim);z-index:1}
 
-  /* ════ 2 — מניפסט ════ */
-  .sc-manifesto{padding:24vh 8vw 20vh;max-width:1320px}
-  p.manifesto{font-family:'Frank Ruhl Libre',serif;font-weight:500;font-size:clamp(32px,4.6vw,66px);line-height:1.55}
-  .manifesto .w{color:var(--dim);display:inline-block}
-  .manifesto .w.hot{color:var(--ink)}
-  .manifesto .w.accent.hot{color:var(--gold)}
-
-  /* ════ 3 — קולאז' ════ */
-  .sc-collage{position:relative}
-  .collage-stage{height:100vh;overflow:hidden;position:relative;display:grid;place-items:center}
-  .collage-title{position:relative;z-index:3;text-align:center;font-family:'Frank Ruhl Libre',serif;font-weight:700;font-size:clamp(34px,6vw,92px)}
-  .collage-title small{display:block;font-family:'Heebo',sans-serif;font-size:13px;letter-spacing:.4em;color:var(--dim);margin-bottom:18px;font-weight:500}
-  .cimg{position:absolute;width:15vw;max-width:190px;aspect-ratio:9/16;border-radius:10px;overflow:hidden;box-shadow:0 20px 50px rgba(0,0,0,.55);cursor:pointer;border:1px solid var(--line)}
-  @media(max-width:760px){.cimg{width:27vw}}
-
-  /* ════ 4 — לקוחות: cursor preview ════ */
-  .sc-clients{padding:20vh 8vw 22vh}
-  .clients-kicker{font-size:13px;letter-spacing:.42em;color:var(--dim);margin-bottom:7vh}
-  .client-list{list-style:none}
-  .client-list li{display:flex;justify-content:space-between;align-items:center;padding:3.4vh 0;border-top:1px solid var(--line);font-weight:900;font-size:clamp(32px,6vw,86px);cursor:pointer;transition:opacity .3s,color .3s}
-  .client-list li:last-child{border-bottom:1px solid var(--line)}
-  .client-list:hover li{opacity:.3}
-  .client-list li:hover{opacity:1;color:var(--gold)}
-  .client-list .idx{font-size:14px;font-weight:400;color:var(--dim)}
-  .cursor-preview{position:fixed;top:0;left:0;width:260px;aspect-ratio:9/16;border-radius:14px;overflow:hidden;pointer-events:none;opacity:0;z-index:80;box-shadow:0 30px 80px rgba(0,0,0,.6);will-change:transform}
-  .cursor-preview video{position:absolute;inset:0;opacity:0;transition:opacity .25s}
-  .cursor-preview video.active{opacity:1}
-  @media(hover:none){.cursor-preview{display:none}}
-  @media(max-width:760px){.client-list li{font-size:clamp(24px,7.5vw,38px)}}
-
-  /* ════ 5 — מה אני עושה: sticky steps ════ */
-  .sc-steps{padding:20vh 8vw 8vh}
-  .steps-head{margin-bottom:11vh}
-  .steps-head small{display:block;font-size:13px;letter-spacing:.4em;color:var(--dim);margin-bottom:14px}
-  .steps-head h2{font-weight:900;font-size:clamp(34px,5.5vw,80px);line-height:1.08}
-  .steps-grid{display:grid;grid-template-columns:1fr .82fr;gap:6vw}
-  .steps-col{display:flex;flex-direction:column;gap:26vh;padding-bottom:20vh}
-  .step{opacity:.32;transition:opacity .4s}
-  .step.active{opacity:1}
-  .step b{display:block;font-size:14px;color:var(--gold);letter-spacing:.2em;margin-bottom:10px}
-  .step h3{font-weight:900;font-size:clamp(28px,4vw,52px);margin-bottom:14px}
-  .step p{color:var(--dim);font-size:16px;max-width:36ch}
-  .show-sticky{position:sticky;top:14vh;height:68vh;border-radius:16px;overflow:hidden;cursor:pointer;border:1px solid var(--line)}
-  .show-sticky video{position:absolute;inset:0;opacity:0;transition:opacity .5s}
-  .show-sticky video.active{opacity:1}
-  @media(max-width:900px){.steps-grid{grid-template-columns:1fr}.show-sticky{position:relative;top:0;height:50vh;order:-1;margin-bottom:6vh}.steps-col{gap:8vh;padding-bottom:4vh}}
-
-  /* ════ 6 — עוד מהארכיון: מרקיזה מואצת ════ */
-  .sc-marquee{padding:16vh 0 18vh;overflow:hidden}
-  .marquee-head{padding:0 8vw;margin-bottom:7vh}
-  .marquee-head small{display:block;font-size:13px;letter-spacing:.4em;color:var(--dim);margin-bottom:14px}
-  .marquee-head h2{font-weight:900;font-size:clamp(34px,5.5vw,80px);line-height:1.08}
-  .marquee-head h2 em{font-style:normal;color:var(--gold)}
-  .mq-wrap{overflow:hidden}
-  .mq-track{display:flex;gap:20px;width:max-content;will-change:transform}
-  .mq-it{width:clamp(150px,15vw,220px);aspect-ratio:9/16;border-radius:10px;overflow:hidden;flex-shrink:0;border:1px solid var(--line);cursor:pointer}
-
-  /* ════ 7 — מספרים ════ */
-  .sc-nums{padding:20vh 8vw;border-top:1px solid var(--line)}
+  /* ════ סצנה 5 — מספרים ════ */
+  .sc-nums{padding:22vh 8vw;border-top:1px solid var(--line)}
   .nums-head{font-size:13px;letter-spacing:.42em;color:var(--dim);margin-bottom:8vh}
   .nums-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:6vh 4vw}
   .num b{display:block;font-weight:900;font-size:clamp(46px,6.5vw,96px);line-height:1;color:var(--gold);letter-spacing:-.02em}
   .num b .unit{font-size:.4em;font-weight:700;color:var(--ink);margin-inline-start:.15em}
   .num p{margin-top:14px;color:var(--dim);font-weight:300;font-size:16px}
 
-  /* ════ 8 — אאוטרו ════ */
+  /* ════ סצנה 6 — השתלות: גלריה אופקית ════ */
+  .sc-hijack{position:relative}
+  .h-pin{overflow:hidden;padding-block:10vh}
+  .h-head{padding:0 8vw 7vh}
+  .h-head small{display:block;font-size:13px;letter-spacing:.4em;color:var(--dim);margin-bottom:14px}
+  .h-head h2{font-weight:900;font-size:clamp(34px,5.5vw,80px);line-height:1.08}
+  .h-head h2 em{font-style:normal;color:var(--gold)}
+  .h-track{display:flex;gap:26px;width:max-content;will-change:transform;padding-inline:8vw;align-items:center}
+  .h-lead{font-weight:900;font-size:clamp(60px,10vw,150px);color:transparent;-webkit-text-stroke:1.5px var(--ink);white-space:nowrap;padding-inline-end:2vw}
+  .h-it{width:clamp(230px,24vw,340px);aspect-ratio:9/16;border-radius:14px;overflow:hidden;flex-shrink:0;position:relative;border:1px solid var(--line);cursor:pointer}
+  .h-it b{position:absolute;bottom:14px;right:16px;z-index:2;font-size:15px;text-shadow:0 2px 12px rgba(0,0,0,.8)}
+  .h-it::after{content:"";position:absolute;inset:0;background:linear-gradient(transparent 65%,rgba(0,0,0,.55));pointer-events:none}
+  .h-it.sound{outline:2px solid var(--gold);outline-offset:-2px}
+
+  /* ════ סצנה 7 — אאוטרו ════ */
   .sc-outro{position:relative}
   .outro-stage{height:100vh;overflow:hidden;display:grid;place-items:center;position:relative}
   .outro-zoom{position:absolute;font-weight:900;font-size:clamp(80px,16vw,240px);color:transparent;-webkit-text-stroke:2px var(--gold);white-space:nowrap;will-change:transform,opacity;z-index:1}
@@ -148,10 +121,6 @@
 </head>
 <body>
 
-<div class="loader" id="loader">
-  <div class="loader-pct" id="loaderPct">0</div>
-</div>
-
 <header>
   <nav class="nav">
     <div class="logo">עומר ג'רבי</div>
@@ -159,12 +128,28 @@
   </nav>
 </header>
 
-<!-- ═ 1 ═ הירו: חלון-זום -->
+<!-- ═ 1 ═ הירו: קיר וידאו -->
 <section class="sc-hero" id="scHero">
-  <div class="hero-stage">
-    <div class="hero-t1" id="heroT1"><span id="heroName">עומר ג'רבי</span></div>
-    <div class="hero-window" id="heroWindow"><video src="videos/heels.mp4" muted loop playsinline preload="auto" autoplay></video></div>
-    <div class="hero-t2" id="heroT2">מומחה תוכן AI</div>
+  <div class="wall-grid" id="wallGrid">
+    <div class="wtile" data-label="אייל גולן"><video src="videos/eyal-golan.mp4" muted loop playsinline preload="auto" autoplay></video></div>
+    <div class="wtile" data-label="הישרדות"><video src="videos/survivor.mp4" muted loop playsinline preload="auto" autoplay></video></div>
+    <div class="wtile" data-label="אם תרצו"><video src="videos/imtirtzu-2.mp4" muted loop playsinline preload="auto" autoplay></video></div>
+    <div class="wtile" data-label="קרב תל חי"><video src="videos/telhai-en.mp4" muted loop playsinline preload="auto" autoplay></video></div>
+    <div class="wtile" data-label="נעליים"><video src="videos/heels.mp4" muted loop playsinline preload="auto" autoplay></video></div>
+    <div class="wtile" data-label="קמפיין כדורגל"><video src="videos/mbappe.mp4" muted loop playsinline preload="auto" autoplay></video></div>
+    <div class="wtile" data-label="ג'ין טוניק — פורים"><video src="videos/ginton-purim.mp4" muted loop playsinline preload="auto" autoplay></video></div>
+    <div class="wtile" data-label="בית״ר ירושלים"><video src="videos/beitar-puppets.mp4" muted loop playsinline preload="auto" autoplay></video></div>
+    <div class="wtile" data-label="הפועל"><video src="videos/hapoel.mp4" muted loop playsinline preload="auto" autoplay></video></div>
+    <div class="wtile" data-label="בר נואר"><video src="videos/noir-bar.mp4" muted loop playsinline preload="auto" autoplay></video></div>
+    <div class="wtile" data-label="מגנום"><video src="videos/raw-magnum.mp4" muted loop playsinline preload="auto" autoplay></video></div>
+    <div class="wtile" data-label="נביעות"><video src="videos/raw-neviot.mp4" muted loop playsinline preload="auto" autoplay></video></div>
+  </div>
+  <div class="hero-textwrap">
+    <div>
+      <div class="hero-kicker">תיק עבודות · 2026</div>
+      <h1 class="hero-title">עומר ג'רבי</h1>
+      <div class="hero-sub">מומחה תוכן AI</div>
+    </div>
   </div>
   <div class="hero-hint">גלול</div>
 </section>
@@ -176,99 +161,42 @@
   <div class="lb-label" id="lbLabel"></div>
 </div>
 
-<!-- ═ 2 ═ מניפסט -->
-<section class="sc-manifesto" id="scManifesto">
-  <p class="manifesto" id="manifestoTxt">אני לא מצלם הפקות. אני <em>בונה</em> אותן — במחשב אחד.</p>
-</section>
-
-<!-- ═ 3 ═ קולאז' -->
-<section class="sc-collage" id="scCollage">
-  <div class="collage-stage" id="collageStage">
-    <div class="collage-title"><small>(03) — קולאז'</small>התיק המלא.</div>
-    <div class="cimg" data-label="אייל גולן"><video src="videos/eyal-golan.mp4" muted loop playsinline preload="auto" autoplay></video></div>
-    <div class="cimg" data-label="קרב תל חי"><video src="videos/telhai-en.mp4" muted loop playsinline preload="auto" autoplay></video></div>
-    <div class="cimg" data-label="קמפיין כדורגל"><video src="videos/mbappe.mp4" muted loop playsinline preload="auto" autoplay></video></div>
-    <div class="cimg" data-label="ג'ין טוניק — פורים"><video src="videos/ginton-purim.mp4" muted loop playsinline preload="auto" autoplay></video></div>
-    <div class="cimg" data-label="בית״ר ירושלים"><video src="videos/beitar-puppets.mp4" muted loop playsinline preload="auto" autoplay></video></div>
-    <div class="cimg" data-label="הפועל"><video src="videos/hapoel.mp4" muted loop playsinline preload="auto" autoplay></video></div>
-    <div class="cimg" data-label="בר נואר"><video src="videos/noir-bar.mp4" muted loop playsinline preload="auto" autoplay></video></div>
-    <div class="cimg" data-label="מתן אשר"><video src="videos/matan-asher.mp4" muted loop playsinline preload="auto" autoplay></video></div>
+<!-- ═ 2 ═ מניפת פרסומות א' -->
+<section class="sc-fan" id="scFan">
+  <div class="fan-stage" data-fan>
+    <div class="fan-title"><small>(02) — פרסומות שיצרתי</small>מוצר אמיתי.<br>פרסומת AI.</div>
+    <div class="card"><video src="videos/raw-arak.mp4" muted loop playsinline preload="metadata"></video><div class="tag"><span>ערק נוח</span><span>01</span></div></div>
+    <div class="card"><video src="videos/raw-goldstar.mp4" muted loop playsinline preload="metadata"></video><div class="tag"><span>גולדסטאר</span><span>02</span></div></div>
+    <div class="card"><video src="videos/coke-zero.mp4" muted loop playsinline preload="metadata"></video><div class="tag"><span>קוקה קולה זירו</span><span>03</span></div></div>
+    <div class="card"><video src="videos/raw-taster.mp4" muted loop playsinline preload="metadata"></video><div class="tag"><span>טייסטרס צ'ויס</span><span>04</span></div></div>
+    <div class="fan-hint">לחיצה על קלף = סאונד</div>
   </div>
 </section>
 
-<!-- ═ 4 ═ לקוחות -->
-<section class="sc-clients" id="scClients">
-  <div class="clients-kicker">(04) — עבדתי עם</div>
-  <ul class="client-list" id="clientList">
-    <li data-i="0"><span>אייל גולן</span><span class="idx">01</span></li>
-    <li data-i="1"><span>הישרדות</span><span class="idx">02</span></li>
-    <li data-i="2"><span>אם תרצו</span><span class="idx">03</span></li>
-    <li data-i="3"><span>הכנסת</span><span class="idx">04</span></li>
-  </ul>
+<!-- ═ 4 ═ קיר לקוחות (הרשימה תושלם ע"י עומר — TODO) -->
+<section class="sc-wall" id="scWall">
+  <div class="wall-kicker">(03) — עבדתי עם</div>
+  <div class="wall-line" data-dir="1"><span>אייל גולן</span><span>✦</span><span>אייל גולן</span><span>✦</span><span>אייל גולן</span><span>✦</span><span>אייל גולן</span><span>✦</span></div>
+  <div class="wall-line ghost" data-dir="-1"><span>האח הגדול</span><span>✦</span><span>האח הגדול</span><span>✦</span><span>האח הגדול</span><span>✦</span><span>האח הגדול</span><span>✦</span></div>
+  <div class="wall-line" data-dir="1"><span>הישרדות</span><span>✦</span><span>הישרדות</span><span>✦</span><span>הישרדות</span><span>✦</span><span>הישרדות</span><span>✦</span><span>הישרדות</span><span>✦</span></div>
+  <div class="wall-line ghost" data-dir="-1"><span>כנסת ישראל</span><span>✦</span><span>כנסת ישראל</span><span>✦</span><span>כנסת ישראל</span><span>✦</span><span>כנסת ישראל</span><span>✦</span></div>
 </section>
-<div class="cursor-preview" id="cursorPreview">
-  <video data-i="0" src="videos/eyal-golan.mp4" muted loop playsinline preload="metadata"></video>
-  <video data-i="1" src="videos/survivor.mp4" muted loop playsinline preload="metadata"></video>
-  <video data-i="2" src="videos/imtirtzu-2.mp4" muted loop playsinline preload="metadata"></video>
-  <video data-i="3" src="videos/telhai-en.mp4" muted loop playsinline preload="metadata"></video>
-</div>
 
-<!-- ═ 5 ═ מה אני עושה -->
-<section class="sc-steps" id="scSteps">
-  <div class="steps-head">
-    <small>(05) — מה אני עושה</small>
-    <h2>שלושה סוגי<br>עבודה.</h2>
-  </div>
-  <div class="steps-grid">
-    <div class="steps-col">
-      <div class="step active" data-i="0">
-        <b>01</b><h3>פרסומות</h3>
-        <p>מוצר מהמדף הופך לפרסומת קולנועית — בלי צילומים, בלי אולפן.</p>
-      </div>
-      <div class="step" data-i="1">
-        <b>02</b><h3>עבודות ללקוחות</h3>
-        <p>אמנים, ארגונים ומוסדות — קמפיין שלם מהמחשב שלי.</p>
-      </div>
-      <div class="step" data-i="2">
-        <b>03</b><h3>קריאייטיב</h3>
-        <p>רעיונות אישיים שרצתי איתם, בלי בריף מאף אחד.</p>
-      </div>
-    </div>
-    <div class="show-sticky" id="showImg">
-      <video class="active" data-i="0" data-label="ערק נוח" src="videos/raw-arak.mp4" muted loop playsinline preload="auto" autoplay></video>
-      <video data-i="1" data-label="הפועל" src="videos/hapoel.mp4" muted loop playsinline preload="metadata"></video>
-      <video data-i="2" data-label="בר נואר" src="videos/noir-bar.mp4" muted loop playsinline preload="metadata"></video>
-    </div>
+<!-- ═ 5 ═ מניפת פרסומות ב' -->
+<section class="sc-fan" id="scFan2">
+  <div class="fan-stage" data-fan>
+    <div class="fan-title"><small>(04) — עוד מהמדף</small>כל מוצר.<br>כל סגנון.</div>
+    <div class="card"><video src="videos/raw-shampoo.mp4" muted loop playsinline preload="metadata"></video><div class="tag"><span>שמפו</span><span>05</span></div></div>
+    <div class="card"><video src="videos/raw-coffee.mp4" muted loop playsinline preload="metadata"></video><div class="tag"><span>חלב קפה</span><span>06</span></div></div>
+    <div class="card"><video src="videos/raw-muller.mp4" muted loop playsinline preload="metadata"></video><div class="tag"><span>מולר</span><span>07</span></div></div>
+    <div class="card"><video src="videos/raw-shoko.mp4" muted loop playsinline preload="metadata"></video><div class="tag"><span>שוקו</span><span>08</span></div></div>
+    <div class="fan-hint">לחיצה על קלף = סאונד</div>
   </div>
 </section>
 
-<!-- ═ 6 ═ עוד מהארכיון -->
-<section class="sc-marquee" id="scMarquee">
-  <div class="marquee-head">
-    <small>(06) — עוד מהארכיון</small>
-    <h2>רואים? <em>זה לא נגמר.</em></h2>
-  </div>
-  <div class="mq-wrap"><div class="mq-track" id="mqTrack">
-    <div class="mq-it" data-label="מגנום"><video src="videos/raw-magnum.mp4" muted loop playsinline preload="auto" autoplay></video></div>
-    <div class="mq-it" data-label="נביעות"><video src="videos/raw-neviot.mp4" muted loop playsinline preload="auto" autoplay></video></div>
-    <div class="mq-it" data-label="שמפו"><video src="videos/raw-shampoo.mp4" muted loop playsinline preload="auto" autoplay></video></div>
-    <div class="mq-it" data-label="חלב קפה"><video src="videos/raw-coffee.mp4" muted loop playsinline preload="auto" autoplay></video></div>
-    <div class="mq-it" data-label="מולר"><video src="videos/raw-muller.mp4" muted loop playsinline preload="auto" autoplay></video></div>
-    <div class="mq-it" data-label="שוקו"><video src="videos/raw-shoko.mp4" muted loop playsinline preload="auto" autoplay></video></div>
-    <div class="mq-it" data-label="קוקה קולה זירו"><video src="videos/coke-zero.mp4" muted loop playsinline preload="auto" autoplay></video></div>
-    <div class="mq-it" data-label="טייסטרס צ'ויס"><video src="videos/raw-taster.mp4" muted loop playsinline preload="auto" autoplay></video></div>
-    <div class="mq-it" data-label="אם תרצו"><video src="videos/imtirtzu-1.mp4" muted loop playsinline preload="auto" autoplay></video></div>
-    <div class="mq-it" data-label="אם תרצו"><video src="videos/imtirtzu-3.mp4" muted loop playsinline preload="auto" autoplay></video></div>
-    <div class="mq-it" data-label="אקספו"><video src="videos/expo.mp4" muted loop playsinline preload="auto" autoplay></video></div>
-    <div class="mq-it" data-label="אורו"><video src="videos/oro.mp4" muted loop playsinline preload="auto" autoplay></video></div>
-    <div class="mq-it" data-label="כנס"><video src="videos/conference.mp4" muted loop playsinline preload="auto" autoplay></video></div>
-    <div class="mq-it" data-label="מנטרה"><video src="videos/mantra-3.mp4" muted loop playsinline preload="auto" autoplay></video></div>
-  </div></div>
-</section>
-
-<!-- ═ 7 ═ מספרים -->
+<!-- ═ 6 ═ מספרים -->
 <section class="sc-nums" id="scNums">
-  <div class="nums-head">(07) — במספרים</div>
+  <div class="nums-head">(05) — במספרים</div>
   <div class="nums-grid">
     <div class="num"><b><span data-countup="40000">0</span><span class="unit">₪+</span></b><p>הכנסה מתוכן AI בחודש שיא</p></div>
     <div class="num"><b><span data-countup="13000">0</span><span class="unit">₪</span></b><p>הפרויקט הגדול ביותר — סרטון אחד</p></div>
@@ -277,7 +205,31 @@
   </div>
 </section>
 
-<!-- ═ 8 ═ אאוטרו -->
+<!-- ═ 7 ═ השתלות -->
+<section class="sc-hijack" id="scHijack">
+  <div class="h-pin" id="hPin">
+    <div class="h-head">
+      <small>(06) — עוד מהארכיון</small>
+      <h2>עוד עבודות,<br>עוד <em>סגנונות.</em></h2>
+    </div>
+    <div class="h-track" id="hTrack">
+      <div class="h-lead">ארכיון ←</div>
+      <div class="h-it"><video src="videos/imtirtzu-1.mp4" muted loop playsinline preload="metadata"></video><b>אם תרצו</b></div>
+      <div class="h-it"><video src="videos/matan-asher.mp4" muted loop playsinline preload="metadata"></video><b>מתן אשר</b></div>
+      <div class="h-it"><video src="videos/imtirtzu-3.mp4" muted loop playsinline preload="metadata"></video><b>אם תרצו</b></div>
+      <div class="h-it"><video src="videos/expo.mp4" muted loop playsinline preload="metadata"></video><b>אקספו</b></div>
+      <div class="h-it"><video src="videos/oro.mp4" muted loop playsinline preload="metadata"></video><b>אורו</b></div>
+      <div class="h-it"><video src="videos/conference.mp4" muted loop playsinline preload="metadata"></video><b>כנס</b></div>
+      <div class="h-it"><video src="videos/mantra-what.mp4" muted loop playsinline preload="metadata"></video><b>מנטרה</b></div>
+      <div class="h-it"><video src="videos/mantra-who.mp4" muted loop playsinline preload="metadata"></video><b>מנטרה</b></div>
+      <div class="h-it"><video src="videos/mantra-3.mp4" muted loop playsinline preload="metadata"></video><b>מנטרה</b></div>
+      <div class="h-it"><video src="videos/sound2.mp4" muted loop playsinline preload="metadata"></video><b>סאונד</b></div>
+      <div class="h-it"><video src="videos/save1080.mp4" muted loop playsinline preload="metadata"></video><b>BTS</b></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═ 7 ═ אאוטרו -->
 <section class="sc-outro" id="scOutro">
   <div class="outro-stage" id="outroStage">
     <div class="outro-zoom" id="outroZoom">בואו נדבר</div>
@@ -313,48 +265,8 @@ gsap.ticker.lagSmoothing(0);
 
 const isMobile = matchMedia('(max-width: 760px)').matches;
 
-/* ── פיצול מילים בטוח ל-RTL, עם סימון accent למילים בתוך <em> ── */
-function splitWords(el){
-  const out = [];
-  (function walk(node, accent){
-    [...node.childNodes].forEach(n => {
-      if (n.nodeType === 3) {
-        const frag = document.createDocumentFragment();
-        n.textContent.split(/(\s+)/).forEach(part => {
-          if (!part) return;
-          if (/^\s+$/.test(part)) frag.appendChild(document.createTextNode(part));
-          else {
-            const s = document.createElement('span');
-            s.className = 'w' + (accent ? ' accent' : '');
-            s.style.display = 'inline-block';
-            s.textContent = part; out.push(s); frag.appendChild(s);
-          }
-        });
-        n.replaceWith(frag);
-      } else if (n.nodeType === 1) walk(n, accent || n.tagName === 'EM');
-    });
-  })(el, false);
-  return out;
-}
-function splitChars(el){
-  const out = [];
-  (function walk(node){
-    [...node.childNodes].forEach(n => {
-      if (n.nodeType === 3) {
-        const frag = document.createDocumentFragment();
-        [...n.textContent].forEach(ch => {
-          if (/\s/.test(ch)) frag.appendChild(document.createTextNode(' '));
-          else { const s = document.createElement('span'); s.className = 'char'; s.style.display = 'inline-block'; s.textContent = ch; out.push(s); frag.appendChild(s); }
-        });
-        n.replaceWith(frag);
-      } else if (n.nodeType === 1) walk(n);
-    });
-  })(el);
-  return out;
-}
-
-/* ── וידאו: ניגון רק כשעל המסך ── */
-const allVids = [...document.querySelectorAll('video')].filter(v => v.id !== 'lightboxVideo' && !v.closest('.cursor-preview'));
+/* ── וידאו: ניגון רק כשעל המסך + לחיצה לסאונד ── */
+const allVids = [...document.querySelectorAll('video')].filter(v => v.id !== 'lightboxVideo');
 const io = new IntersectionObserver(es => es.forEach(e => {
   const v = e.target;
   if (e.isIntersecting) v.play().catch(()=>{});
@@ -362,143 +274,99 @@ const io = new IntersectionObserver(es => es.forEach(e => {
 }), { threshold:.15 });
 allVids.forEach(v => io.observe(v));
 
-/* ── תצוגה מוגדלת עם סאונד (משותף לכל הסצנות) ── */
-const lightbox = document.getElementById('lightbox');
-const lbVideo = document.getElementById('lightboxVideo');
-const lbLabel = document.getElementById('lbLabel');
-function openLightbox(v, label){
-  allVids.forEach(x => x.muted = true);
-  const src = v.currentSrc || v.src;
-  if (lbVideo.src !== src) lbVideo.src = src;
-  lbVideo.currentTime = v.currentTime || 0;
-  lbLabel.textContent = label || '';
-  lightbox.classList.add('show');
-  lbVideo.muted = false;
-  lbVideo.play().catch(()=>{});
-}
-function closeLB(){ lightbox.classList.remove('show'); lbVideo.pause(); }
-document.getElementById('lbClose').addEventListener('click', closeLB);
-lightbox.addEventListener('click', e => { if (e.target === lightbox) closeLB(); });
-addEventListener('keydown', e => { if (e.key === 'Escape') closeLB(); });
-
-/* ════ 0 — פרילואודר → שם ענק בהירו ════ */
-window.addEventListener('load', () => {
-  const pct = { v:0 };
-  const pctEl = document.getElementById('loaderPct');
-  const heroChars = splitChars(document.getElementById('heroName'));
-  gsap.set(heroChars, { yPercent:110, opacity:0 });
-  gsap.set('#heroWindow', { scale:.9 });
-  gsap.set('#heroT2', { opacity:0 });
-  gsap.timeline()
-    .to(pct, { v:100, duration:1.3, ease:'power2.inOut', onUpdate:() => pctEl.innerText = Math.round(pct.v) })
-    .to('#loader', { yPercent:-100, duration:.9, ease:'power4.inOut' }, '+=.1')
-    .to(heroChars, { yPercent:0, opacity:1, duration:1, stagger:.028, ease:'power4.out' }, '-=.5')
-    .to('#heroWindow', { scale:1, duration:1, ease:'power3.out' }, '-=.7')
-    .to('#heroT2', { opacity:1, duration:.8, ease:'power3.out' }, '-=.5')
-    .set('#loader', { display:'none' })
-    .add(() => { ScrollTrigger.refresh(); allVids.forEach(v => { const r = v.getBoundingClientRect(); if (r.bottom > 0 && r.top < innerHeight) v.play().catch(()=>{}); }); });
+document.querySelectorAll('.card, .h-it').forEach(box => {
+  box.addEventListener('click', () => {
+    const v = box.querySelector('video');
+    const wasMuted = v.muted;
+    allVids.forEach(x => { x.muted = true; });
+    document.querySelectorAll('.sound').forEach(s => s.classList.remove('sound'));
+    if (wasMuted) { v.muted = false; box.classList.add('sound'); v.play().catch(()=>{}); }
+  });
 });
 
-/* ════ 1 — הירו: חלון-זום בגלילה ════ */
+/* ════ סצנה 1 — הירו קיר-וידאו: כניסה מפוזרת + scrub עדין + תצוגה מוגדלת ════ */
 {
-  const tl = gsap.timeline({
-    scrollTrigger:{ trigger:'#scHero', start:'top top', end:'+=180%', pin:true, scrub:.6 }
+  /* כניסה — חלוניות מגיחות בפיזור אקראי, הכותרת אחריהן */
+  gsap.from('.wtile', {
+    opacity:0, scale:.35, duration:1.1, ease:'power3.out',
+    stagger:{ amount:1, from:'random', grid:isMobile ? [4,3] : [2,6] }
   });
-  tl.to('#heroWindow', { width:'100vw', maxWidth:'100vw', borderRadius:0, aspectRatio:'auto', height:'100vh', ease:'power2.inOut', duration:1 }, 0)
-    .to('#heroWindow video', { scale:1, ease:'power2.out', duration:1 }, 0)
-    .to('#heroT1', { yPercent:-160, ease:'none', duration:1 }, 0)
-    .to('#heroT2', { yPercent:160, ease:'none', duration:1 }, 0)
-    .to('#heroT1', { yPercent:-40, color:'#fff', duration:.5 }, .62)
-    .to('#heroT2', { yPercent:40, webkitTextStroke:'1.5px #fff', duration:.5 }, .62)
-    .to('.hero-hint', { opacity:0, duration:.2 }, 0);
-}
-
-/* ════ 2 — מניפסט: נצבע מילה-מילה בקריאה ════ */
-{
-  const words = splitWords(document.getElementById('manifestoTxt'));
-  const st = { p:0 };
-  gsap.to(st, { p:1, ease:'none',
-    scrollTrigger:{ trigger:'.manifesto', start:'top 70%', end:'bottom 45%', scrub:.4 },
-    onUpdate:() => {
-      const upto = Math.floor(st.p * words.length);
-      words.forEach((w,i) => w.classList.toggle('hot', i <= upto));
-    } });
-}
-
-/* ════ 3 — קולאז': פיזור → טבעת ════ */
-{
-  const imgs = gsap.utils.toArray('.cimg');
-  const finals = [
-    { x:'-36vw', y:'-26vh', r:-7 }, { x:'-13vw', y:'-33vh', r:4 }, { x:'13vw', y:'-33vh', r:-3 }, { x:'36vw', y:'-26vh', r:8 },
-    { x:'-36vw', y:'26vh',  r:6 },  { x:'-13vw', y:'33vh',  r:-5 },{ x:'13vw', y:'33vh',  r:3 },  { x:'36vw', y:'26vh',  r:-8 } ];
-  const finalsMobile = [
-    { x:'-24vw', y:'-30vh', r:-6 }, { x:'0vw', y:'-34vh', r:3 }, { x:'24vw', y:'-30vh', r:-4 },
-    { x:'-24vw', y:'0vh', r:5 },    { x:'24vw', y:'0vh', r:-5 },
-    { x:'-24vw', y:'30vh', r:4 },   { x:'0vw', y:'34vh', r:-3 }, { x:'24vw', y:'30vh', r:6 } ];
-  const F = isMobile ? finalsMobile : finals;
-  const scatter = [
-    { x:'-90vw', y:'-70vh', r:-45 }, { x:'-30vw', y:'-95vh', r:30 }, { x:'30vw', y:'-95vh', r:-25 }, { x:'95vw', y:'-60vh', r:50 },
-    { x:'-95vw', y:'70vh',  r:35 },  { x:'-30vw', y:'95vh',  r:-40 },{ x:'30vw', y:'95vh',  r:28 },  { x:'90vw', y:'65vh',  r:-50 } ];
-  const tl = gsap.timeline({ scrollTrigger:{ trigger:'#scCollage', start:'top top', end:'+=220%', pin:'#collageStage', scrub:.6 } });
-  imgs.forEach((im, i) => {
-    tl.fromTo(im,
-      { x:scatter[i].x, y:scatter[i].y, rotation:scatter[i].r, opacity:0, scale:1.15 },
-      { x:F[i].x,  y:F[i].y,  rotation:F[i].r,  opacity:1, scale:1, ease:'power2.out', duration:1 }, i * .06);
+  gsap.from('.hero-kicker, .hero-title, .hero-sub', {
+    opacity:0, y:26, duration:1, ease:'power3.out', stagger:.1, delay:.35
   });
-  tl.from('.collage-title', { opacity:0, scale:.85, duration:.8, ease:'power2.out' }, .4);
-  tl.to(imgs, { scale:1.04, duration:.4, stagger:.02, ease:'power1.inOut' }, '+=.1');
-  imgs.forEach(el => el.addEventListener('click', () => openLightbox(el.querySelector('video'), el.dataset.label||'')));
-}
 
-/* ════ 4 — לקוחות: תצוגה עוקבת עכבר ════ */
-{
-  const preview = document.getElementById('cursorPreview');
-  const pvids = [...preview.querySelectorAll('video')];
-  let px=0, py=0, tx=0, ty=0;
-  document.addEventListener('mousemove', e => { tx=e.clientX; ty=e.clientY; });
-  gsap.ticker.add(() => {
-    px += (tx-px)*.14; py += (ty-py)*.14;
-    preview.style.transform = `translate(${px-150}px, ${py-200}px)`;
-  });
-  const list = document.getElementById('clientList');
-  list.addEventListener('mouseenter', () => gsap.to(preview, { opacity:1, duration:.3 }));
-  list.addEventListener('mouseleave', () => { gsap.to(preview, { opacity:0, duration:.3 }); pvids.forEach(v => v.pause()); });
-  list.querySelectorAll('li').forEach(li => {
-    const i = +li.dataset.i;
-    li.addEventListener('mouseenter', () => {
-      pvids.forEach(v => v.classList.remove('active'));
-      const v = pvids[i]; v.classList.add('active'); v.currentTime = 0; v.play().catch(()=>{});
+  /* גלילה: הקיר מתרחק מעט, הכותרת דוהה — pin קצר */
+  gsap.timeline({
+    scrollTrigger:{ trigger:'#scHero', start:'top top', end:'+=70%', pin:true, scrub:.6 }
+  })
+  .to('#wallGrid', { scale:1.08, ease:'none', duration:1 }, 0)
+  .to('.hero-textwrap', { opacity:0, scale:.92, ease:'none', duration:.6 }, 0)
+  .to('.hero-hint', { opacity:0, duration:.2 }, 0);
+
+  /* לחיצה על חלונית = תצוגה מוגדלת עם סאונד */
+  const lightbox = document.getElementById('lightbox');
+  const lbVideo = document.getElementById('lightboxVideo');
+  const lbLabel = document.getElementById('lbLabel');
+  const closeLB = () => { lightbox.classList.remove('show'); lbVideo.pause(); };
+  document.querySelectorAll('.wtile').forEach(tile => {
+    tile.addEventListener('click', () => {
+      const v = tile.querySelector('video');
+      allVids.forEach(x => x.muted = true);
+      if (lbVideo.src !== v.currentSrc) lbVideo.src = v.currentSrc;
+      lbVideo.currentTime = v.currentTime;
+      lbLabel.textContent = tile.dataset.label || '';
+      lightbox.classList.add('show');
+      lbVideo.muted = false;
+      lbVideo.play().catch(()=>{});
     });
-    li.addEventListener('click', () => openLightbox(pvids[i], li.querySelector('span').textContent));
+  });
+  document.getElementById('lbClose').addEventListener('click', closeLB);
+  lightbox.addEventListener('click', e => { if (e.target === lightbox) closeLB(); });
+  addEventListener('keydown', e => { if (e.key === 'Escape') closeLB(); });
+}
+
+/* ════ סצנה 3 — קיר לקוחות: כיוונים מנוגדים + skew ════ */
+{
+  document.querySelectorAll('.wall-line').forEach(line => {
+    const dir = +line.dataset.dir;
+    gsap.fromTo(line, { xPercent:-12*dir }, { xPercent:12*dir, ease:'none',
+      scrollTrigger:{ trigger:'#scWall', start:'top bottom', end:'bottom top', scrub:.5 } });
+  });
+  const proxy = { skew:0 };
+  const skewSetter = gsap.quickSetter('.wall-line', 'skewX', 'deg');
+  const clamp = gsap.utils.clamp(-9, 9);
+  ScrollTrigger.create({
+    onUpdate:self => {
+      const skew = clamp(self.getVelocity() / -280);
+      if (Math.abs(skew) > Math.abs(proxy.skew)) {
+        proxy.skew = skew;
+        gsap.to(proxy, { skew:0, duration:.7, ease:'power3', overwrite:true,
+          onUpdate:() => skewSetter(proxy.skew) });
+      }
+    }
   });
 }
 
-/* ════ 5 — מה אני עושה: sticky steps ════ */
-{
-  const vids = document.querySelectorAll('#showImg video');
-  document.querySelectorAll('.step').forEach((step, i) => {
-    ScrollTrigger.create({ trigger:step, start:'top 55%', end:'bottom 45%',
-      onToggle:self => { if (self.isActive) {
-        document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
-        step.classList.add('active');
-        vids.forEach(v => { v.classList.remove('active'); v.pause(); });
-        vids[i].classList.add('active'); vids[i].play().catch(()=>{});
-      }}});
+/* ════ מניפות פרסומות (א'+ב') — אותה כוריאוגרפיה לכל [data-fan] ════ */
+document.querySelectorAll('[data-fan]').forEach(stage => {
+  const cards = gsap.utils.toArray(stage.querySelectorAll('.card'));
+  const n = cards.length;
+  const spread = isMobile ? 17 : 24;
+  const tl = gsap.timeline({
+    scrollTrigger:{ trigger:stage.parentElement, start:'top top', end:'+=200%', pin:stage, scrub:.6 }
   });
-  vids.forEach(v => v.addEventListener('click', () => openLightbox(v, v.dataset.label||'')));
-}
+  cards.forEach((c, i) => {
+    const target = (i - (n-1)/2) * spread;
+    tl.fromTo(c,
+      { rotation:0, y:'16vh', scale:.9 },
+      { rotation:target, y:'6vh', scale:1, ease:'power2.out', duration:1 }, 0);
+  });
+  tl.to(cards, { y:'0vh', duration:.5, ease:'power2.inOut' }, 1.05)
+    .from(stage.querySelector('.fan-title'), { opacity:0, y:-30, duration:.6 }, .3)
+    .from(stage.querySelector('.fan-hint'), { opacity:0, duration:.4 }, 1.1);
+});
 
-/* ════ 6 — עוד מהארכיון: מרקיזה מואצת ════ */
-{
-  const mq = document.getElementById('mqTrack');
-  mq.innerHTML += mq.innerHTML;
-  document.querySelectorAll('.mq-it').forEach(el => el.addEventListener('click', () => openLightbox(el.querySelector('video'), el.dataset.label||'')));
-  let mqX = 0, mqSpeed = .6;
-  gsap.ticker.add(() => { mqX = (mqX + mqSpeed) % (mq.scrollWidth/2); mq.style.transform = `translateX(${mqX}px)`; });
-  ScrollTrigger.create({ onUpdate:s => { mqSpeed = .6 + Math.min(Math.abs(s.getVelocity())/2500, 3); } });
-}
-
-/* ════ 7 — מספרים (ספירה עם פסיקים) ════ */
+/* ════ סצנה 5 — מספרים (ספירה עם פסיקים) ════ */
 gsap.utils.toArray('[data-countup]').forEach(el => {
   const target = parseInt(el.dataset.countup, 10), obj = { v:0 };
   gsap.to(obj, { v:target, duration:2.2, ease:'power2.out',
@@ -510,7 +378,15 @@ gsap.utils.toArray('.num').forEach((el,i) => gsap.from(el, {
   scrollTrigger:{ trigger:'#scNums', start:'top 75%' }
 }));
 
-/* ════ 8 — אאוטרו: קונטור זום → CTA ════ */
+/* ════ סצנה 6 — השתלות: גלריה אופקית (RTL → x חיובי) ════ */
+{
+  const track = document.getElementById('hTrack');
+  const dist = () => track.scrollWidth - document.documentElement.clientWidth + 80;
+  gsap.to(track, { x:() => dist(), ease:'none',
+    scrollTrigger:{ trigger:'#hPin', start:'top 12%', end:() => '+=' + dist(), pin:true, scrub:1, invalidateOnRefresh:true } });
+}
+
+/* ════ סצנה 7 — אאוטרו: קונטור זום → CTA ════ */
 {
   const tl = gsap.timeline({
     scrollTrigger:{ trigger:'#scOutro', start:'top top', end:'+=160%', pin:'#outroStage', scrub:.6 }
