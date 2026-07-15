@@ -12,11 +12,10 @@
   סצנות:
   1. הירו קיר-וידאו — 12 חלוניות אמיתיות מנגנות בלי סאונד, שם ענק מעל. לחיצה = מתמלא/מקבל סאונד. pin+scrub עדין
   2. מניפת פרסומות א' — 4 קלפי וידאו תלת-ממדיים — pin
-  3. קיר לקוחות — אייל גולן/האח הגדול/הישרדות/הכנסת + velocity skew
-  4. מניפת פרסומות ב' — עוד 4 קלפים — pin
-  5. מספרים — counters
-  6. ארכיון — גלריה אופקית מוצמדת עם עוד עבודות — pin
-  7. אאוטרו — "בואו נדבר" קונטור זום → CTA
+  3. מניפת פרסומות ב' — עוד 4 קלפים — pin
+  4. מספרים — counters
+  5. ארכיון — גלריה אופקית מוצמדת עם עוד עבודות — pin
+  6. אאוטרו — "בואו נדבר" קונטור זום → CTA
   ═══════════════════════════════════════════════
 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -63,14 +62,7 @@
   .lb-close:hover{border-color:var(--gold);color:var(--gold)}
   .lb-label{position:absolute;bottom:30px;inset-inline:0;text-align:center;font-size:13px;letter-spacing:.3em;color:var(--dim)}
 
-  /* ════ סצנה 3 — קיר לקוחות ════ */
-  .sc-wall{height:110vh;position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:center;gap:1.2vw;background:var(--gold)}
-  .wall-kicker{position:absolute;top:7vh;inset-inline:0;text-align:center;font-size:13px;letter-spacing:.42em;color:rgba(20,14,2,.55);font-weight:500;z-index:2}
-  .wall-line{white-space:nowrap;font-weight:900;font-size:clamp(56px,9vw,140px);line-height:1;color:#140e02;will-change:transform;flex-shrink:0}
-  .wall-line.ghost{color:transparent;-webkit-text-stroke:1.5px #140e02}
-  .wall-line span{display:inline-block;padding-inline:1.5vw}
-
-  /* ════ סצנה 4 — מניפת פרסומות ════ */
+  /* ════ סצנה 3 — מניפת פרסומות ════ */
   .sc-fan{position:relative}
   .fan-stage{height:100vh;overflow:hidden;display:grid;place-items:center;perspective:1200px}
   .fan-title{position:absolute;top:9vh;inset-inline:0;text-align:center;font-weight:900;font-size:clamp(34px,5vw,72px);z-index:1}
@@ -80,7 +72,7 @@
   .card.sound{outline:2px solid var(--gold);outline-offset:-2px}
   .fan-hint{position:absolute;bottom:5vh;inset-inline:0;text-align:center;font-size:12px;letter-spacing:.3em;color:var(--dim);z-index:1}
 
-  /* ════ סצנה 5 — מספרים ════ */
+  /* ════ סצנה 4 — מספרים ════ */
   .sc-nums{padding:22vh 8vw;border-top:1px solid var(--line)}
   .nums-head{font-size:13px;letter-spacing:.42em;color:var(--dim);margin-bottom:8vh}
   .nums-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:6vh 4vw}
@@ -88,7 +80,7 @@
   .num b .unit{font-size:.4em;font-weight:700;color:var(--ink);margin-inline-start:.15em}
   .num p{margin-top:14px;color:var(--dim);font-weight:300;font-size:16px}
 
-  /* ════ סצנה 6 — השתלות: גלריה אופקית ════ */
+  /* ════ סצנה 5 — ארכיון: גלריה אופקית ════ */
   .sc-hijack{position:relative}
   .h-pin{overflow:hidden;padding-block:10vh}
   .h-head{padding:0 8vw 7vh}
@@ -102,7 +94,7 @@
   .h-it::after{content:"";position:absolute;inset:0;background:linear-gradient(transparent 65%,rgba(0,0,0,.55));pointer-events:none}
   .h-it.sound{outline:2px solid var(--gold);outline-offset:-2px}
 
-  /* ════ סצנה 7 — אאוטרו ════ */
+  /* ════ סצנה 6 — אאוטרו ════ */
   .sc-outro{position:relative}
   .outro-stage{height:100vh;overflow:hidden;display:grid;place-items:center;position:relative}
   .outro-zoom{position:absolute;font-weight:900;font-size:clamp(80px,16vw,240px);color:transparent;-webkit-text-stroke:2px var(--gold);white-space:nowrap;will-change:transform,opacity;z-index:1}
@@ -146,7 +138,7 @@
   </div>
   <div class="hero-textwrap">
     <div>
-      <div class="hero-kicker">תיק עבודות · 2026</div>
+      <div class="hero-kicker">ברמה הוליוודית. תכלס.</div>
       <h1 class="hero-title">עומר ג'רבי</h1>
       <div class="hero-sub">מומחה תוכן AI</div>
     </div>
@@ -164,7 +156,7 @@
 <!-- ═ 2 ═ מניפת פרסומות א' -->
 <section class="sc-fan" id="scFan">
   <div class="fan-stage" data-fan>
-    <div class="fan-title"><small>(02) — פרסומות שיצרתי</small>מוצר אמיתי.<br>פרסומת AI.</div>
+    <div class="fan-title"><small>(02) — פרסומות שיצרתי</small>בלי צלם.<br>בלי אולפן.</div>
     <div class="card"><video src="videos/raw-arak.mp4" muted loop playsinline preload="metadata"></video><div class="tag"><span>ערק נוח</span><span>01</span></div></div>
     <div class="card"><video src="videos/raw-goldstar.mp4" muted loop playsinline preload="metadata"></video><div class="tag"><span>גולדסטאר</span><span>02</span></div></div>
     <div class="card"><video src="videos/coke-zero.mp4" muted loop playsinline preload="metadata"></video><div class="tag"><span>קוקה קולה זירו</span><span>03</span></div></div>
@@ -173,19 +165,10 @@
   </div>
 </section>
 
-<!-- ═ 4 ═ קיר לקוחות (הרשימה תושלם ע"י עומר — TODO) -->
-<section class="sc-wall" id="scWall">
-  <div class="wall-kicker">(03) — עבדתי עם</div>
-  <div class="wall-line" data-dir="1"><span>אייל גולן</span><span>✦</span><span>אייל גולן</span><span>✦</span><span>אייל גולן</span><span>✦</span><span>אייל גולן</span><span>✦</span></div>
-  <div class="wall-line ghost" data-dir="-1"><span>האח הגדול</span><span>✦</span><span>האח הגדול</span><span>✦</span><span>האח הגדול</span><span>✦</span><span>האח הגדול</span><span>✦</span></div>
-  <div class="wall-line" data-dir="1"><span>הישרדות</span><span>✦</span><span>הישרדות</span><span>✦</span><span>הישרדות</span><span>✦</span><span>הישרדות</span><span>✦</span><span>הישרדות</span><span>✦</span></div>
-  <div class="wall-line ghost" data-dir="-1"><span>כנסת ישראל</span><span>✦</span><span>כנסת ישראל</span><span>✦</span><span>כנסת ישראל</span><span>✦</span><span>כנסת ישראל</span><span>✦</span></div>
-</section>
-
-<!-- ═ 5 ═ מניפת פרסומות ב' -->
+<!-- ═ 3 ═ מניפת פרסומות ב' -->
 <section class="sc-fan" id="scFan2">
   <div class="fan-stage" data-fan>
-    <div class="fan-title"><small>(04) — עוד מהמדף</small>כל מוצר.<br>כל סגנון.</div>
+    <div class="fan-title"><small>(03) — עוד מהמדף</small>כל מדף.<br>אותו תהליך.</div>
     <div class="card"><video src="videos/raw-shampoo.mp4" muted loop playsinline preload="metadata"></video><div class="tag"><span>שמפו</span><span>05</span></div></div>
     <div class="card"><video src="videos/raw-coffee.mp4" muted loop playsinline preload="metadata"></video><div class="tag"><span>חלב קפה</span><span>06</span></div></div>
     <div class="card"><video src="videos/raw-muller.mp4" muted loop playsinline preload="metadata"></video><div class="tag"><span>מולר</span><span>07</span></div></div>
@@ -194,23 +177,23 @@
   </div>
 </section>
 
-<!-- ═ 6 ═ מספרים -->
+<!-- ═ 4 ═ מספרים -->
 <section class="sc-nums" id="scNums">
-  <div class="nums-head">(05) — במספרים</div>
+  <div class="nums-head">(04) — במספרים</div>
   <div class="nums-grid">
-    <div class="num"><b><span data-countup="40000">0</span><span class="unit">₪+</span></b><p>הכנסה מתוכן AI בחודש שיא</p></div>
-    <div class="num"><b><span data-countup="13000">0</span><span class="unit">₪</span></b><p>הפרויקט הגדול ביותר — סרטון אחד</p></div>
-    <div class="num"><b><span data-countup="1000000">0</span><span class="unit">+</span></b><p>צפיות בסרטונים שיצרתי לפריים-טיים</p></div>
+    <div class="num"><b><span data-countup="40000">0</span><span class="unit">₪+</span></b><p>הכנסה מתוכן AI בחודש שיא — לבד, מהמחשב</p></div>
+    <div class="num"><b><span data-countup="13000">0</span><span class="unit">₪</span></b><p>שילמו על סרטון AI אחד</p></div>
+    <div class="num"><b><span data-countup="1000000">0</span><span class="unit">+</span></b><p>צפיות בשני סרטוני ליהוק — אחד מהם עקף פוסט רשמי של רשת</p></div>
     <div class="num"><b><span data-countup="10">0</span><span class="unit">דק'</span></b><p>ל-30 גרפיקות ספירה לאחור לאייל גולן</p></div>
   </div>
 </section>
 
-<!-- ═ 7 ═ השתלות -->
+<!-- ═ 5 ═ ארכיון -->
 <section class="sc-hijack" id="scHijack">
   <div class="h-pin" id="hPin">
     <div class="h-head">
-      <small>(06) — עוד מהארכיון</small>
-      <h2>עוד עבודות,<br>עוד <em>סגנונות.</em></h2>
+      <small>(05) — עוד מהארכיון</small>
+      <h2>עוד עבודות.<br>עוד לא <em>ראיתם הכל.</em></h2>
     </div>
     <div class="h-track" id="hTrack">
       <div class="h-lead">ארכיון ←</div>
@@ -229,13 +212,13 @@
   </div>
 </section>
 
-<!-- ═ 7 ═ אאוטרו -->
+<!-- ═ 6 ═ אאוטרו -->
 <section class="sc-outro" id="scOutro">
   <div class="outro-stage" id="outroStage">
     <div class="outro-zoom" id="outroZoom">בואו נדבר</div>
     <div class="outro-cta" id="outroCta">
-      <h2>יש לכם מוצר?<br><em>אני אדאג שיראו אותו.</em></h2>
-      <p>סרטון ראשון תוך ימים, לא חודשים. תהליך מסודר משיחה ועד מסירה.</p>
+      <h2>יש לכם מוצר?<br>אני הופך אותו <em>לסרטון שלא שוכחים.</em></h2>
+      <p>בלי הפקה, בלי חודשי המתנה — מהמחשב שלי לפיד שלכם, תוך ימים.</p>
       <div class="btns">
         <a class="main" href="https://ig.me/m/omerjerbi" target="_blank" rel="noopener">שלחו לי הודעה ←</a>
         <a class="ghost" href="projects.html">כל הפרויקטים</a>
@@ -325,28 +308,6 @@ document.querySelectorAll('.card, .h-it').forEach(box => {
   addEventListener('keydown', e => { if (e.key === 'Escape') closeLB(); });
 }
 
-/* ════ סצנה 3 — קיר לקוחות: כיוונים מנוגדים + skew ════ */
-{
-  document.querySelectorAll('.wall-line').forEach(line => {
-    const dir = +line.dataset.dir;
-    gsap.fromTo(line, { xPercent:-12*dir }, { xPercent:12*dir, ease:'none',
-      scrollTrigger:{ trigger:'#scWall', start:'top bottom', end:'bottom top', scrub:.5 } });
-  });
-  const proxy = { skew:0 };
-  const skewSetter = gsap.quickSetter('.wall-line', 'skewX', 'deg');
-  const clamp = gsap.utils.clamp(-9, 9);
-  ScrollTrigger.create({
-    onUpdate:self => {
-      const skew = clamp(self.getVelocity() / -280);
-      if (Math.abs(skew) > Math.abs(proxy.skew)) {
-        proxy.skew = skew;
-        gsap.to(proxy, { skew:0, duration:.7, ease:'power3', overwrite:true,
-          onUpdate:() => skewSetter(proxy.skew) });
-      }
-    }
-  });
-}
-
 /* ════ מניפות פרסומות (א'+ב') — אותה כוריאוגרפיה לכל [data-fan] ════ */
 document.querySelectorAll('[data-fan]').forEach(stage => {
   const cards = gsap.utils.toArray(stage.querySelectorAll('.card'));
@@ -366,7 +327,7 @@ document.querySelectorAll('[data-fan]').forEach(stage => {
     .from(stage.querySelector('.fan-hint'), { opacity:0, duration:.4 }, 1.1);
 });
 
-/* ════ סצנה 5 — מספרים (ספירה עם פסיקים) ════ */
+/* ════ סצנה 4 — מספרים (ספירה עם פסיקים) ════ */
 gsap.utils.toArray('[data-countup]').forEach(el => {
   const target = parseInt(el.dataset.countup, 10), obj = { v:0 };
   gsap.to(obj, { v:target, duration:2.2, ease:'power2.out',
@@ -378,7 +339,7 @@ gsap.utils.toArray('.num').forEach((el,i) => gsap.from(el, {
   scrollTrigger:{ trigger:'#scNums', start:'top 75%' }
 }));
 
-/* ════ סצנה 6 — השתלות: גלריה אופקית (RTL → x חיובי) ════ */
+/* ════ סצנה 5 — ארכיון: גלריה אופקית (RTL → x חיובי) ════ */
 {
   const track = document.getElementById('hTrack');
   const dist = () => track.scrollWidth - document.documentElement.clientWidth + 80;
@@ -386,7 +347,7 @@ gsap.utils.toArray('.num').forEach((el,i) => gsap.from(el, {
     scrollTrigger:{ trigger:'#hPin', start:'top 12%', end:() => '+=' + dist(), pin:true, scrub:1, invalidateOnRefresh:true } });
 }
 
-/* ════ סצנה 7 — אאוטרו: קונטור זום → CTA ════ */
+/* ════ סצנה 6 — אאוטרו: קונטור זום → CTA ════ */
 {
   const tl = gsap.timeline({
     scrollTrigger:{ trigger:'#scOutro', start:'top top', end:'+=160%', pin:'#outroStage', scrub:.6 }
