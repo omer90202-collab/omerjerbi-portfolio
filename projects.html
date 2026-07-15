@@ -58,6 +58,14 @@
   .p-it.sound{outline:2px solid var(--gold);outline-offset:-2px}
 
   .hint{position:fixed;bottom:22px;inset-inline:0;text-align:center;font-size:12px;letter-spacing:.3em;color:var(--dim);z-index:5;pointer-events:none;transition:opacity .5s}
+
+  /* ── תצוגה מוגדלת לגרפיקות ── */
+  .lightbox{position:fixed;inset:0;z-index:200;display:grid;place-items:center;background:rgba(6,5,4,.94);opacity:0;pointer-events:none;transition:opacity .35s}
+  .lightbox.show{opacity:1;pointer-events:auto}
+  .lightbox img{max-width:92vw;max-height:88vh;width:auto;height:auto;object-fit:contain;border-radius:12px;box-shadow:0 40px 120px rgba(0,0,0,.7);transform:scale(.92);transition:transform .35s}
+  .lightbox.show img{transform:scale(1)}
+  .lb-close{position:absolute;top:26px;left:26px;width:46px;height:46px;border-radius:99px;border:1px solid var(--line);color:var(--ink);background:rgba(255,255,255,.06);font-size:18px;cursor:pointer;display:grid;place-items:center;transition:.25s}
+  .lb-close:hover{border-color:var(--gold);color:var(--gold)}
   footer{display:flex;justify-content:space-between;padding:26px 4vw;font-size:13px;color:var(--dim);border-top:1px solid var(--line);flex-wrap:wrap;gap:8px}
 </style>
 </head>
@@ -85,6 +93,14 @@
   <div class="p-it"><video src="videos/imtirtzu-3.mp4" muted loop playsinline preload="metadata"></video><span class="kind">עבודה ללקוח</span><b>אם תרצו</b></div>
   <div class="p-it"><video src="videos/hapoel.mp4" muted loop playsinline preload="metadata"></video><span class="kind">עבודה ללקוח</span><b>הפועל</b></div>
   <div class="p-it"><video src="videos/beitar-puppets.mp4" muted loop playsinline preload="metadata"></video><span class="kind">עבודה ללקוח</span><b>בית״ר ירושלים</b></div>
+  <div class="p-it"><img src="images/imtirtzu-students.jpg" alt="אם תרצו — ערב סטודנטים"><span class="kind">עבודה ללקוח</span><b>אם תרצו — ערב סטודנטים</b></div>
+  <div class="p-it"><img src="images/imtirtzu-announcement.jpg" alt="אם תרצו — הודעה"><span class="kind">עבודה ללקוח</span><b>אם תרצו — הודעה</b></div>
+  <div class="p-it"><img src="images/imtirtzu-drones-en.jpg" alt="אם תרצו — קמפיין תרומות"><span class="kind">עבודה ללקוח</span><b>אם תרצו — קמפיין תרומות</b></div>
+  <div class="p-it"><img src="images/imtirtzu-knesset.jpg" alt="אם תרצו — סיור בכנסת"><span class="kind">עבודה ללקוח</span><b>אם תרצו — סיור בכנסת</b></div>
+  <div class="p-it"><img src="images/imtirtzu-mossad.jpg" alt="אם תרצו — מינוי המוסד"><span class="kind">עבודה ללקוח</span><b>אם תרצו — מינוי המוסד</b></div>
+  <div class="p-it"><img src="images/ayeeya-cover.jpg" alt="עטיפת אלבום AYEEYA"><span class="kind">עבודה ללקוח</span><b>עטיפת אלבום — AYEEYA</b></div>
+  <div class="p-it"><img src="images/labella-cover.jpg" alt="עטיפת אלבום LABELLA"><span class="kind">עבודה ללקוח</span><b>עטיפת אלבום — LABELLA</b></div>
+  <div class="p-it"><img src="images/eyal-golan-stories.jpg" alt="30 גרפיקות ספירה לאחור — אייל גולן"><span class="kind">עבודה ללקוח</span><b>ספירה לאחור — אייל גולן</b></div>
 
   <div class="p-it"><video src="videos/heels.mp4" muted loop playsinline preload="metadata"></video><span class="kind">קריאייטיב</span><b>נעליים</b></div>
   <div class="p-it"><video src="videos/mbappe.mp4" muted loop playsinline preload="metadata"></video><span class="kind">קריאייטיב</span><b>קמפיין כדורגל</b></div>
@@ -99,6 +115,13 @@
   <div class="p-it"><video src="videos/mantra-3.mp4" muted loop playsinline preload="metadata"></video><span class="kind">קריאייטיב</span><b>מנטרה — מוצמד</b></div>
   <div class="p-it"><video src="videos/mantra-what.mp4" muted loop playsinline preload="metadata"></video><span class="kind">קריאייטיב</span><b>מה זה מנטרה</b></div>
   <div class="p-it"><video src="videos/mantra-who.mp4" muted loop playsinline preload="metadata"></video><span class="kind">קריאייטיב</span><b>מי אנחנו — מנטרה</b></div>
+  <div class="p-it"><img src="images/dan-biton.jpg" alt="דן ביטון"><span class="kind">קריאייטיב</span><b>דן ביטון</b></div>
+  <div class="p-it"><img src="images/yarden-shua.jpg" alt="יהב שוע — בית״ר ירושלים"><span class="kind">קריאייטיב</span><b>יהב שוע · בית״ר</b></div>
+  <div class="p-it"><img src="images/omer-atzili.jpg" alt="עומר אצילי"><span class="kind">קריאייטיב</span><b>עומר אצילי</b></div>
+  <div class="p-it"><img src="images/atzili-matchday.jpg" alt="עומר אצילי — Matchday"><span class="kind">קריאייטיב</span><b>עומר אצילי · Matchday</b></div>
+  <div class="p-it"><img src="images/dor-peretz.jpg" alt="דור פרץ — מכבי תל אביב"><span class="kind">קריאייטיב</span><b>דור פרץ · מכבי ת״א</b></div>
+  <div class="p-it"><img src="images/manor-israel.jpg" alt="מנור — נבחרת ישראל"><span class="kind">קריאייטיב</span><b>מנור · נבחרת ישראל</b></div>
+  <div class="p-it"><img src="images/messi-ronaldo.jpg" alt="מסי נגד רונאלדו"><span class="kind">קריאייטיב</span><b>מסי נגד רונאלדו</b></div>
 
   <div class="p-it"><video src="videos/raw-arak.mp4" muted loop playsinline preload="metadata"></video><span class="kind">פרסומת</span><b>ערק נוח</b></div>
   <div class="p-it"><video src="videos/raw-shoko.mp4" muted loop playsinline preload="metadata"></video><span class="kind">פרסומת</span><b>שוקו</b></div>
@@ -110,9 +133,16 @@
   <div class="p-it"><video src="videos/raw-neviot.mp4" muted loop playsinline preload="metadata"></video><span class="kind">פרסומת</span><b>נביעות</b></div>
   <div class="p-it"><video src="videos/raw-taster.mp4" muted loop playsinline preload="metadata"></video><span class="kind">פרסומת</span><b>טייסטרס צ'ויס</b></div>
   <div class="p-it"><video src="videos/coke-zero.mp4" muted loop playsinline preload="metadata"></video><span class="kind">פרסומת</span><b>קוקה קולה זירו</b></div>
+  <div class="p-it"><img src="images/win-icecream.jpg" alt="WIN — גלידה בטעם בלונדי בייגלה"><span class="kind">פרסומת</span><b>WIN — גלידה</b></div>
+  <div class="p-it"><img src="images/basis-fitness.jpg" alt="Basis — פתיחת סטודיו כושר"><span class="kind">פרסומת</span><b>Basis — פתיחת סטודיו</b></div>
 </div>
 
-<div class="hint" id="hint">לחיצה על פרויקט = סאונד</div>
+<div class="hint" id="hint">לחיצה על פרויקט = סאונד / הגדלה</div>
+
+<div class="lightbox" id="lightbox">
+  <img id="lightboxImg" alt="">
+  <button class="lb-close" id="lbClose" aria-label="סגור">✕</button>
+</div>
 
 <footer>
   <span>עומר ג'רבי © 2026</span>
@@ -147,16 +177,27 @@ const io = new IntersectionObserver(es => es.forEach(e => {
 }), { threshold:.2 });
 vids.forEach(v => io.observe(v));
 
-/* לחיצה = סאונד בלעדי */
+/* לחיצה על וידאו = סאונד בלעדי, לחיצה על גרפיקה = תצוגה מוגדלת */
+const lightbox = document.getElementById('lightbox');
+const lbImg = document.getElementById('lightboxImg');
+const closeLB = () => lightbox.classList.remove('show');
 document.querySelectorAll('.p-it').forEach(box => {
   box.addEventListener('click', () => {
     const v = box.querySelector('video');
-    const wasMuted = v.muted;
-    vids.forEach(x => x.muted = true);
-    document.querySelectorAll('.p-it.sound').forEach(s => s.classList.remove('sound'));
-    if (wasMuted) { v.muted = false; box.classList.add('sound'); v.play().catch(()=>{}); }
+    if (v) {
+      const wasMuted = v.muted;
+      vids.forEach(x => x.muted = true);
+      document.querySelectorAll('.p-it.sound').forEach(s => s.classList.remove('sound'));
+      if (wasMuted) { v.muted = false; box.classList.add('sound'); v.play().catch(()=>{}); }
+      return;
+    }
+    const img = box.querySelector('img');
+    if (img) { lbImg.src = img.currentSrc || img.src; lightbox.classList.add('show'); }
   });
 });
+document.getElementById('lbClose').addEventListener('click', closeLB);
+lightbox.addEventListener('click', e => { if (e.target === lightbox) closeLB(); });
+addEventListener('keydown', e => { if (e.key === 'Escape') closeLB(); });
 
 /* הרמז נעלם אחרי אינטראקציה ראשונה */
 addEventListener('click', () => gsap.to('#hint', { opacity:0, duration:.6 }), { once:true });

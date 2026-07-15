@@ -14,8 +14,9 @@
   2. מניפת פרסומות א' — 4 קלפי וידאו תלת-ממדיים — pin
   3. מניפת פרסומות ב' — עוד 4 קלפים — pin
   4. מספרים — counters
-  5. ארכיון — גלריה אופקית מוצמדת עם עוד עבודות — pin
-  6. אאוטרו — "בואו נדבר" קונטור זום → CTA
+  5. גרפיקות — גריד קבוע עם כניסה מדורגת (batch reveal), בלי pin
+  6. ארכיון — גלריה אופקית מוצמדת עם עוד עבודות — pin
+  7. אאוטרו — "בואו נדבר" קונטור זום → CTA
   ═══════════════════════════════════════════════
 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -58,6 +59,8 @@
   .lightbox.show{opacity:1;pointer-events:auto}
   .lightbox video{width:min(92vw,520px);max-height:84vh;border-radius:16px;box-shadow:0 40px 120px rgba(0,0,0,.7);background:#000;transform:scale(.92);transition:transform .35s}
   .lightbox.show video{transform:scale(1)}
+  .lightbox img{display:none;width:auto;height:auto;max-width:92vw;max-height:84vh;object-fit:contain;border-radius:12px;box-shadow:0 40px 120px rgba(0,0,0,.7);transform:scale(.92);transition:transform .35s}
+  .lightbox.show img{transform:scale(1)}
   .lb-close{position:absolute;top:26px;left:26px;width:46px;height:46px;border-radius:99px;border:1px solid var(--line);color:var(--ink);background:rgba(255,255,255,.06);font-size:18px;cursor:pointer;display:grid;place-items:center;transition:.25s}
   .lb-close:hover{border-color:var(--gold);color:var(--gold)}
   .lb-label{position:absolute;bottom:30px;inset-inline:0;text-align:center;font-size:13px;letter-spacing:.3em;color:var(--dim)}
@@ -80,7 +83,21 @@
   .num b .unit{font-size:.4em;font-weight:700;color:var(--ink);margin-inline-start:.15em}
   .num p{margin-top:14px;color:var(--dim);font-weight:300;font-size:16px}
 
-  /* ════ סצנה 5 — ארכיון: גלריה אופקית ════ */
+  /* ════ סצנה 5 — גרפיקות ════ */
+  .sc-graphics{padding:18vh 8vw 20vh}
+  .gfx-head{margin-bottom:8vh}
+  .gfx-head small{display:block;font-size:13px;letter-spacing:.4em;color:var(--dim);margin-bottom:14px}
+  .gfx-head h2{font-weight:900;font-size:clamp(34px,5.5vw,80px);line-height:1.08}
+  .gfx-head h2 em{font-style:normal;color:var(--gold)}
+  .gfx-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+  .gfx-it{position:relative;overflow:hidden;border-radius:10px;cursor:pointer;border:1px solid var(--line);aspect-ratio:3/4}
+  .gfx-it img{transition:transform .6s ease}
+  .gfx-it:hover img{transform:scale(1.06)}
+  .gfx-it::after{content:"";position:absolute;inset:0;background:linear-gradient(transparent 62%,rgba(0,0,0,.55));pointer-events:none}
+  .gfx-it b{position:absolute;bottom:12px;right:14px;left:14px;z-index:2;font-size:14px;font-weight:500;text-shadow:0 2px 12px rgba(0,0,0,.8)}
+  @media(max-width:900px){.gfx-grid{grid-template-columns:repeat(2,1fr)}}
+
+  /* ════ סצנה 6 — ארכיון: גלריה אופקית ════ */
   .sc-hijack{position:relative}
   .h-pin{overflow:hidden;padding-block:10vh}
   .h-head{padding:0 8vw 7vh}
@@ -94,7 +111,7 @@
   .h-it::after{content:"";position:absolute;inset:0;background:linear-gradient(transparent 65%,rgba(0,0,0,.55));pointer-events:none}
   .h-it.sound{outline:2px solid var(--gold);outline-offset:-2px}
 
-  /* ════ סצנה 6 — אאוטרו ════ */
+  /* ════ סצנה 7 — אאוטרו ════ */
   .sc-outro{position:relative}
   .outro-stage{height:100vh;overflow:hidden;display:grid;place-items:center;position:relative}
   .outro-zoom{position:absolute;font-weight:900;font-size:clamp(80px,16vw,240px);color:transparent;-webkit-text-stroke:2px var(--gold);white-space:nowrap;will-change:transform,opacity;z-index:1}
@@ -149,6 +166,7 @@
 <!-- תצוגה מוגדלת -->
 <div class="lightbox" id="lightbox">
   <video id="lightboxVideo" playsinline controls></video>
+  <img id="lightboxImg" alt="">
   <button class="lb-close" id="lbClose" aria-label="סגור">✕</button>
   <div class="lb-label" id="lbLabel"></div>
 </div>
@@ -188,11 +206,29 @@
   </div>
 </section>
 
-<!-- ═ 5 ═ ארכיון -->
+<!-- ═ 5 ═ גרפיקות -->
+<section class="sc-graphics" id="scGraphics">
+  <div class="gfx-head">
+    <small>(05) — לא רק וידאו</small>
+    <h2>גם ל<em>גרפיקה</em> יש כאן מקום.</h2>
+  </div>
+  <div class="gfx-grid" id="gfxGrid">
+    <div class="gfx-it" data-label="בית״ר ירושלים — יהב שוע"><img src="images/yarden-shua.jpg" alt="יהב שוע — בית״ר ירושלים"><b>יהב שוע · בית״ר</b></div>
+    <div class="gfx-it" data-label="מכבי תל אביב — דור פרץ"><img src="images/dor-peretz.jpg" alt="דור פרץ — מכבי תל אביב"><b>דור פרץ · מכבי ת״א</b></div>
+    <div class="gfx-it" data-label="מסי מול רונאלדו"><img src="images/messi-ronaldo.jpg" alt="מסי מול רונאלדו — קונספט"><b>מסי נגד רונאלדו</b></div>
+    <div class="gfx-it" data-label="אם תרצו — סיור בכנסת"><img src="images/imtirtzu-knesset.jpg" alt="אם תרצו — סיור בכנסת"><b>אם תרצו · הכנסת</b></div>
+    <div class="gfx-it" data-label="אם תרצו — קמפיין תרומות"><img src="images/imtirtzu-drones-en.jpg" alt="אם תרצו — קמפיין תרומות"><b>אם תרצו · קמפיין</b></div>
+    <div class="gfx-it" data-label="עטיפת אלבום — BENM"><img src="images/ayeeya-cover.jpg" alt="עטיפת אלבום AYEEYA — BENM"><b>עטיפת אלבום · BENM</b></div>
+    <div class="gfx-it" data-label="ספירה לאחור — אייל גולן"><img src="images/eyal-golan-stories.jpg" alt="30 גרפיקות ספירה לאחור — אייל גולן"><b>ספירה לאחור · אייל גולן</b></div>
+    <div class="gfx-it" data-label="WIN — גלידה בטעם בלונדי בייגלה"><img src="images/win-icecream.jpg" alt="WIN — גלידה בטעם בלונדי בייגלה"><b>WIN · פרסומת</b></div>
+  </div>
+</section>
+
+<!-- ═ 6 ═ ארכיון -->
 <section class="sc-hijack" id="scHijack">
   <div class="h-pin" id="hPin">
     <div class="h-head">
-      <small>(05) — עוד מהארכיון</small>
+      <small>(06) — עוד מהארכיון</small>
       <h2>עוד עבודות.<br>עוד לא <em>ראיתם הכל.</em></h2>
     </div>
     <div class="h-track" id="hTrack">
@@ -212,7 +248,7 @@
   </div>
 </section>
 
-<!-- ═ 6 ═ אאוטרו -->
+<!-- ═ 7 ═ אאוטרו -->
 <section class="sc-outro" id="scOutro">
   <div class="outro-stage" id="outroStage">
     <div class="outro-zoom" id="outroZoom">בואו נדבר</div>
@@ -289,12 +325,15 @@ document.querySelectorAll('.card, .h-it').forEach(box => {
   /* לחיצה על חלונית = תצוגה מוגדלת עם סאונד */
   const lightbox = document.getElementById('lightbox');
   const lbVideo = document.getElementById('lightboxVideo');
+  const lbImg = document.getElementById('lightboxImg');
   const lbLabel = document.getElementById('lbLabel');
   const closeLB = () => { lightbox.classList.remove('show'); lbVideo.pause(); };
   document.querySelectorAll('.wtile').forEach(tile => {
     tile.addEventListener('click', () => {
       const v = tile.querySelector('video');
       allVids.forEach(x => x.muted = true);
+      lbImg.style.display = 'none';
+      lbVideo.style.display = 'block';
       if (lbVideo.src !== v.currentSrc) lbVideo.src = v.currentSrc;
       lbVideo.currentTime = v.currentTime;
       lbLabel.textContent = tile.dataset.label || '';
@@ -303,6 +342,15 @@ document.querySelectorAll('.card, .h-it').forEach(box => {
       lbVideo.play().catch(()=>{});
     });
   });
+  window.openLightboxImage = (img, label) => {
+    allVids.forEach(x => x.muted = true);
+    lbVideo.pause();
+    lbVideo.style.display = 'none';
+    lbImg.style.display = 'block';
+    lbImg.src = img.currentSrc || img.src;
+    lbLabel.textContent = label || '';
+    lightbox.classList.add('show');
+  };
   document.getElementById('lbClose').addEventListener('click', closeLB);
   lightbox.addEventListener('click', e => { if (e.target === lightbox) closeLB(); });
   addEventListener('keydown', e => { if (e.key === 'Escape') closeLB(); });
@@ -339,7 +387,18 @@ gsap.utils.toArray('.num').forEach((el,i) => gsap.from(el, {
   scrollTrigger:{ trigger:'#scNums', start:'top 75%' }
 }));
 
-/* ════ סצנה 5 — ארכיון: גלריה אופקית (RTL → x חיובי) ════ */
+/* ════ סצנה 5 — גרפיקות: כניסה מדורגת ════ */
+{
+  ScrollTrigger.batch('.gfx-it', {
+    start:'top 90%',
+    onEnter:els => gsap.from(els, { opacity:0, y:60, scale:.96, duration:.85, stagger:.09, ease:'power3.out' })
+  });
+  document.querySelectorAll('.gfx-it').forEach(tile => {
+    tile.addEventListener('click', () => openLightboxImage(tile.querySelector('img'), tile.dataset.label || ''));
+  });
+}
+
+/* ════ סצנה 6 — ארכיון: גלריה אופקית (RTL → x חיובי) ════ */
 {
   const track = document.getElementById('hTrack');
   const dist = () => track.scrollWidth - document.documentElement.clientWidth + 80;
@@ -347,7 +406,7 @@ gsap.utils.toArray('.num').forEach((el,i) => gsap.from(el, {
     scrollTrigger:{ trigger:'#hPin', start:'top 12%', end:() => '+=' + dist(), pin:true, scrub:1, invalidateOnRefresh:true } });
 }
 
-/* ════ סצנה 6 — אאוטרו: קונטור זום → CTA ════ */
+/* ════ סצנה 7 — אאוטרו: קונטור זום → CTA ════ */
 {
   const tl = gsap.timeline({
     scrollTrigger:{ trigger:'#scOutro', start:'top top', end:'+=160%', pin:'#outroStage', scrub:.6 }
