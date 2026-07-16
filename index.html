@@ -7,39 +7,62 @@
 <!--
   ═══════════════════════════════════════════════
   אתר: תיק עבודות — עומר ג'רבי (מומחה תוכן AI)
-  אופי: Dark Luxury — שחור עמוק + זהב, טיפוגרפיה ענקית, וידאו אמיתי בכל סצנה
-  עיקרון: כמה שפחות טקסט — העבודות מדברות. אין סצנת מניפסטו.
+  גרסה: עיצוב בהשראת KONTOUR STUDIOS — כרטיסי סקשן מעוגלים,
+        טיפוגרפיה ענקית עם הד, שחור + זהב + ענבר. עומר מופיע רק בהירו.
   סצנות:
-  1. פרילואודר + הירו — ערימת גרפיקות שנפתחת עם ספירה, curtain-wipe, כותרת ענקית ממוסכת (מבוסס Animmaster Hero #26 "Archive")
-  2. מניפת פרסומות א' — 4 קלפי וידאו תלת-ממדיים — pin
-  3. מניפת פרסומות ב' — עוד 4 קלפים — pin
-  4. מספרים — counters
-  5. גרפיקות — גריד קבוע עם כניסה מדורגת (batch reveal), בלי pin
-  6. ארכיון — גלריה אופקית מוצמדת עם עוד עבודות — pin
-  7. אאוטרו — "בואו נדבר" קונטור זום → CTA
+  0. פרילואודר — ערימת גרפיקות + ספירה (Animmaster #26)
+  1. הירו — כרטיס מעוגל, וידאו רקע (PLACEHOLDER עד קליפ ההירו של עומר), שם ענק + הד
+  2. מספרים — 4 כרטיסים, אחד זהב
+  3. מה אני עושה — שורות 01-04 עם חץ
+  4. הצהרה — כרטיס זהב, טקסט נצבע מילה-מילה
+  5. עבודות נבחרות — גריד וידאו + ▶ + לייטבוקס
+  6. מרקיזה — הד שם מאיץ עם מהירות גלילה
+  7. גרפיקות — כרטיס בהיר (paper) עם גריד
+  8. אאוטרו — CTA עם זוהר ענבר + פוטר
   ═══════════════════════════════════════════════
 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@200;300;400;500;700;900&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg:#0a0908; --ink:#f5f0e6; --dim:#5c564c; --gold:#FDBF2D;
-    --line:rgba(245,240,230,.12);
+    --page:#060504; --card:#0d0b09; --ink:#f5f0e6; --dim:#6b6355;
+    --gold:#FDBF2D; --paper:#efe7d8; --paper-ink:#141005;
+    --line:rgba(245,240,230,.14); --r:26px;
   }
   *{margin:0;padding:0;box-sizing:border-box}
-  body{background:var(--bg);color:var(--ink);font-family:'Heebo',sans-serif;overflow-x:hidden;line-height:1.5}
+  body{background:var(--page);color:var(--ink);font-family:'Heebo',sans-serif;overflow-x:hidden;line-height:1.5}
   ::selection{background:var(--gold);color:#0a0908}
   img,video{display:block;width:100%;height:100%;object-fit:cover}
   a{color:inherit;text-decoration:none}
+  button{font-family:inherit}
+
+  /* ── כרטיסי סקשן — השלד של השפה ── */
+  .sec{position:relative;border-radius:var(--r);overflow:hidden;margin:10px;background:var(--card)}
+  .sec.paper{background:var(--paper);color:var(--paper-ink)}
+  .sec.goldbg{background:var(--gold);color:var(--paper-ink)}
 
   /* ── ניווט ── */
   header{position:fixed;inset-inline:0;top:0;z-index:90;mix-blend-mode:difference}
-  .nav{display:flex;justify-content:space-between;align-items:center;padding:22px 4vw;font-size:14px;letter-spacing:.06em}
+  .nav{display:flex;justify-content:space-between;align-items:center;padding:20px 3.4vw;font-size:14px;letter-spacing:.06em}
   .nav .logo{font-weight:900;font-size:18px}
-  .nav .idx{font-weight:300;color:#bbb}
+  .nav .side{display:flex;align-items:center;gap:14px}
+  .menu-btn{display:flex;align-items:center;gap:10px;background:none;border:0;color:inherit;font-size:14px;font-weight:500;cursor:pointer;letter-spacing:.06em}
+  .menu-btn .bars{display:inline-flex;flex-direction:column;gap:5px}
+  .menu-btn .bars i{display:block;width:22px;height:2px;background:currentColor;transition:.3s}
+  .nav .talk{font-weight:700;font-size:13px;border:1px solid currentColor;border-radius:99px;padding:8px 18px;transition:.25s}
 
-  /* ════ סצנה 1 — פרילואודר + הירו ════ */
-  .preloader{position:fixed;inset:0;z-index:300;background:var(--bg);color:var(--ink);overflow:hidden;clip-path:polygon(0 0,100% 0,100% 100%,0 100%);will-change:clip-path}
+  /* ── תפריט מסך מלא ── */
+  .menu{position:fixed;inset:0;z-index:150;background:#080604;display:flex;flex-direction:column;justify-content:center;padding:0 8vw;clip-path:polygon(0 0,100% 0,100% 0,0 0);visibility:hidden}
+  .menu::after{content:"";position:absolute;inset:0;background:radial-gradient(90% 55% at 50% 115%,rgba(253,191,45,.22),transparent 62%);pointer-events:none}
+  .menu a.mlink{position:relative;z-index:2;display:flex;align-items:baseline;gap:18px;padding:2.4vh 0;border-bottom:1px solid var(--line);font-weight:900;font-size:clamp(34px,6.5vw,84px);line-height:1.05;transition:color .3s}
+  .menu a.mlink small{font-size:13px;font-weight:400;color:var(--dim);letter-spacing:.2em}
+  .menu a.mlink:hover{color:var(--gold)}
+  .menu-close{position:absolute;top:24px;left:24px;z-index:3;width:48px;height:48px;border-radius:99px;border:1px solid var(--line);background:none;color:var(--ink);font-size:18px;cursor:pointer;transition:.25s}
+  .menu-close:hover{border-color:var(--gold);color:var(--gold)}
+  .menu-foot{position:absolute;bottom:26px;inset-inline:8vw;z-index:2;display:flex;justify-content:space-between;font-size:13px;color:var(--dim);flex-wrap:wrap;gap:8px}
+
+  /* ════ 0 — פרילואודר ════ */
+  .preloader{position:fixed;inset:0;z-index:300;background:var(--page);color:var(--ink);overflow:hidden;clip-path:polygon(0 0,100% 0,100% 100%,0 100%);will-change:clip-path}
   .pl-imgs{position:absolute;inset:0}
   .pl-img{position:absolute;top:50%;left:50%;width:210px;height:270px;transform:translate(-50%,-50%) scale(0);border-radius:6px;overflow:hidden;box-shadow:0 20px 50px rgba(0,0,0,.5);clip-path:polygon(20% 20%,80% 20%,80% 80%,20% 80%);will-change:transform,clip-path}
   @media(max-width:640px){.pl-img{width:130px;height:168px}}
@@ -48,17 +71,29 @@
   .pl-counter{position:absolute;top:-1.6rem;left:calc(100% + 1.1rem);overflow:hidden}
   .pl-counter p{transform:translateY(100%);font-size:clamp(13px,1.5vw,20px);color:var(--gold);font-variant-numeric:tabular-nums}
 
-  .sc-hero{height:100vh;position:relative;overflow:hidden;background:var(--bg)}
-  .hero-mid{position:absolute;inset:0;display:grid;place-items:center;text-align:center}
+  /* ════ 1 — הירו ════ */
+  .sc-hero{height:calc(100vh - 20px);min-height:560px}
+  .hero-bg{position:absolute;inset:0}
+  .hero-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(6,5,4,.55) 0%,rgba(6,5,4,.35) 45%,rgba(6,5,4,.88) 100%)}
+  .hero-glow{position:absolute;inset:0;background:radial-gradient(95% 55% at 50% 112%,rgba(253,191,45,.3),transparent 62%);pointer-events:none;z-index:2}
+  .hero-echo{position:absolute;top:50%;left:50%;transform:translate(-50%,-58%);z-index:2;font-weight:900;font-size:clamp(110px,26vw,420px);line-height:1;white-space:nowrap;color:transparent;-webkit-text-stroke:1px rgba(245,240,230,.07);pointer-events:none}
+  .hero-mid{position:absolute;inset:0;z-index:3;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 5vw}
+  .hero-kicker{font-size:12px;letter-spacing:.42em;color:var(--gold);font-weight:600;margin-bottom:2.4vh}
   .hero-header{overflow:hidden}
-  .hero-header h1{font-weight:900;font-size:clamp(54px,14vw,210px);line-height:.85;letter-spacing:-.02em}
-  .hero-role{margin-top:20px;font-size:clamp(15px,1.9vw,22px);font-weight:900;letter-spacing:.08em;color:transparent;-webkit-text-stroke:1px var(--gold);opacity:0}
-  .hero-footer{position:absolute;width:100%;bottom:0;padding:4vh 6vw;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
-  .hero-footer b{display:inline-block;font-weight:500;font-size:14px;color:var(--dim)}
-  .hero-hint{position:absolute;bottom:11vh;inset-inline:0;text-align:center;z-index:6;font-size:12px;letter-spacing:.4em;color:var(--dim);pointer-events:none;opacity:0}
+  .hero-header h1{font-weight:900;font-size:clamp(52px,12.5vw,190px);line-height:.9;letter-spacing:-.02em;text-shadow:0 18px 70px rgba(0,0,0,.7)}
+  .hero-sub{margin-top:3vh;font-weight:900;font-size:clamp(19px,2.6vw,34px);line-height:1.25;opacity:0}
+  .hero-sub em{font-style:normal;color:var(--gold)}
+  .hero-p{margin-top:1.6vh;max-width:52ch;color:#c9c1b2;font-weight:300;font-size:15px;opacity:0}
+  .hero-ctas{margin-top:4vh;display:flex;gap:14px;flex-wrap:wrap;justify-content:center;opacity:0}
+  .hero-ctas a{display:inline-block;padding:15px 38px;border-radius:99px;font-weight:700;font-size:15px;transition:.3s}
+  .hero-ctas a.main{background:var(--gold);color:#141005}
+  .hero-ctas a.main:hover{transform:translateY(-3px);box-shadow:0 14px 36px rgba(253,191,45,.3)}
+  .hero-ctas a.ghost{border:1px solid var(--line);color:var(--ink)}
+  .hero-ctas a.ghost:hover{border-color:var(--gold);color:var(--gold)}
+  .hero-hint{position:absolute;bottom:3.4vh;inset-inline:0;z-index:3;text-align:center;font-size:11px;letter-spacing:.4em;color:var(--dim);opacity:0}
 
-  /* ── תצוגה מוגדלת בלחיצה ── */
-  .lightbox{position:fixed;inset:0;z-index:200;display:grid;place-items:center;background:rgba(6,5,4,.94);opacity:0;pointer-events:none;transition:opacity .35s}
+  /* ── תצוגה מוגדלת ── */
+  .lightbox{position:fixed;inset:0;z-index:200;display:grid;place-items:center;background:rgba(5,4,3,.94);opacity:0;pointer-events:none;transition:opacity .35s}
   .lightbox.show{opacity:1;pointer-events:auto}
   .lightbox video{width:min(92vw,520px);max-height:84vh;border-radius:16px;box-shadow:0 40px 120px rgba(0,0,0,.7);background:#000;transform:scale(.92);transition:transform .35s}
   .lightbox.show video{transform:scale(1)}
@@ -68,67 +103,87 @@
   .lb-close:hover{border-color:var(--gold);color:var(--gold)}
   .lb-label{position:absolute;bottom:30px;inset-inline:0;text-align:center;font-size:13px;letter-spacing:.3em;color:var(--dim)}
 
-  /* ════ סצנה 3 — מניפת פרסומות ════ */
-  .sc-fan{position:relative}
-  .fan-stage{height:100vh;overflow:hidden;display:grid;place-items:center;perspective:1200px}
-  .fan-title{position:absolute;top:9vh;inset-inline:0;text-align:center;font-weight:900;font-size:clamp(34px,5vw,72px);z-index:1}
-  .fan-title small{display:block;font-size:13px;letter-spacing:.4em;color:var(--dim);font-weight:300;margin-bottom:12px}
-  .card{position:absolute;width:min(290px,54vw);aspect-ratio:9/16;border-radius:14px;overflow:hidden;will-change:transform;transform-origin:center 130%;box-shadow:0 30px 70px rgba(0,0,0,.6);border:1px solid var(--line);cursor:pointer}
-  .card .tag{position:absolute;bottom:0;inset-inline:0;padding:14px 16px;background:linear-gradient(transparent,rgba(0,0,0,.8));font-size:14px;font-weight:500;display:flex;justify-content:space-between;z-index:2;pointer-events:none}
-  .card.sound{outline:2px solid var(--gold);outline-offset:-2px}
-  .fan-hint{position:absolute;bottom:5vh;inset-inline:0;text-align:center;font-size:12px;letter-spacing:.3em;color:var(--dim);z-index:1}
+  /* ── כותרות סקשן אחידות ── */
+  .sec-pad{padding:12vh 5vw}
+  .sec-head{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;margin-bottom:7vh;flex-wrap:wrap}
+  .sec-head small{display:block;font-size:12px;letter-spacing:.38em;color:var(--dim);margin-bottom:12px;font-weight:500}
+  .sec.paper .sec-head small,.sec.goldbg .sec-head small{color:rgba(20,16,5,.5)}
+  .sec-head h2{font-weight:900;font-size:clamp(32px,5vw,72px);line-height:1.05;letter-spacing:-.01em}
+  .sec-head h2 em{font-style:normal;color:var(--gold)}
 
-  /* ════ סצנה 4 — מספרים ════ */
-  .sc-nums{padding:22vh 8vw;border-top:1px solid var(--line)}
-  .nums-head{font-size:13px;letter-spacing:.42em;color:var(--dim);margin-bottom:8vh}
-  .nums-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:6vh 4vw}
-  .num b{display:block;font-weight:900;font-size:clamp(46px,6.5vw,96px);line-height:1;color:var(--gold);letter-spacing:-.02em}
-  .num b .unit{font-size:.4em;font-weight:700;color:var(--ink);margin-inline-start:.15em}
-  .num p{margin-top:14px;color:var(--dim);font-weight:300;font-size:16px}
+  /* ════ 2 — מספרים ════ */
+  .stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+  .stat{border:1px solid var(--line);border-radius:18px;padding:34px 26px 28px;display:flex;flex-direction:column;justify-content:space-between;min-height:230px;position:relative;overflow:hidden}
+  .stat b{font-weight:900;font-size:clamp(44px,5.4vw,80px);line-height:1;letter-spacing:-.02em;color:var(--ink)}
+  .stat b .unit{font-size:.42em;font-weight:700;margin-inline-start:.12em}
+  .stat p{margin-top:18px;color:var(--dim);font-weight:400;font-size:15px;max-width:26ch}
+  .stat.gold{background:var(--gold);border-color:var(--gold)}
+  .stat.gold b,.stat.gold p{color:#141005}
+  .stat.gold p{opacity:.75}
+  .stat::after{content:"";position:absolute;inset:auto -30% -55% -30%;height:70%;background:radial-gradient(closest-side,rgba(253,191,45,.14),transparent 70%);pointer-events:none}
+  .stat.gold::after{display:none}
 
-  /* ════ סצנה 5 — גרפיקות ════ */
-  .sc-graphics{padding:18vh 8vw 20vh}
-  .gfx-head{margin-bottom:8vh}
-  .gfx-head small{display:block;font-size:13px;letter-spacing:.4em;color:var(--dim);margin-bottom:14px}
-  .gfx-head h2{font-weight:900;font-size:clamp(34px,5.5vw,80px);line-height:1.08}
-  .gfx-head h2 em{font-style:normal;color:var(--gold)}
-  .gfx-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
-  .gfx-it{position:relative;overflow:hidden;border-radius:10px;cursor:pointer;border:1px solid var(--line);aspect-ratio:3/4}
+  /* ════ 3 — מה אני עושה ════ */
+  .svc-row{display:flex;align-items:center;gap:26px;padding:4.6vh 0;border-top:1px solid var(--line);cursor:pointer;transition:.3s}
+  .svc-row:last-child{border-bottom:1px solid var(--line)}
+  .svc-row .idx{font-size:14px;color:var(--dim);font-variant-numeric:tabular-nums;flex-shrink:0}
+  .svc-row h3{font-weight:900;font-size:clamp(26px,4.6vw,62px);line-height:1;letter-spacing:-.01em;flex-shrink:0;transition:color .3s}
+  .svc-row p{color:var(--dim);font-size:15px;font-weight:300;max-width:44ch;margin-inline-start:auto}
+  .svc-row .arr{flex-shrink:0;width:52px;height:52px;border-radius:99px;border:1px solid var(--line);display:grid;place-items:center;font-size:19px;transition:.3s}
+  .svc-row:hover h3{color:var(--gold)}
+  .svc-row:hover .arr{background:var(--gold);border-color:var(--gold);color:#141005;transform:rotate(-45deg)}
+  @media(max-width:900px){.svc-row{flex-wrap:wrap;gap:12px}.svc-row p{margin-inline-start:0;max-width:100%}}
+
+  /* ════ 4 — הצהרה (כרטיס זהב) ════ */
+  .statement{padding:16vh 7vw}
+  .statement p.manifesto{font-weight:900;font-size:clamp(30px,5.4vw,76px);line-height:1.3;letter-spacing:-.01em;max-width:22ch}
+  .manifesto .w{color:rgba(20,16,5,.22);display:inline-block}
+  .manifesto .w.hot{color:#141005}
+
+  /* ════ 5 — עבודות נבחרות ════ */
+  .works-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+  @media(max-width:1000px){.works-grid{grid-template-columns:repeat(2,1fr)}}
+  .wk{position:relative;border-radius:16px;overflow:hidden;aspect-ratio:3/4;cursor:pointer;border:1px solid var(--line)}
+  .wk video{transition:transform .6s ease}
+  .wk:hover video{transform:scale(1.06)}
+  .wk::after{content:"";position:absolute;inset:0;background:linear-gradient(transparent 58%,rgba(0,0,0,.62));pointer-events:none}
+  .wk .play{position:absolute;top:14px;right:14px;z-index:2;width:40px;height:40px;border-radius:99px;background:rgba(6,5,4,.55);backdrop-filter:blur(4px);display:grid;place-items:center;font-size:12px;color:var(--ink);border:1px solid var(--line)}
+  .wk .cat{position:absolute;top:14px;left:14px;z-index:2;font-size:11px;letter-spacing:.14em;color:var(--gold);background:rgba(6,5,4,.55);border:1px solid rgba(253,191,45,.35);border-radius:99px;padding:4px 12px}
+  .wk b{position:absolute;bottom:14px;right:16px;left:16px;z-index:2;font-size:15px;font-weight:500;text-shadow:0 2px 12px rgba(0,0,0,.85)}
+  .wk.more{display:flex;align-items:center;justify-content:center;background:transparent;border:1px dashed var(--line)}
+  .wk.more:hover{border-color:var(--gold)}
+  .wk.more span{font-weight:900;font-size:clamp(20px,2.2vw,30px);text-align:center;line-height:1.3}
+  .wk.more:hover span{color:var(--gold)}
+
+  /* ════ 6 — מרקיזה ════ */
+  .mq-sec{padding:7vh 0;margin:10px;overflow:hidden}
+  .mq-track{display:flex;width:max-content;will-change:transform;align-items:baseline;gap:3.2vw}
+  .mq-track span{font-weight:900;font-size:clamp(54px,9vw,140px);line-height:1;white-space:nowrap;color:transparent;-webkit-text-stroke:1.5px rgba(245,240,230,.35)}
+  .mq-track span.solid{color:var(--gold);-webkit-text-stroke:0}
+
+  /* ════ 7 — גרפיקות ════ */
+  .gfx-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+  .gfx-it{position:relative;overflow:hidden;border-radius:14px;cursor:pointer;aspect-ratio:3/4;border:1px solid rgba(20,16,5,.14)}
   .gfx-it img{transition:transform .6s ease}
   .gfx-it:hover img{transform:scale(1.06)}
-  .gfx-it::after{content:"";position:absolute;inset:0;background:linear-gradient(transparent 62%,rgba(0,0,0,.55));pointer-events:none}
-  .gfx-it b{position:absolute;bottom:12px;right:14px;left:14px;z-index:2;font-size:14px;font-weight:500;text-shadow:0 2px 12px rgba(0,0,0,.8)}
+  .gfx-it::after{content:"";position:absolute;inset:0;background:linear-gradient(transparent 62%,rgba(0,0,0,.5));pointer-events:none}
+  .gfx-it b{position:absolute;bottom:12px;right:14px;left:14px;z-index:2;font-size:13px;font-weight:500;color:#fff;text-shadow:0 2px 12px rgba(0,0,0,.8)}
   @media(max-width:900px){.gfx-grid{grid-template-columns:repeat(2,1fr)}}
 
-  /* ════ סצנה 6 — ארכיון: גלריה אופקית ════ */
-  .sc-hijack{position:relative}
-  .h-pin{overflow:hidden;padding-block:10vh}
-  .h-head{padding:0 8vw 7vh}
-  .h-head small{display:block;font-size:13px;letter-spacing:.4em;color:var(--dim);margin-bottom:14px}
-  .h-head h2{font-weight:900;font-size:clamp(34px,5.5vw,80px);line-height:1.08}
-  .h-head h2 em{font-style:normal;color:var(--gold)}
-  .h-track{display:flex;gap:26px;width:max-content;will-change:transform;padding-inline:8vw;align-items:center}
-  .h-lead{font-weight:900;font-size:clamp(60px,10vw,150px);color:transparent;-webkit-text-stroke:1.5px var(--ink);white-space:nowrap;padding-inline-end:2vw}
-  .h-it{width:clamp(230px,24vw,340px);aspect-ratio:9/16;border-radius:14px;overflow:hidden;flex-shrink:0;position:relative;border:1px solid var(--line);cursor:pointer}
-  .h-it b{position:absolute;bottom:14px;right:16px;z-index:2;font-size:15px;text-shadow:0 2px 12px rgba(0,0,0,.8)}
-  .h-it::after{content:"";position:absolute;inset:0;background:linear-gradient(transparent 65%,rgba(0,0,0,.55));pointer-events:none}
-  .h-it.sound{outline:2px solid var(--gold);outline-offset:-2px}
-
-  /* ════ סצנה 7 — אאוטרו ════ */
-  .sc-outro{position:relative}
-  .outro-stage{height:100vh;overflow:hidden;display:grid;place-items:center;position:relative}
-  .outro-zoom{position:absolute;font-weight:900;font-size:clamp(80px,16vw,240px);color:transparent;-webkit-text-stroke:2px var(--gold);white-space:nowrap;will-change:transform,opacity;z-index:1}
-  .outro-cta{position:relative;z-index:2;text-align:center;opacity:0;padding-inline:6vw}
-  .outro-cta h2{font-weight:900;font-size:clamp(38px,6.2vw,88px);line-height:1.1;letter-spacing:-.02em}
-  .outro-cta h2 em{font-style:normal;color:var(--gold)}
-  .outro-cta p{margin-top:18px;color:var(--dim);font-weight:300;font-size:17px}
-  .outro-cta .btns{margin-top:40px;display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
-  .outro-cta a{display:inline-block;padding:18px 50px;border-radius:99px;font-weight:700;font-size:17px;transition:.3s}
-  .outro-cta a.main{background:var(--gold);color:#0a0908}
-  .outro-cta a.main:hover{transform:translateY(-4px);box-shadow:0 16px 40px rgba(253,191,45,.25)}
-  .outro-cta a.ghost{border:1px solid var(--line);color:var(--ink)}
-  .outro-cta a.ghost:hover{border-color:var(--gold);color:var(--gold)}
-  footer{display:flex;justify-content:space-between;padding:26px 4vw;font-size:13px;color:var(--dim);border-top:1px solid var(--line);flex-wrap:wrap;gap:8px}
+  /* ════ 8 — אאוטרו ════ */
+  .sc-outro{min-height:92vh;display:flex;flex-direction:column;justify-content:center;position:relative}
+  .sc-outro::after{content:"";position:absolute;inset:0;background:radial-gradient(95% 60% at 50% 115%,rgba(253,191,45,.3),transparent 60%);pointer-events:none}
+  .outro-in{position:relative;z-index:2;text-align:center;padding:14vh 6vw 10vh}
+  .outro-in h2{font-weight:900;font-size:clamp(40px,7vw,110px);line-height:1.05;letter-spacing:-.02em}
+  .outro-in h2 em{font-style:normal;color:var(--gold)}
+  .outro-in p{margin-top:2.6vh;color:var(--dim);font-weight:300;font-size:17px}
+  .outro-in .btns{margin-top:5vh;display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+  .outro-in a{display:inline-block;padding:18px 50px;border-radius:99px;font-weight:700;font-size:17px;transition:.3s}
+  .outro-in a.main{background:var(--gold);color:#141005}
+  .outro-in a.main:hover{transform:translateY(-4px);box-shadow:0 16px 40px rgba(253,191,45,.3)}
+  .outro-in a.ghost{border:1px solid var(--line);color:var(--ink)}
+  .outro-in a.ghost:hover{border-color:var(--gold);color:var(--gold)}
+  .outro-foot{position:relative;z-index:2;display:flex;justify-content:space-between;padding:26px 4vw;font-size:13px;color:var(--dim);border-top:1px solid var(--line);flex-wrap:wrap;gap:8px}
 </style>
 </head>
 <body>
@@ -151,20 +206,42 @@
 <header>
   <nav class="nav">
     <div class="logo">עומר ג'רבי</div>
-    <a class="idx" href="projects.html">כל הפרויקטים ←</a>
+    <div class="side">
+      <a class="talk" href="https://ig.me/m/omerjerbi" target="_blank" rel="noopener">בואו נדבר</a>
+      <button class="menu-btn" id="menuBtn" aria-label="תפריט"><span class="bars"><i></i><i></i></span>תפריט</button>
+    </div>
   </nav>
 </header>
 
-<!-- ═ 1 ═ הירו -->
-<section class="sc-hero" id="scHero">
-  <div class="hero-mid">
-    <div class="hero-header"><h1 id="heroName">עומר ג'רבי</h1></div>
-    <div class="hero-role">מומחה תוכן AI</div>
+<!-- תפריט מסך מלא -->
+<div class="menu" id="menu">
+  <button class="menu-close" id="menuClose" aria-label="סגור">✕</button>
+  <a class="mlink" href="#scWorks"><small>01</small>עבודות נבחרות</a>
+  <a class="mlink" href="#scSvc"><small>02</small>מה אני עושה</a>
+  <a class="mlink" href="#scStats"><small>03</small>במספרים</a>
+  <a class="mlink" href="#scGraphics"><small>04</small>גרפיקות</a>
+  <a class="mlink" href="projects.html"><small>05</small>כל הפרויקטים</a>
+  <a class="mlink" href="#scOutro"><small>06</small>צור קשר</a>
+  <div class="menu-foot">
+    <span>עומר ג'רבי © 2026</span>
+    <span><a href="https://instagram.com/omerjerbi" target="_blank" rel="noopener"><span dir="ltr">@omerjerbi</span></a></span>
   </div>
-  <div class="hero-footer">
-    <b>בלי צלם</b>
-    <b>בלי אולפן</b>
-    <b>בלי המתנה</b>
+</div>
+
+<!-- ═ 1 ═ הירו — הווידאו כאן הוא PLACEHOLDER עד שקליפ ההירו של עומר מוכן -->
+<section class="sec sc-hero" id="scHero">
+  <div class="hero-bg" id="heroBg"><video src="videos/noir-bar.mp4" muted loop playsinline preload="auto" autoplay></video></div>
+  <div class="hero-glow"></div>
+  <div class="hero-echo" aria-hidden="true">עומר ג'רבי</div>
+  <div class="hero-mid">
+    <div class="hero-kicker">[ תוכן AI קולנועי · ישראל ]</div>
+    <div class="hero-header"><h1 id="heroName">עומר ג'רבי</h1></div>
+    <div class="hero-sub">מוצר מהמדף. <em>פרסומת מהקולנוע.</em></div>
+    <p class="hero-p">מומחה תוכן AI · פרסומות וסרטוני תדמית ברמה הוליוודית — בלי סט, בלי צלם, בלי חודשי המתנה.</p>
+    <div class="hero-ctas">
+      <a class="main" href="https://ig.me/m/omerjerbi" target="_blank" rel="noopener">בואו נדבר</a>
+      <a class="ghost" href="#scWorks">↓ צפייה בעבודות</a>
+    </div>
   </div>
   <div class="hero-hint">גלול</div>
 </section>
@@ -177,46 +254,63 @@
   <div class="lb-label" id="lbLabel"></div>
 </div>
 
-<!-- ═ 2 ═ מניפת פרסומות א' -->
-<section class="sc-fan" id="scFan">
-  <div class="fan-stage" data-fan>
-    <div class="fan-title"><small>(02) — פרסומות שיצרתי</small>בלי צלם.<br>בלי אולפן.</div>
-    <div class="card"><video src="videos/raw-arak.mp4" muted loop playsinline preload="metadata"></video><div class="tag"><span>ערק נוח</span><span>01</span></div></div>
-    <div class="card"><video src="videos/raw-goldstar.mp4" muted loop playsinline preload="metadata"></video><div class="tag"><span>גולדסטאר</span><span>02</span></div></div>
-    <div class="card"><video src="videos/coke-zero.mp4" muted loop playsinline preload="metadata"></video><div class="tag"><span>קוקה קולה זירו</span><span>03</span></div></div>
-    <div class="card"><video src="videos/raw-taster.mp4" muted loop playsinline preload="metadata"></video><div class="tag"><span>טייסטרס צ'ויס</span><span>04</span></div></div>
-    <div class="fan-hint">לחיצה על קלף = סאונד</div>
+<!-- ═ 2 ═ מספרים -->
+<section class="sec sec-pad" id="scStats">
+  <div class="sec-head">
+    <div><small>[ 01 — במספרים ]</small><h2>התוצאות <em>מדברות.</em></h2></div>
+  </div>
+  <div class="stats-grid">
+    <div class="stat gold"><b><span data-countup="40000">0</span><span class="unit">₪+</span></b><p>הכנסה מתוכן AI בחודש שיא — לבד, מהמחשב</p></div>
+    <div class="stat"><b><span data-countup="13000">0</span><span class="unit">₪</span></b><p>שילמו על סרטון AI אחד</p></div>
+    <div class="stat"><b><span data-countup="1000000">0</span><span class="unit">+</span></b><p>צפיות בשני סרטוני ליהוק — אחד מהם עקף פוסט רשמי של רשת</p></div>
+    <div class="stat"><b><span data-countup="10">0</span><span class="unit">דק'</span></b><p>ל-30 גרפיקות ספירה לאחור לאייל גולן</p></div>
   </div>
 </section>
 
-<!-- ═ 3 ═ מניפת פרסומות ב' -->
-<section class="sc-fan" id="scFan2">
-  <div class="fan-stage" data-fan>
-    <div class="fan-title"><small>(03) — עוד מהמדף</small>כל מדף.<br>אותו תהליך.</div>
-    <div class="card"><video src="videos/raw-shampoo.mp4" muted loop playsinline preload="metadata"></video><div class="tag"><span>שמפו</span><span>05</span></div></div>
-    <div class="card"><video src="videos/raw-coffee.mp4" muted loop playsinline preload="metadata"></video><div class="tag"><span>חלב קפה</span><span>06</span></div></div>
-    <div class="card"><video src="videos/raw-muller.mp4" muted loop playsinline preload="metadata"></video><div class="tag"><span>מולר</span><span>07</span></div></div>
-    <div class="card"><video src="videos/raw-shoko.mp4" muted loop playsinline preload="metadata"></video><div class="tag"><span>שוקו</span><span>08</span></div></div>
-    <div class="fan-hint">לחיצה על קלף = סאונד</div>
+<!-- ═ 3 ═ מה אני עושה -->
+<section class="sec sec-pad" id="scSvc">
+  <div class="sec-head">
+    <div><small>[ 02 — מה אני עושה ]</small><h2>ארבעה דברים.<br><em>ברמה אחת.</em></h2></div>
+  </div>
+  <div class="svc-list">
+    <a class="svc-row" href="#scWorks"><span class="idx">[01]</span><h3>פרסומות למוצרים</h3><p>מוצר מהמדף הופך לפרסומת קולנועית — מהקונספט ועד הקאט הסופי.</p><span class="arr">←</span></a>
+    <a class="svc-row" href="#scWorks"><span class="idx">[02]</span><h3>עבודות ללקוחות</h3><p>אמנים, תוכניות פריים-טיים, ארגונים ומוסדות — קמפיין שלם מהמחשב שלי.</p><span class="arr">←</span></a>
+    <a class="svc-row" href="#scWorks"><span class="idx">[03]</span><h3>קריאייטיב</h3><p>רעיונות שרצתי איתם בלי בריף — כי אי אפשר היה שלא.</p><span class="arr">←</span></a>
+    <a class="svc-row" href="#scGraphics"><span class="idx">[04]</span><h3>גרפיקה ועיצוב</h3><p>פוסטרים, עטיפות אלבום וקמפיינים — לא רק וידאו.</p><span class="arr">←</span></a>
   </div>
 </section>
 
-<!-- ═ 4 ═ מספרים -->
-<section class="sc-nums" id="scNums">
-  <div class="nums-head">(04) — במספרים</div>
-  <div class="nums-grid">
-    <div class="num"><b><span data-countup="40000">0</span><span class="unit">₪+</span></b><p>הכנסה מתוכן AI בחודש שיא — לבד, מהמחשב</p></div>
-    <div class="num"><b><span data-countup="13000">0</span><span class="unit">₪</span></b><p>שילמו על סרטון AI אחד</p></div>
-    <div class="num"><b><span data-countup="1000000">0</span><span class="unit">+</span></b><p>צפיות בשני סרטוני ליהוק — אחד מהם עקף פוסט רשמי של רשת</p></div>
-    <div class="num"><b><span data-countup="10">0</span><span class="unit">דק'</span></b><p>ל-30 גרפיקות ספירה לאחור לאייל גולן</p></div>
+<!-- ═ 4 ═ הצהרה -->
+<section class="sec goldbg statement" id="scManifesto">
+  <p class="manifesto" id="manifestoTxt">הוליווד זה לא מקום. זה סטנדרט. ואני מביא אותו לכל מוצר, מכל מדף — מהמחשב שלי.</p>
+</section>
+
+<!-- ═ 5 ═ עבודות נבחרות -->
+<section class="sec sec-pad" id="scWorks">
+  <div class="sec-head">
+    <div><small>[ 03 — עבודות נבחרות ]</small><h2>לחצו. <em>תשמעו.</em></h2></div>
+  </div>
+  <div class="works-grid">
+    <div class="wk" data-label="אייל גולן"><video src="videos/eyal-golan.mp4" muted loop playsinline preload="metadata"></video><span class="play">▶</span><span class="cat">עבודה ללקוח</span><b>אייל גולן</b></div>
+    <div class="wk" data-label="הישרדות"><video src="videos/survivor.mp4" muted loop playsinline preload="metadata"></video><span class="play">▶</span><span class="cat">עבודה ללקוח</span><b>הישרדות</b></div>
+    <div class="wk" data-label="קרב תל חי"><video src="videos/telhai-en.mp4" muted loop playsinline preload="metadata"></video><span class="play">▶</span><span class="cat">עבודה ללקוח</span><b>קרב תל חי</b></div>
+    <div class="wk" data-label="קמפיין כדורגל"><video src="videos/mbappe.mp4" muted loop playsinline preload="metadata"></video><span class="play">▶</span><span class="cat">קריאייטיב</span><b>קמפיין כדורגל</b></div>
+    <div class="wk" data-label="ג'ין טוניק — פורים"><video src="videos/ginton-purim.mp4" muted loop playsinline preload="metadata"></video><span class="play">▶</span><span class="cat">קריאייטיב</span><b>ג'ין טוניק · פורים</b></div>
+    <div class="wk" data-label="בית״ר ירושלים"><video src="videos/beitar-puppets.mp4" muted loop playsinline preload="metadata"></video><span class="play">▶</span><span class="cat">עבודה ללקוח</span><b>בית״ר ירושלים</b></div>
+    <div class="wk" data-label="ערק נוח"><video src="videos/raw-arak.mp4" muted loop playsinline preload="metadata"></video><span class="play">▶</span><span class="cat">פרסומת</span><b>ערק נוח</b></div>
+    <a class="wk more" href="projects.html"><span>לכל<br>הפרויקטים ←</span></a>
   </div>
 </section>
 
-<!-- ═ 5 ═ גרפיקות -->
-<section class="sc-graphics" id="scGraphics">
-  <div class="gfx-head">
-    <small>(05) — לא רק וידאו</small>
-    <h2>גם ל<em>גרפיקה</em> יש כאן מקום.</h2>
+<!-- ═ 6 ═ מרקיזה -->
+<div class="mq-sec"><div class="mq-track" id="mqTrack">
+  <span>עומר ג'רבי</span><span class="solid">✦</span><span>מומחה תוכן AI</span><span class="solid">✦</span>
+</div></div>
+
+<!-- ═ 7 ═ גרפיקות -->
+<section class="sec paper sec-pad" id="scGraphics">
+  <div class="sec-head">
+    <div><small>[ 04 — גרפיקות ]</small><h2>לא רק וידאו.</h2></div>
   </div>
   <div class="gfx-grid" id="gfxGrid">
     <div class="gfx-it" data-label="בית״ר ירושלים — יהב שוע"><img src="images/yarden-shua.jpg" alt="יהב שוע — בית״ר ירושלים"><b>יהב שוע · בית״ר</b></div>
@@ -230,51 +324,23 @@
   </div>
 </section>
 
-<!-- ═ 6 ═ ארכיון -->
-<section class="sc-hijack" id="scHijack">
-  <div class="h-pin" id="hPin">
-    <div class="h-head">
-      <small>(06) — עוד מהארכיון</small>
-      <h2>עוד עבודות.<br>עוד לא <em>ראיתם הכל.</em></h2>
-    </div>
-    <div class="h-track" id="hTrack">
-      <div class="h-lead">ארכיון ←</div>
-      <div class="h-it"><video src="videos/imtirtzu-1.mp4" muted loop playsinline preload="metadata"></video><b>אם תרצו</b></div>
-      <div class="h-it"><video src="videos/matan-asher.mp4" muted loop playsinline preload="metadata"></video><b>מתן אשר</b></div>
-      <div class="h-it"><video src="videos/imtirtzu-3.mp4" muted loop playsinline preload="metadata"></video><b>אם תרצו</b></div>
-      <div class="h-it"><video src="videos/expo.mp4" muted loop playsinline preload="metadata"></video><b>אקספו</b></div>
-      <div class="h-it"><video src="videos/oro.mp4" muted loop playsinline preload="metadata"></video><b>אורו</b></div>
-      <div class="h-it"><video src="videos/conference.mp4" muted loop playsinline preload="metadata"></video><b>כנס</b></div>
-      <div class="h-it"><video src="videos/mantra-what.mp4" muted loop playsinline preload="metadata"></video><b>מנטרה</b></div>
-      <div class="h-it"><video src="videos/mantra-who.mp4" muted loop playsinline preload="metadata"></video><b>מנטרה</b></div>
-      <div class="h-it"><video src="videos/mantra-3.mp4" muted loop playsinline preload="metadata"></video><b>מנטרה</b></div>
-      <div class="h-it"><video src="videos/sound2.mp4" muted loop playsinline preload="metadata"></video><b>סאונד</b></div>
-      <div class="h-it"><video src="videos/save1080.mp4" muted loop playsinline preload="metadata"></video><b>BTS</b></div>
+<!-- ═ 8 ═ אאוטרו -->
+<section class="sec sc-outro" id="scOutro">
+  <div class="outro-in">
+    <h2>יש לכם מוצר?<br><em>בואו נעשה מזה פרסומת.</em></h2>
+    <p>שיחה ראשונה חינם. תוך ימים — סרטון שנראה כמו הפקה שלמה.</p>
+    <div class="btns">
+      <a class="main" href="https://ig.me/m/omerjerbi" target="_blank" rel="noopener">שלחו לי הודעה ←</a>
+      <a class="ghost" href="projects.html">כל הפרויקטים</a>
+      <a class="ghost" href="https://instagram.com/omerjerbi" target="_blank" rel="noopener"><span dir="ltr">@omerjerbi</span></a>
     </div>
   </div>
-</section>
-
-<!-- ═ 7 ═ אאוטרו -->
-<section class="sc-outro" id="scOutro">
-  <div class="outro-stage" id="outroStage">
-    <div class="outro-zoom" id="outroZoom">בואו נדבר</div>
-    <div class="outro-cta" id="outroCta">
-      <h2>יש לכם מוצר?<br>אני הופך אותו <em>לסרטון שלא שוכחים.</em></h2>
-      <p>בלי הפקה, בלי חודשי המתנה — מהמחשב שלי לפיד שלכם, תוך ימים.</p>
-      <div class="btns">
-        <a class="main" href="https://ig.me/m/omerjerbi" target="_blank" rel="noopener">שלחו לי הודעה ←</a>
-        <a class="ghost" href="projects.html">כל הפרויקטים</a>
-        <a class="ghost" href="https://instagram.com/omerjerbi" target="_blank" rel="noopener">@omerjerbi</a>
-      </div>
-    </div>
+  <div class="outro-foot">
+    <span>עומר ג'רבי © 2026</span>
+    <span>תוכן AI · ברמה של הפקה</span>
+    <span>ישראל</span>
   </div>
 </section>
-
-<footer>
-  <span>עומר ג'רבי © 2026</span>
-  <span>תוכן AI · ברמה של הפקה</span>
-  <span>ישראל</span>
-</footer>
 
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
@@ -312,29 +378,27 @@ function maskChars(el){
   });
   return out;
 }
-function maskWords(el){
+
+/* ── פיצול מילים ל-word-paint (בלי מיסוך) ── */
+function splitWords(el){
   const out = [];
-  [...el.childNodes].forEach(n => {
-    if (n.nodeType !== 3) return;
-    const frag = document.createDocumentFragment();
-    n.textContent.split(/(\s+)/).forEach(part => {
-      if (!part) return;
-      if (/^\s+$/.test(part)) { frag.appendChild(document.createTextNode(part)); return; }
-      const wrap = document.createElement('span');
-      wrap.style.cssText = 'display:inline-block;overflow:hidden;vertical-align:top';
-      const inner = document.createElement('span');
-      inner.style.cssText = 'display:inline-block;transform:translateY(100%)';
-      inner.textContent = part;
-      wrap.appendChild(inner);
-      out.push(inner);
-      frag.appendChild(wrap);
+  (function walk(node){
+    [...node.childNodes].forEach(n => {
+      if (n.nodeType === 3) {
+        const frag = document.createDocumentFragment();
+        n.textContent.split(/(\s+)/).forEach(part => {
+          if (!part) return;
+          if (/^\s+$/.test(part)) frag.appendChild(document.createTextNode(part));
+          else { const s = document.createElement('span'); s.className = 'w'; s.style.display = 'inline-block'; s.textContent = part; out.push(s); frag.appendChild(s); }
+        });
+        n.replaceWith(frag);
+      } else if (n.nodeType === 1) walk(n);
     });
-    n.replaceWith(frag);
-  });
+  })(el);
   return out;
 }
 
-/* ── וידאו: ניגון רק כשעל המסך + לחיצה לסאונד ── */
+/* ── וידאו: ניגון רק כשעל המסך ── */
 const allVids = [...document.querySelectorAll('video')].filter(v => v.id !== 'lightboxVideo');
 const io = new IntersectionObserver(es => es.forEach(e => {
   const v = e.target;
@@ -343,23 +407,24 @@ const io = new IntersectionObserver(es => es.forEach(e => {
 }), { threshold:.15 });
 allVids.forEach(v => io.observe(v));
 
-document.querySelectorAll('.card, .h-it').forEach(box => {
-  box.addEventListener('click', () => {
-    const v = box.querySelector('video');
-    const wasMuted = v.muted;
-    allVids.forEach(x => { x.muted = true; });
-    document.querySelectorAll('.sound').forEach(s => s.classList.remove('sound'));
-    if (wasMuted) { v.muted = false; box.classList.add('sound'); v.play().catch(()=>{}); }
-  });
-});
-
-/* ── תצוגה מוגדלת (משותף לכל הסצנות) ── */
+/* ── תצוגה מוגדלת (וידאו + תמונה) ── */
 const lightbox = document.getElementById('lightbox');
 const lbVideo = document.getElementById('lightboxVideo');
 const lbImg = document.getElementById('lightboxImg');
 const lbLabel = document.getElementById('lbLabel');
 const closeLB = () => { lightbox.classList.remove('show'); lbVideo.pause(); };
-window.openLightboxImage = (img, label) => {
+function openLightboxVideo(v, label){
+  allVids.forEach(x => x.muted = true);
+  lbImg.style.display = 'none';
+  lbVideo.style.display = 'block';
+  if (lbVideo.src !== v.currentSrc) lbVideo.src = v.currentSrc;
+  lbVideo.currentTime = v.currentTime || 0;
+  lbLabel.textContent = label || '';
+  lightbox.classList.add('show');
+  lbVideo.muted = false;
+  lbVideo.play().catch(()=>{});
+}
+function openLightboxImage(img, label){
   allVids.forEach(x => x.muted = true);
   lbVideo.pause();
   lbVideo.style.display = 'none';
@@ -367,28 +432,54 @@ window.openLightboxImage = (img, label) => {
   lbImg.src = img.currentSrc || img.src;
   lbLabel.textContent = label || '';
   lightbox.classList.add('show');
-};
+}
 document.getElementById('lbClose').addEventListener('click', closeLB);
 lightbox.addEventListener('click', e => { if (e.target === lightbox) closeLB(); });
 addEventListener('keydown', e => { if (e.key === 'Escape') closeLB(); });
 
-/* ════ סצנה 1 — פרילואודר + הירו: ערימת גרפיקות → curtain-wipe → כותרת ענקית ════ */
+document.querySelectorAll('.wk:not(.more)').forEach(t => t.addEventListener('click', () => openLightboxVideo(t.querySelector('video'), t.dataset.label || '')));
+document.querySelectorAll('.gfx-it').forEach(t => t.addEventListener('click', () => openLightboxImage(t.querySelector('img'), t.dataset.label || '')));
+
+/* ── תפריט מסך מלא ── */
+{
+  const menu = document.getElementById('menu');
+  const links = [...menu.querySelectorAll('.mlink')];
+  let open = false;
+  const tlMenu = gsap.timeline({ paused:true })
+    .set(menu, { visibility:'visible' })
+    .to(menu, { clipPath:'polygon(0 0,100% 0,100% 100%,0 100%)', duration:.7, ease:'power4.inOut' })
+    .from(links, { y:46, opacity:0, duration:.6, stagger:.06, ease:'power3.out' }, '-=.25');
+  const setOpen = v => {
+    open = v;
+    if (v) { tlMenu.play(); lenis.stop(); }
+    else { tlMenu.reverse(); lenis.start(); }
+  };
+  document.getElementById('menuBtn').addEventListener('click', () => setOpen(true));
+  document.getElementById('menuClose').addEventListener('click', () => setOpen(false));
+  addEventListener('keydown', e => { if (e.key === 'Escape' && open) setOpen(false); });
+  links.forEach(a => a.addEventListener('click', e => {
+    const href = a.getAttribute('href');
+    setOpen(false);
+    if (href.startsWith('#')) {
+      e.preventDefault();
+      setTimeout(() => lenis.scrollTo(href, { offset:-10 }), 550);
+    }
+  }));
+}
+
+/* ════ 0+1 — פרילואודר → הירו ════ */
 {
   CustomEase.create('hop', '0.8, 0, 0.2, 1');
   CustomEase.create('hop2', '0.9, 0, 0.1, 1');
 
   const plChars = maskChars(document.getElementById('plName'));
   const heroChars = maskChars(document.getElementById('heroName'));
-  const navWords = [...maskWords(document.querySelector('.nav .logo')), ...maskWords(document.querySelector('.nav .idx'))];
-  const footWords = [...document.querySelectorAll('.hero-footer b')].flatMap(el => maskWords(el));
   const counterP = document.getElementById('plCounterText');
 
   const plImgRot = [7, -3, 11, -8, 4, -11];
   gsap.set('.pl-img', { rotate:(i) => plImgRot[i] });
-  gsap.set('.hero-role', { y:16 });
 
   const tl = gsap.timeline({ delay:.4 });
-
   tl.to('.pl-img', { scale:1, clipPath:'polygon(0% 0%,100% 0%,100% 100%,0% 100%)', duration:1, ease:'hop', stagger:.18 }, 0);
   tl.to(plChars, { y:'0%', duration:1, ease:'hop2', stagger:{ each:.11, from:'random' } }, .35);
   tl.to(counterP, { y:'0%', duration:1, ease:'hop2',
@@ -397,80 +488,83 @@ addEventListener('keydown', e => { if (e.key === 'Escape') closeLB(); });
       gsap.to(c, { v:100, duration:1.8, delay:.4, ease:'power2.inOut',
         onUpdate:() => counterP.textContent = String(Math.round(c.v)).padStart(3,'0') });
     } }, '<');
-
   tl.to(counterP, { y:'-100%', duration:.7, ease:'hop2' }, 3);
   tl.to(plChars, { y:'-100%', duration:.7, ease:'hop2', stagger:{ each:.11, from:'random' } }, 3);
   tl.to('.pl-img', { scale:0, clipPath:'polygon(20% 20%,80% 20%,80% 80%,20% 80%)', duration:.9, ease:'hop2', stagger:-.07 }, 3.2);
   tl.to('#preloader', { clipPath:'polygon(0% 0%,100% 0%,100% 0%,0% 0%)', duration:1, ease:'hop2' }, 4.05);
   tl.set('#preloader', { display:'none' });
   tl.to(heroChars, { y:'0%', duration:1, ease:'hop', stagger:{ each:.06, from:'random' } }, 4.35);
-  tl.to('.hero-role', { opacity:1, y:0, duration:.8, ease:'power2.out' }, 4.6);
-  tl.to(navWords, { y:'0%', duration:1, ease:'hop', stagger:.07 }, 4.55);
-  tl.to(footWords, { y:'0%', duration:1, ease:'hop', stagger:.07 }, 4.6);
-  tl.to('.hero-hint', { opacity:1, duration:.6 }, 5.1);
+  tl.to('.hero-kicker', { opacity:1, duration:.6 }, 4.4);
+  tl.fromTo('.hero-sub', { y:18 }, { opacity:1, y:0, duration:.8, ease:'power2.out' }, 4.6);
+  tl.fromTo('.hero-p', { y:14 }, { opacity:1, y:0, duration:.8, ease:'power2.out' }, 4.72);
+  tl.fromTo('.hero-ctas', { y:14 }, { opacity:1, y:0, duration:.8, ease:'power2.out' }, 4.84);
+  tl.to('.hero-hint', { opacity:1, duration:.6 }, 5.15);
   tl.add(() => ScrollTrigger.refresh());
+  gsap.set('.hero-kicker', { opacity:0 });
+
+  /* פרלקסה עדינה על וידאו הרקע */
+  gsap.fromTo('#heroBg video', { scale:1.12 }, { scale:1, ease:'none',
+    scrollTrigger:{ trigger:'#scHero', start:'top top', end:'bottom top', scrub:.5 } });
+  gsap.to('.hero-mid', { yPercent:-14, opacity:.25, ease:'none',
+    scrollTrigger:{ trigger:'#scHero', start:'top top', end:'bottom 30%', scrub:.5 } });
 }
 
-/* ════ מניפות פרסומות (א'+ב') — אותה כוריאוגרפיה לכל [data-fan] ════ */
-document.querySelectorAll('[data-fan]').forEach(stage => {
-  const cards = gsap.utils.toArray(stage.querySelectorAll('.card'));
-  const n = cards.length;
-  const spread = isMobile ? 17 : 24;
-  const tl = gsap.timeline({
-    scrollTrigger:{ trigger:stage.parentElement, start:'top top', end:'+=200%', pin:stage, scrub:.6 }
-  });
-  cards.forEach((c, i) => {
-    const target = (i - (n-1)/2) * spread;
-    tl.fromTo(c,
-      { rotation:0, y:'16vh', scale:.9 },
-      { rotation:target, y:'6vh', scale:1, ease:'power2.out', duration:1 }, 0);
-  });
-  tl.to(cards, { y:'0vh', duration:.5, ease:'power2.inOut' }, 1.05)
-    .from(stage.querySelector('.fan-title'), { opacity:0, y:-30, duration:.6 }, .3)
-    .from(stage.querySelector('.fan-hint'), { opacity:0, duration:.4 }, 1.1);
-});
-
-/* ════ סצנה 4 — מספרים (ספירה עם פסיקים) ════ */
+/* ════ 2 — מספרים ════ */
 gsap.utils.toArray('[data-countup]').forEach(el => {
   const target = parseInt(el.dataset.countup, 10), obj = { v:0 };
   gsap.to(obj, { v:target, duration:2.2, ease:'power2.out',
     onUpdate:() => el.innerText = Math.round(obj.v).toLocaleString('en-US'),
     scrollTrigger:{ trigger:el, start:'top 88%' } });
 });
-gsap.utils.toArray('.num').forEach((el,i) => gsap.from(el, {
-  opacity:0, y:50, duration:.9, delay:i*.08, ease:'power3.out',
-  scrollTrigger:{ trigger:'#scNums', start:'top 75%' }
-}));
+ScrollTrigger.batch('.stat', {
+  start:'top 88%',
+  onEnter:els => gsap.from(els, { opacity:0, y:56, duration:.85, stagger:.1, ease:'power3.out' })
+});
 
-/* ════ סצנה 5 — גרפיקות: כניסה מדורגת ════ */
+/* ════ 3 — מה אני עושה ════ */
+ScrollTrigger.batch('.svc-row', {
+  start:'top 90%',
+  onEnter:els => gsap.from(els, { opacity:0, y:44, duration:.8, stagger:.09, ease:'power3.out' })
+});
+
+/* ════ 4 — הצהרה: נצבע מילה-מילה ════ */
 {
-  ScrollTrigger.batch('.gfx-it', {
-    start:'top 90%',
-    onEnter:els => gsap.from(els, { opacity:0, y:60, scale:.96, duration:.85, stagger:.09, ease:'power3.out' })
-  });
-  document.querySelectorAll('.gfx-it').forEach(tile => {
-    tile.addEventListener('click', () => openLightboxImage(tile.querySelector('img'), tile.dataset.label || ''));
-  });
+  const words = splitWords(document.getElementById('manifestoTxt'));
+  const st = { p:0 };
+  gsap.to(st, { p:1, ease:'none',
+    scrollTrigger:{ trigger:'#scManifesto', start:'top 72%', end:'bottom 48%', scrub:.4 },
+    onUpdate:() => {
+      const upto = Math.floor(st.p * words.length);
+      words.forEach((w,i) => w.classList.toggle('hot', i <= upto));
+    } });
 }
 
-/* ════ סצנה 6 — ארכיון: גלריה אופקית (RTL → x חיובי) ════ */
+/* ════ 5 — עבודות ════ */
+ScrollTrigger.batch('.wk', {
+  start:'top 90%',
+  onEnter:els => gsap.from(els, { opacity:0, y:60, scale:.97, duration:.85, stagger:.08, ease:'power3.out' })
+});
+
+/* ════ 6 — מרקיזה מואצת ════ */
 {
-  const track = document.getElementById('hTrack');
-  const dist = () => track.scrollWidth - document.documentElement.clientWidth + 80;
-  gsap.to(track, { x:() => dist(), ease:'none',
-    scrollTrigger:{ trigger:'#hPin', start:'top 12%', end:() => '+=' + dist(), pin:true, scrub:1, invalidateOnRefresh:true } });
+  const mq = document.getElementById('mqTrack');
+  mq.innerHTML += mq.innerHTML + mq.innerHTML;
+  let mqX = 0, mqSpeed = .55;
+  gsap.ticker.add(() => { mqX = (mqX + mqSpeed) % (mq.scrollWidth/3); mq.style.transform = `translateX(${mqX}px)`; });
+  ScrollTrigger.create({ onUpdate:s => { mqSpeed = .55 + Math.min(Math.abs(s.getVelocity())/2500, 3); } });
 }
 
-/* ════ סצנה 7 — אאוטרו: קונטור זום → CTA ════ */
-{
-  const tl = gsap.timeline({
-    scrollTrigger:{ trigger:'#scOutro', start:'top top', end:'+=160%', pin:'#outroStage', scrub:.6 }
-  });
-  tl.fromTo('#outroZoom', { scale:.7, opacity:.9 }, { scale:14, opacity:0, ease:'power2.in', duration:1 }, 0)
-    .fromTo('#outroCta', { opacity:0, scale:.92, y:30 }, { opacity:1, scale:1, y:0, ease:'power2.out', duration:.55 }, .55);
-}
+/* ════ 7 — גרפיקות ════ */
+ScrollTrigger.batch('.gfx-it', {
+  start:'top 90%',
+  onEnter:els => gsap.from(els, { opacity:0, y:60, scale:.96, duration:.85, stagger:.09, ease:'power3.out' })
+});
 
-/* רענון מדידות אחרי טעינה — חובה עם pins */
+/* ════ 8 — אאוטרו ════ */
+gsap.from('.outro-in > *', { opacity:0, y:44, duration:.9, stagger:.1, ease:'power3.out',
+  scrollTrigger:{ trigger:'#scOutro', start:'top 65%' } });
+
+/* רענון מדידות אחרי טעינה — חובה */
 window.addEventListener('load', () => ScrollTrigger.refresh());
 </script>
 </body>
