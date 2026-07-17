@@ -46,20 +46,23 @@
   .nav{display:flex;justify-content:space-between;align-items:center;padding:20px 3.4vw;font-size:14px;letter-spacing:.06em}
   .nav .logo{font-weight:900;font-size:18px}
   .nav .side{display:flex;align-items:center;gap:14px}
-  .menu-btn{display:flex;align-items:center;gap:10px;background:none;border:0;color:inherit;font-size:14px;font-weight:500;cursor:pointer;letter-spacing:.06em}
-  .menu-btn .bars{display:inline-flex;flex-direction:column;gap:5px}
-  .menu-btn .bars i{display:block;width:22px;height:2px;background:currentColor;transition:.3s}
   .nav .talk{font-weight:700;font-size:13px;border:1px solid currentColor;border-radius:99px;padding:8px 18px;transition:.25s}
 
-  /* ── תפריט מסך מלא ── */
-  .menu{position:fixed;inset:0;z-index:150;background:#080604;display:flex;flex-direction:column;justify-content:center;padding:0 8vw;clip-path:polygon(0 0,100% 0,100% 0,0 0);visibility:hidden}
-  .menu::after{content:"";position:absolute;inset:0;background:radial-gradient(90% 55% at 50% 115%,rgba(253,191,45,.22),transparent 62%);pointer-events:none}
-  .menu a.mlink{position:relative;z-index:2;display:flex;align-items:baseline;gap:18px;padding:2.4vh 0;border-bottom:1px solid var(--line);font-weight:900;font-size:clamp(34px,6.5vw,84px);line-height:1.05;transition:color .3s}
-  .menu a.mlink small{font-size:13px;font-weight:400;color:var(--dim);letter-spacing:.2em}
-  .menu a.mlink:hover{color:var(--gold)}
-  .menu-close{position:absolute;top:24px;left:24px;z-index:3;width:48px;height:48px;border-radius:99px;border:1px solid var(--line);background:none;color:var(--ink);font-size:18px;cursor:pointer;transition:.25s}
-  .menu-close:hover{border-color:var(--gold);color:var(--gold)}
-  .menu-foot{position:absolute;bottom:26px;inset-inline:8vw;z-index:2;display:flex;justify-content:space-between;font-size:13px;color:var(--dim);flex-wrap:wrap;gap:8px}
+  /* ── תפריט: פאנל שנפתח מכפתור (Animmaster Navigation Menus #2) ── */
+  .menu-panel{position:fixed;top:16px;left:3.4vw;width:112px;height:44px;background:var(--gold);border-radius:25px;overflow:hidden;z-index:150;box-shadow:0 14px 40px rgba(0,0,0,.4)}
+  .menu-btn{position:absolute;top:0;left:0;width:112px;height:44px;cursor:pointer;border-radius:25px;overflow:hidden;z-index:10;background:none;border:0;padding:0}
+  .menu-btn__slider{position:relative;width:100%;height:200%;top:0;pointer-events:none}
+  .menu-btn__item{width:100%;height:50%;display:flex;align-items:center;justify-content:center;background:var(--gold);font-size:13px;font-weight:700;letter-spacing:.04em;color:#141005}
+  .menu-btn__item--close{background:#141005;color:var(--gold)}
+  .menu-nav{display:flex;flex-direction:column;justify-content:space-between;padding:78px 30px 26px;height:100%;opacity:0;pointer-events:none}
+  .menu-nav--visible{opacity:1;pointer-events:auto}
+  .menu-nav__body{display:flex;flex-direction:column;gap:2px}
+  .menu-nav__link-wrap{perspective:300px;overflow:hidden}
+  .menu-nav__link{display:flex;align-items:baseline;gap:10px;padding:8px 0;font-size:clamp(20px,3vw,28px);font-weight:900;color:#141005;line-height:1.2;will-change:transform,opacity}
+  .menu-nav__link small{font-size:11px;font-weight:400;color:rgba(20,16,5,.5);letter-spacing:.15em}
+  .menu-nav__footer{display:flex;flex-wrap:wrap;gap:6px;border-top:1px solid rgba(20,16,5,.15);padding-top:16px;margin-top:10px}
+  .menu-nav__footer a{width:50%;font-size:12px;color:rgba(20,16,5,.65);will-change:transform,opacity}
+  @media(max-width:480px){.menu-panel{width:96px;height:40px}.menu-btn{width:96px;height:40px}}
 
   /* ════ 0 — פרילואודר ════ */
   .preloader{position:fixed;inset:0;z-index:300;background:var(--page);color:var(--ink);overflow:hidden;clip-path:polygon(0 0,100% 0,100% 100%,0 100%);will-change:clip-path}
@@ -167,14 +170,16 @@
   .mq-track span{font-weight:900;font-size:clamp(54px,9vw,140px);line-height:1;white-space:nowrap;color:transparent;-webkit-text-stroke:1.5px rgba(245,240,230,.35)}
   .mq-track span.solid{color:var(--gold);-webkit-text-stroke:0}
 
-  /* ════ 7 — גרפיקות ════ */
-  .gfx-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
-  .gfx-it{position:relative;overflow:hidden;border-radius:14px;cursor:pointer;aspect-ratio:3/4;border:1px solid rgba(20,16,5,.14)}
-  .gfx-it img{transition:transform .6s ease}
-  .gfx-it:hover img{transform:scale(1.06)}
-  .gfx-it::after{content:"";position:absolute;inset:0;background:linear-gradient(transparent 62%,rgba(0,0,0,.5));pointer-events:none}
-  .gfx-it b{position:absolute;bottom:12px;right:14px;left:14px;z-index:2;font-size:13px;font-weight:500;color:#fff;text-shadow:0 2px 12px rgba(0,0,0,.8)}
-  @media(max-width:900px){.gfx-grid{grid-template-columns:repeat(2,1fr)}}
+  /* ════ 7 — גרפיקות: גריד תלת-ממד בגלילה (Animmaster Scroll #5, type1) ════ */
+  :root{ --g3d-perspective:1500px; --g3d-inner-scale:1; --g3d-columns:4; --g3d-gap:1.4vw; --g3d-ratio:.75; }
+  .g3d{display:grid;place-items:center;padding:4vh 0;perspective:var(--g3d-perspective)}
+  .g3d-wrap{width:100%;display:grid;grid-template-columns:repeat(var(--g3d-columns),1fr);gap:var(--g3d-gap);transform-style:preserve-3d}
+  .g3d__item{aspect-ratio:var(--g3d-ratio);width:100%;overflow:hidden;position:relative;border-radius:12px;display:grid;place-items:center;cursor:pointer;box-shadow:0 20px 50px rgba(0,0,0,.35)}
+  .g3d__item-inner{position:relative;width:calc(1 / var(--g3d-inner-scale) * 100%);height:calc(1 / var(--g3d-inner-scale) * 100%)}
+  .g3d__item-inner img{width:100%;height:100%;object-fit:cover}
+  .g3d__item::after{content:"";position:absolute;inset:0;background:linear-gradient(transparent 60%,rgba(0,0,0,.55));pointer-events:none}
+  .g3d__item b{position:absolute;bottom:10px;right:12px;left:12px;z-index:2;font-size:12px;font-weight:500;color:#fff;text-shadow:0 2px 10px rgba(0,0,0,.8)}
+  @media(max-width:900px){:root{ --g3d-columns:2; }}
 
   /* ════ 8 — אאוטרו ════ */
   .sc-outro{min-height:92vh;display:flex;flex-direction:column;justify-content:center;position:relative}
@@ -214,24 +219,33 @@
     <div class="logo">עומר ג'רבי</div>
     <div class="side">
       <a class="talk" href="https://ig.me/m/omerjerbi" target="_blank" rel="noopener">בואו נדבר</a>
-      <button class="menu-btn" id="menuBtn" aria-label="תפריט"><span class="bars"><i></i><i></i></span>תפריט</button>
     </div>
   </nav>
 </header>
 
-<!-- תפריט מסך מלא -->
-<div class="menu" id="menu">
-  <button class="menu-close" id="menuClose" aria-label="סגור">✕</button>
-  <a class="mlink" href="#scWorks"><small>01</small>עבודות נבחרות</a>
-  <a class="mlink" href="#scSvc"><small>02</small>מה אני עושה</a>
-  <a class="mlink" href="#scStats"><small>03</small>במספרים</a>
-  <a class="mlink" href="#scGraphics"><small>04</small>גרפיקות</a>
-  <a class="mlink" href="projects.html"><small>05</small>כל הפרויקטים</a>
-  <a class="mlink" href="#scOutro"><small>06</small>צור קשר</a>
-  <div class="menu-foot">
-    <span>עומר ג'רבי © 2026</span>
-    <span><a href="https://instagram.com/omerjerbi" target="_blank" rel="noopener"><span dir="ltr">@omerjerbi</span></a></span>
-  </div>
+<!-- תפריט: פאנל שנפתח מכפתור -->
+<div class="menu-panel" id="menuPanel">
+  <button class="menu-btn" id="menuBtn" aria-label="תפריט">
+    <div class="menu-btn__slider" id="menuBtnSlider">
+      <div class="menu-btn__item">תפריט</div>
+      <div class="menu-btn__item menu-btn__item--close">סגור</div>
+    </div>
+  </button>
+  <nav class="menu-nav" id="menuNav">
+    <div class="menu-nav__body">
+      <div class="menu-nav__link-wrap"><a class="menu-nav__link" href="#scWorks"><small>01</small>עבודות נבחרות</a></div>
+      <div class="menu-nav__link-wrap"><a class="menu-nav__link" href="#scSvc"><small>02</small>מה אני עושה</a></div>
+      <div class="menu-nav__link-wrap"><a class="menu-nav__link" href="#scStats"><small>03</small>במספרים</a></div>
+      <div class="menu-nav__link-wrap"><a class="menu-nav__link" href="#scGraphics"><small>04</small>גרפיקות</a></div>
+      <div class="menu-nav__link-wrap"><a class="menu-nav__link" href="projects.html"><small>05</small>כל הפרויקטים</a></div>
+      <div class="menu-nav__link-wrap"><a class="menu-nav__link" href="#scOutro"><small>06</small>צור קשר</a></div>
+    </div>
+    <div class="menu-nav__footer">
+      <a href="https://instagram.com/omerjerbi" target="_blank" rel="noopener"><span dir="ltr">@omerjerbi</span></a>
+      <a href="https://ig.me/m/omerjerbi" target="_blank" rel="noopener">בואו נדבר</a>
+      <span>עומר ג'רבי © 2026</span>
+    </div>
+  </nav>
 </div>
 
 <!-- ═ 1 ═ הירו -->
@@ -321,15 +335,17 @@
   <div class="sec-head">
     <div><small>[ 04 — גרפיקות ]</small><h2>לא רק וידאו.</h2></div>
   </div>
-  <div class="gfx-grid" id="gfxGrid">
-    <div class="gfx-it" data-label="בית״ר ירושלים — יהב שוע"><img src="images/yarden-shua.jpg" alt="יהב שוע — בית״ר ירושלים"><b>יהב שוע · בית״ר</b></div>
-    <div class="gfx-it" data-label="מכבי תל אביב — דור פרץ"><img src="images/dor-peretz.jpg" alt="דור פרץ — מכבי תל אביב"><b>דור פרץ · מכבי ת״א</b></div>
-    <div class="gfx-it" data-label="מסי מול רונאלדו"><img src="images/messi-ronaldo.jpg" alt="מסי מול רונאלדו — קונספט"><b>מסי נגד רונאלדו</b></div>
-    <div class="gfx-it" data-label="אם תרצו — סיור בכנסת"><img src="images/imtirtzu-knesset.jpg" alt="אם תרצו — סיור בכנסת"><b>אם תרצו · הכנסת</b></div>
-    <div class="gfx-it" data-label="אם תרצו — קמפיין תרומות"><img src="images/imtirtzu-drones-en.jpg" alt="אם תרצו — קמפיין תרומות"><b>אם תרצו · קמפיין</b></div>
-    <div class="gfx-it" data-label="עטיפת אלבום — BENM"><img src="images/ayeeya-cover.jpg" alt="עטיפת אלבום AYEEYA — BENM"><b>עטיפת אלבום · BENM</b></div>
-    <div class="gfx-it" data-label="ספירה לאחור — אייל גולן"><img src="images/eyal-golan-stories.jpg" alt="30 גרפיקות ספירה לאחור — אייל גולן"><b>ספירה לאחור · אייל גולן</b></div>
-    <div class="gfx-it" data-label="WIN — גלידה בטעם בלונדי בייגלה"><img src="images/win-icecream.jpg" alt="WIN — גלידה בטעם בלונדי בייגלה"><b>WIN · פרסומת</b></div>
+  <div class="g3d" id="gfxGrid">
+    <div class="g3d-wrap" id="gfxWrap">
+      <div class="g3d__item" data-label="בית״ר ירושלים — יהב שוע"><div class="g3d__item-inner"><img src="images/yarden-shua.jpg" alt="יהב שוע — בית״ר ירושלים"></div><b>יהב שוע · בית״ר</b></div>
+      <div class="g3d__item" data-label="מכבי תל אביב — דור פרץ"><div class="g3d__item-inner"><img src="images/dor-peretz.jpg" alt="דור פרץ — מכבי תל אביב"></div><b>דור פרץ · מכבי ת״א</b></div>
+      <div class="g3d__item" data-label="מסי מול רונאלדו"><div class="g3d__item-inner"><img src="images/messi-ronaldo.jpg" alt="מסי מול רונאלדו — קונספט"></div><b>מסי נגד רונאלדו</b></div>
+      <div class="g3d__item" data-label="אם תרצו — סיור בכנסת"><div class="g3d__item-inner"><img src="images/imtirtzu-knesset.jpg" alt="אם תרצו — סיור בכנסת"></div><b>אם תרצו · הכנסת</b></div>
+      <div class="g3d__item" data-label="אם תרצו — קמפיין תרומות"><div class="g3d__item-inner"><img src="images/imtirtzu-drones-en.jpg" alt="אם תרצו — קמפיין תרומות"></div><b>אם תרצו · קמפיין</b></div>
+      <div class="g3d__item" data-label="עטיפת אלבום — BENM"><div class="g3d__item-inner"><img src="images/ayeeya-cover.jpg" alt="עטיפת אלבום AYEEYA — BENM"></div><b>עטיפת אלבום · BENM</b></div>
+      <div class="g3d__item" data-label="ספירה לאחור — אייל גולן"><div class="g3d__item-inner"><img src="images/eyal-golan-stories.jpg" alt="30 גרפיקות ספירה לאחור — אייל גולן"></div><b>ספירה לאחור · אייל גולן</b></div>
+      <div class="g3d__item" data-label="WIN — גלידה בטעם בלונדי בייגלה"><div class="g3d__item-inner"><img src="images/win-icecream.jpg" alt="WIN — גלידה בטעם בלונדי בייגלה"></div><b>WIN · פרסומת</b></div>
+    </div>
   </div>
 </section>
 
@@ -448,26 +464,35 @@ lightbox.addEventListener('click', e => { if (e.target === lightbox) closeLB(); 
 addEventListener('keydown', e => { if (e.key === 'Escape') closeLB(); });
 
 document.querySelectorAll('.wk:not(.more)').forEach(t => t.addEventListener('click', () => openLightboxVideo(t.querySelector('video'), t.dataset.label || '')));
-document.querySelectorAll('.gfx-it').forEach(t => t.addEventListener('click', () => openLightboxImage(t.querySelector('img'), t.dataset.label || '')));
+document.querySelectorAll('.g3d__item').forEach(t => t.addEventListener('click', () => openLightboxImage(t.querySelector('img'), t.dataset.label || '')));
 
-/* ── תפריט מסך מלא ── */
+/* ── תפריט: פאנל שנפתח מכפתור (מבוסס Animmaster Navigation Menus #2) ── */
 {
-  const menu = document.getElementById('menu');
-  const links = [...menu.querySelectorAll('.mlink')];
+  const menuPanel = document.getElementById('menuPanel');
+  const menuBtnSlider = document.getElementById('menuBtnSlider');
+  const menuNav = document.getElementById('menuNav');
+  const menuLinks = [...menuNav.querySelectorAll('.menu-nav__link')];
+  const footerLinks = [...menuNav.querySelectorAll('.menu-nav__footer a, .menu-nav__footer span')];
   let open = false;
-  const tlMenu = gsap.timeline({ paused:true })
-    .set(menu, { visibility:'visible' })
-    .to(menu, { clipPath:'polygon(0 0,100% 0,100% 100%,0 100%)', duration:.7, ease:'power4.inOut' })
-    .from(links, { y:46, opacity:0, duration:.6, stagger:.06, ease:'power3.out' }, '-=.25');
+
+  const tlMenu = gsap.timeline({ paused:true, defaults:{ ease:'power3.inOut' } });
+  tlMenu.to(menuPanel, { width:380, height:520, borderRadius:26, duration:.75 });
+  tlMenu.to(menuBtnSlider, { top:'-100%', duration:.5 }, 0);
+  tlMenu.add(() => menuNav.classList.add('menu-nav--visible'), .2);
+  tlMenu.set(menuLinks, { opacity:0, rotationX:90, y:80, x:-20, transformPerspective:300, transformOrigin:'bottom' }, 0);
+  tlMenu.to(menuLinks, { opacity:1, rotationX:0, y:0, x:0, duration:.65, ease:'back.out(1.2)', stagger:.1 }, .5);
+  tlMenu.set(footerLinks, { opacity:0, y:20 }, 0);
+  tlMenu.to(footerLinks, { opacity:1, y:0, duration:.5, ease:'power2.out', stagger:.1 }, .75);
+  tlMenu.eventCallback('onReverseComplete', () => menuNav.classList.remove('menu-nav--visible'));
+
   const setOpen = v => {
     open = v;
     if (v) { tlMenu.play(); lenis.stop(); }
     else { tlMenu.reverse(); lenis.start(); }
   };
-  document.getElementById('menuBtn').addEventListener('click', () => setOpen(true));
-  document.getElementById('menuClose').addEventListener('click', () => setOpen(false));
+  document.getElementById('menuBtn').addEventListener('click', () => setOpen(!open));
   addEventListener('keydown', e => { if (e.key === 'Escape' && open) setOpen(false); });
-  links.forEach(a => a.addEventListener('click', e => {
+  menuLinks.forEach(a => a.addEventListener('click', e => {
     const href = a.getAttribute('href');
     setOpen(false);
     if (href.startsWith('#')) {
@@ -575,10 +600,23 @@ ScrollTrigger.batch('.svc-row', {
 }
 
 /* ════ 7 — גרפיקות ════ */
-ScrollTrigger.batch('.gfx-it', {
-  start:'top 90%',
-  onEnter:els => gsap.from(els, { opacity:0, y:60, scale:.96, duration:.85, stagger:.09, ease:'power3.out' })
-});
+{
+  /* גריד תלת-ממד בגלילה — מבוסס Animmaster Scroll Animation #5 (type1): כל תמונה מתעופפת ממרחק אקראי בציר Z ורוחב אקראי, מתכנסת למקומה עם הגלילה */
+  const gfxGrid = document.getElementById('gfxGrid');
+  const gfxWrap = document.getElementById('gfxWrap');
+  const gfxItems = gfxWrap.querySelectorAll('.g3d__item');
+  const gfxInner = [...gfxItems].map(it => it.querySelector('.g3d__item-inner'));
+  gfxGrid.style.setProperty('--g3d-perspective', '1000px');
+  gfxGrid.style.setProperty('--g3d-inner-scale', '0.55');
+  gsap.timeline({
+    defaults:{ ease:'none' },
+    scrollTrigger:{ trigger:gfxWrap, start:'top bottom+=5%', end:'bottom top-=5%', scrub:true }
+  })
+  .set(gfxWrap, { rotationY:22 })
+  .set(gfxItems, { z:() => gsap.utils.random(-1500,150) })
+  .fromTo(gfxItems, { xPercent:() => gsap.utils.random(-900,-450) }, { xPercent:() => gsap.utils.random(450,900) }, 0)
+  .fromTo(gfxInner, { scale:1.9 }, { scale:.55 }, 0);
+}
 
 /* ════ 8 — אאוטרו ════ */
 gsap.from('.outro-in > *', { opacity:0, y:44, duration:.9, stagger:.1, ease:'power3.out',
