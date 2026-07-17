@@ -12,13 +12,14 @@
   סצנות:
   0. פרילואודר — ערימת גרפיקות + ספירה (Animmaster #26)
   1. הירו — כרטיס מעוגל, וידאו רקע (קליפ ההירו האמיתי של עומר), שם ענק + הד
-  2. מספרים — 4 כרטיסים, אחד זהב
+  2. מספרים — 4 כרטיסים, אחד זהב, לופ עשן אווירתי ברקע
   3. מה אני עושה — שורות 01-04 עם חץ
-  4. הצהרה — כרטיס זהב, טקסט נצבע מילה-מילה
-  5. עבודות נבחרות — גריד וידאו + ▶ + לייטבוקס
-  6. מרקיזה — הד שם מאיץ עם מהירות גלילה
-  7. גרפיקות — כרטיס בהיר (paper) עם גריד
-  8. אאוטרו — CTA עם זוהר ענבר + פוטר
+  4. חלון-זום — פורטרט של עומר גדל למסך מלא בגלילה (pin+scrub)
+  5. הצהרה — כרטיס זהב, טקסט נצבע מילה-מילה
+  6. עבודות נבחרות — גריד וידאו + ▶ + לייטבוקס
+  7. מרקיזה — הד שם מאיץ עם מהירות גלילה
+  8. גרפיקות — כרטיס בהיר (paper) עם גריד
+  9. אאוטרו — CTA עם זוהר ענבר + לופ ניצוצות ברקע + פוטר
   ═══════════════════════════════════════════════
 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -80,7 +81,7 @@
   .hero-mid{position:absolute;inset:0;z-index:3;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 5vw}
   .hero-kicker{font-size:12px;letter-spacing:.42em;color:var(--gold);font-weight:600;margin-bottom:2.4vh}
   .hero-header{overflow:hidden}
-  .hero-header h1{font-weight:900;font-size:clamp(52px,12.5vw,190px);line-height:.9;letter-spacing:-.02em;text-shadow:0 18px 70px rgba(0,0,0,.7)}
+  .hero-header h1{font-weight:900;font-size:clamp(52px,12.5vw,190px);line-height:.9;letter-spacing:-.02em;text-shadow:0 2px 18px rgba(0,0,0,.45)}
   .hero-sub{margin-top:3vh;font-weight:900;font-size:clamp(19px,2.6vw,34px);line-height:1.25;opacity:0}
   .hero-sub em{font-style:normal;color:var(--gold)}
   .hero-p{margin-top:1.6vh;max-width:52ch;color:#c9c1b2;font-weight:300;font-size:15px;opacity:0}
@@ -102,6 +103,11 @@
   .lb-close{position:absolute;top:26px;left:26px;width:46px;height:46px;border-radius:99px;border:1px solid var(--line);color:var(--ink);background:rgba(255,255,255,.06);font-size:18px;cursor:pointer;display:grid;place-items:center;transition:.25s}
   .lb-close:hover{border-color:var(--gold);color:var(--gold)}
   .lb-label{position:absolute;bottom:30px;inset-inline:0;text-align:center;font-size:13px;letter-spacing:.3em;color:var(--dim)}
+
+  /* ── רקע וידאו אווירתי (עשן/ניצוצות) מאחורי כרטיס כהה ── */
+  .sec-vbg{position:absolute;inset:0;opacity:.4;z-index:0}
+  .sec-vbg::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(6,5,4,.25),rgba(6,5,4,.82))}
+  .sec-pad > *{position:relative;z-index:1}
 
   /* ── כותרות סקשן אחידות ── */
   .sec-pad{padding:12vh 5vw}
@@ -134,13 +140,23 @@
   .svc-row:hover .arr{background:var(--gold);border-color:var(--gold);color:#141005;transform:rotate(-45deg)}
   @media(max-width:900px){.svc-row{flex-wrap:wrap;gap:12px}.svc-row p{margin-inline-start:0;max-width:100%}}
 
-  /* ════ 4 — הצהרה (כרטיס זהב) ════ */
+  /* ════ 4 — חלון-זום: פורטרט גדל למסך מלא ════ */
+  .sc-wow{height:100vh;min-height:560px}
+  .wow-stage{position:absolute;inset:0;display:grid;place-items:center}
+  .wow-window{width:26vw;max-width:340px;aspect-ratio:3/4;border-radius:16vw;overflow:hidden;position:relative;will-change:transform,border-radius;box-shadow:0 30px 90px rgba(0,0,0,.6)}
+  .wow-window video{transform:scale(1.3);will-change:transform}
+  .wow-t1,.wow-t2{position:absolute;inset-inline:0;text-align:center;font-weight:900;pointer-events:none;z-index:2;color:var(--ink)}
+  .wow-t1{top:11vh;font-size:clamp(38px,7.5vw,110px);line-height:1;overflow:hidden}
+  .wow-t2{bottom:9vh;font-size:clamp(38px,7.5vw,110px);line-height:1;overflow:hidden;color:transparent;-webkit-text-stroke:1.5px var(--gold)}
+  .wow-t1 span,.wow-t2 span{display:inline-block}
+
+  /* ════ 5 — הצהרה (כרטיס זהב) ════ */
   .statement{padding:16vh 7vw}
   .statement p.manifesto{font-weight:900;font-size:clamp(30px,5.4vw,76px);line-height:1.3;letter-spacing:-.01em;max-width:22ch}
   .manifesto .w{color:rgba(20,16,5,.22);display:inline-block}
   .manifesto .w.hot{color:#141005}
 
-  /* ════ 5 — עבודות נבחרות ════ */
+  /* ════ 6 — עבודות נבחרות ════ */
   .works-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
   @media(max-width:1000px){.works-grid{grid-template-columns:repeat(2,1fr)}}
   .wk{position:relative;border-radius:16px;overflow:hidden;aspect-ratio:3/4;cursor:pointer;border:1px solid var(--line)}
@@ -155,13 +171,13 @@
   .wk.more span{font-weight:900;font-size:clamp(20px,2.2vw,30px);text-align:center;line-height:1.3}
   .wk.more:hover span{color:var(--gold)}
 
-  /* ════ 6 — מרקיזה ════ */
+  /* ════ 7 — מרקיזה ════ */
   .mq-sec{padding:7vh 0;margin:10px;overflow:hidden}
   .mq-track{display:flex;width:max-content;will-change:transform;align-items:baseline;gap:3.2vw}
   .mq-track span{font-weight:900;font-size:clamp(54px,9vw,140px);line-height:1;white-space:nowrap;color:transparent;-webkit-text-stroke:1.5px rgba(245,240,230,.35)}
   .mq-track span.solid{color:var(--gold);-webkit-text-stroke:0}
 
-  /* ════ 7 — גרפיקות ════ */
+  /* ════ 8 — גרפיקות ════ */
   .gfx-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
   .gfx-it{position:relative;overflow:hidden;border-radius:14px;cursor:pointer;aspect-ratio:3/4;border:1px solid rgba(20,16,5,.14)}
   .gfx-it img{transition:transform .6s ease}
@@ -170,7 +186,7 @@
   .gfx-it b{position:absolute;bottom:12px;right:14px;left:14px;z-index:2;font-size:13px;font-weight:500;color:#fff;text-shadow:0 2px 12px rgba(0,0,0,.8)}
   @media(max-width:900px){.gfx-grid{grid-template-columns:repeat(2,1fr)}}
 
-  /* ════ 8 — אאוטרו ════ */
+  /* ════ 9 — אאוטרו ════ */
   .sc-outro{min-height:92vh;display:flex;flex-direction:column;justify-content:center;position:relative}
   .sc-outro::after{content:"";position:absolute;inset:0;background:radial-gradient(95% 60% at 50% 115%,rgba(253,191,45,.3),transparent 60%);pointer-events:none}
   .outro-in{position:relative;z-index:2;text-align:center;padding:14vh 6vw 10vh}
@@ -256,6 +272,7 @@
 
 <!-- ═ 2 ═ מספרים -->
 <section class="sec sec-pad" id="scStats">
+  <div class="sec-vbg"><video src="videos/loop-smoke.mp4" muted loop playsinline preload="auto" autoplay></video></div>
   <div class="sec-head">
     <div><small>[ 01 — במספרים ]</small><h2>התוצאות <em>מדברות.</em></h2></div>
   </div>
@@ -280,12 +297,21 @@
   </div>
 </section>
 
-<!-- ═ 4 ═ הצהרה -->
+<!-- ═ 4 ═ חלון-זום -->
+<section class="sec sc-wow" id="scWow">
+  <div class="wow-stage">
+    <div class="wow-window" id="wowWindow"><video src="videos/hero-portrait.mp4" muted loop playsinline preload="auto" autoplay></video></div>
+    <div class="wow-t1" id="wowT1"><span>מאחורי</span></div>
+    <div class="wow-t2" id="wowT2"><span>כל עבודה.</span></div>
+  </div>
+</section>
+
+<!-- ═ 5 ═ הצהרה -->
 <section class="sec goldbg statement" id="scManifesto">
   <p class="manifesto" id="manifestoTxt">הוליווד זה לא מקום. זה סטנדרט. ואני מביא אותו לכל מוצר, מכל מדף — מהמחשב שלי.</p>
 </section>
 
-<!-- ═ 5 ═ עבודות נבחרות -->
+<!-- ═ 6 ═ עבודות נבחרות -->
 <section class="sec sec-pad" id="scWorks">
   <div class="sec-head">
     <div><small>[ 03 — עבודות נבחרות ]</small><h2>לחצו. <em>תשמעו.</em></h2></div>
@@ -302,12 +328,12 @@
   </div>
 </section>
 
-<!-- ═ 6 ═ מרקיזה -->
+<!-- ═ 7 ═ מרקיזה -->
 <div class="mq-sec"><div class="mq-track" id="mqTrack">
   <span>עומר ג'רבי</span><span class="solid">✦</span><span>מומחה תוכן AI</span><span class="solid">✦</span>
 </div></div>
 
-<!-- ═ 7 ═ גרפיקות -->
+<!-- ═ 8 ═ גרפיקות -->
 <section class="sec paper sec-pad" id="scGraphics">
   <div class="sec-head">
     <div><small>[ 04 — גרפיקות ]</small><h2>לא רק וידאו.</h2></div>
@@ -324,8 +350,9 @@
   </div>
 </section>
 
-<!-- ═ 8 ═ אאוטרו -->
+<!-- ═ 9 ═ אאוטרו -->
 <section class="sec sc-outro" id="scOutro">
+  <div class="sec-vbg" style="opacity:.5"><video src="videos/loop-embers.mp4" muted loop playsinline preload="auto" autoplay></video></div>
   <div class="outro-in">
     <h2>יש לכם מוצר?<br><em>בואו נעשה מזה פרסומת.</em></h2>
     <p>שיחה ראשונה חינם. תוך ימים — סרטון שנראה כמו הפקה שלמה.</p>
@@ -527,7 +554,25 @@ ScrollTrigger.batch('.svc-row', {
   onEnter:els => gsap.from(els, { opacity:0, y:44, duration:.8, stagger:.09, ease:'power3.out' })
 });
 
-/* ════ 4 — הצהרה: נצבע מילה-מילה ════ */
+/* ════ 4 — חלון-זום: פורטרט גדל למסך מלא בגלילה ════ */
+{
+  gsap.from('#wowWindow', { scale:.6, opacity:0, duration:1.2, ease:'power4.out',
+    scrollTrigger:{ trigger:'#scWow', start:'top 75%' } });
+  gsap.from('#wowT1 span, #wowT2 span', { y:60, opacity:0, duration:1, stagger:.1, ease:'power4.out',
+    scrollTrigger:{ trigger:'#scWow', start:'top 70%' } });
+
+  const tl = gsap.timeline({
+    scrollTrigger:{ trigger:'#scWow', start:'top top', end:'+=180%', pin:true, scrub:.6 }
+  });
+  tl.to('#wowWindow', { width:'100vw', maxWidth:'100vw', borderRadius:0, aspectRatio:'auto', height:'100vh', ease:'power2.inOut', duration:1 }, 0)
+    .to('#wowWindow video', { scale:1, ease:'power2.out', duration:1 }, 0)
+    .to('#wowT1', { yPercent:-160, ease:'none', duration:1 }, 0)
+    .to('#wowT2', { yPercent:160, ease:'none', duration:1 }, 0)
+    .to('#wowT1', { yPercent:-40, color:'#fff', duration:.5 }, .62)
+    .to('#wowT2', { yPercent:40, webkitTextStroke:'1.5px #fff', duration:.5 }, .62);
+}
+
+/* ════ 5 — הצהרה: נצבע מילה-מילה ════ */
 {
   const words = splitWords(document.getElementById('manifestoTxt'));
   const st = { p:0 };
@@ -539,13 +584,13 @@ ScrollTrigger.batch('.svc-row', {
     } });
 }
 
-/* ════ 5 — עבודות ════ */
+/* ════ 6 — עבודות ════ */
 ScrollTrigger.batch('.wk', {
   start:'top 90%',
   onEnter:els => gsap.from(els, { opacity:0, y:60, scale:.97, duration:.85, stagger:.08, ease:'power3.out' })
 });
 
-/* ════ 6 — מרקיזה מואצת ════ */
+/* ════ 7 — מרקיזה מואצת ════ */
 {
   const mq = document.getElementById('mqTrack');
   mq.innerHTML += mq.innerHTML + mq.innerHTML;
@@ -554,13 +599,13 @@ ScrollTrigger.batch('.wk', {
   ScrollTrigger.create({ onUpdate:s => { mqSpeed = .55 + Math.min(Math.abs(s.getVelocity())/2500, 3); } });
 }
 
-/* ════ 7 — גרפיקות ════ */
+/* ════ 8 — גרפיקות ════ */
 ScrollTrigger.batch('.gfx-it', {
   start:'top 90%',
   onEnter:els => gsap.from(els, { opacity:0, y:60, scale:.96, duration:.85, stagger:.09, ease:'power3.out' })
 });
 
-/* ════ 8 — אאוטרו ════ */
+/* ════ 9 — אאוטרו ════ */
 gsap.from('.outro-in > *', { opacity:0, y:44, duration:.9, stagger:.1, ease:'power3.out',
   scrollTrigger:{ trigger:'#scOutro', start:'top 65%' } });
 
