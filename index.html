@@ -30,7 +30,7 @@
     --line:rgba(245,240,230,.14); --r:26px;
   }
   *{margin:0;padding:0;box-sizing:border-box}
-  body{background:var(--page);color:var(--ink);font-family:'Heebo',sans-serif;overflow-x:hidden;line-height:1.5}
+  body{background:var(--page);color:var(--ink);font-family:'Heebo',sans-serif;overflow-x:hidden;line-height:1.5;perspective:1400px}
   ::selection{background:var(--gold);color:#0a0908}
   img,video{display:block;width:100%;height:100%;object-fit:cover}
   a{color:inherit;text-decoration:none}
@@ -512,20 +512,19 @@ document.querySelectorAll('.gfx-it').forEach(t => t.addEventListener('click', ()
   tl.add(() => ScrollTrigger.refresh());
   gsap.set('.hero-kicker', { opacity:0 });
 
-  /* פרלקסה עדינה על וידאו הרקע */
+  /* פרלקסה עדינה על וידאו הרקע — הטקסט נשאר קריא לאורך כל ההירו, לא נעלם מוקדם ומשאיר "מסך ריק" */
   gsap.fromTo('#heroBg video', { scale:1.12 }, { scale:1, ease:'none',
     scrollTrigger:{ trigger:'#scHero', start:'top top', end:'bottom top', scrub:.5 } });
-  gsap.to('.hero-mid', { yPercent:-14, opacity:.25, ease:'none',
-    scrollTrigger:{ trigger:'#scHero', start:'top top', end:'bottom 30%', scrub:.5 } });
 }
 
-/* ════ מעבר בין סקשנים: כל כרטיס נחשף ב-wipe אנכי (אותה טכניקת clip-path של הפרילואודר) ════ */
+/* ════ מעבר בין סקשנים: כל כרטיס נכנס בסקייל+הרמה (page-transition אמיתי, transform בלבד — נראה גם על רקע כהה-על-כהה) ════ */
 gsap.utils.toArray('.sec').forEach((sec, i) => {
   if (i === 0) return; /* הירו כבר נחשף ע"י הפרילואודר */
+  gsap.set(sec, { transformOrigin:'50% 100%' });
   gsap.fromTo(sec,
-    { clipPath:'polygon(0% 100%,100% 100%,100% 100%,0% 100%)' },
-    { clipPath:'polygon(0% 0%,100% 0%,100% 100%,0% 100%)', ease:'power2.out',
-      scrollTrigger:{ trigger:sec, start:'top 92%', end:'top 38%', scrub:.6 } });
+    { scale:.82, y:120, opacity:.35, rotationX:6 },
+    { scale:1, y:0, opacity:1, rotationX:0, ease:'power3.out',
+      scrollTrigger:{ trigger:sec, start:'top bottom', end:'top 42%', scrub:.7 } });
 });
 
 /* ════ 2 — מספרים ════ */
