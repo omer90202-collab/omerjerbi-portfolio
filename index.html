@@ -519,6 +519,15 @@ document.querySelectorAll('.gfx-it').forEach(t => t.addEventListener('click', ()
     scrollTrigger:{ trigger:'#scHero', start:'top top', end:'bottom 30%', scrub:.5 } });
 }
 
+/* ════ מעבר בין סקשנים: כל כרטיס נחשף ב-wipe אנכי (אותה טכניקת clip-path של הפרילואודר) ════ */
+gsap.utils.toArray('.sec').forEach((sec, i) => {
+  if (i === 0) return; /* הירו כבר נחשף ע"י הפרילואודר */
+  gsap.fromTo(sec,
+    { clipPath:'polygon(0% 100%,100% 100%,100% 100%,0% 100%)' },
+    { clipPath:'polygon(0% 0%,100% 0%,100% 100%,0% 100%)', ease:'power2.out',
+      scrollTrigger:{ trigger:sec, start:'top 92%', end:'top 38%', scrub:.6 } });
+});
+
 /* ════ 2 — מספרים ════ */
 gsap.utils.toArray('[data-countup]').forEach(el => {
   const target = parseInt(el.dataset.countup, 10), obj = { v:0 };
