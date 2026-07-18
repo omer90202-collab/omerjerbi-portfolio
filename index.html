@@ -28,7 +28,7 @@
     --line:rgba(245,240,230,.14); --r:26px;
   }
   *{margin:0;padding:0;box-sizing:border-box}
-  body{background:var(--page);color:var(--ink);font-family:'Heebo',sans-serif;overflow-x:hidden;line-height:1.5;perspective:1400px}
+  body{background:var(--page);color:var(--ink);font-family:'Heebo',sans-serif;overflow-x:hidden;line-height:1.5}
   ::selection{background:var(--gold);color:#0a0908}
   img,video{display:block;width:100%;height:100%;object-fit:cover}
   a{color:inherit;text-decoration:none}
@@ -448,13 +448,20 @@ document.querySelectorAll('.wk:not(.more)').forEach(t => t.addEventListener('cli
 /* ════ מעבר בין סקשנים: כל כרטיס נכנס בסקייל+הרמה (page-transition אמיתי, transform בלבד — נראה גם על רקע כהה-על-כהה) ════ */
 gsap.utils.toArray('.sec').forEach((sec, i) => {
   if (i === 0) return; /* להירו יש כניסה משלו (קיר הוידאו) */
-  /* עבודות נבחרות מוצמד (pin) — הכניסה חייבת להסתיים הרבה לפני שה-pin נדלק, אחרת רואים אותו חצי-שקוף/מוקטן ("מסך שחור") */
-  const early = sec.id === 'scWorks';
-  gsap.set(sec, { transformOrigin:'50% 100%' });
+  if (sec.id === 'scWorks') {
+    /* עבודות נבחרות מכיל pin מוצמד (#worksPin) — אסור לתת ל-scWorks עצמו transform כלשהו (גם scale/y/rotationX בלבד, לא רק CSS perspective),
+       כי transform לא-none על אב הופך אותו ל-containing block לילד ה-position:fixed שלו וישבור את ה-pin (בדיוק כמו שקרה עם body{perspective}).
+       לכן כאן רק opacity — לא נוגע ב-transform. */
+    gsap.fromTo(sec, { opacity:.35 }, { opacity:1, ease:'power3.out',
+      scrollTrigger:{ trigger:sec, start:'top bottom', end:'top 85%', scrub:.7 } });
+    return;
+  }
+  /* transformPerspective (לא perspective ב-CSS על body!) — נותן עומק ל-rotationX בלי ליצור containing block ל-position:fixed */
+  gsap.set(sec, { transformOrigin:'50% 100%', transformPerspective:1400 });
   gsap.fromTo(sec,
     { scale:.82, y:120, opacity:.35, rotationX:6 },
     { scale:1, y:0, opacity:1, rotationX:0, ease:'power3.out',
-      scrollTrigger:{ trigger:sec, start:'top bottom', end: early ? 'top 85%' : 'top 42%', scrub:.7 } });
+      scrollTrigger:{ trigger:sec, start:'top bottom', end:'top 42%', scrub:.7 } });
 });
 
 /* ════ 2 — מספרים ════ */
