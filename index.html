@@ -10,15 +10,13 @@
   גרסה: עיצוב בהשראת KONTOUR STUDIOS — כרטיסי סקשן מעוגלים,
         טיפוגרפיה ענקית עם הד, שחור + זהב + ענבר. עומר מופיע רק בהירו.
   סצנות:
-  0. פרילואודר — ערימת גרפיקות + ספירה (Animmaster #26)
-  1. הירו — כרטיס מעוגל, וידאו רקע (קליפ ההירו האמיתי של עומר), שם ענק + הד
+  1. הירו — קיר וידאו של 12 עבודות אמיתיות, שם ענק במרכז, לחיצה על חלונית = תצוגה מוגדלת עם סאונד
   2. מספרים — 4 כרטיסים, אחד זהב
-  3. מה אני עושה — שורות 01-04 עם חץ
+  3. מה אני עושה — שורות 01-03 עם חץ
   4. הצהרה — כרטיס זהב, טקסט נצבע מילה-מילה
   5. עבודות נבחרות — גלריה אופקית מוצמדת (pin+scrub) + ▶ + לייטבוקס
   6. מרקיזה — הד שם מאיץ עם מהירות גלילה
-  7. גרפיקות — כרטיס בהיר (paper) עם גריד
-  8. אאוטרו — CTA עם זוהר ענבר + לופ עשן ברקע + פוטר
+  7. אאוטרו — CTA עם זוהר ענבר + לופ עשן ברקע + פוטר
   ═══════════════════════════════════════════════
 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -64,36 +62,21 @@
   .menu-nav__footer a{width:50%;font-size:12px;color:rgba(20,16,5,.65);will-change:transform,opacity}
   @media(max-width:480px){.menu-panel{width:96px;height:40px}.menu-btn{width:96px;height:40px}}
 
-  /* ════ 0 — פרילואודר ════ */
-  .preloader{position:fixed;inset:0;z-index:300;background:var(--page);color:var(--ink);overflow:hidden;clip-path:polygon(0 0,100% 0,100% 100%,0 100%);will-change:clip-path}
-  .pl-imgs{position:absolute;inset:0}
-  .pl-img{position:absolute;top:50%;left:50%;width:210px;height:270px;transform:translate(-50%,-50%) scale(0);border-radius:6px;overflow:hidden;box-shadow:0 20px 50px rgba(0,0,0,.5);clip-path:polygon(20% 20%,80% 20%,80% 80%,20% 80%);will-change:transform,clip-path}
-  @media(max-width:640px){.pl-img{width:130px;height:168px}}
-  .pl-header{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center}
-  .pl-header h1{font-weight:900;font-size:clamp(30px,8vw,100px);line-height:.85;letter-spacing:-.02em}
-  .pl-counter{position:absolute;top:-1.6rem;left:calc(100% + 1.1rem);overflow:hidden}
-  .pl-counter p{transform:translateY(100%);font-size:clamp(13px,1.5vw,20px);color:var(--gold);font-variant-numeric:tabular-nums}
-
-  /* ════ 1 — הירו ════ */
-  .sc-hero{height:calc(100vh - 20px);min-height:560px}
-  .hero-bg{position:absolute;inset:0}
-  .hero-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(6,5,4,.55) 0%,rgba(6,5,4,.35) 45%,rgba(6,5,4,.88) 100%)}
-  .hero-glow{position:absolute;inset:0;background:radial-gradient(95% 55% at 50% 112%,rgba(253,191,45,.3),transparent 62%);pointer-events:none;z-index:2}
-  .hero-echo{position:absolute;top:50%;left:50%;transform:translate(-50%,-58%);z-index:2;font-weight:900;font-size:clamp(110px,26vw,420px);line-height:1;white-space:nowrap;color:transparent;-webkit-text-stroke:1px rgba(245,240,230,.07);pointer-events:none}
-  .hero-mid{position:absolute;inset:0;z-index:3;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 5vw}
-  .hero-kicker{font-size:12px;letter-spacing:.42em;color:var(--gold);font-weight:600;margin-bottom:2.4vh}
-  .hero-header{overflow:hidden}
-  .hero-header h1{font-weight:900;font-size:clamp(52px,12.5vw,190px);line-height:.9;letter-spacing:-.02em;text-shadow:0 2px 18px rgba(0,0,0,.45)}
-  .hero-sub{margin-top:3vh;font-weight:900;font-size:clamp(19px,2.6vw,34px);line-height:1.25;opacity:0}
-  .hero-sub em{font-style:normal;color:var(--gold)}
-  .hero-p{margin-top:1.6vh;max-width:52ch;color:#c9c1b2;font-weight:300;font-size:15px;opacity:0}
-  .hero-ctas{margin-top:4vh;display:flex;gap:14px;flex-wrap:wrap;justify-content:center;opacity:0}
-  .hero-ctas a{display:inline-block;padding:15px 38px;border-radius:99px;font-weight:700;font-size:15px;transition:.3s}
-  .hero-ctas a.main{background:var(--gold);color:#141005}
-  .hero-ctas a.main:hover{transform:translateY(-3px);box-shadow:0 14px 36px rgba(253,191,45,.3)}
-  .hero-ctas a.ghost{border:1px solid var(--line);color:var(--ink)}
-  .hero-ctas a.ghost:hover{border-color:var(--gold);color:var(--gold)}
-  .hero-hint{position:absolute;bottom:3.4vh;inset-inline:0;z-index:3;text-align:center;font-size:11px;letter-spacing:.4em;color:var(--dim);opacity:0}
+  /* ════ 1 — הירו: קיר וידאו ════ */
+  .sc-hero{height:calc(100vh - 20px);min-height:560px;position:relative}
+  .wall-grid{position:absolute;inset:0;display:grid;grid-template-columns:repeat(6,1fr);grid-template-rows:repeat(2,1fr);gap:5px;padding:5px;will-change:transform}
+  @media(max-width:900px){.wall-grid{grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(4,1fr)}}
+  .wtile{position:relative;overflow:hidden;border-radius:4px;cursor:pointer}
+  .wtile video{transition:transform .6s ease}
+  .wtile::after{content:"";position:absolute;inset:0;background:rgba(6,5,4,.4);transition:background .4s}
+  .wtile:hover::after{background:rgba(6,5,4,.12)}
+  .wtile:hover video{transform:scale(1.07)}
+  .hero-textwrap{position:absolute;inset:0;z-index:5;display:grid;place-items:center;text-align:center;pointer-events:none}
+  .hero-textwrap::before{content:"";position:absolute;inset:-15%;background:radial-gradient(closest-side,rgba(6,5,4,.75),transparent 68%)}
+  .hero-kicker{position:relative;font-size:13px;letter-spacing:.42em;color:var(--gold);margin-bottom:20px;font-weight:600}
+  .hero-title{position:relative;font-weight:900;font-size:clamp(52px,10vw,150px);line-height:.95;letter-spacing:-.02em;color:var(--ink);text-shadow:0 14px 60px rgba(0,0,0,.85)}
+  .hero-sub{position:relative;margin-top:16px;font-size:clamp(15px,1.9vw,24px);font-weight:900;letter-spacing:.03em;color:transparent;-webkit-text-stroke:1px var(--gold)}
+  .hero-hint{position:absolute;bottom:4vh;inset-inline:0;text-align:center;z-index:6;font-size:12px;letter-spacing:.4em;color:var(--dim);pointer-events:none}
 
   /* ── תצוגה מוגדלת ── */
   .lightbox{position:fixed;inset:0;z-index:200;display:grid;place-items:center;background:rgba(5,4,3,.94);opacity:0;pointer-events:none;transition:opacity .35s}
@@ -170,18 +153,7 @@
   .mq-track span{font-weight:900;font-size:clamp(54px,9vw,140px);line-height:1;white-space:nowrap;color:transparent;-webkit-text-stroke:1.5px rgba(245,240,230,.35)}
   .mq-track span.solid{color:var(--gold);-webkit-text-stroke:0}
 
-  /* ════ 7 — גרפיקות: גריד תלת-ממד בגלילה (Animmaster Scroll #5, type1) ════ */
-  :root{ --g3d-perspective:1500px; --g3d-inner-scale:1; --g3d-columns:4; --g3d-gap:1.4vw; --g3d-ratio:.75; }
-  .g3d{display:grid;place-items:center;padding:4vh 0;perspective:var(--g3d-perspective)}
-  .g3d-wrap{width:100%;display:grid;grid-template-columns:repeat(var(--g3d-columns),1fr);gap:var(--g3d-gap);transform-style:preserve-3d}
-  .g3d__item{aspect-ratio:var(--g3d-ratio);width:100%;overflow:hidden;position:relative;border-radius:12px;display:grid;place-items:center;cursor:pointer;box-shadow:0 20px 50px rgba(0,0,0,.35)}
-  .g3d__item-inner{position:relative;width:calc(1 / var(--g3d-inner-scale) * 100%);height:calc(1 / var(--g3d-inner-scale) * 100%)}
-  .g3d__item-inner img{width:100%;height:100%;object-fit:cover}
-  .g3d__item::after{content:"";position:absolute;inset:0;background:linear-gradient(transparent 60%,rgba(0,0,0,.55));pointer-events:none}
-  .g3d__item b{position:absolute;bottom:10px;right:12px;left:12px;z-index:2;font-size:12px;font-weight:500;color:#fff;text-shadow:0 2px 10px rgba(0,0,0,.8)}
-  @media(max-width:900px){:root{ --g3d-columns:2; }}
-
-  /* ════ 8 — אאוטרו ════ */
+  /* ════ 7 — אאוטרו ════ */
   .sc-outro{min-height:92vh;display:flex;flex-direction:column;justify-content:center;position:relative}
   .sc-outro::after{content:"";position:absolute;inset:0;background:radial-gradient(95% 60% at 50% 115%,rgba(253,191,45,.3),transparent 60%);pointer-events:none}
   .outro-in{position:relative;z-index:2;text-align:center;padding:14vh 6vw 10vh}
@@ -198,21 +170,6 @@
 </style>
 </head>
 <body>
-
-<div class="preloader" id="preloader">
-  <div class="pl-imgs">
-    <div class="pl-img"><img src="images/yarden-shua.jpg" alt=""></div>
-    <div class="pl-img"><img src="images/dor-peretz.jpg" alt=""></div>
-    <div class="pl-img"><img src="images/messi-ronaldo.jpg" alt=""></div>
-    <div class="pl-img"><img src="images/ayeeya-cover.jpg" alt=""></div>
-    <div class="pl-img"><img src="images/imtirtzu-knesset.jpg" alt=""></div>
-    <div class="pl-img"><img src="images/win-icecream.jpg" alt=""></div>
-  </div>
-  <div class="pl-header">
-    <h1 id="plName">עומר ג'רבי</h1>
-    <div class="pl-counter"><p id="plCounterText">000</p></div>
-  </div>
-</div>
 
 <header>
   <nav class="nav">
@@ -236,9 +193,8 @@
       <div class="menu-nav__link-wrap"><a class="menu-nav__link" href="#scWorks"><small>01</small>עבודות נבחרות</a></div>
       <div class="menu-nav__link-wrap"><a class="menu-nav__link" href="#scSvc"><small>02</small>מה אני עושה</a></div>
       <div class="menu-nav__link-wrap"><a class="menu-nav__link" href="#scStats"><small>03</small>במספרים</a></div>
-      <div class="menu-nav__link-wrap"><a class="menu-nav__link" href="#scGraphics"><small>04</small>גרפיקות</a></div>
-      <div class="menu-nav__link-wrap"><a class="menu-nav__link" href="projects.html"><small>05</small>כל הפרויקטים</a></div>
-      <div class="menu-nav__link-wrap"><a class="menu-nav__link" href="#scOutro"><small>06</small>צור קשר</a></div>
+      <div class="menu-nav__link-wrap"><a class="menu-nav__link" href="projects.html"><small>04</small>כל הפרויקטים</a></div>
+      <div class="menu-nav__link-wrap"><a class="menu-nav__link" href="#scOutro"><small>05</small>צור קשר</a></div>
     </div>
     <div class="menu-nav__footer">
       <a href="https://instagram.com/omerjerbi" target="_blank" rel="noopener"><span dir="ltr">@omerjerbi</span></a>
@@ -248,19 +204,27 @@
   </nav>
 </div>
 
-<!-- ═ 1 ═ הירו -->
+<!-- ═ 1 ═ הירו: קיר וידאו -->
 <section class="sec sc-hero" id="scHero">
-  <div class="hero-bg" id="heroBg"><video src="videos/hero-wide.mp4" muted loop playsinline preload="auto" autoplay></video></div>
-  <div class="hero-glow"></div>
-  <div class="hero-echo" aria-hidden="true">עומר ג'רבי</div>
-  <div class="hero-mid">
-    <div class="hero-kicker">[ תוכן AI קולנועי · ישראל ]</div>
-    <div class="hero-header"><h1 id="heroName">עומר ג'רבי</h1></div>
-    <div class="hero-sub">מוצר מהמדף. <em>פרסומת מהקולנוע.</em></div>
-    <p class="hero-p">מומחה תוכן AI · פרסומות וסרטוני תדמית ברמה הוליוודית — בלי סט, בלי צלם, בלי חודשי המתנה.</p>
-    <div class="hero-ctas">
-      <a class="main" href="https://ig.me/m/omerjerbi" target="_blank" rel="noopener">בואו נדבר</a>
-      <a class="ghost" href="#scWorks">↓ צפייה בעבודות</a>
+  <div class="wall-grid" id="wallGrid">
+    <div class="wtile" data-label="אייל גולן"><video src="videos/eyal-golan.mp4" muted loop playsinline preload="auto" autoplay></video></div>
+    <div class="wtile" data-label="הישרדות"><video src="videos/survivor.mp4" muted loop playsinline preload="auto" autoplay></video></div>
+    <div class="wtile" data-label="אם תרצו"><video src="videos/imtirtzu-2.mp4" muted loop playsinline preload="auto" autoplay></video></div>
+    <div class="wtile" data-label="קרב תל חי"><video src="videos/telhai-en.mp4" muted loop playsinline preload="auto" autoplay></video></div>
+    <div class="wtile" data-label="נעליים"><video src="videos/heels.mp4" muted loop playsinline preload="auto" autoplay></video></div>
+    <div class="wtile" data-label="קמפיין כדורגל"><video src="videos/mbappe.mp4" muted loop playsinline preload="auto" autoplay></video></div>
+    <div class="wtile" data-label="ג'ין טוניק — פורים"><video src="videos/ginton-purim.mp4" muted loop playsinline preload="auto" autoplay></video></div>
+    <div class="wtile" data-label="בית״ר ירושלים"><video src="videos/beitar-puppets.mp4" muted loop playsinline preload="auto" autoplay></video></div>
+    <div class="wtile" data-label="הפועל"><video src="videos/hapoel.mp4" muted loop playsinline preload="auto" autoplay></video></div>
+    <div class="wtile" data-label="בר נואר"><video src="videos/noir-bar.mp4" muted loop playsinline preload="auto" autoplay></video></div>
+    <div class="wtile" data-label="מגנום"><video src="videos/raw-magnum.mp4" muted loop playsinline preload="auto" autoplay></video></div>
+    <div class="wtile" data-label="נביעות"><video src="videos/raw-neviot.mp4" muted loop playsinline preload="auto" autoplay></video></div>
+  </div>
+  <div class="hero-textwrap">
+    <div>
+      <div class="hero-kicker">ברמה הוליוודית. תכלס.</div>
+      <h1 class="hero-title">עומר ג'רבי</h1>
+      <div class="hero-sub">מומחה תוכן AI</div>
     </div>
   </div>
   <div class="hero-hint">גלול</div>
@@ -290,13 +254,12 @@
 <!-- ═ 3 ═ מה אני עושה -->
 <section class="sec sec-pad" id="scSvc">
   <div class="sec-head">
-    <div><small>[ 02 — מה אני עושה ]</small><h2>ארבעה דברים.<br><em>ברמה אחת.</em></h2></div>
+    <div><small>[ 02 — מה אני עושה ]</small><h2>שלושה דברים.<br><em>ברמה אחת.</em></h2></div>
   </div>
   <div class="svc-list">
     <a class="svc-row" href="#scWorks"><span class="idx">[01]</span><h3>פרסומות למוצרים</h3><p>מוצר מהמדף הופך לפרסומת קולנועית — מהקונספט ועד הקאט הסופי.</p><span class="arr">←</span></a>
     <a class="svc-row" href="#scWorks"><span class="idx">[02]</span><h3>עבודות ללקוחות</h3><p>אמנים, תוכניות פריים-טיים, ארגונים ומוסדות — קמפיין שלם מהמחשב שלי.</p><span class="arr">←</span></a>
     <a class="svc-row" href="#scWorks"><span class="idx">[03]</span><h3>קריאייטיב</h3><p>רעיונות שרצתי איתם בלי בריף — כי אי אפשר היה שלא.</p><span class="arr">←</span></a>
-    <a class="svc-row" href="#scGraphics"><span class="idx">[04]</span><h3>גרפיקה ועיצוב</h3><p>פוסטרים, עטיפות אלבום וקמפיינים — לא רק וידאו.</p><span class="arr">←</span></a>
   </div>
 </section>
 
@@ -313,13 +276,13 @@
     </div>
     <div class="works-track" id="worksTrack">
       <div class="works-lead">עבודות ←</div>
-      <div class="wk" data-label="אייל גולן"><video src="videos/eyal-golan.mp4" muted loop playsinline preload="metadata"></video><span class="play">▶</span><span class="cat">עבודה ללקוח</span><b>אייל גולן</b></div>
-      <div class="wk" data-label="הישרדות"><video src="videos/survivor.mp4" muted loop playsinline preload="metadata"></video><span class="play">▶</span><span class="cat">עבודה ללקוח</span><b>הישרדות</b></div>
-      <div class="wk" data-label="קרב תל חי"><video src="videos/telhai-en.mp4" muted loop playsinline preload="metadata"></video><span class="play">▶</span><span class="cat">עבודה ללקוח</span><b>קרב תל חי</b></div>
-      <div class="wk" data-label="קמפיין כדורגל"><video src="videos/mbappe.mp4" muted loop playsinline preload="metadata"></video><span class="play">▶</span><span class="cat">קריאייטיב</span><b>קמפיין כדורגל</b></div>
-      <div class="wk" data-label="ג'ין טוניק — פורים"><video src="videos/ginton-purim.mp4" muted loop playsinline preload="metadata"></video><span class="play">▶</span><span class="cat">קריאייטיב</span><b>ג'ין טוניק · פורים</b></div>
-      <div class="wk" data-label="בית״ר ירושלים"><video src="videos/beitar-puppets.mp4" muted loop playsinline preload="metadata"></video><span class="play">▶</span><span class="cat">עבודה ללקוח</span><b>בית״ר ירושלים</b></div>
-      <div class="wk" data-label="ערק נוח"><video src="videos/raw-arak.mp4" muted loop playsinline preload="metadata"></video><span class="play">▶</span><span class="cat">פרסומת</span><b>ערק נוח</b></div>
+      <div class="wk" data-label="אייל גולן"><video src="videos/eyal-golan.mp4" muted loop playsinline preload="auto"></video><span class="play">▶</span><span class="cat">עבודה ללקוח</span><b>אייל גולן</b></div>
+      <div class="wk" data-label="הישרדות"><video src="videos/survivor.mp4" muted loop playsinline preload="auto"></video><span class="play">▶</span><span class="cat">עבודה ללקוח</span><b>הישרדות</b></div>
+      <div class="wk" data-label="קרב תל חי"><video src="videos/telhai-en.mp4" muted loop playsinline preload="auto"></video><span class="play">▶</span><span class="cat">עבודה ללקוח</span><b>קרב תל חי</b></div>
+      <div class="wk" data-label="קמפיין כדורגל"><video src="videos/mbappe.mp4" muted loop playsinline preload="auto"></video><span class="play">▶</span><span class="cat">קריאייטיב</span><b>קמפיין כדורגל</b></div>
+      <div class="wk" data-label="ג'ין טוניק — פורים"><video src="videos/ginton-purim.mp4" muted loop playsinline preload="auto"></video><span class="play">▶</span><span class="cat">קריאייטיב</span><b>ג'ין טוניק · פורים</b></div>
+      <div class="wk" data-label="בית״ר ירושלים"><video src="videos/beitar-puppets.mp4" muted loop playsinline preload="auto"></video><span class="play">▶</span><span class="cat">עבודה ללקוח</span><b>בית״ר ירושלים</b></div>
+      <div class="wk" data-label="ערק נוח"><video src="videos/raw-arak.mp4" muted loop playsinline preload="auto"></video><span class="play">▶</span><span class="cat">פרסומת</span><b>ערק נוח</b></div>
       <a class="wk more" href="projects.html"><span>לכל<br>הפרויקטים ←</span></a>
     </div>
   </div>
@@ -330,26 +293,7 @@
   <span>עומר ג'רבי</span><span class="solid">✦</span><span>מומחה תוכן AI</span><span class="solid">✦</span>
 </div></div>
 
-<!-- ═ 7 ═ גרפיקות -->
-<section class="sec paper sec-pad" id="scGraphics">
-  <div class="sec-head">
-    <div><small>[ 04 — גרפיקות ]</small><h2>לא רק וידאו.</h2></div>
-  </div>
-  <div class="g3d" id="gfxGrid">
-    <div class="g3d-wrap" id="gfxWrap">
-      <div class="g3d__item" data-label="בית״ר ירושלים — יהב שוע"><div class="g3d__item-inner"><img src="images/yarden-shua.jpg" alt="יהב שוע — בית״ר ירושלים"></div><b>יהב שוע · בית״ר</b></div>
-      <div class="g3d__item" data-label="מכבי תל אביב — דור פרץ"><div class="g3d__item-inner"><img src="images/dor-peretz.jpg" alt="דור פרץ — מכבי תל אביב"></div><b>דור פרץ · מכבי ת״א</b></div>
-      <div class="g3d__item" data-label="מסי מול רונאלדו"><div class="g3d__item-inner"><img src="images/messi-ronaldo.jpg" alt="מסי מול רונאלדו — קונספט"></div><b>מסי נגד רונאלדו</b></div>
-      <div class="g3d__item" data-label="אם תרצו — סיור בכנסת"><div class="g3d__item-inner"><img src="images/imtirtzu-knesset.jpg" alt="אם תרצו — סיור בכנסת"></div><b>אם תרצו · הכנסת</b></div>
-      <div class="g3d__item" data-label="אם תרצו — קמפיין תרומות"><div class="g3d__item-inner"><img src="images/imtirtzu-drones-en.jpg" alt="אם תרצו — קמפיין תרומות"></div><b>אם תרצו · קמפיין</b></div>
-      <div class="g3d__item" data-label="עטיפת אלבום — BENM"><div class="g3d__item-inner"><img src="images/ayeeya-cover.jpg" alt="עטיפת אלבום AYEEYA — BENM"></div><b>עטיפת אלבום · BENM</b></div>
-      <div class="g3d__item" data-label="ספירה לאחור — אייל גולן"><div class="g3d__item-inner"><img src="images/eyal-golan-stories.jpg" alt="30 גרפיקות ספירה לאחור — אייל גולן"></div><b>ספירה לאחור · אייל גולן</b></div>
-      <div class="g3d__item" data-label="WIN — גלידה בטעם בלונדי בייגלה"><div class="g3d__item-inner"><img src="images/win-icecream.jpg" alt="WIN — גלידה בטעם בלונדי בייגלה"></div><b>WIN · פרסומת</b></div>
-    </div>
-  </div>
-</section>
-
-<!-- ═ 8 ═ אאוטרו -->
+<!-- ═ 7 ═ אאוטרו -->
 <section class="sec sc-outro" id="scOutro">
   <div class="sec-vbg" style="opacity:.5"><video src="videos/loop-smoke.mp4" muted loop playsinline preload="auto" autoplay></video></div>
   <div class="outro-in">
@@ -368,12 +312,12 @@
   </div>
 </section>
 
-<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/CustomEase.min.js"></script>
-<script src="https://unpkg.com/lenis@1.3.4/dist/lenis.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js" defer></script>
+<script src="https://unpkg.com/lenis@1.3.4/dist/lenis.min.js" defer></script>
 <script>
-gsap.registerPlugin(ScrollTrigger, CustomEase);
+document.addEventListener('DOMContentLoaded', function(){
+gsap.registerPlugin(ScrollTrigger);
 
 /* ── גלילה חלקה ── */
 const lenis = new Lenis({ lerp:.085 });
@@ -382,28 +326,6 @@ gsap.ticker.add(t => lenis.raf(t*1000));
 gsap.ticker.lagSmoothing(0);
 
 const isMobile = matchMedia('(max-width: 760px)').matches;
-
-/* ── מיסוך תווים/מילים ל-RTL — כל יחידה עטופה ב-overflow:hidden משלה (בטוח לעברית) ── */
-function maskChars(el){
-  const out = [];
-  [...el.childNodes].forEach(n => {
-    if (n.nodeType !== 3) return;
-    const frag = document.createDocumentFragment();
-    [...n.textContent].forEach(ch => {
-      if (/\s/.test(ch)) { frag.appendChild(document.createTextNode(' ')); return; }
-      const wrap = document.createElement('span');
-      wrap.style.cssText = 'display:inline-block;overflow:hidden';
-      const inner = document.createElement('span');
-      inner.style.cssText = 'display:inline-block;transform:translateY(100%)';
-      inner.textContent = ch;
-      wrap.appendChild(inner);
-      out.push(inner);
-      frag.appendChild(wrap);
-    });
-    n.replaceWith(frag);
-  });
-  return out;
-}
 
 /* ── פיצול מילים ל-word-paint (בלי מיסוך) ── */
 function splitWords(el){
@@ -464,7 +386,6 @@ lightbox.addEventListener('click', e => { if (e.target === lightbox) closeLB(); 
 addEventListener('keydown', e => { if (e.key === 'Escape') closeLB(); });
 
 document.querySelectorAll('.wk:not(.more)').forEach(t => t.addEventListener('click', () => openLightboxVideo(t.querySelector('video'), t.dataset.label || '')));
-document.querySelectorAll('.g3d__item').forEach(t => t.addEventListener('click', () => openLightboxImage(t.querySelector('img'), t.dataset.label || '')));
 
 /* ── תפריט: פאנל שנפתח מכפתור (מבוסס Animmaster Navigation Menus #2) ── */
 {
@@ -502,54 +423,38 @@ document.querySelectorAll('.g3d__item').forEach(t => t.addEventListener('click',
   }));
 }
 
-/* ════ 0+1 — פרילואודר → הירו ════ */
+/* ════ 1 — הירו קיר-וידאו: כניסה מפוזרת + pin/scrub עדין + תצוגה מוגדלת ════ */
 {
-  CustomEase.create('hop', '0.8, 0, 0.2, 1');
-  CustomEase.create('hop2', '0.9, 0, 0.1, 1');
+  gsap.from('.wtile', {
+    opacity:0, scale:.35, duration:1.1, ease:'power3.out',
+    stagger:{ amount:1, from:'random', grid:isMobile ? [4,3] : [2,6] }
+  });
+  gsap.from('.hero-kicker, .hero-title, .hero-sub', {
+    opacity:0, y:26, duration:1, ease:'power3.out', stagger:.1, delay:.35
+  });
 
-  const plChars = maskChars(document.getElementById('plName'));
-  const heroChars = maskChars(document.getElementById('heroName'));
-  const counterP = document.getElementById('plCounterText');
+  gsap.timeline({
+    scrollTrigger:{ trigger:'#scHero', start:'top top', end:'+=70%', pin:true, scrub:.6 }
+  })
+  .to('#wallGrid', { scale:1.08, ease:'none', duration:1 }, 0)
+  .to('.hero-textwrap', { opacity:0, scale:.92, ease:'none', duration:.6 }, 0)
+  .to('.hero-hint', { opacity:0, duration:.2 }, 0);
 
-  const plImgRot = [7, -3, 11, -8, 4, -11];
-  gsap.set('.pl-img', { rotate:(i) => plImgRot[i] });
-
-  const tl = gsap.timeline({ delay:.4 });
-  tl.to('.pl-img', { scale:1, clipPath:'polygon(0% 0%,100% 0%,100% 100%,0% 100%)', duration:1, ease:'hop', stagger:.18 }, 0);
-  tl.to(plChars, { y:'0%', duration:1, ease:'hop2', stagger:{ each:.11, from:'random' } }, .35);
-  tl.to(counterP, { y:'0%', duration:1, ease:'hop2',
-    onStart:() => {
-      const c = { v:0 };
-      gsap.to(c, { v:100, duration:1.8, delay:.4, ease:'power2.inOut',
-        onUpdate:() => counterP.textContent = String(Math.round(c.v)).padStart(3,'0') });
-    } }, '<');
-  tl.to(counterP, { y:'-100%', duration:.7, ease:'hop2' }, 3);
-  tl.to(plChars, { y:'-100%', duration:.7, ease:'hop2', stagger:{ each:.11, from:'random' } }, 3);
-  tl.to('.pl-img', { scale:0, clipPath:'polygon(20% 20%,80% 20%,80% 80%,20% 80%)', duration:.9, ease:'hop2', stagger:-.07 }, 3.2);
-  tl.to('#preloader', { clipPath:'polygon(0% 0%,100% 0%,100% 0%,0% 0%)', duration:1, ease:'hop2' }, 4.05);
-  tl.set('#preloader', { display:'none' });
-  tl.to(heroChars, { y:'0%', duration:1, ease:'hop', stagger:{ each:.06, from:'random' } }, 4.35);
-  tl.to('.hero-kicker', { opacity:1, duration:.6 }, 4.4);
-  tl.fromTo('.hero-sub', { y:18 }, { opacity:1, y:0, duration:.8, ease:'power2.out' }, 4.6);
-  tl.fromTo('.hero-p', { y:14 }, { opacity:1, y:0, duration:.8, ease:'power2.out' }, 4.72);
-  tl.fromTo('.hero-ctas', { y:14 }, { opacity:1, y:0, duration:.8, ease:'power2.out' }, 4.84);
-  tl.to('.hero-hint', { opacity:1, duration:.6 }, 5.15);
-  tl.add(() => ScrollTrigger.refresh());
-  gsap.set('.hero-kicker', { opacity:0 });
-
-  /* פרלקסה עדינה על וידאו הרקע — הטקסט נשאר קריא לאורך כל ההירו, לא נעלם מוקדם ומשאיר "מסך ריק" */
-  gsap.fromTo('#heroBg video', { scale:1.12 }, { scale:1, ease:'none',
-    scrollTrigger:{ trigger:'#scHero', start:'top top', end:'bottom top', scrub:.5 } });
+  document.querySelectorAll('.wtile').forEach(tile => {
+    tile.addEventListener('click', () => openLightboxVideo(tile.querySelector('video'), tile.dataset.label || ''));
+  });
 }
 
 /* ════ מעבר בין סקשנים: כל כרטיס נכנס בסקייל+הרמה (page-transition אמיתי, transform בלבד — נראה גם על רקע כהה-על-כהה) ════ */
 gsap.utils.toArray('.sec').forEach((sec, i) => {
-  if (i === 0) return; /* הירו כבר נחשף ע"י הפרילואודר */
+  if (i === 0) return; /* להירו יש כניסה משלו (קיר הוידאו) */
+  /* עבודות נבחרות מוצמד (pin) — הכניסה חייבת להסתיים הרבה לפני שה-pin נדלק, אחרת רואים אותו חצי-שקוף/מוקטן ("מסך שחור") */
+  const early = sec.id === 'scWorks';
   gsap.set(sec, { transformOrigin:'50% 100%' });
   gsap.fromTo(sec,
     { scale:.82, y:120, opacity:.35, rotationX:6 },
     { scale:1, y:0, opacity:1, rotationX:0, ease:'power3.out',
-      scrollTrigger:{ trigger:sec, start:'top bottom', end:'top 42%', scrub:.7 } });
+      scrollTrigger:{ trigger:sec, start:'top bottom', end: early ? 'top 85%' : 'top 42%', scrub:.7 } });
 });
 
 /* ════ 2 — מספרים ════ */
@@ -599,31 +504,13 @@ ScrollTrigger.batch('.svc-row', {
   ScrollTrigger.create({ onUpdate:s => { mqSpeed = .55 + Math.min(Math.abs(s.getVelocity())/2500, 3); } });
 }
 
-/* ════ 7 — גרפיקות ════ */
-{
-  /* גריד תלת-ממד בגלילה — מבוסס Animmaster Scroll Animation #5 (type1): כל תמונה מתעופפת ממרחק אקראי בציר Z ורוחב אקראי, מתכנסת למקומה עם הגלילה */
-  const gfxGrid = document.getElementById('gfxGrid');
-  const gfxWrap = document.getElementById('gfxWrap');
-  const gfxItems = gfxWrap.querySelectorAll('.g3d__item');
-  const gfxInner = [...gfxItems].map(it => it.querySelector('.g3d__item-inner'));
-  gfxGrid.style.setProperty('--g3d-perspective', '1000px');
-  gfxGrid.style.setProperty('--g3d-inner-scale', '0.55');
-  gsap.timeline({
-    defaults:{ ease:'none' },
-    scrollTrigger:{ trigger:gfxWrap, start:'top bottom+=5%', end:'bottom top-=5%', scrub:true }
-  })
-  .set(gfxWrap, { rotationY:22 })
-  .set(gfxItems, { z:() => gsap.utils.random(-1500,150) })
-  .fromTo(gfxItems, { xPercent:() => gsap.utils.random(-900,-450) }, { xPercent:() => gsap.utils.random(450,900) }, 0)
-  .fromTo(gfxInner, { scale:1.9 }, { scale:.55 }, 0);
-}
-
-/* ════ 8 — אאוטרו ════ */
+/* ════ 7 — אאוטרו ════ */
 gsap.from('.outro-in > *', { opacity:0, y:44, duration:.9, stagger:.1, ease:'power3.out',
   scrollTrigger:{ trigger:'#scOutro', start:'top 65%' } });
 
 /* רענון מדידות אחרי טעינה — חובה */
 window.addEventListener('load', () => ScrollTrigger.refresh());
+});
 </script>
 </body>
 </html>
