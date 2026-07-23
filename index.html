@@ -192,7 +192,6 @@
     <div class="menu-nav__body">
       <div class="menu-nav__link-wrap"><a class="menu-nav__link" href="#scWorks">עבודות נבחרות</a></div>
       <div class="menu-nav__link-wrap"><a class="menu-nav__link" href="#scSvc">מה אני עושה</a></div>
-      <div class="menu-nav__link-wrap"><a class="menu-nav__link" href="#scStats">במספרים</a></div>
       <div class="menu-nav__link-wrap"><a class="menu-nav__link" href="projects.html">כל הפרויקטים</a></div>
       <div class="menu-nav__link-wrap"><a class="menu-nav__link" href="#scOutro">צור קשר</a></div>
     </div>
@@ -222,7 +221,6 @@
   </div>
   <div class="hero-textwrap">
     <div>
-      <div class="hero-kicker">ברמה הוליוודית. תכלס.</div>
       <h1 class="hero-title">עומר ג'רבי</h1>
       <div class="hero-sub">מומחה תוכן AI</div>
     </div>
@@ -238,19 +236,6 @@
   <div class="lb-label" id="lbLabel"></div>
 </div>
 
-<!-- ═ 2 ═ מספרים -->
-<section class="sec sec-pad" id="scStats">
-  <div class="sec-head">
-    <div><small>במספרים</small><h2>התוצאות <em>מדברות.</em></h2></div>
-  </div>
-  <div class="stats-grid">
-    <div class="stat gold"><b><span data-countup="40000">0</span><span class="unit">₪+</span></b><p>הכנסה מתוכן AI בחודש שיא — לבד, מהמחשב</p></div>
-    <div class="stat"><b><span data-countup="13000">0</span><span class="unit">₪</span></b><p>שילמו על סרטון AI אחד</p></div>
-    <div class="stat"><b><span data-countup="1000000">0</span><span class="unit">+</span></b><p>צפיות בשני סרטוני ליהוק — אחד מהם עקף פוסט רשמי של רשת</p></div>
-    <div class="stat"><b><span data-countup="10">0</span><span class="unit">דק'</span></b><p>ל-30 גרפיקות ספירה לאחור לאייל גולן</p></div>
-  </div>
-</section>
-
 <!-- ═ 3 ═ מה אני עושה -->
 <section class="sec sec-pad" id="scSvc">
   <div class="sec-head">
@@ -261,11 +246,6 @@
     <a class="svc-row" href="#scWorks"><span class="idx">[02]</span><h3>עבודות ללקוחות</h3><p>אמנים, תוכניות פריים-טיים, ארגונים ומוסדות — קמפיין שלם מהמחשב שלי.</p><span class="arr">←</span></a>
     <a class="svc-row" href="#scWorks"><span class="idx">[03]</span><h3>קריאייטיב</h3><p>רעיונות שרצתי איתם בלי בריף — כי אי אפשר היה שלא.</p><span class="arr">←</span></a>
   </div>
-</section>
-
-<!-- ═ 4 ═ הצהרה -->
-<section class="sec goldbg statement" id="scManifesto">
-  <p class="manifesto" id="manifestoTxt">הוליווד זה לא מקום. זה סטנדרט. ואני מביא אותו לכל מוצר, מכל מדף — מהמחשב שלי.</p>
 </section>
 
 <!-- ═ 5 ═ עבודות נבחרות: גלריה אופקית מוצמדת -->
@@ -481,18 +461,6 @@ ScrollTrigger.batch('.svc-row', {
   start:'top 90%',
   onEnter:els => gsap.from(els, { opacity:0, y:44, duration:.8, stagger:.09, ease:'power3.out' })
 });
-
-/* ════ 4 — הצהרה: נצבע מילה-מילה ════ */
-{
-  const words = splitWords(document.getElementById('manifestoTxt'));
-  const st = { p:0 };
-  gsap.to(st, { p:1, ease:'none',
-    scrollTrigger:{ trigger:'#scManifesto', start:'top 72%', end:'bottom 48%', scrub:.4 },
-    onUpdate:() => {
-      const upto = Math.floor(st.p * words.length);
-      words.forEach((w,i) => w.classList.toggle('hot', i <= upto));
-    } });
-}
 
 /* ════ 5 — עבודות: גלריה אופקית מוצמדת (RTL → x חיובי) ════ */
 {
