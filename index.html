@@ -99,7 +99,7 @@
   #galaxy canvas{display:block;width:100%;height:100%}
 
   /* ── סמן-קו עוקב (Mouse Effects #14 — עקומת ספרינג בקנבס) ── */
-  #curlyCursor{position:fixed;inset:0;z-index:250;pointer-events:none;mix-blend-mode:screen}
+  #curlyCursor{position:fixed;inset:0;z-index:250;pointer-events:none}
 
   /* ── כותרות סקשן אחידות ── */
   .sec-pad{padding:12vh 5vw}
@@ -215,18 +215,18 @@
 <!-- ═ 1 ═ הירו: קיר וידאו -->
 <section class="sec sc-hero" id="scHero">
   <div class="wall-grid" id="wallGrid">
-    <div class="wtile" data-label="אייל גולן"><video src="videos/eyal-golan.mp4" muted loop playsinline preload="auto" autoplay></video></div>
-    <div class="wtile" data-label="הישרדות"><video src="videos/survivor.mp4" muted loop playsinline preload="auto" autoplay></video></div>
-    <div class="wtile" data-label="Power Barrier"><video src="videos/power-barrier-1.mp4" muted loop playsinline preload="auto" autoplay></video></div>
-    <div class="wtile" data-label="קרב תל חי"><video src="videos/telhai-en.mp4" muted loop playsinline preload="auto" autoplay></video></div>
-    <div class="wtile" data-label="נעליים"><video src="videos/heels.mp4" muted loop playsinline preload="auto" autoplay></video></div>
-    <div class="wtile" data-label="קמפיין כדורגל"><video src="videos/mbappe.mp4" muted loop playsinline preload="auto" autoplay></video></div>
-    <div class="wtile" data-label="האח הגדול"><video src="videos/save1080.mp4" muted loop playsinline preload="auto" autoplay></video></div>
-    <div class="wtile" data-label="בית״ר ירושלים"><video src="videos/beitar-puppets.mp4" muted loop playsinline preload="auto" autoplay></video></div>
-    <div class="wtile" data-label="הפועל"><video src="videos/hapoel.mp4" muted loop playsinline preload="auto" autoplay></video></div>
-    <div class="wtile" data-label="בר נואר"><video src="videos/noir-bar.mp4" muted loop playsinline preload="auto" autoplay></video></div>
-    <div class="wtile" data-label="מגנום"><video src="videos/raw-magnum.mp4" muted loop playsinline preload="auto" autoplay></video></div>
-    <div class="wtile" data-label="נביעות"><video src="videos/raw-neviot.mp4" muted loop playsinline preload="auto" autoplay></video></div>
+    <div class="wtile" data-label="אייל גולן"><video src="videos/eyal-golan.mp4" muted loop playsinline preload="metadata"></video></div>
+    <div class="wtile" data-label="הישרדות"><video src="videos/survivor.mp4" muted loop playsinline preload="metadata"></video></div>
+    <div class="wtile" data-label="Power Barrier"><video src="videos/power-barrier-1.mp4" muted loop playsinline preload="metadata"></video></div>
+    <div class="wtile" data-label="קרב תל חי" data-full="videos/telhai-en.mp4"><video src="videos/telhai-en-loop.mp4" muted loop playsinline preload="metadata"></video></div>
+    <div class="wtile" data-label="נעליים"><video src="videos/heels.mp4" muted loop playsinline preload="metadata"></video></div>
+    <div class="wtile" data-label="קמפיין כדורגל"><video src="videos/mbappe.mp4" muted loop playsinline preload="metadata"></video></div>
+    <div class="wtile" data-label="האח הגדול"><video src="videos/save1080.mp4" muted loop playsinline preload="metadata"></video></div>
+    <div class="wtile" data-label="בית״ר ירושלים"><video src="videos/beitar-puppets.mp4" muted loop playsinline preload="metadata"></video></div>
+    <div class="wtile" data-label="הפועל"><video src="videos/hapoel.mp4" muted loop playsinline preload="metadata"></video></div>
+    <div class="wtile" data-label="בר נואר"><video src="videos/noir-bar.mp4" muted loop playsinline preload="metadata"></video></div>
+    <div class="wtile" data-label="מגנום"><video src="videos/raw-magnum.mp4" muted loop playsinline preload="metadata"></video></div>
+    <div class="wtile" data-label="נביעות"><video src="videos/raw-neviot.mp4" muted loop playsinline preload="metadata"></video></div>
   </div>
   <div class="hero-textwrap">
     <div>
@@ -267,7 +267,7 @@
       <div class="works-lead">עבודות ←</div>
       <div class="wk" data-label="אייל גולן"><video src="videos/eyal-golan.mp4" muted loop playsinline preload="auto"></video><span class="play">▶</span><span class="cat">עבודה ללקוח</span><b>אייל גולן</b></div>
       <div class="wk" data-label="הישרדות"><video src="videos/survivor.mp4" muted loop playsinline preload="auto"></video><span class="play">▶</span><span class="cat">עבודה ללקוח</span><b>הישרדות</b></div>
-      <div class="wk" data-label="קרב תל חי"><video src="videos/telhai-en.mp4" muted loop playsinline preload="auto"></video><span class="play">▶</span><span class="cat">עבודה ללקוח</span><b>קרב תל חי</b></div>
+      <div class="wk" data-label="קרב תל חי" data-full="videos/telhai-en.mp4"><video src="videos/telhai-en-loop.mp4" muted loop playsinline preload="auto"></video><span class="play">▶</span><span class="cat">עבודה ללקוח</span><b>קרב תל חי</b></div>
       <div class="wk" data-label="קמפיין כדורגל"><video src="videos/mbappe.mp4" muted loop playsinline preload="auto"></video><span class="play">▶</span><span class="cat">קריאייטיב</span><b>קמפיין כדורגל</b></div>
       <div class="wk" data-label="ג'ין טוניק — פורים"><video src="videos/ginton-purim.mp4" muted loop playsinline preload="auto"></video><span class="play">▶</span><span class="cat">קריאייטיב</span><b>ג'ין טוניק · פורים</b></div>
       <div class="wk" data-label="בית״ר ירושלים"><video src="videos/beitar-puppets.mp4" muted loop playsinline preload="auto"></video><span class="play">▶</span><span class="cat">עבודה ללקוח</span><b>בית״ר ירושלים</b></div>
@@ -342,7 +342,9 @@ const io = new IntersectionObserver(es => es.forEach(e => {
   if (e.isIntersecting) v.play().catch(()=>{});
   else v.pause();
 }), { threshold:.15 });
-allVids.forEach(v => io.observe(v));
+/* טעינת קיר-הוידאו של ההירו מדורגת בהמשך (12 סרטונים בבת אחת = מה שגרם לאתר להיתקע) —
+   הוא נרשם ל-io הזה שם, לא כאן, כדי שלא יתחרו שתי מערכות play/pause על אותם אלמנטים */
+allVids.filter(v => !v.closest('.wtile')).forEach(v => io.observe(v));
 
 /* ── תצוגה מוגדלת (וידאו + תמונה) ── */
 const lightbox = document.getElementById('lightbox');
@@ -350,12 +352,13 @@ const lbVideo = document.getElementById('lightboxVideo');
 const lbImg = document.getElementById('lightboxImg');
 const lbLabel = document.getElementById('lbLabel');
 const closeLB = () => { lightbox.classList.remove('show'); lbVideo.pause(); };
-function openLightboxVideo(v, label){
+function openLightboxVideo(v, label, fullSrc){
   allVids.forEach(x => x.muted = true);
   lbImg.style.display = 'none';
   lbVideo.style.display = 'block';
-  if (lbVideo.src !== v.currentSrc) lbVideo.src = v.currentSrc;
-  lbVideo.currentTime = v.currentTime || 0;
+  const src = fullSrc || v.currentSrc;
+  if (lbVideo.src !== src) lbVideo.src = src;
+  lbVideo.currentTime = fullSrc ? 0 : (v.currentTime || 0);
   lbLabel.textContent = label || '';
   lightbox.classList.add('show');
   lbVideo.muted = false;
@@ -374,7 +377,7 @@ document.getElementById('lbClose').addEventListener('click', closeLB);
 lightbox.addEventListener('click', e => { if (e.target === lightbox) closeLB(); });
 addEventListener('keydown', e => { if (e.key === 'Escape') closeLB(); });
 
-document.querySelectorAll('.wk:not(.more)').forEach(t => t.addEventListener('click', () => openLightboxVideo(t.querySelector('video'), t.dataset.label || '')));
+document.querySelectorAll('.wk:not(.more)').forEach(t => t.addEventListener('click', () => openLightboxVideo(t.querySelector('video'), t.dataset.label || '', t.dataset.full)));
 
 /* ── תפריט: פאנל שנפתח מכפתור (מבוסס Animmaster Navigation Menus #2) ── */
 {
@@ -430,7 +433,15 @@ document.querySelectorAll('.wk:not(.more)').forEach(t => t.addEventListener('cli
   .to('.hero-hint', { opacity:0, duration:.2 }, 0);
 
   document.querySelectorAll('.wtile').forEach(tile => {
-    tile.addEventListener('click', () => openLightboxVideo(tile.querySelector('video'), tile.dataset.label || ''));
+    tile.addEventListener('click', () => openLightboxVideo(tile.querySelector('video'), tile.dataset.label || '', tile.dataset.full));
+  });
+
+  /* טעינה מדורגת של 12 הסרטונים — לא כולם בבת אחת (זה מה שגרם לאתר "להיתקע" בטעינה
+     הראשונה: 12 בקשות רשת + דקודינג במקביל). preload="metadata" בלבד ב-HTML; כל תיל
+     מתחיל לטעון בפער קטן מהקודם לו, ואז נרשם ל-io המשותף — הוא זה שקורא ל-play/pause
+     בפועל, כדי שלא יתחרו שתי מערכות שונות על אותו אלמנט וידאו. */
+  document.querySelectorAll('.wtile video').forEach((v, i) => {
+    setTimeout(() => { v.preload = 'auto'; io.observe(v); }, i * 90);
   });
 }
 
@@ -576,7 +587,14 @@ if(uTransparent){float alpha=length(col);alpha=smoothstep(0.0,0.3,alpha);alpha=m
     targetMouse.x = (e.clientX - rect.left) / rect.width; targetMouse.y = 1 - (e.clientY - rect.top) / rect.height; targetActive = 1;
   });
   container.addEventListener('mouseleave', () => { targetActive = 0; });
+  /* לא מרנדרים כשהאאוטרו לא בתצוגה — בלי זה ה-WebGL הזה רץ לנצח ברקע גם עשרות מסכים אחרי שגללנו הלאה */
+  let visible = false, running = false;
+  new IntersectionObserver(es => {
+    visible = es[0].isIntersecting;
+    if (visible && !running) { running = true; requestAnimationFrame(frame); }
+  }).observe(container);
   function frame(t){
+    if (!visible) { running = false; return; }
     requestAnimationFrame(frame);
     if (t - lastT < 42) return;
     lastT = t;
@@ -585,7 +603,6 @@ if(uTransparent){float alpha=length(col);alpha=smoothstep(0.0,0.3,alpha);alpha=m
     gl.uniform2fv(uMouseLoc, new Float32Array([smoothMouse.x, smoothMouse.y])); gl.uniform1f(uMouseActiveFactorLoc, smoothActive);
     gl.drawArrays(gl.TRIANGLES, 0, 3);
   }
-  requestAnimationFrame(frame);
 })();
 
 /* ════ סמן-קו עוקב (Mouse Effects #14, מקור אמיתי — עקומת ספרינג בקנבס) ════ */
