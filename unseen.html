@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>עומר ג'רבי — מומחה תוכן AI</title>
+<!--
+  ═══════════════════════════════════════════════
+  אתר: עומר ג'רבי — גרסת UNSEEN (בהשראת unseen.co/projects/blue-yard)
+  שפה: שחור עמוק, גריין, טיפוגרפיה אסימטרית (גרוטסק ענק + סריף),
+        שדה חלקיקים חי, קולאז' מדיה צף, פסי וידאו full-bleed,
+        קורסר טבעת, שער כניסה, תוויות קטנות בפינות
+  סצנות:
+  0. שער כניסה (קרם) → פותח את החוויה + סאונד
+  1. הירו — "עבודות/ עומר ג'רבי" + "תוכן/ הוליוודי" אלכסוני, חלקיקים
+  2. סקירה — פסקה שנצבעת מילה-מילה
+  3. קולאז' צף — וידאו אמיתי בפיזור, פרלקסות שונות, קליק=לייטבוקס
+     WebGL אמיתי (Three.js): עיוות RGB-split + גל מונע ממהירות גלילה —
+     קוד מקורי מחבילת Animmaster (Codrops rgb-split-distortion), הוסב מ-
+     TextureLoader ל-VideoTexture. ראה initWebGLDistortion() בתחתית ה-JS.
+  4. פס full-bleed — hero-wide, גם הוא מוזן ל-WebGL הנ״ל
+  5. הצהרה ענקית מעל חלקיקים + שורת לקוחות
+  6. מספרים — מינימל אדיטוריאלי
+  7. צמד אנכיים — שני 9:16 מרחפים בכיוונים מנוגדים
+  8. אאוטרו — CTA + פוטר כרום
+  ═══════════════════════════════════════════════
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@300;400;500&family=Heebo:wght@200;300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0e0d0f; --bg2:#121114; --ink:#eceae6; --dim:#5f5c64;
+    --cream:#e8ded6; --cream-ink:#3a3733; --line:rgba(236,234,230,.12);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{background:var(--bg)}
+  body{color:var(--ink);font-family:'Heebo',sans-serif;overflow-x:hidden;line-height:1.5;cursor:none}
+  ::selection{background:var(--ink);color:var(--bg)}
+  img,video{display:block;width:100%;height:100%;object-fit:cover}
+  a{color:inherit;text-decoration:none;cursor:none}
+  button{font-family:inherit;cursor:none}
+  .serif{font-family:'Frank Ruhl Libre',serif;font-weight:400}
+
+  /* ── גריין על הכל (הסוד של ה-feel) ── */
+  .grain{position:fixed;inset:-100%;z-index:120;pointer-events:none;opacity:.09;
+    background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 300 300' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    animation:grain 7s steps(10) infinite}
+  @keyframes grain{0%,100%{transform:translate(0,0)}10%{transform:translate(-5%,-8%)}30%{transform:translate(6%,3%)}50%{transform:translate(-4%,7%)}70%{transform:translate(7%,-4%)}90%{transform:translate(-6%,-2%)}}
+
+  /* ── קורסר טבעת ── */
+  .cur-ring{position:fixed;top:0;left:0;width:34px;height:34px;border:1px solid rgba(236,234,230,.6);border-radius:50%;pointer-events:none;z-index:200;transition:width .25s,height .25s,border-color .25s}
+  .cur-dot{position:fixed;top:0;left:0;width:4px;height:4px;background:var(--ink);border-radius:50%;pointer-events:none;z-index:200}
+  .cur-ring.big{width:70px;height:70px;border-color:var(--ink)}
+  @media(hover:none){.cur-ring,.cur-dot{display:none}body,a,button{cursor:auto}}
+
+  /* ── חלקיקים ── */
+  #stars{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.75}
+
+  /* ── קנבס WebGL — מצייר עיוות RGB-split + גל על הווידאו (Codrops rgb-split-distortion, מקור אמיתי) ── */
+  #glCanvas{position:fixed;inset:0;z-index:3;pointer-events:none;opacity:0;transition:opacity .4s}
+  #glCanvas.ready{opacity:1}
+
+  /* ── כרום קבוע (פינות) ── */
+  .chrome{position:fixed;z-index:90;font-size:12px;letter-spacing:.14em;color:var(--dim);pointer-events:none}
+  .chrome a,.chrome button{pointer-events:auto}
+  .chrome.tl{top:26px;right:3vw;color:var(--ink);font-weight:900;font-size:16px;letter-spacing:.02em}
+  .chrome.tr{top:26px;left:3vw;display:flex;gap:22px;font-weight:500;color:var(--ink)}
+  .chrome.tr a{opacity:.75;transition:opacity .3s}
+  .chrome.tr a:hover{opacity:1}
+  .chrome.bl{bottom:24px;right:3vw}
+  .chrome.br{bottom:24px;left:3vw}
+  .chrome.bc{bottom:20px;inset-inline:0;text-align:center}
+  .ring-btn{display:inline-grid;place-items:center;width:44px;height:44px;border-radius:99px;border:1px solid var(--line);background:rgba(236,234,230,.04);backdrop-filter:blur(6px);color:var(--ink);font-size:15px;transition:.3s}
+  .ring-btn:hover{background:var(--ink);color:var(--bg)}
+
+  /* ════ 0 — שער כניסה ════ */
+  .gate{position:fixed;inset:0;z-index:150;background:var(--cream);color:var(--cream-ink);display:grid;place-items:center;text-align:center;transition:opacity .8s,visibility .8s}
+  .gate.gone{opacity:0;visibility:hidden}
+  .gate .mark{font-weight:900;font-size:64px;letter-spacing:-.03em;line-height:1}
+  .gate .mark span{display:inline-block}
+  .gate small{display:block;margin-top:26px;font-size:13px;letter-spacing:.32em;color:rgba(58,55,51,.55)}
+  .gate p{margin:14px auto 0;max-width:420px;font-size:15px;color:rgba(58,55,51,.75);font-weight:300;line-height:1.7}
+  .gate .enter{margin-top:38px;display:inline-flex;align-items:center;gap:10px;background:#fff;border:none;border-radius:99px;padding:16px 44px;font-size:16px;font-weight:500;color:var(--cream-ink);box-shadow:0 10px 34px rgba(58,55,51,.18);transition:.3s}
+  .gate .enter:hover{transform:translateY(-3px);box-shadow:0 18px 44px rgba(58,55,51,.26)}
+  .gate .noaudio{position:absolute;bottom:34px;inset-inline:0;font-size:12px;letter-spacing:.24em;color:rgba(58,55,51,.55);text-decoration:underline;text-underline-offset:5px;background:none;border:none}
+
+  /* ════ 1 — הירו ════ */
+  .sc-hero{min-height:100vh;position:relative;z-index:2;display:block;overflow:hidden}
+  .hero-a{position:absolute;top:16vh;right:4vw}
+  .hero-a .over{font-size:clamp(34px,5.4vw,84px);font-style:italic;color:var(--dim);letter-spacing:.01em;line-height:1}
+  .hero-a h1{font-weight:900;font-size:clamp(58px,11.5vw,176px);line-height:.96;letter-spacing:-.03em;margin-top:6px}
+  .hero-b{position:absolute;bottom:14vh;left:4vw;text-align:left}
+  .hero-b .g{font-weight:900;font-size:clamp(40px,7.4vw,116px);line-height:1;letter-spacing:-.02em}
+  .hero-b .s{font-size:clamp(30px,5vw,78px);font-style:italic;color:var(--dim);line-height:1.05}
+  .hero-tag{position:absolute;top:50%;left:4vw;transform:translateY(-50%);font-size:12px;letter-spacing:.3em;color:var(--dim);line-height:2.1;text-align:left}
+  @media(max-width:760px){.hero-tag{display:none}.hero-a{right:5vw}.hero-b{left:5vw;bottom:11vh}}
+  .line-mask{overflow:hidden;display:block}
+  .line-mask>span{display:block;will-change:transform}
+
+  /* ── תוויות סקשן קטנות ── */
+  .lbl{font-size:12px;letter-spacing:.34em;color:var(--dim);font-weight:500;text-transform:uppercase}
+
+  /* ════ 1.5 — פורטרט חלקיקים (Webgl & ThreeJS Effects #9 — interactive-particles, מקור אמיתי) ════ */
+  .sc-particle{position:relative;z-index:2;height:100vh;overflow:hidden;background:var(--bg)}
+  #particleCanvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+  .particle-cap{position:absolute;bottom:9vh;inset-inline:0;z-index:2;text-align:center;pointer-events:none}
+  .particle-cap .lbl{display:block;margin-bottom:14px}
+  .particle-cap p{font-size:clamp(19px,2.4vw,30px);font-weight:300;color:var(--ink);line-height:1.5;max-width:26ch;margin-inline:auto}
+  .particle-cap .serif{font-style:italic;color:var(--dim)}
+  @media(max-width:760px){.sc-particle{height:82vh}}
+
+  /* ════ 2 — סקירה ════ */
+  .sc-over{position:relative;z-index:2;padding:22vh 8vw 16vh;max-width:1180px}
+  .sc-over .lbl{margin-bottom:5vh;display:block}
+  p.scan{font-weight:700;font-size:clamp(26px,3.8vw,54px);line-height:1.5;letter-spacing:-.01em;max-width:24ch}
+  .scan .w{color:#33313a;display:inline-block;transition:none}
+  .scan .w.hot{color:var(--ink)}
+  .scan .w.em{font-style:italic;font-family:'Frank Ruhl Libre',serif;font-weight:500}
+
+  /* ════ 3 — קולאז' צף ════ */
+  .sc-drift{position:relative;z-index:2;min-height:250vh;padding:8vh 0}
+  .sc-drift .lbl{position:sticky;top:12vh;margin-inline-start:8vw}
+  .dr{position:absolute;border-radius:6px;overflow:hidden;box-shadow:0 30px 90px rgba(0,0,0,.6);will-change:transform;border:1px solid rgba(236,234,230,.07)}
+  .dr video{transition:opacity .3s ease}
+  .dr .cap{position:relative;z-index:4;bottom:0;inset-inline:0;padding:12px 14px;font-size:12px;letter-spacing:.12em;background:linear-gradient(transparent,rgba(0,0,0,.72));display:flex;justify-content:space-between;align-items:baseline}
+  /* וידאו שמוזן ל-WebGL מוסתר חזותית — הקנבס מצייר את הפריים המעוות במקומו באותו מלבן מדויק */
+  .dr.gl-fed video, .band-media.gl-fed video{opacity:0}
+  .dr .cap i{font-style:normal;color:var(--dim);font-size:10px}
+  .dr1{width:min(30vw,430px);aspect-ratio:16/10;top:6%;right:12vw}
+  .dr2{width:min(22vw,320px);aspect-ratio:9/14;top:14%;left:9vw}
+  .dr3{width:min(34vw,500px);aspect-ratio:16/9;top:36%;right:28vw}
+  .dr4{width:min(20vw,290px);aspect-ratio:9/14;top:52%;left:16vw}
+  .dr5{width:min(26vw,380px);aspect-ratio:16/10;top:66%;right:8vw}
+  .dr6{width:min(21vw,300px);aspect-ratio:9/14;top:78%;left:30vw}
+  @media(max-width:760px){
+    .dr1{width:70vw;right:6vw}.dr2{width:52vw;left:5vw;top:20%}.dr3{width:74vw;right:10vw;top:38%}
+    .dr4{width:50vw;left:8vw;top:56%}.dr5{width:66vw;right:5vw;top:70%}.dr6{width:52vw;left:12vw;top:84%}
+  }
+
+  /* ════ 4 — פס full-bleed ════ */
+  .sc-band{position:relative;z-index:2;height:104vh;overflow:hidden;display:grid;place-items:end center}
+  .band-media{position:absolute;inset:0;will-change:transform}
+  .band-media::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(14,13,15,.55),transparent 30%,transparent 70%,rgba(14,13,15,.75))}
+  .band-cap{position:relative;z-index:4;padding-bottom:6vh;text-align:center}
+  .band-cap .lbl{display:block;margin-bottom:10px}
+  .band-cap b{font-weight:500;font-size:15px;letter-spacing:.06em}
+
+  /* ════ 5 — הצהרה + לקוחות ════ */
+  .sc-state{position:relative;z-index:2;min-height:130vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:16vh 6vw;gap:9vh}
+  .state-q{font-weight:900;font-size:clamp(34px,6vw,86px);line-height:1.18;letter-spacing:-.02em;max-width:16ch}
+  .state-q .serif{font-style:italic;font-weight:500;color:var(--dim)}
+  .clients{display:flex;flex-wrap:wrap;justify-content:center;gap:16px 44px;max-width:900px}
+  .clients span{font-size:clamp(15px,1.7vw,21px);font-weight:500;letter-spacing:.08em;color:var(--dim);transition:color .3s}
+  .clients span:hover{color:var(--ink)}
+
+  /* ════ 6 — מספרים ════ */
+  .sc-nums{position:relative;z-index:2;padding:14vh 8vw 18vh;border-top:1px solid var(--line)}
+  .sc-nums .lbl{display:block;margin-bottom:8vh}
+  .nrow{display:grid;grid-template-columns:auto 1fr auto;gap:30px;align-items:baseline;padding:4.2vh 0;border-bottom:1px solid var(--line)}
+  .nrow:first-of-type{border-top:1px solid var(--line)}
+  .nrow b{font-weight:200;font-size:clamp(50px,7.5vw,110px);letter-spacing:-.03em;line-height:1;font-variant-numeric:tabular-nums}
+  .nrow b .u{font-size:.38em;color:var(--dim);font-weight:300;margin-inline-start:.1em}
+  .nrow p{color:var(--dim);font-weight:300;font-size:clamp(14px,1.5vw,17px);max-width:40ch}
+  .nrow .idx{font-size:12px;color:var(--dim);letter-spacing:.2em}
+  @media(max-width:760px){.nrow{grid-template-columns:1fr;gap:8px}}
+
+  /* ════ 7 — צמד אנכיים ════ */
+  .sc-duo{position:relative;z-index:2;min-height:150vh;padding:10vh 6vw;overflow:hidden}
+  .sc-duo .lbl{display:block;text-align:center;margin-bottom:8vh}
+  .duo-wrap{position:relative;display:flex;justify-content:center;gap:min(6vw,80px)}
+  .ph{width:min(320px,42vw);aspect-ratio:9/17;border-radius:26px;overflow:hidden;border:1px solid rgba(236,234,230,.14);box-shadow:0 40px 110px rgba(0,0,0,.65);will-change:transform;position:relative;background:#000}
+  .ph::after{content:"";position:absolute;top:12px;left:50%;transform:translateX(-50%);width:86px;height:20px;border-radius:12px;background:rgba(0,0,0,.85);z-index:2}
+  .ph .cap{position:absolute;bottom:14px;inset-inline:14px;z-index:2;font-size:12px;letter-spacing:.14em;display:flex;justify-content:space-between;text-shadow:0 2px 10px rgba(0,0,0,.8)}
+  .ph .cap i{font-style:normal;color:rgba(236,234,230,.6)}
+
+  /* ════ 8 — אאוטרו ════ */
+  .sc-out{position:relative;z-index:2;min-height:95vh;display:grid;place-items:center;text-align:center;padding:14vh 6vw 12vh}
+  .out-in h2{font-weight:900;font-size:clamp(44px,8vw,120px);line-height:1.04;letter-spacing:-.03em}
+  .out-in h2 .serif{font-style:italic;font-weight:500;color:var(--dim)}
+  .out-in p{margin-top:3vh;color:var(--dim);font-weight:300;font-size:17px}
+  .out-in .row{margin-top:6vh;display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+  .out-in .pill{display:inline-flex;align-items:center;gap:10px;padding:17px 46px;border-radius:99px;font-weight:500;font-size:16px;transition:.3s}
+  .out-in .pill.solid{background:var(--ink);color:var(--bg)}
+  .out-in .pill.solid:hover{transform:translateY(-3px);box-shadow:0 16px 44px rgba(236,234,230,.16)}
+  .out-in .pill.ghost{border:1px solid var(--line)}
+  .out-in .pill.ghost:hover{border-color:var(--ink)}
+  .foot{position:absolute;bottom:0;inset-inline:0;display:flex;justify-content:space-between;padding:22px 3vw;font-size:12px;letter-spacing:.14em;color:var(--dim);border-top:1px solid var(--line);flex-wrap:wrap;gap:8px}
+
+  /* ── לייטבוקס ── */
+  .lightbox{position:fixed;inset:0;z-index:210;display:grid;place-items:center;background:rgba(10,9,11,.95);opacity:0;pointer-events:none;transition:opacity .35s}
+  .lightbox.show{opacity:1;pointer-events:auto}
+  .lightbox video{width:min(92vw,520px);max-height:84vh;border-radius:14px;background:#000;transform:scale(.94);transition:transform .35s;box-shadow:0 40px 120px rgba(0,0,0,.8)}
+  .lightbox.show video{transform:scale(1)}
+  .lb-close{position:absolute;top:26px;left:26px}
+  .lb-label{position:absolute;bottom:28px;inset-inline:0;text-align:center;font-size:12px;letter-spacing:.3em;color:var(--dim)}
+</style>
+</head>
+<body>
+
+<canvas id="stars"></canvas>
+<canvas id="glCanvas"></canvas>
+<div class="grain"></div>
+<div class="cur-ring" id="curRing"></div>
+<div class="cur-dot" id="curDot"></div>
+
+<!-- כרום -->
+<div class="chrome tl">עומר ג'רבי<span style="color:var(--dim)">®</span></div>
+<nav class="chrome tr">
+  <a href="#scDrift">עבודות</a><a href="#scDuo">פורמט</a><a href="https://ig.me/m/omerjerbi" target="_blank" rel="noopener">צור קשר</a>
+</nav>
+<div class="chrome bl"><button class="ring-btn" id="sndBtn" aria-label="סאונד">〜</button></div>
+<div class="chrome br">©2026</div>
+
+<!-- ═ 0 ═ שער -->
+<div class="gate" id="gate">
+  <div>
+    <div class="mark" id="gateMark">עומר ג'רבי</div>
+    <small>מומחה תוכן AI</small>
+    <p>חוויה דיגיטלית עם וידאו וסאונד.<br>מומלץ עם אוזניות.</p>
+    <button class="enter" id="enterBtn">כניסה <span style="display:inline-block;transform:rotate(-135deg)">↑</span></button>
+  </div>
+  <button class="noaudio" id="enterQuiet">כניסה בלי סאונד</button>
+</div>
+
+<!-- ═ 1 ═ הירו -->
+<section class="sc-hero" id="scHero">
+  <div class="hero-a">
+    <div class="serif over"><span class="line-mask"><span>עבודות/</span></span></div>
+    <h1><span class="line-mask"><span>עומר ג'רבי</span></span></h1>
+  </div>
+  <div class="hero-tag">מומחה תוכן AI<br>ישראל · 2026<br>פרסומות · קמפיינים · קריאייטיב</div>
+  <div class="hero-b">
+    <div class="g"><span class="line-mask"><span>תוכן AI</span></span></div>
+    <div class="serif s"><span class="line-mask"><span>ברמה הוליוודית.</span></span></div>
+  </div>
+</section>
+
+<!-- ═ 1.5 ═ פורטרט חלקיקים -->
+<section class="sc-particle" id="scParticle">
+  <canvas id="particleCanvas"></canvas>
+  <div class="particle-cap">
+    <span class="lbl">[ מי אני ]</span>
+    <p>לא סתם תמונה. <span class="serif">כל נקודה כאן היא דאטה</span> —<br>בדיוק כמו כל סרטון שאני בונה.</p>
+  </div>
+</section>
+
+<!-- ═ 2 ═ סקירה -->
+<section class="sc-over" id="scOver">
+  <span class="lbl">[ סקירה ]</span>
+  <p class="scan" id="scanTxt">הוליווד זה לא מקום. <em>זה סטנדרט.</em> אני לוקח מוצרים, מותגים ורעיונות — והופך אותם לסרטונים שנראים כמו הפקה שלמה. <em>מהמחשב שלי.</em></p>
+</section>
+
+<!-- ═ 3 ═ קולאז' צף -->
+<section class="sc-drift" id="scDrift">
+  <span class="lbl">[ עבודות נבחרות — לחצו לצפייה ]</span>
+  <div class="dr dr1" data-speed="-14" data-label="אייל גולן"><video src="videos/eyal-golan.mp4" muted loop playsinline preload="metadata"></video><div class="cap"><span>אייל גולן</span><i>עבודה ללקוח</i></div></div>
+  <div class="dr dr2" data-speed="10" data-label="הישרדות"><video src="videos/survivor.mp4" muted loop playsinline preload="metadata"></video><div class="cap"><span>הישרדות</span><i>ליהוק</i></div></div>
+  <div class="dr dr3" data-speed="-7" data-label="קרב תל חי"><video src="videos/telhai-en.mp4" muted loop playsinline preload="metadata"></video><div class="cap"><span>קרב תל חי</span><i>הוקרן בכנסת</i></div></div>
+  <div class="dr dr4" data-speed="13" data-label="ג'ין טוניק — פורים"><video src="videos/ginton-purim.mp4" muted loop playsinline preload="metadata"></video><div class="cap"><span>ג'ין טוניק</span><i>קריאייטיב</i></div></div>
+  <div class="dr dr5" data-speed="-11" data-label="קמפיין כדורגל"><video src="videos/mbappe.mp4" muted loop playsinline preload="metadata"></video><div class="cap"><span>קמפיין כדורגל</span><i>ספורט</i></div></div>
+  <div class="dr dr6" data-speed="8" data-label="בית״ר ירושלים"><video src="videos/beitar-puppets.mp4" muted loop playsinline preload="metadata"></video><div class="cap"><span>בית״ר ירושלים</span><i>מועדון</i></div></div>
+</section>
+
+<!-- ═ 4 ═ פס full-bleed -->
+<section class="sc-band" id="scBand">
+  <div class="band-media" id="bandMedia"><video src="videos/hero-wide.mp4" muted loop playsinline preload="metadata"></video></div>
+  <div class="band-cap"><span class="lbl">[ ריל 2026 ]</span><b>כל פריים כאן נוצר בבינה מלאכותית</b></div>
+</section>
+
+<!-- ═ 5 ═ הצהרה + לקוחות -->
+<section class="sc-state" id="scState">
+  <div class="state-q" id="stateQ">מה אם פרסומת<br>לא צריכה <span class="serif">סט צילומים?</span></div>
+  <div class="clients" data-reveal>
+    <span>אייל גולן</span><span>אם תרצו</span><span>האח הגדול</span><span>הישרדות</span><span>הכנסת</span><span>בית״ר ירושלים</span><span>הפועל</span>
+  </div>
+</section>
+
+
+<!-- ═ 7 ═ צמד אנכיים -->
+<section class="sc-duo" id="scDuo">
+  <span class="lbl">[ פורמט אנכי — הזירה האמיתית ]</span>
+  <div class="duo-wrap">
+    <div class="ph" id="phA" data-label="מנטרה"><video src="videos/mantra-3.mp4" muted loop playsinline preload="metadata"></video><div class="cap"><span>מנטרה</span><i>ריל</i></div></div>
+    <div class="ph" id="phB" data-label="אורו"><video src="videos/oro.mp4" muted loop playsinline preload="metadata"></video><div class="cap"><span>אורו</span><i>פרסומת</i></div></div>
+  </div>
+</section>
+
+<!-- ═ 8 ═ אאוטרו -->
+<section class="sc-out" id="scOut">
+  <div class="out-in">
+    <h2>יש לכם מוצר?<br><span class="serif">בואו נעשה מזה פרסומת.</span></h2>
+    <p>שיחה ראשונה חינם. תוך ימים — סרטון שנראה כמו הפקה שלמה.</p>
+    <div class="row">
+      <a class="pill solid" href="https://ig.me/m/omerjerbi" target="_blank" rel="noopener">שלחו הודעה ←</a>
+      <a class="pill ghost" href="https://instagram.com/omerjerbi" target="_blank" rel="noopener"><span dir="ltr">@omerjerbi</span></a>
+    </div>
+  </div>
+  <div class="foot"><span>עומר ג'רבי ©2026</span><span>תוכן AI · ברמה של הפקה</span><span>ישראל</span></div>
+</section>
+
+<!-- לייטבוקס -->
+<div class="lightbox" id="lightbox">
+  <video id="lbVideo" playsinline controls></video>
+  <button class="ring-btn lb-close" id="lbClose" aria-label="סגור">✕</button>
+  <div class="lb-label" id="lbLabel"></div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
+<script src="https://unpkg.com/lenis@1.3.4/dist/lenis.min.js"></script>
+<script src="https://unpkg.com/three@0.128.0/build/three.min.js"></script>
+<script>
+gsap.registerPlugin(ScrollTrigger);
+
+const lenis = new Lenis({ lerp:.08 });
+lenis.on('scroll', ScrollTrigger.update);
+gsap.ticker.add(t => lenis.raf(t*1000));
+gsap.ticker.lagSmoothing(0);
+lenis.stop(); /* עד הכניסה בשער */
+
+const isMobile = matchMedia('(max-width: 760px)').matches;
+
+/* ── פיצול מילים בטוח ל-RTL ── */
+function splitWords(el){
+  const out = [];
+  (function walk(node, em){
+    [...node.childNodes].forEach(n => {
+      if (n.nodeType === 3) {
+        const frag = document.createDocumentFragment();
+        n.textContent.split(/(\s+)/).forEach(part => {
+          if (!part) return;
+          if (/^\s+$/.test(part)) frag.appendChild(document.createTextNode(part));
+          else { const s = document.createElement('span'); s.className = 'w' + (em ? ' em' : ''); s.style.display='inline-block'; s.textContent = part; out.push(s); frag.appendChild(s); }
+        });
+        n.replaceWith(frag);
+      } else if (n.nodeType === 1) walk(n, em || n.tagName === 'EM');
+    });
+  })(el, false);
+  return out;
+}
+
+/* ── קורסר טבעת ── */
+const ring = document.getElementById('curRing'), dot = document.getElementById('curDot');
+let mx=innerWidth/2, my=innerHeight/2, rx=mx, ry=my;
+document.addEventListener('mousemove', e => { mx=e.clientX; my=e.clientY; });
+gsap.ticker.add(() => {
+  rx += (mx-rx)*.14; ry += (my-ry)*.14;
+  ring.style.transform = `translate(${rx-17}px,${ry-17}px)`;
+  dot.style.transform = `translate(${mx-2}px,${my-2}px)`;
+});
+document.querySelectorAll('a,button,.dr,.ph').forEach(el => {
+  el.addEventListener('mouseenter', () => ring.classList.add('big'));
+  el.addEventListener('mouseleave', () => ring.classList.remove('big'));
+});
+
+/* ── חלקיקים (canvas — תחושת WebGL בלי ספרייה) ── */
+{
+  const cv = document.getElementById('stars'), ctx = cv.getContext('2d');
+  let W, H, pts = [];
+  const N = isMobile ? 70 : 160;
+  function size(){ W = cv.width = innerWidth * devicePixelRatio; H = cv.height = innerHeight * devicePixelRatio; cv.style.width = innerWidth+'px'; cv.style.height = innerHeight+'px'; }
+  size(); addEventListener('resize', size);
+  for (let i=0;i<N;i++) pts.push({ x:Math.random(), y:Math.random(), z:.25+Math.random()*.75, tw:Math.random()*Math.PI*2 });
+  let scrollV = 0;
+  ScrollTrigger.create({ onUpdate:s => scrollV = gsap.utils.clamp(-1.6,1.6, s.getVelocity()/2600) });
+  gsap.ticker.add((t) => {
+    ctx.clearRect(0,0,W,H);
+    pts.forEach(p => {
+      p.y -= (0.00016 + scrollV*0.0012) * p.z;
+      p.x += Math.sin(t*.24 + p.tw) * 0.00005;
+      if (p.y < -0.02) p.y = 1.02; if (p.y > 1.02) p.y = -0.02;
+      const a = (.14 + .5*p.z) * (0.65 + 0.35*Math.sin(t*1.4 + p.tw));
+      ctx.fillStyle = `rgba(226,222,232,${a})`;
+      const r = p.z * 1.5 * devicePixelRatio;
+      ctx.beginPath(); ctx.arc(p.x*W, p.y*H, r, 0, 7); ctx.fill();
+    });
+    scrollV *= .94;
+  });
+}
+
+/* ── וידאו: ניגון רק על המסך ── */
+const allVids = [...document.querySelectorAll('video')].filter(v => v.id !== 'lbVideo');
+const io = new IntersectionObserver(es => es.forEach(e => {
+  if (e.isIntersecting) e.target.play().catch(()=>{}); else e.target.pause();
+}), { threshold:.12 });
+allVids.forEach(v => io.observe(v));
+
+/* ── שער כניסה ── */
+{
+  const gate = document.getElementById('gate');
+  let entered = false;
+  function enter(){
+    if (entered) return; entered = true;
+    gate.classList.add('gone');
+    lenis.start();
+    allVids.forEach(v => v.play().catch(()=>{}));
+    /* כניסת הירו */
+    gsap.timeline({ defaults:{ ease:'power4.out' } })
+      .from('.sc-hero .line-mask > span', { yPercent:115, duration:1.2, stagger:.13 }, .15)
+      .from('.hero-tag', { opacity:0, x:-26, duration:1 }, .8)
+      .from('.chrome', { opacity:0, y:-10, duration:.8, stagger:.06 }, .9);
+    setTimeout(() => ScrollTrigger.refresh(), 900);
+  }
+  document.getElementById('enterBtn').addEventListener('click', enter);
+  document.getElementById('enterQuiet').addEventListener('click', enter);
+  gsap.from('#gateMark', { opacity:0, y:30, duration:1.1, ease:'power3.out', delay:.2 });
+}
+
+/* ── סקירה: scan-reveal ── */
+{
+  const words = splitWords(document.getElementById('scanTxt'));
+  const st = { p:0 };
+  gsap.to(st, { p:1, ease:'none',
+    scrollTrigger:{ trigger:'#scOver', start:'top 72%', end:'bottom 40%', scrub:.4 },
+    onUpdate:() => { const u = Math.floor(st.p*words.length); words.forEach((w,i)=>w.classList.toggle('hot', i<=u)); } });
+}
+
+/* ── קולאז' צף: פרלקסה שונה לכל אריח ── */
+document.querySelectorAll('.dr').forEach(el => {
+  const sp = +el.dataset.speed;
+  gsap.fromTo(el, { yPercent:sp*2.2, rotation:sp*.14 }, { yPercent:-sp*2.2, rotation:-sp*.1, ease:'none',
+    scrollTrigger:{ trigger:'#scDrift', start:'top bottom', end:'bottom top', scrub:.7 } });
+  gsap.from(el, { opacity:0, scale:.92, duration:.9, ease:'power3.out',
+    scrollTrigger:{ trigger:el, start:'top 92%' } });
+});
+
+/* ── פס full-bleed: זום scrub ── */
+gsap.fromTo('#bandMedia', { scale:1.22, yPercent:-6 }, { scale:1, yPercent:6, ease:'none',
+  scrollTrigger:{ trigger:'#scBand', start:'top bottom', end:'bottom top', scrub:.6 } });
+
+/* ── הצהרה: מילים נכנסות + נשארת ── */
+{
+  const words = splitWords(document.getElementById('stateQ'));
+  gsap.from(words, { opacity:0, y:60, rotationX:-28, transformPerspective:600, duration:.9, stagger:.05, ease:'power3.out',
+    scrollTrigger:{ trigger:'#scState', start:'top 68%' } });
+}
+
+/* ── חשיפות כלליות + מונים ── */
+gsap.utils.toArray('[data-reveal]').forEach(el => {
+  gsap.from(el, { opacity:0, y:40, duration:1, ease:'power3.out',
+    scrollTrigger:{ trigger:el, start:'top 88%' } });
+});
+
+/* ── צמד אנכיים: נגדיים + הטיה ── */
+gsap.fromTo('#phA', { yPercent:16, rotation:-4 }, { yPercent:-10, rotation:2, ease:'none',
+  scrollTrigger:{ trigger:'#scDuo', start:'top bottom', end:'bottom top', scrub:.6 } });
+gsap.fromTo('#phB', { yPercent:-6, rotation:5 }, { yPercent:14, rotation:-2, ease:'none',
+  scrollTrigger:{ trigger:'#scDuo', start:'top bottom', end:'bottom top', scrub:.6 } });
+
+/* ── אאוטרו ── */
+gsap.from('.out-in > *', { opacity:0, y:40, duration:.9, stagger:.1, ease:'power3.out',
+  scrollTrigger:{ trigger:'#scOut', start:'top 62%' } });
+
+/* ── לייטבוקס ── */
+{
+  const lb = document.getElementById('lightbox'), lbV = document.getElementById('lbVideo'), lbL = document.getElementById('lbLabel');
+  const close = () => { lb.classList.remove('show'); lbV.pause(); };
+  document.querySelectorAll('.dr, .ph').forEach(t => t.addEventListener('click', () => {
+    const v = t.querySelector('video');
+    lbV.src = v.currentSrc || v.src; lbV.currentTime = v.currentTime || 0;
+    lbL.textContent = t.dataset.label || '';
+    lb.classList.add('show'); lbV.muted = false; lbV.play().catch(()=>{});
+  }));
+  document.getElementById('lbClose').addEventListener('click', close);
+  lb.addEventListener('click', e => { if (e.target === lb) close(); });
+  addEventListener('keydown', e => { if (e.key === 'Escape') close(); });
+}
+
+/* ── סאונד־טוגל: משתיק/מדליק את הלייטבוקס בלבד (הגלריה תמיד מושתקת) ── */
+document.getElementById('sndBtn').addEventListener('click', function(){
+  const v = document.getElementById('lbVideo');
+  v.muted = !v.muted;
+  this.style.opacity = v.muted ? .5 : 1;
+});
+
+/* ════════════════════════════════════════════════════════════
+   WebGL — עיוות RGB-split + גל, מוזרם ישירות מוידאו (Three.js)
+   מקור: Animmaster Pack → Scroll Animation #1 → rgb-split-distortion-scroll-effect
+   (Codrops, קוד מקורי — ללא glslify, ללא build. הוסב: TextureLoader → VideoTexture,
+   uOffset מוזן ממהירות גלילה אמיתית של ScrollTrigger במקום smoothScroll עצמאי)
+   ════════════════════════════════════════════════════════════ */
+(function initWebGLDistortion(){
+  if (typeof THREE === 'undefined' || isMobile) return; /* דורש GPU רציני — מדלגים במובייל */
+
+  const vertexShader = `
+    uniform vec2 uOffset;
+    varying vec2 vUv;
+    #define M_PI 3.1415926535897932384626433832795
+    vec3 deformationCurve(vec3 position, vec2 uv, vec2 offset) {
+      position.x = position.x + (sin(uv.y * M_PI) * offset.x);
+      position.y = position.y + (sin(uv.x * M_PI) * offset.y);
+      return position;
+    }
+    void main() {
+      vUv = uv;
+      vec3 newPosition = deformationCurve(position, uv, uOffset);
+      gl_Position = projectionMatrix * modelViewMatrix * vec4(newPosition, 1.0);
+    }`;
+  const fragmentShader = `
+    uniform sampler2D uTexture;
+    uniform float uAlpha;
+    uniform vec2 uOffset;
+    varying vec2 vUv;
+    vec3 rgbShift(sampler2D tex, vec2 uv, vec2 offset) {
+      float r = texture2D(tex, uv + offset).r;
+      vec2 gb = texture2D(tex, uv).gb;
+      return vec3(r, gb);
+    }
+    void main() {
+      vec3 color = rgbShift(uTexture, vUv, uOffset);
+      gl_FragColor = vec4(color, uAlpha);
+    }`;
+
+  const canvas = document.getElementById('glCanvas');
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias:true, alpha:true });
+  renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+  const scene = new THREE.Scene();
+  const perspective = 1000;
+  function fov(){ return (180 * (2 * Math.atan(innerHeight / 2 / perspective))) / Math.PI; }
+  const camera = new THREE.PerspectiveCamera(fov(), innerWidth/innerHeight, 1, 3000);
+  camera.position.set(0, 0, perspective);
+
+  function resize(){
+    renderer.setSize(innerWidth, innerHeight);
+    camera.aspect = innerWidth/innerHeight;
+    camera.fov = fov();
+    camera.updateProjectionMatrix();
+  }
+  resize(); addEventListener('resize', resize);
+
+  class MeshItem{
+    constructor(videoEl, containerEl){
+      this.video = videoEl; this.el = containerEl;
+      this.offset = new THREE.Vector2(0,0);
+      this.sizes = new THREE.Vector2(0,0);
+      const tex = new THREE.VideoTexture(videoEl);
+      tex.minFilter = THREE.LinearFilter; tex.magFilter = THREE.LinearFilter;
+      this.uniforms = {
+        uTexture:{ value: tex },
+        uOffset:{ value: new THREE.Vector2(0,0) },
+        uAlpha:{ value: 1 }
+      };
+      this.geometry = new THREE.PlaneBufferGeometry(1,1,60,60);
+      this.material = new THREE.ShaderMaterial({ uniforms:this.uniforms, vertexShader, fragmentShader, transparent:true, side:THREE.DoubleSide });
+      this.mesh = new THREE.Mesh(this.geometry, this.material);
+      this.sync();
+      scene.add(this.mesh);
+      this.el.classList.add('gl-fed');
+    }
+    sync(){
+      const r = this.el.getBoundingClientRect();
+      if (r.width < 2 || r.height < 2) { this.mesh.visible = false; return; }
+      this.mesh.visible = true;
+      this.sizes.set(r.width, r.height);
+      this.offset.set(r.left - innerWidth/2 + r.width/2, -r.top + innerHeight/2 - r.height/2);
+      this.mesh.position.set(this.offset.x, this.offset.y, 0);
+      this.mesh.scale.set(r.width, r.height, 1);
+    }
+    setDistort(v){ this.uniforms.uOffset.value.set(0, v); }
+  }
+
+  const targets = [...document.querySelectorAll('.dr, .band-media')];
+  const items = targets.map(el => new MeshItem(el.querySelector('video'), el));
+  if (!items.length) return;
+
+  let vel = 0;
+  ScrollTrigger.create({ onUpdate: self => { vel += (self.getVelocity()/1900 - vel) * .35; } });
+
+  gsap.ticker.add(() => {
+    vel *= .92; /* דעיכה — הגל נרגע כשעוצרים לגלול */
+    const d = gsap.utils.clamp(-.09, .09, vel);
+    items.forEach(it => { it.sync(); it.setDistort(d); });
+    renderer.render(scene, camera);
+  });
+
+  canvas.classList.add('ready');
+})();
+
+/* ════════════════════════════════════════════════════════════
+   פורטרט חלקיקים — Animmaster Pack → Webgl & ThreeJS Effects #9 →
+   interactive-particles (בסיס אמיתי: brunoimbrizi/interactive-particles, MIT).
+   הותאם: glslify → simplex noise מוטמע ידנית, addAttribute → setAttribute
+   (הוסר מ-Three.js r125+), TweenLite → gsap, אינטראקציה בעכבר/מגע דרך
+   Raycaster ישיר במקום מנגנון ה-InteractiveControls המקורי.
+   ════════════════════════════════════════════════════════════ */
+(function initParticlePortrait(){
+  const section = document.getElementById('scParticle');
+  if (typeof THREE === 'undefined' || !section) return;
+
+  const canvas = document.getElementById('particleCanvas');
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias:true, alpha:true });
+  renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+  const scene = new THREE.Scene();
+  const perspective = 600;
+  function fovFor(h){ return (180 * (2 * Math.atan(h / 2 / perspective))) / Math.PI; }
+  let camera;
+
+  /* ── simplex 2D noise, מוטמע ידנית (glslify: glsl-noise/simplex/2d) ── */
+  const vertexShader = `
+    precision highp float;
+    attribute float pindex;
+    attribute vec3 position;
+    attribute vec3 offset;
+    attribute vec2 uv;
+    attribute float angle;
+    uniform mat4 modelViewMatrix;
+    uniform mat4 projectionMatrix;
+    uniform float uTime;
+    uniform float uRandom;
+    uniform float uDepth;
+    uniform float uSize;
+    uniform vec2 uTextureSize;
+    uniform sampler2D uTexture;
+    uniform sampler2D uTouch;
+    varying vec2 vPUv;
+    varying vec2 vUv;
+    vec3 mod289(vec3 x){return x-floor(x*(1.0/289.0))*289.0;}
+    vec2 mod289(vec2 x){return x-floor(x*(1.0/289.0))*289.0;}
+    vec3 permute(vec3 x){return mod289(((x*34.0)+1.0)*x);}
+    float snoise_1_2(vec2 v){
+      const vec4 C=vec4(0.211324865405187,0.366025403784439,-0.577350269189626,0.024390243902439);
+      vec2 i=floor(v+dot(v,C.yy));
+      vec2 x0=v-i+dot(i,C.xx);
+      vec2 i1=(x0.x>x0.y)?vec2(1.0,0.0):vec2(0.0,1.0);
+      vec4 x12=x0.xyxy+C.xxzz; x12.xy-=i1;
+      i=mod289(i);
+      vec3 p=permute(permute(i.y+vec3(0.0,i1.y,1.0))+i.x+vec3(0.0,i1.x,1.0));
+      vec3 m=max(0.5-vec3(dot(x0,x0),dot(x12.xy,x12.xy),dot(x12.zw,x12.zw)),0.0);
+      m=m*m; m=m*m;
+      vec3 x=2.0*fract(p*C.www)-1.0;
+      vec3 h=abs(x)-0.5;
+      vec3 ox=floor(x+0.5);
+      vec3 a0=x-ox;
+      m*=1.79284291400159-0.85373472095314*(a0*a0+h*h);
+      vec3 g;
+      g.x=a0.x*x0.x+h.x*x0.y;
+      g.yz=a0.yz*x12.xz+h.yz*x12.yw;
+      return 130.0*dot(m,g);
+    }
+    float random(float n){ return fract(sin(n) * 43758.5453123); }
+    void main() {
+      vUv = uv;
+      vec2 puv = offset.xy / uTextureSize;
+      vPUv = puv;
+      vec4 colA = texture2D(uTexture, puv);
+      float grey = colA.r * 0.21 + colA.g * 0.71 + colA.b * 0.07;
+      vec3 displaced = offset;
+      displaced.xy += vec2(random(pindex) - 0.5, random(offset.x + pindex) - 0.5) * uRandom;
+      float rndz = (random(pindex) + snoise_1_2(vec2(pindex * 0.1, uTime * 0.1)));
+      displaced.z += rndz * (random(pindex) * 2.0 * uDepth);
+      displaced.xy -= uTextureSize * 0.5;
+      float t = texture2D(uTouch, puv).r;
+      displaced.z += t * 20.0 * rndz;
+      displaced.x += cos(angle) * t * 20.0 * rndz;
+      displaced.y += sin(angle) * t * 20.0 * rndz;
+      float psize = (snoise_1_2(vec2(uTime, pindex) * 0.5) + 2.0);
+      psize *= max(grey, 0.2);
+      psize *= uSize;
+      vec4 mvPosition = modelViewMatrix * vec4(displaced, 1.0);
+      mvPosition.xyz += position * psize;
+      gl_Position = projectionMatrix * mvPosition;
+    }`;
+  const fragmentShader = `
+    precision highp float;
+    uniform sampler2D uTexture;
+    varying vec2 vPUv;
+    varying vec2 vUv;
+    void main() {
+      vec4 colA = texture2D(uTexture, vPUv);
+      float grey = colA.r * 0.21 + colA.g * 0.71 + colA.b * 0.07;
+      vec4 colB = vec4(grey, grey, grey, 1.0);
+      float border = 0.3, radius = 0.5;
+      float dist = radius - distance(vUv, vec2(0.5));
+      float t = smoothstep(0.0, border, dist);
+      vec4 color = colB;
+      color.a = t;
+      gl_FragColor = color;
+    }`;
+
+  /* ── מרקם מגע: קנבס 2D שמצייר טריילים דועכים, מוזן כ-uTouch ── */
+  class TouchTexture {
+    constructor(){
+      this.size = 64; this.maxAge = 120; this.radius = 0.15; this.trail = [];
+      this.canvas = document.createElement('canvas');
+      this.canvas.width = this.canvas.height = this.size;
+      this.ctx = this.canvas.getContext('2d');
+      this.ctx.fillStyle = 'black'; this.ctx.fillRect(0,0,this.size,this.size);
+      this.texture = new THREE.Texture(this.canvas);
+    }
+    update(){
+      this.ctx.fillStyle = 'black'; this.ctx.fillRect(0,0,this.size,this.size);
+      this.trail.forEach(p => p.age++);
+      this.trail = this.trail.filter(p => p.age <= this.maxAge);
+      this.trail.forEach(p => this.drawTouch(p));
+      this.texture.needsUpdate = true;
+    }
+    addTouch(uv){
+      let force = 0;
+      const last = this.trail[this.trail.length-1];
+      if (last) { const dx=last.x-uv.x, dy=last.y-uv.y; force = Math.min((dx*dx+dy*dy)*10000, 1); }
+      this.trail.push({ x:uv.x, y:uv.y, age:0, force });
+    }
+    drawTouch(p){
+      const x = p.x*this.size, y = (1-p.y)*this.size;
+      let intensity = p.age < this.maxAge*.3 ? p.age/(this.maxAge*.3) : 1-(p.age-this.maxAge*.3)/(this.maxAge*.7);
+      intensity = Math.max(0, intensity) * p.force;
+      const radius = this.size * this.radius * intensity;
+      const grd = this.ctx.createRadialGradient(x,y,radius*.25,x,y,radius);
+      grd.addColorStop(0, 'rgba(255,255,255,.35)'); grd.addColorStop(1, 'rgba(0,0,0,0)');
+      this.ctx.beginPath(); this.ctx.fillStyle = grd; this.ctx.arc(x,y,radius,0,Math.PI*2); this.ctx.fill();
+    }
+  }
+
+  const loader = new THREE.TextureLoader();
+  loader.load('images/omer-particles.png', (texture) => {
+    texture.minFilter = THREE.LinearFilter; texture.magFilter = THREE.LinearFilter;
+    const width = texture.image.width, height = texture.image.height;
+    const numPoints = width * height;
+
+    /* דיסקרד פיקסלים כהים (הרקע שהומר לשחור) — נשארות רק נקודות הדיוקן */
+    const canvasEl = document.createElement('canvas');
+    canvasEl.width = width; canvasEl.height = height;
+    const ctx2d = canvasEl.getContext('2d');
+    ctx2d.scale(1, -1);
+    ctx2d.drawImage(texture.image, 0, 0, width, height * -1);
+    const imgData = ctx2d.getImageData(0, 0, width, height).data;
+
+    const threshold = 20;
+    let numVisible = 0;
+    for (let i = 0; i < numPoints; i++) if (imgData[i*4] > threshold) numVisible++;
+
+    const uniforms = {
+      uTime:{ value:0 }, uRandom:{ value:1.0 }, uDepth:{ value:4.0 }, uSize:{ value:0.0 },
+      uTextureSize:{ value:new THREE.Vector2(width, height) }, uTexture:{ value:texture }, uTouch:{ value:null }
+    };
+    const material = new THREE.RawShaderMaterial({ uniforms, vertexShader, fragmentShader, depthTest:false, transparent:true });
+
+    const geometry = new THREE.InstancedBufferGeometry();
+    const positions = new THREE.BufferAttribute(new Float32Array(4*3), 3);
+    positions.setXYZ(0,-0.5, 0.5,0); positions.setXYZ(1, 0.5, 0.5,0); positions.setXYZ(2,-0.5,-0.5,0); positions.setXYZ(3, 0.5,-0.5,0);
+    geometry.setAttribute('position', positions);
+    const uvs = new THREE.BufferAttribute(new Float32Array(4*2), 2);
+    uvs.setXY(0,0,0); uvs.setXY(1,1,0); uvs.setXY(2,0,1); uvs.setXY(3,1,1);
+    geometry.setAttribute('uv', uvs);
+    geometry.setIndex(new THREE.BufferAttribute(new Uint16Array([0,2,1,2,3,1]), 1));
+
+    const indices = new Uint16Array(numVisible), offsets = new Float32Array(numVisible*3), angles = new Float32Array(numVisible);
+    for (let i=0, j=0; i<numPoints; i++){
+      if (imgData[i*4] <= threshold) continue;
+      offsets[j*3] = i % width; offsets[j*3+1] = Math.floor(i/width);
+      indices[j] = i; angles[j] = Math.random()*Math.PI; j++;
+    }
+    geometry.setAttribute('pindex', new THREE.InstancedBufferAttribute(indices, 1, false));
+    geometry.setAttribute('offset', new THREE.InstancedBufferAttribute(offsets, 3, false));
+    geometry.setAttribute('angle', new THREE.InstancedBufferAttribute(angles, 1, false));
+
+    const mesh = new THREE.Mesh(geometry, material);
+    scene.add(mesh);
+
+    const touch = new TouchTexture();
+    uniforms.uTouch.value = touch.texture;
+
+    /* ── מצלמה + גודל ── */
+    function resize(){
+      const r = section.getBoundingClientRect();
+      renderer.setSize(r.width, r.height);
+      camera = new THREE.PerspectiveCamera(fovFor(r.height), r.width / r.height, 1, 3000);
+      camera.position.set(0, 0, perspective);
+      const scale = r.height / height * .82;
+      mesh.scale.set(scale, scale, 1);
+    }
+    resize(); addEventListener('resize', resize);
+
+    /* ── אינטראקציה: עכבר/מגע → UV על מישור הפגיעה ── */
+    const raycaster = new THREE.Raycaster();
+    const hitGeo = new THREE.PlaneGeometry(width, height, 1, 1);
+    const hitMat = new THREE.MeshBasicMaterial({ visible:false });
+    const hitArea = new THREE.Mesh(hitGeo, hitMat);
+    hitArea.scale.copy(mesh.scale);
+    scene.add(hitArea);
+    const ndc = new THREE.Vector2();
+    function onMove(clientX, clientY){
+      const r = canvas.getBoundingClientRect();
+      ndc.x = ((clientX - r.left) / r.width) * 2 - 1;
+      ndc.y = -((clientY - r.top) / r.height) * 2 + 1;
+      raycaster.setFromCamera(ndc, camera);
+      const hit = raycaster.intersectObject(hitArea)[0];
+      if (hit && hit.uv) touch.addTouch(hit.uv);
+    }
+    addEventListener('mousemove', e => onMove(e.clientX, e.clientY));
+    addEventListener('touchmove', e => { if (e.touches[0]) onMove(e.touches[0].clientX, e.touches[0].clientY); }, { passive:true });
+
+    /* ── כניסה: פיזור → התכנסות לדיוקן, מופעל כשנכנסים לסצנה ── */
+    ScrollTrigger.create({ trigger:'#scParticle', start:'top 75%', once:true, onEnter:() => {
+      gsap.fromTo(uniforms.uSize, { value:0.4 }, { value:1.4, duration:1.6, ease:'power2.out' });
+      gsap.to(uniforms.uRandom, { value:1.6, duration:1.6, ease:'power2.out' });
+      gsap.fromTo(uniforms.uDepth, { value:70 }, { value:3.4, duration:2.2, ease:'power2.out' });
+    }});
+
+    let clock = 0;
+    gsap.ticker.add((t, delta) => {
+      clock += delta * .001;
+      uniforms.uTime.value = clock;
+      touch.update();
+      hitArea.scale.copy(mesh.scale);
+      if (camera) renderer.render(scene, camera);
+    });
+  });
+})();
+
+window.addEventListener('load', () => ScrollTrigger.refresh());
+</script>
+</body>
+</html>
