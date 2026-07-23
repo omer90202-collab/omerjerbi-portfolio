@@ -101,11 +101,6 @@
   /* ── סמן-קו עוקב (Mouse Effects #14 — עקומת ספרינג בקנבס) ── */
   #curlyCursor{position:fixed;inset:0;z-index:250;pointer-events:none;mix-blend-mode:screen}
 
-  /* ── גלריית ספוטלייט גלית (Scroll Animation #46) ── */
-  .spotlight-images{display:flex;flex-direction:column;align-items:flex-start;padding:6vh 0 10vh}
-  .spotlight-image{position:relative;clip-path:inset(0 20% 0 20%);will-change:transform,clip-path;overflow:hidden;border-radius:8px;cursor:pointer}
-  .spotlight-image img{width:100%;height:100%;object-fit:cover;display:block}
-
   /* ── כותרות סקשן אחידות ── */
   .sec-pad{padding:12vh 5vw}
   .sec-head{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;margin-bottom:7vh;flex-wrap:wrap}
@@ -226,7 +221,7 @@
     <div class="wtile" data-label="קרב תל חי"><video src="videos/telhai-en.mp4" muted loop playsinline preload="auto" autoplay></video></div>
     <div class="wtile" data-label="נעליים"><video src="videos/heels.mp4" muted loop playsinline preload="auto" autoplay></video></div>
     <div class="wtile" data-label="קמפיין כדורגל"><video src="videos/mbappe.mp4" muted loop playsinline preload="auto" autoplay></video></div>
-    <div class="wtile" data-label="ג'ין טוניק — פורים"><video src="videos/ginton-purim.mp4" muted loop playsinline preload="auto" autoplay></video></div>
+    <div class="wtile" data-label="האח הגדול"><video src="videos/save1080.mp4" muted loop playsinline preload="auto" autoplay></video></div>
     <div class="wtile" data-label="בית״ר ירושלים"><video src="videos/beitar-puppets.mp4" muted loop playsinline preload="auto" autoplay></video></div>
     <div class="wtile" data-label="הפועל"><video src="videos/hapoel.mp4" muted loop playsinline preload="auto" autoplay></video></div>
     <div class="wtile" data-label="בר נואר"><video src="videos/noir-bar.mp4" muted loop playsinline preload="auto" autoplay></video></div>
@@ -279,24 +274,6 @@
       <div class="wk" data-label="ערק נוח"><video src="videos/raw-arak.mp4" muted loop playsinline preload="auto"></video><span class="play">▶</span><span class="cat">פרסומת</span><b>ערק נוח</b></div>
       <a class="wk more" href="projects.html"><span>לכל<br>הפרויקטים ←</span></a>
     </div>
-  </div>
-</section>
-
-<!-- ═ 5.5 ═ גלריית גרפיקות — ספוטלייט גלי (Scroll Animation #46) -->
-<section class="sec sec-pad" id="scGfx">
-  <div class="sec-head">
-    <div><small>גרפיקות</small><h2>לא רק וידאו.</h2></div>
-  </div>
-  <div class="spotlight-images" id="spotlightImages">
-    <div class="spotlight-image" data-label="ירדן שוע"><img src="images/yarden-shua.jpg" alt="ירדן שוע"></div>
-    <div class="spotlight-image" data-label="דור פרץ"><img src="images/dor-peretz.jpg" alt="דור פרץ"></div>
-    <div class="spotlight-image" data-label="מסי נגד רונאלדו"><img src="images/messi-ronaldo.jpg" alt="מסי נגד רונאלדו"></div>
-    <div class="spotlight-image" data-label="AYEEYA"><img src="images/ayeeya-cover.jpg" alt="AYEEYA"></div>
-    <div class="spotlight-image" data-label="הכנסת"><img src="images/imtirtzu-knesset.jpg" alt="הכנסת"></div>
-    <div class="spotlight-image" data-label="WIN גלידה"><img src="images/win-icecream.jpg" alt="WIN גלידה"></div>
-    <div class="spotlight-image" data-label="אייל גולן"><img src="images/eyal-golan-stories.jpg" alt="אייל גולן"></div>
-    <div class="spotlight-image" data-label="אם תרצו — רחפנים"><img src="images/imtirtzu-drones-en.jpg" alt="אם תרצו"></div>
-    <div class="spotlight-image" data-label="דן ביטון"><img src="images/dan-biton.jpg" alt="דן ביטון"></div>
   </div>
 </section>
 
@@ -514,54 +491,6 @@ ScrollTrigger.batch('.svc-row', {
 /* ════ 7 — אאוטרו ════ */
 gsap.from('.outro-in > *', { opacity:0, y:44, duration:.9, stagger:.1, ease:'power3.out',
   scrollTrigger:{ trigger:'#scOutro', start:'top 65%' } });
-
-/* ════ 5.5 — גלריית גרפיקות: ספוטלייט גלי (Scroll Animation #46, מקור אמיתי) ════
-   כל תמונה "גולשת" שמאלה-ימינה לפי גלים חופפים (base/flow/detail) שמונעים
-   מהתקדמות הגלילה שלה בתוך ה-viewport, עם clip-path שנסגר במרכז המסך ═ */
-{
-  const CONFIG = {
-    waves: {
-      base:   { amp:.1,   freq:1.0, speed:1.0, phase:5.0  },
-      flow:   { amp:.15,  freq:5.0, speed:5.0, phase:10.0 },
-      detail: { amp:.025, freq:5.0, speed:1.5, phase:2.5  }
-    },
-    clipMax:20, clipPower:2
-  };
-  const IMAGE_BASE_HEIGHT = 340;
-  const ASPECT_RATIOS = ['4/5','1/1','3/4','5/4'];
-  const imageItems = gsap.utils.toArray('.spotlight-image');
-  if (imageItems.length) {
-    imageItems.forEach((el, i) => { el.style.aspectRatio = ASPECT_RATIOS[i % ASPECT_RATIOS.length]; });
-
-    function updateImageSizes(){
-      const sizeFactor = Math.min(window.innerWidth / 900, 1);
-      const shrinkStart = Math.floor(imageItems.length * .75);
-      imageItems.forEach((el, i) => {
-        const shrink = i >= shrinkStart ? (i - shrinkStart + 1) / (imageItems.length - shrinkStart) : 0;
-        el.style.height = Math.round(IMAGE_BASE_HEIGHT * sizeFactor * (1 - shrink * .5)) + 'px';
-      });
-    }
-    updateImageSizes();
-
-    imageItems.forEach((el, index) => {
-      const ni = index / (imageItems.length - 1);
-      ScrollTrigger.create({ trigger:el, start:'top bottom', end:'bottom top',
-        onUpdate:({ progress }) => {
-          const { base, flow, detail } = CONFIG.waves, vw = window.innerWidth;
-          const baseWave = Math.sin(ni*base.freq + (1-progress)*base.speed + base.phase);
-          const flowWave = .5 + Math.sin(ni*flow.freq + flow.phase + progress*flow.speed);
-          const detailWave = .5 + Math.sin(ni*detail.freq + detail.phase + progress*detail.speed);
-          const tx = (vw - el.offsetWidth)/2 - vw*.1 + baseWave*vw*base.amp + flowWave*vw*flow.amp + detailWave*vw*detail.amp;
-          const centerOffset = Math.abs(progress - .5) * 2;
-          const clip = Math.pow(centerOffset, CONFIG.clipPower) * CONFIG.clipMax;
-          el.style.translate = `${tx}px`;
-          el.style.clipPath = `inset(0 ${clip}% 0 ${clip}%)`;
-        } });
-      el.addEventListener('click', () => openLightboxImage(el.querySelector('img'), el.dataset.label || ''));
-    });
-    addEventListener('resize', () => { updateImageSizes(); ScrollTrigger.refresh(); });
-  }
-}
 
 /* ════ רקע גלקסיה באאוטרו (Background Animations #7, מקור אמיתי — WebGL, מגיב לעכבר) ════ */
 (function initGalaxy(){
