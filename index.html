@@ -94,6 +94,18 @@
   .sec-vbg::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(6,5,4,.25),rgba(6,5,4,.82))}
   .sec-pad > *{position:relative;z-index:1}
 
+  /* ── רקע גלקסיה (Background Animations #7 — WebGL כוכבים אמיתי, מגיב לעכבר) ── */
+  #galaxy{position:absolute;inset:0;z-index:0;opacity:.85}
+  #galaxy canvas{display:block;width:100%;height:100%}
+
+  /* ── סמן-קו עוקב (Mouse Effects #14 — עקומת ספרינג בקנבס) ── */
+  #curlyCursor{position:fixed;inset:0;z-index:250;pointer-events:none;mix-blend-mode:screen}
+
+  /* ── גלריית ספוטלייט גלית (Scroll Animation #46) ── */
+  .spotlight-images{display:flex;flex-direction:column;align-items:flex-start;padding:6vh 0 10vh}
+  .spotlight-image{position:relative;clip-path:inset(0 20% 0 20%);will-change:transform,clip-path;overflow:hidden;border-radius:8px;cursor:pointer}
+  .spotlight-image img{width:100%;height:100%;object-fit:cover;display:block}
+
   /* ── כותרות סקשן אחידות ── */
   .sec-pad{padding:12vh 5vw}
   .sec-head{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;margin-bottom:7vh;flex-wrap:wrap}
@@ -170,6 +182,8 @@
 </style>
 </head>
 <body>
+
+<canvas id="curlyCursor"></canvas>
 
 <header>
   <nav class="nav">
@@ -268,6 +282,24 @@
   </div>
 </section>
 
+<!-- ═ 5.5 ═ גלריית גרפיקות — ספוטלייט גלי (Scroll Animation #46) -->
+<section class="sec sec-pad" id="scGfx">
+  <div class="sec-head">
+    <div><small>גרפיקות</small><h2>לא רק וידאו.</h2></div>
+  </div>
+  <div class="spotlight-images" id="spotlightImages">
+    <div class="spotlight-image" data-label="ירדן שוע"><img src="images/yarden-shua.jpg" alt="ירדן שוע"></div>
+    <div class="spotlight-image" data-label="דור פרץ"><img src="images/dor-peretz.jpg" alt="דור פרץ"></div>
+    <div class="spotlight-image" data-label="מסי נגד רונאלדו"><img src="images/messi-ronaldo.jpg" alt="מסי נגד רונאלדו"></div>
+    <div class="spotlight-image" data-label="AYEEYA"><img src="images/ayeeya-cover.jpg" alt="AYEEYA"></div>
+    <div class="spotlight-image" data-label="הכנסת"><img src="images/imtirtzu-knesset.jpg" alt="הכנסת"></div>
+    <div class="spotlight-image" data-label="WIN גלידה"><img src="images/win-icecream.jpg" alt="WIN גלידה"></div>
+    <div class="spotlight-image" data-label="אייל גולן"><img src="images/eyal-golan-stories.jpg" alt="אייל גולן"></div>
+    <div class="spotlight-image" data-label="אם תרצו — רחפנים"><img src="images/imtirtzu-drones-en.jpg" alt="אם תרצו"></div>
+    <div class="spotlight-image" data-label="דן ביטון"><img src="images/dan-biton.jpg" alt="דן ביטון"></div>
+  </div>
+</section>
+
 <!-- ═ 6 ═ מרקיזה -->
 <div class="mq-sec"><div class="mq-track" id="mqTrack">
   <span>עומר ג'רבי</span><span class="solid">✦</span><span>מומחה תוכן AI</span><span class="solid">✦</span>
@@ -275,7 +307,7 @@
 
 <!-- ═ 7 ═ אאוטרו -->
 <section class="sec sc-outro" id="scOutro">
-  <div class="sec-vbg" style="opacity:.5"><video src="videos/loop-smoke.mp4" muted loop playsinline preload="auto" autoplay></video></div>
+  <div id="galaxy"></div>
   <div class="outro-in">
     <h2>יש לכם מוצר?<br><em>בואו נעשה מזה פרסומת.</em></h2>
     <p>שיחה ראשונה חינם. תוך ימים — סרטון שנראה כמו הפקה שלמה.</p>
@@ -482,6 +514,189 @@ ScrollTrigger.batch('.svc-row', {
 /* ════ 7 — אאוטרו ════ */
 gsap.from('.outro-in > *', { opacity:0, y:44, duration:.9, stagger:.1, ease:'power3.out',
   scrollTrigger:{ trigger:'#scOutro', start:'top 65%' } });
+
+/* ════ 5.5 — גלריית גרפיקות: ספוטלייט גלי (Scroll Animation #46, מקור אמיתי) ════
+   כל תמונה "גולשת" שמאלה-ימינה לפי גלים חופפים (base/flow/detail) שמונעים
+   מהתקדמות הגלילה שלה בתוך ה-viewport, עם clip-path שנסגר במרכז המסך ═ */
+{
+  const CONFIG = {
+    waves: {
+      base:   { amp:.1,   freq:1.0, speed:1.0, phase:5.0  },
+      flow:   { amp:.15,  freq:5.0, speed:5.0, phase:10.0 },
+      detail: { amp:.025, freq:5.0, speed:1.5, phase:2.5  }
+    },
+    clipMax:20, clipPower:2
+  };
+  const IMAGE_BASE_HEIGHT = 340;
+  const ASPECT_RATIOS = ['4/5','1/1','3/4','5/4'];
+  const imageItems = gsap.utils.toArray('.spotlight-image');
+  if (imageItems.length) {
+    imageItems.forEach((el, i) => { el.style.aspectRatio = ASPECT_RATIOS[i % ASPECT_RATIOS.length]; });
+
+    function updateImageSizes(){
+      const sizeFactor = Math.min(window.innerWidth / 900, 1);
+      const shrinkStart = Math.floor(imageItems.length * .75);
+      imageItems.forEach((el, i) => {
+        const shrink = i >= shrinkStart ? (i - shrinkStart + 1) / (imageItems.length - shrinkStart) : 0;
+        el.style.height = Math.round(IMAGE_BASE_HEIGHT * sizeFactor * (1 - shrink * .5)) + 'px';
+      });
+    }
+    updateImageSizes();
+
+    imageItems.forEach((el, index) => {
+      const ni = index / (imageItems.length - 1);
+      ScrollTrigger.create({ trigger:el, start:'top bottom', end:'bottom top',
+        onUpdate:({ progress }) => {
+          const { base, flow, detail } = CONFIG.waves, vw = window.innerWidth;
+          const baseWave = Math.sin(ni*base.freq + (1-progress)*base.speed + base.phase);
+          const flowWave = .5 + Math.sin(ni*flow.freq + flow.phase + progress*flow.speed);
+          const detailWave = .5 + Math.sin(ni*detail.freq + detail.phase + progress*detail.speed);
+          const tx = (vw - el.offsetWidth)/2 - vw*.1 + baseWave*vw*base.amp + flowWave*vw*flow.amp + detailWave*vw*detail.amp;
+          const centerOffset = Math.abs(progress - .5) * 2;
+          const clip = Math.pow(centerOffset, CONFIG.clipPower) * CONFIG.clipMax;
+          el.style.translate = `${tx}px`;
+          el.style.clipPath = `inset(0 ${clip}% 0 ${clip}%)`;
+        } });
+      el.addEventListener('click', () => openLightboxImage(el.querySelector('img'), el.dataset.label || ''));
+    });
+    addEventListener('resize', () => { updateImageSizes(); ScrollTrigger.refresh(); });
+  }
+}
+
+/* ════ רקע גלקסיה באאוטרו (Background Animations #7, מקור אמיתי — WebGL, מגיב לעכבר) ════ */
+(function initGalaxy(){
+  const container = document.getElementById('galaxy');
+  if (!container) return;
+  const opts = { focal:[.5,.5], rotation:[1,0], starSpeed:.5, density:.7, hueShift:38, speed:1,
+    glowIntensity:.22, saturation:.15, repulsionStrength:1.6, twinkleIntensity:.14, rotationSpeed:.05, autoCenterRepulsion:0 };
+  const canvas = document.createElement('canvas');
+  canvas.style.width = '100%'; canvas.style.height = '100%'; canvas.style.display = 'block';
+  container.appendChild(canvas);
+  const gl = canvas.getContext('webgl', { alpha:true, antialias:false, premultipliedAlpha:false })
+          || canvas.getContext('experimental-webgl', { alpha:true, antialias:false, premultipliedAlpha:false });
+  if (!gl) return;
+  gl.enable(gl.BLEND); gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA); gl.clearColor(0,0,0,0);
+  const vertexSrc = `attribute vec2 uv;attribute vec2 position;varying vec2 vUv;void main(){vUv=uv;gl_Position=vec4(position,0.0,1.0);}`;
+  const fragmentSrc = `precision mediump float;
+uniform float uTime;uniform vec3 uResolution;uniform vec2 uFocal;uniform vec2 uRotation;uniform float uStarSpeed;uniform float uDensity;
+uniform float uHueShift;uniform float uSpeed;uniform vec2 uMouse;uniform float uGlowIntensity;uniform float uSaturation;uniform bool uMouseRepulsion;
+uniform float uTwinkleIntensity;uniform float uRotationSpeed;uniform float uRepulsionStrength;uniform float uMouseActiveFactor;uniform float uAutoCenterRepulsion;uniform bool uTransparent;
+varying vec2 vUv;
+#define NUM_LAYER 2.0
+#define STAR_COLOR_CUTOFF 0.2
+#define MAT45 mat2(0.7071,-0.7071,0.7071,0.7071)
+#define PERIOD 3.0
+float Hash21(vec2 p){p=fract(p*vec2(123.34,456.21));p+=dot(p,p+45.32);return fract(p.x*p.y);}
+float tri(float x){return abs(fract(x)*2.0-1.0);}
+float tris(float x){float t=fract(x);return 1.0-smoothstep(0.0,1.0,abs(2.0*t-1.0));}
+float trisn(float x){float t=fract(x);return 2.0*(1.0-smoothstep(0.0,1.0,abs(2.0*t-1.0)))-1.0;}
+vec3 hsv2rgb(vec3 c){vec4 K=vec4(1.0,2.0/3.0,1.0/3.0,3.0);vec3 p=abs(fract(c.xxx+K.xyz)*6.0-K.www);return c.z*mix(K.xxx,clamp(p-K.xxx,0.0,1.0),c.y);}
+float Star(vec2 uv,float flare){float d=length(uv);float m=(0.05*uGlowIntensity)/max(d,1e-4);float rays=smoothstep(0.0,1.0,1.0-abs(uv.x*uv.y*800.0));m+=rays*flare*uGlowIntensity;uv*=MAT45;rays=smoothstep(0.0,1.0,1.0-abs(uv.x*uv.y*800.0));m+=rays*0.25*flare*uGlowIntensity;m*=smoothstep(1.0,0.2,d);return m;}
+vec3 StarLayer(vec2 uv){vec3 col=vec3(0.0);vec2 gv=fract(uv)-0.5;vec2 id=floor(uv);
+for(int y=-1;y<=1;y++){for(int x=-1;x<=1;x++){vec2 offset=vec2(float(x),float(y));vec2 si=id+vec2(float(x),float(y));float seed=Hash21(si);float size=fract(seed*345.32);float glossLocal=tri(uStarSpeed/(PERIOD*seed+1.0));float flareSize=smoothstep(0.9,1.0,size)*glossLocal;
+float red=smoothstep(STAR_COLOR_CUTOFF,1.0,Hash21(si+1.0))+STAR_COLOR_CUTOFF;float blu=smoothstep(STAR_COLOR_CUTOFF,1.0,Hash21(si+3.0))+STAR_COLOR_CUTOFF;float grn=min(red,blu)*seed;vec3 base=vec3(red,grn,blu);
+float hue=atan(base.g-base.r,base.b-base.r)/(2.0*3.14159)+0.5;hue=fract(hue+uHueShift/360.0);float sat=length(base-vec3(dot(base,vec3(0.299,0.587,0.114))))*uSaturation;float val=max(max(base.r,base.g),base.b);base=hsv2rgb(vec3(hue,sat,val));
+vec2 pad=vec2(tris(seed*34.0+uTime*uSpeed/10.0),tris(seed*38.0+uTime*uSpeed/30.0))-0.5;float star=Star(gv-offset-pad,flareSize);vec3 color=base;
+float twinkle=trisn(uTime*uSpeed+seed*6.2831)*0.5+1.0;twinkle=mix(1.0,twinkle,uTwinkleIntensity);star*=twinkle;col+=star*size*color;}}return col;}
+void main(){vec2 focalPx=uFocal*uResolution.xy;vec2 uv=(vUv*uResolution.xy-focalPx)/uResolution.y;vec2 mouseNorm=uMouse-vec2(0.5);
+if(uAutoCenterRepulsion>0.0){vec2 centerUV=vec2(0.0,0.0);float centerDist=length(uv-centerUV);vec2 repulsion=normalize(uv-centerUV)*(uAutoCenterRepulsion/(centerDist+0.1));uv+=repulsion*0.05;}
+else if(uMouseRepulsion){vec2 mousePosUV=(uMouse*uResolution.xy-focalPx)/uResolution.y;float mouseDist=length(uv-mousePosUV);vec2 repulsion=normalize(uv-mousePosUV)*(uRepulsionStrength/(mouseDist+0.1));uv+=repulsion*0.05*uMouseActiveFactor;}
+else{vec2 mouseOffset=mouseNorm*0.1*uMouseActiveFactor;uv+=mouseOffset;}
+float autoRotAngle=uTime*uRotationSpeed;mat2 autoRot=mat2(cos(autoRotAngle),-sin(autoRotAngle),sin(autoRotAngle),cos(autoRotAngle));uv=autoRot*uv;uv=mat2(uRotation.x,-uRotation.y,uRotation.y,uRotation.x)*uv;
+vec3 col=vec3(0.0);for(float i=0.0;i<1.0;i+=1.0/NUM_LAYER){float depth=fract(i+uStarSpeed*uSpeed);float scale=mix(20.0*uDensity,0.5*uDensity,depth);float fade=depth*smoothstep(1.0,0.9,depth);col+=StarLayer(uv*scale+i*453.32)*fade;}
+if(uTransparent){float alpha=length(col);alpha=smoothstep(0.0,0.3,alpha);alpha=min(alpha,1.0);gl_FragColor=vec4(col,alpha);}else{gl_FragColor=vec4(col,1.0);}}`;
+  function compile(type, src){ const sh = gl.createShader(type); gl.shaderSource(sh, src); gl.compileShader(sh); return gl.getShaderParameter(sh, gl.COMPILE_STATUS) ? sh : null; }
+  function link(vs2, fs2){ const p = gl.createProgram(); gl.attachShader(p, vs2); gl.attachShader(p, fs2); gl.linkProgram(p); return gl.getProgramParameter(p, gl.LINK_STATUS) ? p : null; }
+  const vs = compile(gl.VERTEX_SHADER, vertexSrc), fs = compile(gl.FRAGMENT_SHADER, fragmentSrc);
+  if (!vs || !fs) return;
+  const program = link(vs, fs);
+  if (!program) return;
+  gl.useProgram(program);
+  const posLoc = gl.getAttribLocation(program,'position'), uvLoc = gl.getAttribLocation(program,'uv');
+  const loc = name => gl.getUniformLocation(program, name);
+  const uTimeLoc=loc('uTime'), uResolutionLoc=loc('uResolution'), uFocalLoc=loc('uFocal'), uRotationLoc=loc('uRotation'),
+    uStarSpeedLoc=loc('uStarSpeed'), uDensityLoc=loc('uDensity'), uHueShiftLoc=loc('uHueShift'), uSpeedLoc=loc('uSpeed'),
+    uMouseLoc=loc('uMouse'), uGlowIntensityLoc=loc('uGlowIntensity'), uSaturationLoc=loc('uSaturation'), uMouseRepulsionLoc=loc('uMouseRepulsion'),
+    uTwinkleIntensityLoc=loc('uTwinkleIntensity'), uRotationSpeedLoc=loc('uRotationSpeed'), uRepulsionStrengthLoc=loc('uRepulsionStrength'),
+    uMouseActiveFactorLoc=loc('uMouseActiveFactor'), uAutoCenterRepulsionLoc=loc('uAutoCenterRepulsion'), uTransparentLoc=loc('uTransparent');
+  const posBuffer = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, posBuffer); gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1,3,-1,-1,3]), gl.STATIC_DRAW);
+  gl.enableVertexAttribArray(posLoc); gl.vertexAttribPointer(posLoc,2,gl.FLOAT,false,0,0);
+  const uvBuffer = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, uvBuffer); gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([0,0,2,0,0,2]), gl.STATIC_DRAW);
+  gl.enableVertexAttribArray(uvLoc); gl.vertexAttribPointer(uvLoc,2,gl.FLOAT,false,0,0);
+  const targetMouse = { x:.5, y:.5 }, smoothMouse = { x:.5, y:.5 };
+  let targetActive = 0, smoothActive = 0, lastT = 0;
+  function resize(){
+    const rect = container.getBoundingClientRect();
+    const w = Math.max(1, Math.floor(rect.width)), h = Math.max(1, Math.floor(rect.height));
+    canvas.width = w; canvas.height = h; gl.viewport(0,0,w,h);
+    gl.uniform3fv(uResolutionLoc, new Float32Array([w,h,w/h]));
+  }
+  function setUniformsOnce(){
+    gl.uniform2fv(uFocalLoc, new Float32Array(opts.focal)); gl.uniform2fv(uRotationLoc, new Float32Array(opts.rotation));
+    gl.uniform1f(uStarSpeedLoc, opts.starSpeed); gl.uniform1f(uDensityLoc, opts.density); gl.uniform1f(uHueShiftLoc, opts.hueShift);
+    gl.uniform1f(uSpeedLoc, opts.speed); gl.uniform1f(uGlowIntensityLoc, opts.glowIntensity); gl.uniform1f(uSaturationLoc, opts.saturation);
+    gl.uniform1i(uMouseRepulsionLoc, 1); gl.uniform1f(uTwinkleIntensityLoc, opts.twinkleIntensity); gl.uniform1f(uRotationSpeedLoc, opts.rotationSpeed);
+    gl.uniform1f(uRepulsionStrengthLoc, opts.repulsionStrength); gl.uniform1f(uAutoCenterRepulsionLoc, opts.autoCenterRepulsion); gl.uniform1i(uTransparentLoc, 1);
+  }
+  resize(); setUniformsOnce();
+  addEventListener('resize', resize, false);
+  container.addEventListener('mousemove', e => {
+    const rect = container.getBoundingClientRect();
+    targetMouse.x = (e.clientX - rect.left) / rect.width; targetMouse.y = 1 - (e.clientY - rect.top) / rect.height; targetActive = 1;
+  });
+  container.addEventListener('mouseleave', () => { targetActive = 0; });
+  function frame(t){
+    requestAnimationFrame(frame);
+    if (t - lastT < 42) return;
+    lastT = t;
+    gl.uniform1f(uTimeLoc, t*1e-3); gl.uniform1f(uStarSpeedLoc, (t*1e-3*opts.starSpeed)/10);
+    smoothMouse.x += (targetMouse.x - smoothMouse.x)*.05; smoothMouse.y += (targetMouse.y - smoothMouse.y)*.05; smoothActive += (targetActive - smoothActive)*.05;
+    gl.uniform2fv(uMouseLoc, new Float32Array([smoothMouse.x, smoothMouse.y])); gl.uniform1f(uMouseActiveFactorLoc, smoothActive);
+    gl.drawArrays(gl.TRIANGLES, 0, 3);
+  }
+  requestAnimationFrame(frame);
+})();
+
+/* ════ סמן-קו עוקב (Mouse Effects #14, מקור אמיתי — עקומת ספרינג בקנבס) ════ */
+(function initCurlyCursor(){
+  if (isMobile) return; /* אין עכבר במגע */
+  const canvas = document.getElementById('curlyCursor');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  let mouseMoved = false;
+  const pointer = { x:.5*innerWidth, y:.5*innerHeight };
+  const params = { pointsNumber:34, widthFactor:.26, spring:.4, friction:.5 };
+  const trail = Array.from({ length: params.pointsNumber }, () => ({ x:pointer.x, y:pointer.y, dx:0, dy:0 }));
+  function setPos(x, y){ pointer.x = x; pointer.y = y; }
+  addEventListener('mousemove', e => { mouseMoved = true; setPos(e.clientX, e.clientY); });
+  function setupCanvas(){ canvas.width = innerWidth; canvas.height = innerHeight; }
+  setupCanvas();
+  addEventListener('resize', setupCanvas);
+  function update(t){
+    if (!mouseMoved){ pointer.x = (.5 + .3*Math.cos(.002*t)*Math.sin(.005*t))*innerWidth; pointer.y = (.5 + .2*Math.cos(.005*t) + .1*Math.cos(.01*t))*innerHeight; }
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    trail.forEach((p, i) => {
+      const prev = i === 0 ? pointer : trail[i-1];
+      const spring = i === 0 ? .4*params.spring : params.spring;
+      p.dx += (prev.x - p.x)*spring; p.dy += (prev.y - p.y)*spring;
+      p.dx *= params.friction; p.dy *= params.friction;
+      p.x += p.dx; p.y += p.dy;
+    });
+    ctx.strokeStyle = 'rgba(253,191,45,.55)'; ctx.lineCap = 'round';
+    ctx.beginPath(); ctx.moveTo(trail[0].x, trail[0].y);
+    for (let i = 1; i < trail.length - 1; i++){
+      const xc = .5*(trail[i].x + trail[i+1].x), yc = .5*(trail[i].y + trail[i+1].y);
+      ctx.quadraticCurveTo(trail[i].x, trail[i].y, xc, yc);
+      ctx.lineWidth = params.widthFactor * (params.pointsNumber - i);
+      ctx.stroke();
+    }
+    ctx.lineTo(trail[trail.length-1].x, trail[trail.length-1].y); ctx.stroke();
+    requestAnimationFrame(update);
+  }
+  requestAnimationFrame(update);
+})();
 
 /* רענון מדידות אחרי טעינה — חובה */
 window.addEventListener('load', () => ScrollTrigger.refresh());
