@@ -12,7 +12,7 @@
   סצנות:
   1. הירו — קיר וידאו של 12 עבודות אמיתיות, שם ענק במרכז, לחיצה על חלונית = תצוגה מוגדלת עם סאונד
   2. מספרים — 4 כרטיסים, אחד זהב
-  3. מה אני עושה — שורות 01-03 עם חץ
+  3. מי אני — פסקת ביו קצרה
   4. הצהרה — כרטיס זהב, טקסט נצבע מילה-מילה
   5. עבודות נבחרות — גלריה אופקית מוצמדת (pin+scrub) + ▶ + לייטבוקס
   6. מרקיזה — הד שם מאיץ עם מהירות גלילה
@@ -75,7 +75,6 @@
   .hero-textwrap::before{content:"";position:absolute;inset:-15%;background:radial-gradient(closest-side,rgba(6,5,4,.75),transparent 68%)}
   .hero-kicker{position:relative;font-size:13px;letter-spacing:.42em;color:var(--gold);margin-bottom:20px;font-weight:600}
   .hero-title{position:relative;font-weight:900;font-size:clamp(52px,10vw,150px);line-height:.95;letter-spacing:-.02em;color:var(--ink);text-shadow:0 14px 60px rgba(0,0,0,.85)}
-  .hero-sub{position:relative;margin-top:16px;font-size:clamp(15px,1.9vw,24px);font-weight:900;letter-spacing:.03em;color:transparent;-webkit-text-stroke:1px var(--gold)}
   .hero-hint{position:absolute;bottom:4vh;inset-inline:0;text-align:center;z-index:6;font-size:12px;letter-spacing:.4em;color:var(--dim);pointer-events:none}
 
   /* ── תצוגה מוגדלת ── */
@@ -121,16 +120,8 @@
   .stat::after{content:"";position:absolute;inset:auto -30% -55% -30%;height:70%;background:radial-gradient(closest-side,rgba(253,191,45,.14),transparent 70%);pointer-events:none}
   .stat.gold::after{display:none}
 
-  /* ════ 3 — מה אני עושה ════ */
-  .svc-row{display:flex;align-items:center;gap:26px;padding:4.6vh 0;border-top:1px solid var(--line);cursor:pointer;transition:.3s}
-  .svc-row:last-child{border-bottom:1px solid var(--line)}
-  .svc-row .idx{font-size:14px;color:var(--dim);font-variant-numeric:tabular-nums;flex-shrink:0}
-  .svc-row h3{font-weight:900;font-size:clamp(26px,4.6vw,62px);line-height:1;letter-spacing:-.01em;flex-shrink:0;transition:color .3s}
-  .svc-row p{color:var(--dim);font-size:15px;font-weight:300;max-width:44ch;margin-inline-start:auto}
-  .svc-row .arr{flex-shrink:0;width:52px;height:52px;border-radius:99px;border:1px solid var(--line);display:grid;place-items:center;font-size:19px;transition:.3s}
-  .svc-row:hover h3{color:var(--gold)}
-  .svc-row:hover .arr{background:var(--gold);border-color:var(--gold);color:#141005;transform:rotate(-45deg)}
-  @media(max-width:900px){.svc-row{flex-wrap:wrap;gap:12px}.svc-row p{margin-inline-start:0;max-width:100%}}
+  /* ════ 3 — מי אני ════ */
+  .bio-text{font-size:clamp(19px,2.3vw,27px);font-weight:300;line-height:1.75;max-width:62ch}
 
   /* ════ 4 — הצהרה (כרטיס זהב) ════ */
   .statement{padding:16vh 7vw}
@@ -200,7 +191,7 @@
   <nav class="menu-nav" id="menuNav">
     <div class="menu-nav__body">
       <div class="menu-nav__link-wrap"><a class="menu-nav__link" href="#scWorks">עבודות נבחרות</a></div>
-      <div class="menu-nav__link-wrap"><a class="menu-nav__link" href="#scSvc">מה אני עושה</a></div>
+      <div class="menu-nav__link-wrap"><a class="menu-nav__link" href="#scSvc">מי אני</a></div>
       <div class="menu-nav__link-wrap"><a class="menu-nav__link" href="projects.html">כל הפרויקטים</a></div>
       <div class="menu-nav__link-wrap"><a class="menu-nav__link" href="#scOutro">צור קשר</a></div>
     </div>
@@ -231,7 +222,6 @@
   <div class="hero-textwrap">
     <div>
       <h1 class="hero-title">עומר ג'רבי</h1>
-      <div class="hero-sub">מומחה תוכן AI</div>
     </div>
   </div>
   <div class="hero-hint">גלול</div>
@@ -245,24 +235,17 @@
   <div class="lb-label" id="lbLabel"></div>
 </div>
 
-<!-- ═ 3 ═ מה אני עושה -->
+<!-- ═ 3 ═ מי אני -->
 <section class="sec sec-pad" id="scSvc">
   <div class="sec-head">
-    <div><small>מה אני עושה</small><h2>שלושה דברים.<br><em>ברמה אחת.</em></h2></div>
+    <div><small>מי אני</small><h2>עומר ג'רבי.</h2></div>
   </div>
-  <div class="svc-list">
-    <a class="svc-row" href="#scWorks"><span class="idx">[01]</span><h3>פרסומות למוצרים</h3><p>מוצר מהמדף הופך לפרסומת קולנועית — מהקונספט ועד הקאט הסופי.</p><span class="arr">←</span></a>
-    <a class="svc-row" href="#scWorks"><span class="idx">[02]</span><h3>עבודות ללקוחות</h3><p>אמנים, תוכניות פריים-טיים, ארגונים ומוסדות — קמפיין שלם מהמחשב שלי.</p><span class="arr">←</span></a>
-    <a class="svc-row" href="#scWorks"><span class="idx">[03]</span><h3>קריאייטיב</h3><p>רעיונות שרצתי איתם בלי בריף — כי אי אפשר היה שלא.</p><span class="arr">←</span></a>
-  </div>
+  <p class="bio-text">עומר ג'רבי, בן 24, בוגר עיצוב גרפי בשנקר ומומחה תוכן AI. אני יוצר תוכן ברמה הוליוודית לעסקים ומותגים — לצד שיווק דיגיטלי, בניית אתרים, עריכת וידאו ופודקאסטים, ופיתוח מערכות ואוטומציות בבינה מלאכותית. עבדתי מול חלק מהמותגים הגדולים במדינה, והבאתי אותם לתוצאה שנראית כמו הפקה מלאה — מהמחשב שלי בלבד.</p>
 </section>
 
 <!-- ═ 5 ═ עבודות נבחרות: גלריה אופקית מוצמדת -->
 <section class="sec" id="scWorks">
   <div class="works-pin" id="worksPin">
-    <div class="sec-head" style="padding:0 5vw;margin-bottom:6vh">
-      <div><small>עבודות נבחרות</small><h2>לחצו. <em>תשמעו.</em></h2></div>
-    </div>
     <div class="works-track" id="worksTrack">
       <div class="works-lead">עבודות ←</div>
       <div class="wk" data-label="אייל גולן"><video src="videos/eyal-golan.mp4" muted loop playsinline preload="auto"></video><span class="play">▶</span><span class="cat">עבודה ללקוח</span><b>אייל גולן</b></div>
@@ -421,7 +404,7 @@ document.querySelectorAll('.wk:not(.more)').forEach(t => t.addEventListener('cli
     opacity:0, scale:.35, duration:1.1, ease:'power3.out',
     stagger:{ amount:1, from:'random', grid:isMobile ? [4,3] : [2,6] }
   });
-  gsap.from('.hero-kicker, .hero-title, .hero-sub', {
+  gsap.from('.hero-kicker, .hero-title', {
     opacity:0, y:26, duration:1, ease:'power3.out', stagger:.1, delay:.35
   });
 
@@ -476,11 +459,9 @@ ScrollTrigger.batch('.stat', {
   onEnter:els => gsap.from(els, { opacity:0, y:56, duration:.85, stagger:.1, ease:'power3.out' })
 });
 
-/* ════ 3 — מה אני עושה ════ */
-ScrollTrigger.batch('.svc-row', {
-  start:'top 90%',
-  onEnter:els => gsap.from(els, { opacity:0, y:44, duration:.8, stagger:.09, ease:'power3.out' })
-});
+/* ════ 3 — מי אני ════ */
+gsap.from('.bio-text', { opacity:0, y:34, duration:1, ease:'power3.out',
+  scrollTrigger:{ trigger:'.bio-text', start:'top 88%' } });
 
 /* ════ 5 — עבודות: גלריה אופקית מוצמדת (RTL → x חיובי) ════ */
 {
