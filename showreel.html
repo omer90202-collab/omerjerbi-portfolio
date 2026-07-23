@@ -241,8 +241,6 @@
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
 <script src="https://unpkg.com/lenis@1.3.4/dist/lenis.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/DRACOLoader.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/environments/RoomEnvironment.js"></script>
 <script>
 gsap.registerPlugin(ScrollTrigger);
@@ -367,13 +365,14 @@ gsap.timeline({ scrollTrigger:{ trigger:'#scOutro', start:'top top', end:'+=160%
 }
 
 /* ════════════════════════════════════════════════════════════
-   הירו — צינור תמונות תלת-ממדי + קסדת זכוכית, שבוי בגלגלת גלילה.
-   מקור: Animmaster 3D Animation #12 — "Scroll-Driven 3D Image Tube
-   with R3F" (helmet-main, React Three Fiber). הוסב במלואו ל-Three.js
+   הירו — צינור תמונות תלת-ממדי, שבוי בגלגלת גלילה, עם התמונה
+   האמיתית של עומר במרכז (במסגרת זכוכית) — לא קסדה מהדמו המקורי.
+   מקור המנגנון: Animmaster 3D Animation #12 — "Scroll-Driven 3D
+   Image Tube with R3F" (React Three Fiber). הוסב במלואו ל-Three.js
    וניל: <mesh>/<group> JSX → new THREE.Mesh/Group, useFrame → לולאת
-   gsap.ticker, useGLTF/Environment (drei) → THREE.GLTFLoader +
-   THREE.RoomEnvironment (תוסף קלאסי תואם, לא ESM) + PMREMGenerator.
-   הפיזיקה (מהירות סיבוב, האטה ב-hover, לולאת שורות) הועתקה 1:1.
+   gsap.ticker. הפיזיקה (מהירות סיבוב, האטה ב-hover, לולאת שורות)
+   הועתקה 1:1. אובייקט המרכז הוחלף מ-GLTF (קסדה) ללוח-תמונה עם
+   THREE.RoomEnvironment + PMREMGenerator למסגרת הזכוכית סביבו.
    ════════════════════════════════════════════════════════════ */
 (function initTubeHero(){
   const section = document.getElementById('scTube');
@@ -481,19 +480,20 @@ gsap.timeline({ scrollTrigger:{ trigger:'#scOutro', start:'top top', end:'+=160%
     rowGroups.push({ obj: rowGroup, baseRow });
   }
 
-  /* ── קסדת הזכוכית ── */
-  let helmetObj = null;
-  const glassMat = new THREE.MeshPhysicalMaterial({ transmission:1, thickness:10, roughness:0, metalness:.1, ior:1.9, clearcoat:.1, clearcoatRoughness:1.1, color:0xffffff, transparent:true, depthWrite:true });
-  const dracoLoader = new THREE.DRACOLoader();
-  dracoLoader.setDecoderPath('https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/libs/draco/gltf/');
-  const gltfLoader = new THREE.GLTFLoader();
-  gltfLoader.setDRACOLoader(dracoLoader);
-  gltfLoader.load('models/helmet.glb', (gltf) => {
-    helmetObj = gltf.scene;
-    helmetObj.traverse(o => { if (o.isMesh) { o.scale.set(.7,.7,.7); o.material = glassMat; } });
-    helmetObj.rotation.set(Math.PI/8, Math.PI/2, 0);
-    scene.add(helmetObj);
-  });
+  /* ── עומר במרכז: לוח-תמונה עם מסגרת זכוכית, נשאר פונה למצלמה בזמן שהצינור סובב סביבו ── */
+  const headObj = new THREE.Group();
+  const faceTex = texLoader.load('images/omer-face.jpg');
+  faceTex.encoding = THREE.sRGBEncoding;
+  const plateW = 2.1, plateH = plateW * (1080/842);
+  const facePlane = new THREE.Mesh(
+    new THREE.PlaneGeometry(plateW, plateH),
+    new THREE.MeshBasicMaterial({ map: faceTex, toneMapped:false })
+  );
+  const glassMat = new THREE.MeshPhysicalMaterial({ transmission:1, thickness:2, roughness:.05, metalness:0, ior:1.5, clearcoat:1, clearcoatRoughness:.2, color:0xffffff, transparent:true, depthWrite:false });
+  const frame = new THREE.Mesh(new THREE.PlaneGeometry(plateW+.16, plateH+.16), glassMat);
+  frame.position.z = -.06;
+  headObj.add(frame, facePlane);
+  scene.add(headObj);
 
   /* ── פיזיקה: גלילה שבויה, מהירות טבעית, האטה ב-hover ── */
   const scrollTarget = { v:0 }, scrollCurrent = { v:0 };
@@ -568,7 +568,7 @@ gsap.timeline({ scrollTrigger:{ trigger:'#scOutro', start:'top top', end:'+=160%
     tubeGroup.position.y = -scrollCurrent.v;
     rowGroups.forEach(({obj, baseRow}) => { obj.rotation.y = angle * rowSpeed[baseRow]; });
 
-    if (helmetObj){ helmetObj.rotation.x = Math.PI/8; helmetObj.rotation.y = Math.PI/2 - tubeAngle; }
+    headObj.rotation.y = -tubeAngle * .08; /* תנודה עדינה בלבד — הפרצוף נשאר פונה קדימה */
 
     renderer.render(scene, camera);
   });
