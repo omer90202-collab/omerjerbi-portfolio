@@ -123,17 +123,25 @@
   /* ════ 3 — מי אני ════ */
   .bio-text{font-size:clamp(19px,2.3vw,27px);font-weight:300;line-height:1.75;max-width:62ch}
 
-  /* ════ 3ב — מי אני: סטאק תמונות דביק ════ */
-  .mi-stack{position:relative}
-  .mi-panel{position:sticky;top:0;height:100vh;display:flex;align-items:center;justify-content:center;padding:2.6vh 4vw}
-  .mi-panel-inner{position:relative;width:100%;height:100%;border-radius:var(--r);overflow:hidden;background:var(--card);box-shadow:0 30px 90px rgba(0,0,0,.55)}
-  .mi-panel-inner img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center}
-  .mi-panel-inner::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(6,5,4,.88) 0%,rgba(6,5,4,.2) 42%,transparent 62%)}
-  .mi-panel-copy{position:absolute;inset-inline:0;bottom:0;padding:5vh 5vw;z-index:1}
-  .mi-num{display:block;font-size:13px;letter-spacing:.32em;color:var(--gold);font-weight:700;margin-bottom:14px}
-  .mi-panel-copy h3{font-weight:900;font-size:clamp(30px,4.4vw,64px);line-height:1.05;letter-spacing:-.01em;color:var(--ink)}
-  .mi-panel-copy p{margin-top:14px;color:var(--dim);font-weight:400;font-size:clamp(14px,1.3vw,18px);max-width:48ch}
-  @media(max-width:720px){.mi-panel{padding:1.6vh 3vw}.mi-panel-copy{padding:4vh 5vw}}
+  /* ════ 3ב — מי אני: Pinned Image Mask Reveal (Animmaster Scroll Animation/29) ════ */
+  .mi-show{padding:0 5vw}
+  .arch{display:flex;gap:60px;justify-content:space-between;max-width:1200px;margin-inline:auto}
+  .arch__left{display:flex;flex-direction:column;min-width:280px;flex:1}
+  .arch__info{max-width:440px;height:100vh;display:grid;place-items:center}
+  .arch__info .content small{display:block;color:var(--gold);letter-spacing:.32em;font-size:12px;margin-bottom:14px;font-weight:700}
+  .arch__info h3{font-weight:900;font-size:clamp(30px,3.6vw,50px);line-height:1.05;letter-spacing:-.01em;margin:0}
+  .arch__info p{margin-top:14px;color:var(--dim);font-weight:400;font-size:clamp(15px,1.3vw,18px);max-width:40ch;line-height:1.65}
+  .arch__right{flex-shrink:0;height:100vh;width:100%;max-width:560px;position:relative}
+  .img-wrapper{position:absolute;top:50%;inset-inline-start:0;transform:translateY(-50%);width:100%;aspect-ratio:16/9;border-radius:var(--r);overflow:hidden;box-shadow:0 30px 90px rgba(0,0,0,.55)}
+  .img-wrapper img{width:100%;height:100%;object-fit:cover;display:block}
+  @media(max-width:900px){.arch{gap:30px}}
+  @media(max-width:820px){
+    .arch{flex-direction:column;gap:20px}
+    .arch__left,.arch__right{display:contents}
+    .arch__right{height:auto;max-width:100%}
+    .img-wrapper{position:static;transform:none;margin-bottom:24px}
+    .arch__info{height:auto;padding:6vh 0;max-width:100%}
+  }
 
   /* ════ 4 — הצהרה (כרטיס זהב) ════ */
   .statement{padding:16vh 7vw}
@@ -255,66 +263,26 @@
   <p class="bio-text">עומר ג'רבי, בן 24, בוגר עיצוב גרפי בשנקר ומומחה תוכן AI. אני יוצר תוכן ברמה הוליוודית לעסקים ומותגים — לצד שיווק דיגיטלי, בניית אתרים, עריכת וידאו ופודקאסטים, ופיתוח מערכות ואוטומציות בבינה מלאכותית. עבדתי מול חלק מהמותגים הגדולים במדינה, והבאתי אותם לתוצאה שנראית כמו הפקה מלאה — מהמחשב שלי בלבד.</p>
 </section>
 
-<!-- ═ 3ב ═ מי אני: סטאק תמונות דביק (position:sticky) — אין להעניק ל-.mi-stack שום ancestor transform, כמו scWorks -->
-<section class="mi-stack" id="miStack">
-  <div class="mi-panel" style="z-index:1">
-    <div class="mi-panel-inner">
-      <img src="images/mi-ani/graphic-design.jpg" alt="עיצוב גרפי" loading="lazy">
-      <div class="mi-panel-copy">
-        <span class="mi-num">01 · עיצוב גרפי</span>
-        <h3>עיצוב גרפי</h3>
-        <p>בונה שפה חזותית שלמה — מיתוג, גרפיקות שיווקיות ופוסטרים ברמה מקצועית.</p>
-      </div>
+<!-- ═ 3ב ═ מי אני: Pinned Image Mask Reveal (מותאם מ-Animmaster Scroll Animation/29) —
+     אין להעניק ל-.arch/.mi-show שום ancestor transform, כמו scWorks: הפין תלוי ב-position:fixed/transform
+     יציב, וטרנספורם על אב שובר אותו (אותו לקח בדיוק כמו body{perspective} ו-scWorks). -->
+<section class="mi-show" id="miShow">
+  <div class="arch" id="miArch">
+    <div class="arch__left">
+      <div class="arch__info"><div class="content"><small>01 · עיצוב גרפי</small><h3>עיצוב גרפי</h3><p>בונה שפה חזותית שלמה — מיתוג, גרפיקות שיווקיות ופוסטרים ברמה מקצועית.</p></div></div>
+      <div class="arch__info"><div class="content"><small>02 · עריכת וידיאו</small><h3>עריכת וידיאו</h3><p>עורך ומרכיב סרטונים בטיימליין מקצועי — מקאט ועד קצב וסאונד.</p></div></div>
+      <div class="arch__info"><div class="content"><small>03 · AI תוכן</small><h3>יצירת תוכן בבינה מלאכותית</h3><p>מייצר תוכן AI ריאליסטי ברמה קולנועית — מהתסריט ועד הסצנה המוגמרת.</p></div></div>
+      <div class="arch__info"><div class="content"><small>04 · פודקאסטים</small><h3>עריכת פודקאסטים</h3><p>עורך ומערבב פודקאסטים — סאונד נקי, קצב זורם, הפקה שלמה.</p></div></div>
+      <div class="arch__info"><div class="content"><small>05 · אתרים</small><h3>בניית אתרים</h3><p>בונה אתרים מאפס — מהקוד ועד חוויית משתמש מלוטשת.</p></div></div>
+      <div class="arch__info"><div class="content"><small>06 · אוטומציות</small><h3>מערכות ואוטומציות AI</h3><p>מתכנן ובונה מערכות ואוטומציות AI שחוסכות זמן ועובדות לבד.</p></div></div>
     </div>
-  </div>
-  <div class="mi-panel" style="z-index:2">
-    <div class="mi-panel-inner">
-      <img src="images/mi-ani/video-editing.jpg" alt="עריכת וידיאו" loading="lazy">
-      <div class="mi-panel-copy">
-        <span class="mi-num">02 · עריכת וידיאו</span>
-        <h3>עריכת וידיאו</h3>
-        <p>עורך ומרכיב סרטונים בטיימליין מקצועי — מקאט ועד קצב וסאונד.</p>
-      </div>
-    </div>
-  </div>
-  <div class="mi-panel" style="z-index:3">
-    <div class="mi-panel-inner">
-      <img src="images/mi-ani/ai-content.jpg" alt="יצירת תוכן בבינה מלאכותית" loading="lazy">
-      <div class="mi-panel-copy">
-        <span class="mi-num">03 · AI תוכן</span>
-        <h3>יצירת תוכן בבינה מלאכותית</h3>
-        <p>מייצר תוכן AI ריאליסטי ברמה קולנועית — מהתסריט ועד הסצנה המוגמרת.</p>
-      </div>
-    </div>
-  </div>
-  <div class="mi-panel" style="z-index:4">
-    <div class="mi-panel-inner">
-      <img src="images/mi-ani/podcast-editing.jpg" alt="עריכת פודקאסטים" loading="lazy">
-      <div class="mi-panel-copy">
-        <span class="mi-num">04 · פודקאסטים</span>
-        <h3>עריכת פודקאסטים</h3>
-        <p>עורך ומערבב פודקאסטים — סאונד נקי, קצב זורם, הפקה שלמה.</p>
-      </div>
-    </div>
-  </div>
-  <div class="mi-panel" style="z-index:5">
-    <div class="mi-panel-inner">
-      <img src="images/mi-ani/web-dev.jpg" alt="בניית אתרים" loading="lazy">
-      <div class="mi-panel-copy">
-        <span class="mi-num">05 · אתרים</span>
-        <h3>בניית אתרים</h3>
-        <p>בונה אתרים מאפס — מהקוד ועד חוויית משתמש מלוטשת.</p>
-      </div>
-    </div>
-  </div>
-  <div class="mi-panel" style="z-index:6">
-    <div class="mi-panel-inner">
-      <img src="images/mi-ani/automation.jpg" alt="בניית מערכות ואוטומציות בבינה מלאכותית" loading="lazy">
-      <div class="mi-panel-copy">
-        <span class="mi-num">06 · אוטומציות</span>
-        <h3>מערכות ואוטומציות AI</h3>
-        <p>מתכנן ובונה מערכות ואוטומציות AI שחוסכות זמן ועובדות לבד.</p>
-      </div>
+    <div class="arch__right" id="miArchRight">
+      <div class="img-wrapper" data-index="6"><img src="images/mi-ani/graphic-design.jpg" alt="עיצוב גרפי" loading="lazy"></div>
+      <div class="img-wrapper" data-index="5"><img src="images/mi-ani/video-editing.jpg" alt="עריכת וידיאו" loading="lazy"></div>
+      <div class="img-wrapper" data-index="4"><img src="images/mi-ani/ai-content.jpg" alt="יצירת תוכן בבינה מלאכותית" loading="lazy"></div>
+      <div class="img-wrapper" data-index="3"><img src="images/mi-ani/podcast-editing.jpg" alt="עריכת פודקאסטים" loading="lazy"></div>
+      <div class="img-wrapper" data-index="2"><img src="images/mi-ani/web-dev.jpg" alt="בניית אתרים" loading="lazy"></div>
+      <div class="img-wrapper" data-index="1"><img src="images/mi-ani/automation.jpg" alt="בניית מערכות ואוטומציות בבינה מלאכותית" loading="lazy"></div>
     </div>
   </div>
 </section>
@@ -539,20 +507,32 @@ ScrollTrigger.batch('.stat', {
 gsap.from('.bio-text', { opacity:0, y:34, duration:1, ease:'power3.out',
   scrollTrigger:{ trigger:'.bio-text', start:'top 88%' } });
 
-/* ════ 3ב — מי אני: סטאק תמונות דביק (position:sticky טהור — לא pin של ScrollTrigger, לכן אין סיכון ל-transform על אב) ════ */
+/* ════ 3ב — מי אני: Pinned Image Mask Reveal (Animmaster Scroll Animation/29) — pin אמיתי של ScrollTrigger,
+   לכן #miShow לא מקבל class="sec" ולא עובר בלולאת הטרנספורם הגנרית של מעברי-הסקשנים (כמו scWorks) ════ */
 {
-  const panels = document.querySelectorAll('.mi-panel');
-  panels.forEach((panel, i) => {
-    gsap.from(panel.querySelector('.mi-panel-copy'), {
-      opacity:0, y:40, duration:.8, ease:'power3.out',
-      scrollTrigger:{ trigger:panel, start:'top 65%', toggleActions:'play none none reverse' }
-    });
-    if (i < panels.length - 1) {
-      gsap.fromTo(panel.querySelector('.mi-panel-inner'),
-        { scale:1, filter:'brightness(1)' },
-        { scale:.88, filter:'brightness(.5)', ease:'none',
-          scrollTrigger:{ trigger:panel, start:'top top', end:'bottom top', scrub:true } });
-    }
+  document.querySelectorAll('#miArchRight .img-wrapper').forEach(el => {
+    el.style.zIndex = el.getAttribute('data-index');
+  });
+
+  const imgWrappers = gsap.utils.toArray('#miArchRight .img-wrapper');
+  gsap.set(imgWrappers, { clipPath:'inset(0)' });
+  gsap.set(imgWrappers.map(w => w.querySelector('img')), { objectPosition:'50% 50%' });
+
+  const mainTimeline = gsap.timeline({
+    scrollTrigger:{ trigger:'#miArch', start:'top top', end:'bottom bottom', pin:'#miArchRight', scrub:true }
+  });
+
+  imgWrappers.forEach((wrapper, i) => {
+    const nextWrapper = imgWrappers[i+1];
+    if (!nextWrapper) return;
+    const currentImg = wrapper.querySelector('img');
+    const nextImg = nextWrapper.querySelector('img');
+    const section = gsap.timeline();
+    section
+      .to(wrapper, { clipPath:'inset(0px 0px 100%)', duration:1.5, ease:'none' }, 0)
+      .to(currentImg, { objectPosition:'50% 65%', duration:1.5, ease:'none' }, 0)
+      .to(nextImg, { objectPosition:'50% 42%', duration:1.5, ease:'none' }, 0);
+    mainTimeline.add(section);
   });
 }
 
