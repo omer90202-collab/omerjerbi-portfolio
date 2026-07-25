@@ -124,24 +124,32 @@
   .bio-text{font-size:clamp(19px,2.3vw,27px);font-weight:300;line-height:1.75;max-width:62ch}
 
   /* ════ 3ב — מי אני: Pinned Image Mask Reveal (Animmaster Scroll Animation/29) ════ */
-  .mi-show{padding:0 5vw}
-  .arch{display:flex;gap:60px;justify-content:space-between;max-width:1200px;margin-inline:auto}
-  .arch__left{display:flex;flex-direction:column;min-width:280px;flex:1}
-  .arch__info{max-width:440px;height:100vh;display:grid;place-items:center}
-  .arch__info .content small{display:block;color:var(--gold);letter-spacing:.32em;font-size:12px;margin-bottom:14px;font-weight:700}
-  .arch__info h3{font-weight:900;font-size:clamp(30px,3.6vw,50px);line-height:1.05;letter-spacing:-.01em;margin:0}
-  .arch__info p{margin-top:14px;color:var(--dim);font-weight:400;font-size:clamp(15px,1.3vw,18px);max-width:40ch;line-height:1.65}
-  .arch__right{flex-shrink:0;height:100vh;width:100%;max-width:560px;position:relative}
-  .img-wrapper{position:absolute;top:50%;inset-inline-start:0;transform:translateY(-50%);width:100%;aspect-ratio:16/9;border-radius:var(--r);overflow:hidden;box-shadow:0 30px 90px rgba(0,0,0,.55)}
+  .mi-show{padding:0 5vw;background-color:var(--page);transition:background-color .55s ease}
+  .mi-show.on-gold{background-color:var(--gold)}
+  .arch{display:flex;gap:60px;justify-content:space-between;max-width:1400px;margin-inline:auto}
+  .arch__left{display:flex;flex-direction:column;min-width:260px;flex:1}
+  .arch__info{max-width:400px;height:100vh;display:grid;place-items:center}
+  .arch__info .content small{display:block;color:var(--gold);letter-spacing:.32em;font-size:12px;margin-bottom:14px;font-weight:700;transition:color .35s}
+  .arch__info h3{font-weight:900;font-size:clamp(30px,3.6vw,50px);line-height:1.05;letter-spacing:-.01em;margin:0;color:var(--ink);transition:color .35s}
+  .arch__info p{margin-top:14px;color:var(--dim);font-weight:400;font-size:clamp(15px,1.3vw,18px);max-width:40ch;line-height:1.65;transition:color .35s}
+  .mi-show.on-gold .arch__info .content small{color:var(--paper-ink)}
+  .mi-show.on-gold .arch__info h3{color:var(--paper-ink)}
+  .mi-show.on-gold .arch__info p{color:rgba(20,16,5,.72)}
+  .arch__right{flex-shrink:0;height:100vh;width:100%;max-width:760px;position:relative}
+  .img-wrapper{position:absolute;top:50%;inset-inline-start:0;transform:translateY(-50%);width:100%;aspect-ratio:16/9;border-radius:var(--r);overflow:hidden;box-shadow:0 40px 100px rgba(0,0,0,.55)}
   .img-wrapper img{width:100%;height:100%;object-fit:cover;display:block}
+
+  @media(max-width:1100px){.arch__right{max-width:52vw}}
   @media(max-width:900px){.arch{gap:30px}}
   @media(max-width:820px){
-    .arch{flex-direction:column;gap:20px}
+    .mi-show{padding:0 6vw}
+    .arch{display:flex;flex-direction:column;gap:0}
     .arch__left,.arch__right{display:contents}
     .arch__right{height:auto;max-width:100%}
-    .img-wrapper{position:static;transform:none;margin-bottom:24px}
-    .arch__info{height:auto;padding:6vh 0;max-width:100%}
+    .arch__info{height:auto;padding:5vh 0 6vh;max-width:100%;display:block}
+    .img-wrapper{position:static;transform:none;width:100%;aspect-ratio:4/3;box-shadow:0 20px 60px rgba(0,0,0,.5)}
   }
+  @media(max-width:480px){.img-wrapper{aspect-ratio:1/1}}
 
   /* ════ 4 — הצהרה (כרטיס זהב) ════ */
   .statement{padding:16vh 7vw}
@@ -514,25 +522,58 @@ gsap.from('.bio-text', { opacity:0, y:34, duration:1, ease:'power3.out',
     el.style.zIndex = el.getAttribute('data-index');
   });
 
-  const imgWrappers = gsap.utils.toArray('#miArchRight .img-wrapper');
+  /* מיון-מחדש למובייל: תמונה ואז טקסט, זוג-זוג (בדיוק כמו handleMobileLayout במקור — הושמט בטעות בפורט הראשון) */
+  const miLeftItems = gsap.utils.toArray('#miArch .arch__left .arch__info');
+  const miRightItems = gsap.utils.toArray('#miArch .arch__right .img-wrapper');
+  function miMobileOrder(){
+    const isMobile = window.matchMedia('(max-width:820px)').matches;
+    if (isMobile) {
+      miRightItems.forEach((item,i) => item.style.order = i*2);
+      miLeftItems.forEach((item,i) => item.style.order = i*2+1);
+    } else {
+      miLeftItems.forEach(item => item.style.order = '');
+      miRightItems.forEach(item => item.style.order = '');
+    }
+  }
+  miMobileOrder();
+  window.addEventListener('resize', miMobileOrder);
+
+  /* הפרדת רקע זהב/שחור בין הכרטיסים — עובד בשני המצבים (דסקטופ ומובייל) */
+  const miShow = document.getElementById('miShow');
+  miLeftItems.forEach((info, i) => {
+    const gold = i % 2 === 1;
+    ScrollTrigger.create({ trigger:info, start:'top 60%', end:'bottom 40%',
+      onToggle: self => { if (self.isActive) miShow.classList.toggle('on-gold', gold); } });
+  });
+
+  const imgWrappers = miRightItems;
   gsap.set(imgWrappers, { clipPath:'inset(0)' });
   gsap.set(imgWrappers.map(w => w.querySelector('img')), { objectPosition:'50% 50%' });
 
-  const mainTimeline = gsap.timeline({
-    scrollTrigger:{ trigger:'#miArch', start:'top top', end:'bottom bottom', pin:'#miArchRight', scrub:true }
-  });
-
-  imgWrappers.forEach((wrapper, i) => {
-    const nextWrapper = imgWrappers[i+1];
-    if (!nextWrapper) return;
-    const currentImg = wrapper.querySelector('img');
-    const nextImg = nextWrapper.querySelector('img');
-    const section = gsap.timeline();
-    section
-      .to(wrapper, { clipPath:'inset(0px 0px 100%)', duration:1.5, ease:'none' }, 0)
-      .to(currentImg, { objectPosition:'50% 65%', duration:1.5, ease:'none' }, 0)
-      .to(nextImg, { objectPosition:'50% 42%', duration:1.5, ease:'none' }, 0);
-    mainTimeline.add(section);
+  /* דסקטופ: פין + מסכת clip-path בין התמונות. מובייל: בלי פין — כרטיסים רגילים בזרימה עם reveal עדין */
+  ScrollTrigger.matchMedia({
+    '(min-width: 821px)': function(){
+      const mainTimeline = gsap.timeline({
+        scrollTrigger:{ trigger:'#miArch', start:'top top', end:'bottom bottom', pin:'#miArchRight', scrub:true }
+      });
+      imgWrappers.forEach((wrapper, i) => {
+        const nextWrapper = imgWrappers[i+1];
+        if (!nextWrapper) return;
+        const currentImg = wrapper.querySelector('img');
+        const nextImg = nextWrapper.querySelector('img');
+        const section = gsap.timeline();
+        section
+          .to(wrapper, { clipPath:'inset(0px 0px 100%)', duration:1.5, ease:'none' }, 0)
+          .to(currentImg, { objectPosition:'50% 65%', duration:1.5, ease:'none' }, 0)
+          .to(nextImg, { objectPosition:'50% 42%', duration:1.5, ease:'none' }, 0);
+        mainTimeline.add(section);
+      });
+    },
+    '(max-width: 820px)': function(){
+      gsap.set(imgWrappers, { clipPath:'none' });
+      ScrollTrigger.batch(imgWrappers, { start:'top 88%',
+        onEnter: els => gsap.from(els, { opacity:0, y:40, duration:.9, stagger:.08, ease:'power3.out' }) });
+    }
   });
 }
 
