@@ -107,6 +107,19 @@
   .sec-head h2{font-weight:900;font-size:clamp(32px,5vw,72px);line-height:1.05;letter-spacing:-.01em}
   .sec-head h2 em{font-style:normal;color:var(--gold)}
 
+  /* ════ 2 — יצרתי תכנים עבור: קרוסלת לוגואים על פס זהב (shadcnblocks "Logos3" → מרקיזה וניל) ════ */
+  .logos-sec{padding:7vh 0 8vh;overflow:hidden}
+  .logos-head{text-align:center;margin-bottom:5vh;padding:0 5vw}
+  .logos-head h2{font-weight:900;font-size:clamp(22px,3vw,40px);letter-spacing:-.01em;color:var(--paper-ink)}
+  .logos-viewport{position:relative;overflow:hidden}
+  /* הדהיות בקצוות — פיזי left/right בכוונה (האפקט סימטרי, לא תלוי כיוון קריאה) */
+  .logos-viewport::before,.logos-viewport::after{content:"";position:absolute;top:0;bottom:0;width:10vw;max-width:150px;z-index:2;pointer-events:none}
+  .logos-viewport::before{left:0;background:linear-gradient(to right,var(--gold),transparent)}
+  .logos-viewport::after{right:0;background:linear-gradient(to left,var(--gold),transparent)}
+  .logos-track{display:flex;align-items:center;gap:clamp(38px,5.5vw,88px);width:max-content;will-change:transform}
+  /* חובה לדרוס את הכלל הגלובלי img{width:100%;height:100%;object-fit:cover} */
+  .logos-track img{height:clamp(32px,4.2vw,54px);width:auto;max-width:210px;object-fit:contain;flex-shrink:0;display:block}
+
   /* ════ 5ג — לקוחות ממליצים: קרוסלת מרקיזה כפולה (מותאם מקומפוננטת 21st.dev "testimonials-carousel",
      React+Tailwind+Framer Motion → GSAP ticker+translateX וניל, בלי React/build-step) ════ */
   .testi-sec{padding:14vh 0;overflow:hidden}
@@ -253,6 +266,15 @@
   <button class="lb-close" id="lbClose" aria-label="סגור">✕</button>
   <div class="lb-label" id="lbLabel"></div>
 </div>
+
+<!-- ═ 2 ═ יצרתי תכנים עבור: קרוסלת לוגואים על פס זהב (מותאם מקומפוננטת shadcnblocks "Logos3",
+     React+Embla AutoScroll → מרקיזה אינסופית וניל, אותו מנגנון מוכח כמו קרוסלת ההמלצות) -->
+<section class="sec goldbg logos-sec" id="scLogos">
+  <div class="logos-head"><h2>יצרתי תכנים עבור:</h2></div>
+  <div class="logos-viewport">
+    <div class="logos-track" id="logosTrack"></div>
+  </div>
+</section>
 
 <!-- ═ 3ב ═ מי אני: Pinned Image Mask Reveal (מותאם מ-Animmaster Scroll Animation/29) —
      אין להעניק ל-.arch/.mi-show שום ancestor transform, כמו scWorks: הפין תלוי ב-position:fixed/transform
@@ -486,6 +508,51 @@ gsap.utils.toArray('.sec').forEach((sec, i) => {
     { scale:1, y:0, opacity:1, rotationX:0, ease:'power3.out',
       scrollTrigger:{ trigger:sec, start:'top bottom', end:'top 42%', scrub:.7 } });
 });
+
+/* ════ 2 — יצרתי תכנים עבור: קרוסלת לוגואים (shadcnblocks "Logos3" — React+Embla AutoScroll →
+   מרקיזה אינסופית וניל. אותו מנגנון מוקשח כמו ההמלצות: scrollWidth נמדד פעם אחת (לא בכל טיק),
+   ו-IntersectionObserver משהה כשהסקשן לא בתצוגה. RTL: translateX חיובי = הכיוון הטבעי. ════ */
+{
+  const logos = [
+    ['eyal-golan','אייל גולן'], ['big-brother','האח הגדול'], ['one-channel','ערוץ ONE'],
+    ['survivor','הישרדות'], ['playmobil','פליימוביל'], ['tel-hai','תל חי'],
+    ['im-tirtzu','אם תרצו'], ['aqua','אקווה'], ['win','ווין'],
+    ['noir','נואר'], ['vantage',"ואנטאג'"], ['axis','אקסיס'],
+    ['boi-haruach','בואי הרוח'], ['delarea-tickets','דלראה טיקטס']
+  ];
+  const track = document.getElementById('logosTrack');
+  const imgEls = logos.concat(logos).map(([slug, label]) => {
+    const img = document.createElement('img');
+    img.src = 'images/logos/' + slug + '.png';
+    img.alt = label;
+    /* בכוונה בלי loading="lazy": הסקשן יושב מיד אחרי ההירו (כמעט תמיד בפריים הראשון),
+       וחשוב מזה — תמונה שלא נטענה היא ברוחב 0, ומדידת scrollWidth לפני הטעינה מחזירה
+       רק את סכום ה-gap-ים. זה היה גורם ללולאה להתאפס מוקדם מדי ולקפוץ באמצע. */
+    track.appendChild(img);
+    return img;
+  });
+
+  let logosVisible = false, half = 0, x = 0, paused = false;
+  /* מודדים רק כשכל הלוגואים באמת נטענו (לרוחב אין משמעות לפני זה), ושוב ב-resize כי
+     גובה/מרווח הלוגואים תלויי-vw. אין קריאת scrollWidth בתוך הטיקר — היא layout-forcing. */
+  const measure = () => {
+    if (imgEls.every(i => i.complete && i.naturalWidth > 0)) half = track.scrollWidth / 2;
+  };
+  imgEls.forEach(i => i.addEventListener('load', measure));
+  window.addEventListener('load', measure);
+  window.addEventListener('resize', measure);
+  measure();
+
+  track.addEventListener('mouseenter', () => paused = true);
+  track.addEventListener('mouseleave', () => paused = false);
+  gsap.ticker.add(() => {
+    if (paused || !logosVisible || !half) return;
+    x += .45; if (x >= half) x -= half;
+    track.style.transform = `translateX(${x}px)`;
+  });
+  new IntersectionObserver(es => { logosVisible = es[0].isIntersecting; }, { rootMargin:'200px' })
+    .observe(document.getElementById('scLogos'));
+}
 
 /* ════ 5ג — לקוחות ממליצים: קרוסלת מרקיזה כפולה (מותאם מקומפוננטת React/Tailwind/Framer-Motion של
    21st.dev ל-GSAP ticker + translateX וניל — בלי React/build-step, כי הפרויקט הזה HTML יחיד ללא build.
