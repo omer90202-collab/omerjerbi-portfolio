@@ -532,11 +532,18 @@ gsap.utils.toArray('.sec').forEach((sec, i) => {
     return img;
   });
 
-  let logosVisible = false, half = 0, x = 0, paused = false;
-  /* מודדים רק כשכל הלוגואים באמת נטענו (לרוחב אין משמעות לפני זה), ושוב ב-resize כי
-     גובה/מרווח הלוגואים תלויי-vw. אין קריאת scrollWidth בתוך הטיקר — היא layout-forcing. */
+  /* fail-open בכוונה: מתחיל true ו-IO רק *מכבה* כשיוצאים מהתצוגה. ההשהיה היא אופטימיזציה,
+     ואופטימיזציה לא אמורה להיות מסוגלת לשבור פונקציונליות — אם IO מתעכב/נכשל, הקרוסלה
+     פשוט תרוץ תמיד במקום לא לרוץ לעולם. */
+  let logosVisible = true, cycle = 0, x = 0, paused = false;
+  /* מרחק המחזור = המרחק מהעותק הראשון של לוגו לעותק השני שלו — כלומר עותק שלם *כולל ה-gap
+     שאחריו*. לא scrollWidth/2! עם N פריטים כפולים יש 2N-1 רווחים, אז חצי-רוחב חסר בדיוק
+     חצי gap, וזה גרם לקפיצה של ~40px בכל סיבוב (זה ה"נתקעת"). offsetLeft הוא layout טהור,
+     לא מושפע מה-transform של כניסת הסקשן. */
   const measure = () => {
-    if (imgEls.every(i => i.complete && i.naturalWidth > 0)) half = track.scrollWidth / 2;
+    if (imgEls.every(i => i.complete && i.naturalWidth > 0)) {
+      cycle = Math.abs(imgEls[logos.length].offsetLeft - imgEls[0].offsetLeft);
+    }
   };
   imgEls.forEach(i => i.addEventListener('load', measure));
   window.addEventListener('load', measure);
@@ -546,9 +553,9 @@ gsap.utils.toArray('.sec').forEach((sec, i) => {
   track.addEventListener('mouseenter', () => paused = true);
   track.addEventListener('mouseleave', () => paused = false);
   gsap.ticker.add(() => {
-    if (paused || !logosVisible || !half) return;
-    x += .45; if (x >= half) x -= half;
-    track.style.transform = `translateX(${x}px)`;
+    if (paused || !logosVisible || !cycle) return;
+    x += 1.1; if (x >= cycle) x -= cycle;
+    track.style.transform = `translate3d(${x}px,0,0)`;
   });
   new IntersectionObserver(es => { logosVisible = es[0].isIntersecting; }, { rootMargin:'200px' })
     .observe(document.getElementById('scLogos'));
@@ -592,22 +599,29 @@ gsap.utils.toArray('.sec').forEach((sec, i) => {
     return card;
   }
 
-  let testiVisible = false;
+  let testiVisible = true; /* fail-open, מאותה סיבה כמו בקרוסלת הלוגואים */
   function buildRow(trackId, reverse, speed){
     const track = document.getElementById(trackId);
-    testimonials.concat(testimonials).forEach(t => track.appendChild(buildCard(t)));
+    const cards = testimonials.concat(testimonials).map(t => {
+      const c = buildCard(t); track.appendChild(c); return c;
+    });
 
-    /* scrollWidth נמדד פעם אחת אחרי הבנייה — לא בכל טיק: קריאה חוזרת שם היא layout-forcing
-       (מכריחה את הדפדפן לחשב layout מחדש) 60 פעם בשנייה, לנצח, גם כשהסקשן לא בתצוגה. */
-    const half = track.scrollWidth / 2;
+    /* נמדד פעם אחת אחרי הבנייה — לא בכל טיק (קריאת layout בטיקר היא layout-forcing).
+       מרחק המחזור = עותק שלם *כולל ה-gap שאחריו*, ולא scrollWidth/2 — אחרת חסר חצי gap
+       וכל סיבוב קופץ (אותו באג בדיוק שתוקן בקרוסלת הלוגואים). */
+    let cycle = Math.abs(cards[testimonials.length].offsetLeft - cards[0].offsetLeft);
+    window.addEventListener('resize', () => {
+      cycle = Math.abs(cards[testimonials.length].offsetLeft - cards[0].offsetLeft);
+    });
+
     let x = 0, paused = false;
     track.addEventListener('mouseenter', () => paused = true);
     track.addEventListener('mouseleave', () => paused = false);
     gsap.ticker.add(() => {
-      if (paused || !testiVisible || !half) return;
-      if (reverse) { x -= speed; if (x <= -half) x += half; }
-      else { x += speed; if (x >= half) x -= half; }
-      track.style.transform = `translateX(${x}px)`;
+      if (paused || !testiVisible || !cycle) return;
+      if (reverse) { x -= speed; if (x <= -cycle) x += cycle; }
+      else { x += speed; if (x >= cycle) x -= cycle; }
+      track.style.transform = `translate3d(${x}px,0,0)`;
     });
   }
   buildRow('testiRow1', false, .55);
