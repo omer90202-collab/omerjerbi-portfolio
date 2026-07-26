@@ -108,17 +108,38 @@
   .sec-head h2{font-weight:900;font-size:clamp(32px,5vw,72px);line-height:1.05;letter-spacing:-.01em}
   .sec-head h2 em{font-style:normal;color:var(--gold)}
 
-  /* ════ 2 — מספרים ════ */
-  .stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
-  .stat{border:1px solid var(--line);border-radius:18px;padding:34px 26px 28px;display:flex;flex-direction:column;justify-content:space-between;min-height:230px;position:relative;overflow:hidden}
-  .stat b{font-weight:900;font-size:clamp(44px,5.4vw,80px);line-height:1;letter-spacing:-.02em;color:var(--ink)}
-  .stat b .unit{font-size:.42em;font-weight:700;margin-inline-start:.12em}
-  .stat p{margin-top:18px;color:var(--dim);font-weight:400;font-size:15px;max-width:26ch}
-  .stat.gold{background:var(--gold);border-color:var(--gold)}
-  .stat.gold b,.stat.gold p{color:#141005}
-  .stat.gold p{opacity:.75}
-  .stat::after{content:"";position:absolute;inset:auto -30% -55% -30%;height:70%;background:radial-gradient(closest-side,rgba(253,191,45,.14),transparent 70%);pointer-events:none}
-  .stat.gold::after{display:none}
+  /* ════ 5ב — תוצאות: sticky header + stat-items (Animmaster Scroll Animation/60) ════ */
+  .results-sec{width:100%;display:flex;justify-content:space-between;background:var(--page)}
+  .results-header{position:sticky;top:0;width:50%;height:100svh;padding:2rem 5vw;display:flex;align-items:center}
+  .results-header-copy{display:flex;flex-direction:column;gap:14px;width:80%}
+  .results-header-copy small{display:block;color:var(--gold);letter-spacing:.32em;font-size:12px;font-weight:700}
+  .results-header-copy h2{font-weight:900;font-size:clamp(32px,4.6vw,64px);line-height:1.05;letter-spacing:-.01em}
+  .results-header-copy h2 em{font-style:normal;color:var(--gold)}
+  .results-header-copy p{color:var(--dim);font-size:16px;max-width:34ch}
+  .results-content{width:50%;min-height:100svh;padding:8vh 5vw 16vh 2vw;display:flex;flex-direction:column;gap:11vh;overflow:hidden}
+  .stat-item{position:relative;width:100%;padding-inline-start:1.4rem;border-inline-start:.22rem solid var(--gold);transform:translateX(250px);will-change:transform}
+  .stat-count h1{font-weight:900;font-size:clamp(46px,6vw,90px);line-height:1;letter-spacing:-.02em;color:var(--ink)}
+  .stat-content{margin-top:16px}
+  .stat-content h3{font-weight:500;font-size:clamp(16px,1.5vw,20px);color:var(--ink);max-width:30ch;line-height:1.4}
+  .stat-content .src{margin-top:8px;color:var(--dim);font-size:12px;letter-spacing:.18em;text-transform:uppercase}
+  @media(max-width:1000px){
+    .results-sec{flex-direction:column}
+    .results-header{position:relative;width:100%;height:max-content;padding:12vh 5vw 4vh}
+    .results-content{width:100%;padding:2vh 5vw 12vh}
+  }
+
+  /* ════ 5ג — לקוחות ממליצים (Animmaster Scroll Animation/60, clients.js) ════ */
+  .testi-sec{padding:14vh 5vw;background:var(--page)}
+  .testi-header{text-align:center;margin-bottom:8vh}
+  .testi-header small{display:block;color:var(--gold);letter-spacing:.32em;font-size:12px;font-weight:700;margin-bottom:14px}
+  .testi-header h2{font-weight:900;font-size:clamp(32px,4.6vw,64px);letter-spacing:-.01em}
+  .testi-header h2 em{font-style:normal;color:var(--gold)}
+  .testi-list{max-width:900px;margin-inline:auto;display:flex;flex-direction:column}
+  .testi-row{width:100%;display:flex;gap:6%;padding:26px 0;border-bottom:1px solid var(--line);will-change:gap}
+  .testi-row p{flex:1;opacity:0;will-change:opacity}
+  .testi-quote{font-size:clamp(16px,1.7vw,20px);font-weight:400;color:var(--ink);line-height:1.55}
+  .testi-tag{font-size:12px;letter-spacing:.14em;color:var(--dim);text-align:end;flex:0 0 auto;white-space:nowrap;padding-top:4px}
+  @media(max-width:700px){.testi-row{flex-direction:column;gap:8px}.testi-tag{text-align:start}}
 
   /* ════ 3 — מי אני ════ */
   .bio-text{font-size:clamp(19px,2.3vw,27px);font-weight:300;line-height:1.75;max-width:62ch}
@@ -220,6 +241,7 @@
     <div class="menu-nav__body">
       <div class="menu-nav__link-wrap"><a class="menu-nav__link" href="#scWorks">עבודות נבחרות</a></div>
       <div class="menu-nav__link-wrap"><a class="menu-nav__link" href="#scSvc">מי אני</a></div>
+      <div class="menu-nav__link-wrap"><a class="menu-nav__link" href="#scResults">תוצאות</a></div>
       <div class="menu-nav__link-wrap"><a class="menu-nav__link" href="projects.html">כל הפרויקטים</a></div>
       <div class="menu-nav__link-wrap"><a class="menu-nav__link" href="#scOutro">צור קשר</a></div>
     </div>
@@ -310,6 +332,42 @@
       <a class="wk more" href="projects.html"><span>לכל<br>הפרויקטים ←</span></a>
     </div>
   </div>
+</section>
+
+<!-- ═ 5ב ═ תוצאות: sticky header + stat-items נכנסים מימין (מותאם מ-Animmaster Scroll Animation/60, deadspace/lab.html) —
+     position:sticky טהור + ScrollTrigger.create בלי pin, לכן #scResults לא מקבל class="sec" (אותה זהירות כמו miShow/scWorks). -->
+<section class="results-sec" id="scResults">
+  <div class="results-header">
+    <div class="results-header-copy">
+      <small>תוצאות</small>
+      <h2>המספרים <em>מדברים.</em></h2>
+      <p>נתונים אמיתיים מתוך Instagram Insights — לא הערכות, לא עיגולים.</p>
+    </div>
+  </div>
+  <div class="results-content" id="resultsContent">
+    <div class="stat-item">
+      <div class="stat-count"><h1>144,990</h1></div>
+      <div class="stat-content"><h3>צפיות בסרטון AI בודד אחד</h3><p class="src">רילס אינסטגרם</p></div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-count"><h1>112,108</h1></div>
+      <div class="stat-content"><h3>חשבונות ייחודיים שנחשפו מסרטון אחד</h3><p class="src">הגעה אורגנית</p></div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-count"><h1>102,075</h1></div>
+      <div class="stat-content"><h3>צפיות בסרטון "האח הגדול"</h3><p class="src">קמפיין ליהוקים</p></div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-count"><h1>78.7%</h1></div>
+      <div class="stat-content"><h3>מהצפיות הגיעו מאנשים שלא עקבו אחריי</h3><p class="src">ויראליות אמיתית</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═ 5ג ═ לקוחות ממליצים: שורות שמתכנסות (gap) + דוהות פנימה בגלילה (Scroll Animation/60, clients.js) -->
+<section class="testi-sec" id="scTesti">
+  <div class="testi-header"><small>לקוחות ממליצים</small><h2>מה אומרים <em>עליי.</em></h2></div>
+  <div class="testi-list" id="testiList"></div>
 </section>
 
 <!-- ═ 6 ═ מרקיזה -->
@@ -499,17 +557,41 @@ gsap.utils.toArray('.sec').forEach((sec, i) => {
       scrollTrigger:{ trigger:sec, start:'top bottom', end:'top 42%', scrub:.7 } });
 });
 
-/* ════ 2 — מספרים ════ */
-gsap.utils.toArray('[data-countup]').forEach(el => {
-  const target = parseInt(el.dataset.countup, 10), obj = { v:0 };
-  gsap.to(obj, { v:target, duration:2.2, ease:'power2.out',
-    onUpdate:() => el.innerText = Math.round(obj.v).toLocaleString('en-US'),
-    scrollTrigger:{ trigger:el, start:'top 88%' } });
+/* ════ 5ב — תוצאות: stat-items נכנסים מימין בסקראב (Animmaster Scroll Animation/60, stats.js) ════ */
+document.querySelectorAll('#resultsContent .stat-item').forEach(item => {
+  ScrollTrigger.create({ trigger:item, start:'top bottom', end:'top 25%', scrub:true,
+    onUpdate:self => gsap.set(item, { x:250 - self.progress * 250 }) });
 });
-ScrollTrigger.batch('.stat', {
-  start:'top 88%',
-  onEnter:els => gsap.from(els, { opacity:0, y:56, duration:.85, stagger:.1, ease:'power3.out' })
-});
+
+/* ════ 5ג — לקוחות ממליצים: שורות נבנות מ-data ומתכנסות+דוהות בגלילה (Scroll Animation/60, clients.js) ════ */
+{
+  const testimonials = [
+    { quote:'שלמות עולמית! אלוף עולם אתה. תודה ענקית, אשתי גם ממש אהבה :)', tag:'לקוח פרטי' },
+    { quote:'מדהים אחי, ממש ממש יפה!', tag:'פרויקט קריאייטיב' },
+    { quote:'טוב מאוד — אתה מבין את הראש שלי בדיוק. אתה אלוף, זה מעביר את המסר, חבל על הזמן.', tag:'עבודה עם מותג' },
+    { quote:'הסרטון שעשית לו היה חשמלי.', tag:'תוכן לאירוע' },
+    { quote:'יצא מצוין, תודה רבה — מלך אתה.', tag:'לקוחה פרטית' },
+    { quote:'תענוג לעבוד איתך.', tag:'שיתוף פעולה חוזר' },
+    { quote:'דרך ה-AI החייתם את יקיר שלנו — מנגן, מחייך, איתנו לרגע קטן שהפך להיסטוריה של הלב.', tag:'פרויקט זיכרון אישי' }
+  ];
+  const testiList = document.getElementById('testiList');
+  testimonials.forEach(t => {
+    const row = document.createElement('div');
+    row.className = 'testi-row';
+    const q = document.createElement('p'); q.className = 'testi-quote'; q.textContent = t.quote;
+    const tag = document.createElement('p'); tag.className = 'testi-tag'; tag.textContent = t.tag;
+    row.appendChild(q); row.appendChild(tag);
+    testiList.appendChild(row);
+  });
+  document.querySelectorAll('.testi-row').forEach(row => {
+    const paragraphs = row.querySelectorAll('p');
+    ScrollTrigger.create({ trigger:row, start:'top 82%', end:'top 62%', scrub:true,
+      onUpdate:self => {
+        gsap.set(row, { gap:`${6 - self.progress * 6}%` });
+        paragraphs.forEach(p => gsap.set(p, { opacity:self.progress }));
+      } });
+  });
+}
 
 /* ════ 3 — מי אני ════ */
 gsap.from('.bio-text', { opacity:0, y:34, duration:1, ease:'power3.out',
