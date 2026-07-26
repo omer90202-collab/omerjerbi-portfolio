@@ -128,22 +128,24 @@
     .results-content{width:100%;padding:2vh 5vw 12vh}
   }
 
-  /* ════ 5ג — לקוחות ממליצים: קרוסלת כרטיסים בעומק (Animmaster Sliders/3, "Stacked Cards Nature") ════ */
-  .testi-sec{padding:14vh 0 6vh;overflow:hidden}
-  .testi-header{text-align:center;margin-bottom:6vh;padding:0 5vw}
+  /* ════ 5ג — לקוחות ממליצים: קרוסלת מרקיזה כפולה (מותאם מקומפוננטת 21st.dev "testimonials-carousel",
+     React+Tailwind+Framer Motion → GSAP ticker+translateX וניל, בלי React/build-step) ════ */
+  .testi-sec{padding:14vh 0;overflow:hidden}
+  .testi-header{text-align:center;margin-bottom:7vh;padding:0 5vw}
   .testi-header small{display:block;color:var(--gold);letter-spacing:.32em;font-size:12px;font-weight:700;margin-bottom:14px}
   .testi-header h2{font-weight:900;font-size:clamp(32px,4.6vw,64px);letter-spacing:-.01em}
   .testi-header h2 em{font-style:normal;color:var(--gold)}
-  .testi-stage{position:relative;width:100%;height:56vh;min-height:400px}
-  .testi-slider{position:absolute;inset:0;perspective:1400px;perspective-origin:50% 50%}
-  .testi-card{position:absolute;top:50%;left:50%;width:min(56vw,680px);min-height:300px;border-radius:var(--r);overflow:hidden;transform:translate3d(-50%,-50%,0);background:var(--card);box-shadow:0 30px 80px rgba(0,0,0,.5);cursor:pointer;padding:48px 44px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;border:1px solid var(--line)}
-  .testi-card::after{content:"";position:absolute;inset:auto -20% -45% -20%;height:65%;background:radial-gradient(closest-side,rgba(253,191,45,.12),transparent 70%);pointer-events:none}
-  .testi-avatar{position:relative;width:50px;height:50px;border-radius:99px;background:var(--gold);color:#141005;display:grid;place-items:center;font-size:22px;font-weight:900;margin-bottom:22px;flex-shrink:0}
-  .testi-copy{position:relative;z-index:1}
-  .testi-quote{font-size:clamp(17px,1.9vw,23px);font-weight:400;line-height:1.6;color:var(--ink)}
-  .testi-tag{margin-top:18px;font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--dim)}
-  .testi-hint{position:absolute;bottom:-4vh;inset-inline:0;text-align:center;font-size:12px;letter-spacing:.3em;color:var(--dim);pointer-events:none}
-  @media(max-width:760px){.testi-card{width:calc(100vw - 56px);padding:36px 26px;min-height:260px}.testi-stage{height:52vh}}
+  .testi-rows{display:flex;flex-direction:column;gap:22px}
+  .testi-row-track{display:flex;gap:22px;width:max-content;will-change:transform}
+  .testi-card{position:relative;flex-shrink:0;width:320px;min-height:200px;border-radius:22px;border:1px solid var(--line);background:var(--card);padding:24px;display:flex;flex-direction:column;justify-content:space-between;transition:transform .35s ease,border-color .35s ease}
+  .testi-card:hover{transform:scale(1.045) rotate(-1deg);border-color:rgba(253,191,45,.4)}
+  .testi-quote{font-size:14.5px;line-height:1.7;color:var(--dim);text-align:right}
+  .testi-quote em{font-style:normal;color:var(--gold);font-weight:600}
+  .testi-who{display:flex;align-items:center;gap:12px;margin-top:18px}
+  .testi-avatar{width:44px;height:44px;border-radius:99px;background:var(--gold);color:#141005;display:grid;place-items:center;font-size:16px;font-weight:900;flex-shrink:0}
+  .testi-name{font-weight:600;font-size:14px;color:var(--ink);line-height:1.3}
+  .testi-tag{opacity:.6;font-size:12.5px;color:var(--dim)}
+  @media(max-width:640px){.testi-card{width:270px;padding:20px}}
 
   /* ════ 3 — מי אני ════ */
   .bio-text{font-size:clamp(19px,2.3vw,27px);font-weight:300;line-height:1.75;max-width:62ch}
@@ -368,12 +370,12 @@
   </div>
 </section>
 
-<!-- ═ 5ג ═ לקוחות ממליצים: קרוסלת כרטיסים בעומק, לחיצה מחליפה (Animmaster Sliders/3, "Stacked Cards Nature") -->
+<!-- ═ 5ג ═ לקוחות ממליצים: קרוסלת מרקיזה כפולה (מותאם מקומפוננטת 21st.dev, וניל JS) -->
 <section class="testi-sec" id="scTesti">
   <div class="testi-header"><small>לקוחות ממליצים</small><h2>מה אומרים <em>עליי.</em></h2></div>
-  <div class="testi-stage" id="testiStage">
-    <div class="testi-slider" id="testiSlider"></div>
-    <div class="testi-hint">לחצו לכרטיס הבא</div>
+  <div class="testi-rows">
+    <div class="testi-row-track" id="testiRow1"></div>
+    <div class="testi-row-track" id="testiRow2"></div>
   </div>
 </section>
 
@@ -570,67 +572,62 @@ document.querySelectorAll('#resultsContent .stat-item').forEach(item => {
     onUpdate:self => gsap.set(item, { x:250 - self.progress * 250 }) });
 });
 
-/* ════ 5ג — לקוחות ממליצים: קרוסלת כרטיסים בעומק (Animmaster Sliders/3, "Stacked Cards Nature") —
-   z/y לפי אינדקס בעזרת perspective, לחיצה מקדמת כרטיס (pop מהחזית, prepend לעורף, כמו במקור) ════ */
+/* ════ 5ג — לקוחות ממליצים: קרוסלת מרקיזה כפולה (מותאם מקומפוננטת React/Tailwind/Framer-Motion של
+   21st.dev ל-GSAP ticker + translateX וניל — בלי React/build-step, כי הפרויקט הזה HTML יחיד ללא build.
+   RTL: שורה 1 = translateX חיובי (כיוון טבעי, כמו .mq-track/.works-track הקיימים), שורה 2 = הפוך. ════ */
 {
   const testimonials = [
-    { quote:'שלמות עולמית! אלוף עולם אתה. תודה ענקית, אשתי גם ממש אהבה :)', tag:'לקוח פרטי' },
-    { quote:'מדהים אחי, ממש ממש יפה!', tag:'פרויקט קריאייטיב' },
-    { quote:'טוב מאוד — אתה מבין את הראש שלי בדיוק. אתה אלוף, זה מעביר את המסר, חבל על הזמן.', tag:'עבודה עם מותג' },
-    { quote:'הסרטון שעשית לו היה חשמלי.', tag:'תוכן לאירוע' },
-    { quote:'יצא מצוין, תודה רבה — מלך אתה.', tag:'לקוחה פרטית' },
-    { quote:'תענוג לעבוד איתך.', tag:'שיתוף פעולה חוזר' },
-    { quote:'דרך ה-AI החייתם את יקיר שלנו — מנגן, מחייך, איתנו לרגע קטן שהפך להיסטוריה של הלב.', tag:'פרויקט זיכרון אישי' }
+    { quote:'שלמות עולמית! אלוף עולם אתה. תודה ענקית, אשתי גם ממש אהבה :)', highlight:'אלוף עולם אתה', name:'לקוח', tag:'פרויקט אישי' },
+    { quote:'מדהים אחי, ממש ממש יפה!', highlight:'ממש ממש יפה', name:'לקוח', tag:'פרויקט קריאייטיב' },
+    { quote:'טוב מאוד — אתה מבין את הראש שלי בדיוק. אתה אלוף, זה מעביר את המסר, חבל על הזמן.', highlight:'מבין את הראש שלי בדיוק', name:'לקוח', tag:'עבודה עם מותג' },
+    { quote:'הסרטון שעשית לו היה חשמלי.', highlight:'היה חשמלי', name:'לקוח', tag:'תוכן לאירוע' },
+    { quote:'יצא מצוין, תודה רבה — מלך אתה.', highlight:'מלך אתה', name:'לקוחה', tag:'לקוחה פרטית' },
+    { quote:'תענוג לעבוד איתך.', highlight:'תענוג לעבוד איתך', name:'לקוח', tag:'שיתוף פעולה חוזר' },
+    { quote:'דרך ה-AI החייתם את יקיר שלנו — מנגן, מחייך, איתנו לרגע קטן שהפך להיסטוריה של הלב.', highlight:'היסטוריה של הלב', name:'משפחה', tag:'פרויקט זיכרון אישי' }
   ];
 
-  const stage = document.getElementById('testiStage');
-  const slider = document.getElementById('testiSlider');
-  let cardsEls = testimonials.map(t => {
+  function buildCard(t){
     const card = document.createElement('div');
     card.className = 'testi-card';
+    const q = document.createElement('p'); q.className = 'testi-quote';
+    if (t.highlight && t.quote.includes(t.highlight)) {
+      const [before, after] = t.quote.split(t.highlight);
+      q.appendChild(document.createTextNode(before));
+      const em = document.createElement('em'); em.textContent = t.highlight;
+      q.appendChild(em);
+      q.appendChild(document.createTextNode(after));
+    } else {
+      q.textContent = t.quote;
+    }
+    const who = document.createElement('div'); who.className = 'testi-who';
     const avatar = document.createElement('div'); avatar.className = 'testi-avatar'; avatar.textContent = '❝';
-    const copy = document.createElement('div'); copy.className = 'testi-copy';
-    const q = document.createElement('p'); q.className = 'testi-quote'; q.textContent = t.quote;
-    const tag = document.createElement('p'); tag.className = 'testi-tag'; tag.textContent = t.tag;
-    copy.appendChild(q); copy.appendChild(tag);
-    card.appendChild(avatar); card.appendChild(copy);
-    slider.appendChild(card);
+    const info = document.createElement('div');
+    const name = document.createElement('div'); name.className = 'testi-name'; name.textContent = t.name;
+    const tag = document.createElement('div'); tag.className = 'testi-tag'; tag.textContent = t.tag;
+    info.appendChild(name); info.appendChild(tag);
+    who.appendChild(avatar); who.appendChild(info);
+    card.appendChild(q); card.appendChild(who);
     return card;
-  });
+  }
 
-  function positionCards(){
-    gsap.to(cardsEls, {
-      y: (i) => `${-14 + 14 * i}%`,
-      z: (i) => 16 * i,
-      opacity: (i, el, arr) => i < arr.length - 4 ? 0 : 1,
-      duration: 1, ease:'power3.inOut', stagger:-.06
+  function buildRow(trackId, reverse, speed){
+    const track = document.getElementById(trackId);
+    testimonials.concat(testimonials).forEach(t => track.appendChild(buildCard(t)));
+
+    let x = 0, paused = false;
+    track.addEventListener('mouseenter', () => paused = true);
+    track.addEventListener('mouseleave', () => paused = false);
+    gsap.ticker.add(() => {
+      if (paused) return;
+      const half = track.scrollWidth / 2;
+      if (!half) return;
+      if (reverse) { x -= speed; if (x <= -half) x += half; }
+      else { x += speed; if (x >= half) x -= half; }
+      track.style.transform = `translateX(${x}px)`;
     });
   }
-  positionCards();
-  gsap.set(cardsEls[cardsEls.length - 1].querySelectorAll('.testi-quote,.testi-tag'), { opacity:1, y:0 });
-  cardsEls.slice(0, -1).forEach(c => gsap.set(c.querySelectorAll('.testi-quote,.testi-tag'), { opacity:0, y:14 }));
-
-  let isAnimating = false;
-  function advance(){
-    if (isAnimating) return;
-    isAnimating = true;
-    const frontCard = cardsEls.pop();
-    const nextCard = cardsEls[cardsEls.length - 1];
-
-    gsap.to(frontCard.querySelectorAll('.testi-quote,.testi-tag'), { opacity:0, y:-14, duration:.35, ease:'power2.out' });
-    gsap.to(frontCard, { y:'+=70%', duration:.75, ease:'power3.inOut', onComplete:() => {
-      slider.prepend(frontCard);
-      cardsEls.unshift(frontCard);
-      positionCards();
-      setTimeout(() => { isAnimating = false; }, 380);
-    }});
-    if (nextCard) gsap.to(nextCard.querySelectorAll('.testi-quote,.testi-tag'), { opacity:1, y:0, duration:.6, delay:.35, ease:'power3.out' });
-  }
-
-  stage.addEventListener('click', advance);
-  let autoTimer = setInterval(advance, 4800);
-  stage.addEventListener('mouseenter', () => clearInterval(autoTimer));
-  stage.addEventListener('mouseleave', () => { autoTimer = setInterval(advance, 4800); });
+  buildRow('testiRow1', false, .55);
+  buildRow('testiRow2', true, .4);
 }
 
 /* ════ 3 — מי אני ════ */
