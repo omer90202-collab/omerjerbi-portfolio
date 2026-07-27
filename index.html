@@ -40,13 +40,18 @@
   .sec.goldbg{background:var(--gold);color:var(--paper-ink)}
 
   /* ── ניווט ── */
-  header{position:fixed;inset-inline:0;top:0;z-index:90;mix-blend-mode:difference}
-  .nav{display:flex;justify-content:space-between;align-items:center;padding:20px 3.4vw;font-size:14px;letter-spacing:.06em}
-  /* הלוגו לבן, וה-header כולו ב-mix-blend-mode:difference — כך הוא מתהפך לבד:
-     לבן על רקע כהה נשאר לבן, ועל רקע בהיר הופך לשחור. בדיוק כמו הטקסט שהיה כאן. */
+  header{position:fixed;inset-inline:0;top:0;z-index:90}
+  .nav{display:flex;justify-content:space-between;align-items:center;padding:20px 3.4vw;font-size:14px;letter-spacing:.06em;color:var(--ink);transition:color .4s ease}
   .nav .logo{display:block;line-height:0}
-  /* דריסת הכלל הגלובלי img{width:100%;height:100%;object-fit:cover} שהיה מותח את הלוגו */
-  .nav .logo img{height:18px;width:auto;object-fit:contain;display:block}
+  /* הלוגו מצויר כמסכה על ריבוע צבע — כך ה-CSS שולט בצבע שלו במלואו:
+     זהב כברירת מחדל (מסך שחור), ושחור כשה-header נמצא מעל סקשן צהוב.
+     קודם היה כאן mix-blend-mode:difference, אבל לבן פחות זהב = כחול. */
+  .nav .logo .mark{display:block;height:18px;width:61px;background-color:var(--gold);
+    -webkit-mask:url(images/logo-jerbi-white.png) no-repeat center/contain;
+    mask:url(images/logo-jerbi-white.png) no-repeat center/contain;
+    transition:background-color .4s ease}
+  header.on-gold .nav{color:var(--paper-ink)}
+  header.on-gold .nav .logo .mark{background-color:var(--paper-ink)}
   .nav .side{display:flex;align-items:center;gap:14px}
   .nav .talk{font-weight:700;font-size:13px;border:1px solid currentColor;border-radius:99px;padding:8px 18px;transition:.25s}
 
@@ -229,7 +234,7 @@
 
 <header>
   <nav class="nav">
-    <a class="logo" href="#scHero" aria-label="עומר ג'רבי — לראש העמוד"><img src="images/logo-jerbi-white.png" alt="jerbi."></a>
+    <a class="logo" href="#scHero" aria-label="עומר ג'רבי — לראש העמוד"><span class="mark" role="img" aria-label="jerbi."></span></a>
     <div class="side">
       <a class="talk" href="https://ig.me/m/omerjerbi" target="_blank" rel="noopener">בואו נדבר</a>
     </div>
@@ -690,10 +695,25 @@ gsap.utils.toArray('.sec').forEach((sec, i) => {
 
   /* הפרדת רקע זהב/שחור בין הכרטיסים — עובד בשני המצבים (דסקטופ ומובייל) */
   const miShow = document.getElementById('miShow');
+
+  /* גוון ההדר: הלוגו זהב כשהרקע שחור, ושחור כשההדר עובר מעל שטח צהוב.
+     יש בדיוק שני מקורות צהוב באתר — פס הלוגואים (#scLogos, תמיד צהוב)
+     ו-#miShow בזמן שהוא נושא את המחלקה on-gold. */
+  const headerEl = document.querySelector('header');
+  const HEADER_LINE = 30;                    /* הגובה בפועל שבו יושב הלוגו */
+  let logosUnderHeader = false, miUnderHeader = false;
+  const applyHeaderTone = () => headerEl.classList.toggle('on-gold',
+    logosUnderHeader || (miUnderHeader && miShow.classList.contains('on-gold')));
+
+  ScrollTrigger.create({ trigger:'#scLogos', start:`top ${HEADER_LINE}px`, end:`bottom ${HEADER_LINE}px`,
+    onToggle: self => { logosUnderHeader = self.isActive; applyHeaderTone(); } });
+  ScrollTrigger.create({ trigger:miShow, start:`top ${HEADER_LINE}px`, end:`bottom ${HEADER_LINE}px`,
+    onToggle: self => { miUnderHeader = self.isActive; applyHeaderTone(); } });
+
   miLeftItems.forEach((info, i) => {
     const gold = i % 2 === 1;
     ScrollTrigger.create({ trigger:info, start:'top 60%', end:'bottom 40%',
-      onToggle: self => { if (self.isActive) miShow.classList.toggle('on-gold', gold); } });
+      onToggle: self => { if (self.isActive) { miShow.classList.toggle('on-gold', gold); applyHeaderTone(); } } });
   });
 
   const imgWrappers = miRightItems;

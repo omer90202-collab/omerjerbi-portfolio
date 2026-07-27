@@ -25,11 +25,13 @@
   img,video{display:block;width:100%;object-fit:cover}
   a{color:inherit;text-decoration:none}
 
-  header{position:fixed;inset-inline:0;top:0;z-index:90;mix-blend-mode:difference}
+  header{position:fixed;inset-inline:0;top:0;z-index:90}
   .nav{display:flex;justify-content:space-between;align-items:center;padding:22px 4vw;font-size:14px;letter-spacing:.06em}
   .nav .logo{display:block;line-height:0}
-  /* דריסת הכלל הגלובלי img{width:100%;object-fit:cover} שהיה מותח את הלוגו */
-  .nav .logo img{height:22px;width:auto;object-fit:contain;display:block}
+  /* הלוגו מצויר כמסכה על ריבוע צבע — הדף כולו כהה, ולכן הלוגו זהב תמיד. */
+  .nav .logo .mark{display:block;height:22px;width:74px;background-color:var(--gold);
+    -webkit-mask:url(images/logo-jerbi-white.png) no-repeat center/contain;
+    mask:url(images/logo-jerbi-white.png) no-repeat center/contain}
   .nav a.back{font-weight:300;color:#bbb;transition:.25s}
   .nav a.back:hover{color:var(--gold)}
 
@@ -80,7 +82,7 @@
 
 <header>
   <nav class="nav">
-    <a class="logo" href="index.html" aria-label="עומר ג'רבי — לדף הבית"><img src="images/logo-jerbi-white.png" alt="jerbi."></a>
+    <a class="logo" href="index.html" aria-label="עומר ג'רבי — לדף הבית"><span class="mark" role="img" aria-label="jerbi."></span></a>
     <a class="back" href="index.html">→ חזרה לתיק</a>
   </nav>
 </header>
