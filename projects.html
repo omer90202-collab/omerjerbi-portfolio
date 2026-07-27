@@ -27,7 +27,9 @@
 
   header{position:fixed;inset-inline:0;top:0;z-index:90;mix-blend-mode:difference}
   .nav{display:flex;justify-content:space-between;align-items:center;padding:22px 4vw;font-size:14px;letter-spacing:.06em}
-  .nav .logo{font-weight:900;font-size:18px}
+  .nav .logo{display:block;line-height:0}
+  /* דריסת הכלל הגלובלי img{width:100%;object-fit:cover} שהיה מותח את הלוגו */
+  .nav .logo img{height:22px;width:auto;object-fit:contain;display:block}
   .nav a.back{font-weight:300;color:#bbb;transition:.25s}
   .nav a.back:hover{color:var(--gold)}
 
@@ -73,7 +75,7 @@
 
 <header>
   <nav class="nav">
-    <div class="logo">עומר ג'רבי</div>
+    <a class="logo" href="index.html" aria-label="עומר ג'רבי — לדף הבית"><img src="images/logo-jerbi-white.png" alt="jerbi."></a>
     <a class="back" href="index.html">→ חזרה לתיק</a>
   </nav>
 </header>
