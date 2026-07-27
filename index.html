@@ -576,10 +576,16 @@ gsap.utils.toArray('.sec').forEach((sec, i) => {
   measure();
 
   /* בלי השהיה בהובר בכוונה: הפס הזה דקורטיבי-אמון, והעצירה בריחוף שברה את הקצב הקבוע.
-     גם pointer-events:none ב-CSS כדי שריחוף/לחיצה/גרירה לא יוכלו להפריע בכלל. */
-  gsap.ticker.add(() => {
+     גם pointer-events:none ב-CSS כדי שריחוף/לחיצה/גרירה לא יוכלו להפריע בכלל.
+
+     ההתקדמות לפי *זמן* ולא לפי פריים: קודם הקוד הוסיף מרחק קבוע בכל פריים, ולכן
+     בכל ירידה בקצב הפריימים (למשל כשהעכבר זז וקו-הסמן מצייר מחדש) הקרוסלה באמת
+     נעה לאט יותר — וזה נראה בדיוק כמו "עוצרת בריחוף". נרמול ל-dt שומר מהירות
+     קבועה בעולם האמיתי. dt מוגבל כדי שחזרה מטאב מוסתר לא תגרום לקפיצה. */
+  gsap.ticker.add((time, dt) => {
     if (!logosVisible || !cycle) return;
-    x += 1.265; if (x >= cycle) x -= cycle;
+    x += 1.265 * Math.min(dt, 50) / 16.667;
+    if (x >= cycle) x %= cycle;
     track.style.transform = `translate3d(${x}px,0,0)`;
   });
   new IntersectionObserver(es => { logosVisible = es[0].isIntersecting; }, { rootMargin:'200px' })
@@ -642,10 +648,12 @@ gsap.utils.toArray('.sec').forEach((sec, i) => {
     let x = 0, paused = false;
     track.addEventListener('mouseenter', () => paused = true);
     track.addEventListener('mouseleave', () => paused = false);
-    gsap.ticker.add(() => {
+    /* גם כאן ההתקדמות לפי זמן ולא לפי פריים — אחרת המהירות משתנה עם קצב הפריימים */
+    gsap.ticker.add((time, dt) => {
       if (paused || !testiVisible || !cycle) return;
-      if (reverse) { x -= speed; if (x <= -cycle) x += cycle; }
-      else { x += speed; if (x >= cycle) x -= cycle; }
+      const step = speed * Math.min(dt, 50) / 16.667;
+      if (reverse) { x -= step; if (x <= -cycle) x += cycle; }
+      else { x += step; if (x >= cycle) x -= cycle; }
       track.style.transform = `translate3d(${x}px,0,0)`;
     });
   }

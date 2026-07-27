@@ -42,6 +42,11 @@
 
   /* ── קיר זרוק: מייסונרי עמודות — כל יחס גובה נשמר טבעי ── */
   .wall{columns:3;column-gap:22px;padding:4vh 5vw 14vh}
+  /* שני קירות נפרדים: ב-CSS columns התוכן זורם *לאורך העמודה*, ולכן רשימה
+     אחת מעורבת הייתה משבצת גרפיקות באמצע הסרטונים. הפרדה לשני בלוקים היא
+     הדרך היחידה לקבל באמת "סרטונים למעלה, גרפיקות למטה". */
+  #wall{padding-bottom:9vh}
+  .wall--graphics{padding-top:0}
   @media(max-width:1000px){.wall{columns:2}}
   @media(max-width:620px){.wall{columns:1;padding-inline:6vw}}
   .p-it{break-inside:avoid;margin-bottom:22px;border-radius:14px;overflow:hidden;position:relative;
@@ -95,15 +100,6 @@
   <div class="p-it"><video src="videos/imtirtzu-3.mp4" muted loop playsinline preload="metadata"></video><span class="kind">עבודה ללקוח</span><b>אם תרצו</b></div>
   <div class="p-it"><video src="videos/hapoel.mp4" muted loop playsinline preload="metadata"></video><span class="kind">עבודה ללקוח</span><b>הפועל</b></div>
   <div class="p-it"><video src="videos/beitar-puppets.mp4" muted loop playsinline preload="metadata"></video><span class="kind">עבודה ללקוח</span><b>בית״ר ירושלים</b></div>
-  <div class="p-it"><img src="images/imtirtzu-students.jpg" alt="אם תרצו — ערב סטודנטים"><span class="kind">עבודה ללקוח</span><b>אם תרצו — ערב סטודנטים</b></div>
-  <div class="p-it"><img src="images/imtirtzu-announcement.jpg" alt="אם תרצו — הודעה"><span class="kind">עבודה ללקוח</span><b>אם תרצו — הודעה</b></div>
-  <div class="p-it"><img src="images/imtirtzu-drones-en.jpg" alt="אם תרצו — קמפיין תרומות"><span class="kind">עבודה ללקוח</span><b>אם תרצו — קמפיין תרומות</b></div>
-  <div class="p-it"><img src="images/imtirtzu-knesset.jpg" alt="אם תרצו — סיור בכנסת"><span class="kind">עבודה ללקוח</span><b>אם תרצו — סיור בכנסת</b></div>
-  <div class="p-it"><img src="images/imtirtzu-mossad.jpg" alt="אם תרצו — מינוי המוסד"><span class="kind">עבודה ללקוח</span><b>אם תרצו — מינוי המוסד</b></div>
-  <div class="p-it"><img src="images/ayeeya-cover.jpg" alt="עטיפת אלבום AYEEYA"><span class="kind">עבודה ללקוח</span><b>עטיפת אלבום — AYEEYA</b></div>
-  <div class="p-it"><img src="images/labella-cover.jpg" alt="עטיפת אלבום LABELLA"><span class="kind">עבודה ללקוח</span><b>עטיפת אלבום — LABELLA</b></div>
-  <div class="p-it"><img src="images/eyal-golan-stories.jpg" alt="30 גרפיקות ספירה לאחור — אייל גולן"><span class="kind">עבודה ללקוח</span><b>ספירה לאחור — אייל גולן</b></div>
-
   <div class="p-it"><video src="videos/heels.mp4" muted loop playsinline preload="metadata"></video><span class="kind">קריאייטיב</span><b>נעליים</b></div>
   <div class="p-it"><video src="videos/mbappe.mp4" muted loop playsinline preload="metadata"></video><span class="kind">קריאייטיב</span><b>קמפיין כדורגל</b></div>
   <div class="p-it"><video src="videos/ginton-purim.mp4" muted loop playsinline preload="metadata"></video><span class="kind">קריאייטיב</span><b>ג'ין טוניק — פורים</b></div>
@@ -117,14 +113,6 @@
   <div class="p-it"><video src="videos/mantra-3.mp4" muted loop playsinline preload="metadata"></video><span class="kind">קריאייטיב</span><b>מנטרה — מוצמד</b></div>
   <div class="p-it"><video src="videos/mantra-what.mp4" muted loop playsinline preload="metadata"></video><span class="kind">קריאייטיב</span><b>מה זה מנטרה</b></div>
   <div class="p-it"><video src="videos/mantra-who.mp4" muted loop playsinline preload="metadata"></video><span class="kind">קריאייטיב</span><b>מי אנחנו — מנטרה</b></div>
-  <div class="p-it"><img src="images/dan-biton.jpg" alt="דן ביטון"><span class="kind">קריאייטיב</span><b>דן ביטון</b></div>
-  <div class="p-it"><img src="images/yarden-shua.jpg" alt="יהב שוע — בית״ר ירושלים"><span class="kind">קריאייטיב</span><b>יהב שוע · בית״ר</b></div>
-  <div class="p-it"><img src="images/omer-atzili.jpg" alt="עומר אצילי"><span class="kind">קריאייטיב</span><b>עומר אצילי</b></div>
-  <div class="p-it"><img src="images/atzili-matchday.jpg" alt="עומר אצילי — Matchday"><span class="kind">קריאייטיב</span><b>עומר אצילי · Matchday</b></div>
-  <div class="p-it"><img src="images/dor-peretz.jpg" alt="דור פרץ — מכבי תל אביב"><span class="kind">קריאייטיב</span><b>דור פרץ · מכבי ת״א</b></div>
-  <div class="p-it"><img src="images/manor-israel.jpg" alt="מנור — נבחרת ישראל"><span class="kind">קריאייטיב</span><b>מנור · נבחרת ישראל</b></div>
-  <div class="p-it"><img src="images/messi-ronaldo.jpg" alt="מסי נגד רונאלדו"><span class="kind">קריאייטיב</span><b>מסי נגד רונאלדו</b></div>
-
   <div class="p-it"><video src="videos/raw-arak.mp4" muted loop playsinline preload="metadata"></video><span class="kind">פרסומת</span><b>ערק נוח</b></div>
   <div class="p-it"><video src="videos/raw-shoko.mp4" muted loop playsinline preload="metadata"></video><span class="kind">פרסומת</span><b>שוקו</b></div>
   <div class="p-it"><video src="videos/raw-magnum.mp4" muted loop playsinline preload="metadata"></video><span class="kind">פרסומת</span><b>מגנום</b></div>
@@ -138,6 +126,24 @@
   <div class="p-it"><video src="videos/power-barrier-1.mp4" muted loop playsinline preload="metadata"></video><span class="kind">פרסומת</span><b>Power Barrier</b></div>
   <div class="p-it"><video src="videos/power-barrier-2.mp4" muted loop playsinline preload="metadata"></video><span class="kind">פרסומת</span><b>Power Barrier — קמפיין טעמים</b></div>
   <div class="p-it"><video src="videos/power-barrier-3.mp4" muted loop playsinline preload="metadata"></video><span class="kind">פרסומת</span><b>Power Barrier — מארז</b></div>
+</div>
+
+<div class="wall wall--graphics" id="wallGraphics">
+  <div class="p-it"><img src="images/imtirtzu-students.jpg" alt="אם תרצו — ערב סטודנטים"><span class="kind">עבודה ללקוח</span><b>אם תרצו — ערב סטודנטים</b></div>
+  <div class="p-it"><img src="images/imtirtzu-announcement.jpg" alt="אם תרצו — הודעה"><span class="kind">עבודה ללקוח</span><b>אם תרצו — הודעה</b></div>
+  <div class="p-it"><img src="images/imtirtzu-drones-en.jpg" alt="אם תרצו — קמפיין תרומות"><span class="kind">עבודה ללקוח</span><b>אם תרצו — קמפיין תרומות</b></div>
+  <div class="p-it"><img src="images/imtirtzu-knesset.jpg" alt="אם תרצו — סיור בכנסת"><span class="kind">עבודה ללקוח</span><b>אם תרצו — סיור בכנסת</b></div>
+  <div class="p-it"><img src="images/imtirtzu-mossad.jpg" alt="אם תרצו — מינוי המוסד"><span class="kind">עבודה ללקוח</span><b>אם תרצו — מינוי המוסד</b></div>
+  <div class="p-it"><img src="images/ayeeya-cover.jpg" alt="עטיפת אלבום AYEEYA"><span class="kind">עבודה ללקוח</span><b>עטיפת אלבום — AYEEYA</b></div>
+  <div class="p-it"><img src="images/labella-cover.jpg" alt="עטיפת אלבום LABELLA"><span class="kind">עבודה ללקוח</span><b>עטיפת אלבום — LABELLA</b></div>
+  <div class="p-it"><img src="images/eyal-golan-stories.jpg" alt="30 גרפיקות ספירה לאחור — אייל גולן"><span class="kind">עבודה ללקוח</span><b>ספירה לאחור — אייל גולן</b></div>
+  <div class="p-it"><img src="images/dan-biton.jpg" alt="דן ביטון"><span class="kind">קריאייטיב</span><b>דן ביטון</b></div>
+  <div class="p-it"><img src="images/yarden-shua.jpg" alt="יהב שוע — בית״ר ירושלים"><span class="kind">קריאייטיב</span><b>יהב שוע · בית״ר</b></div>
+  <div class="p-it"><img src="images/omer-atzili.jpg" alt="עומר אצילי"><span class="kind">קריאייטיב</span><b>עומר אצילי</b></div>
+  <div class="p-it"><img src="images/atzili-matchday.jpg" alt="עומר אצילי — Matchday"><span class="kind">קריאייטיב</span><b>עומר אצילי · Matchday</b></div>
+  <div class="p-it"><img src="images/dor-peretz.jpg" alt="דור פרץ — מכבי תל אביב"><span class="kind">קריאייטיב</span><b>דור פרץ · מכבי ת״א</b></div>
+  <div class="p-it"><img src="images/manor-israel.jpg" alt="מנור — נבחרת ישראל"><span class="kind">קריאייטיב</span><b>מנור · נבחרת ישראל</b></div>
+  <div class="p-it"><img src="images/messi-ronaldo.jpg" alt="מסי נגד רונאלדו"><span class="kind">קריאייטיב</span><b>מסי נגד רונאלדו</b></div>
   <div class="p-it"><img src="images/win-icecream.jpg" alt="WIN — גלידה בטעם בלונדי בייגלה"><span class="kind">פרסומת</span><b>WIN — גלידה</b></div>
   <div class="p-it"><img src="images/basis-fitness.jpg" alt="Basis — פתיחת סטודיו כושר"><span class="kind">פרסומת</span><b>Basis — פתיחת סטודיו</b></div>
 </div>
