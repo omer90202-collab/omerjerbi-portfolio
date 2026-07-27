@@ -46,7 +46,7 @@
      לבן על רקע כהה נשאר לבן, ועל רקע בהיר הופך לשחור. בדיוק כמו הטקסט שהיה כאן. */
   .nav .logo{display:block;line-height:0}
   /* דריסת הכלל הגלובלי img{width:100%;height:100%;object-fit:cover} שהיה מותח את הלוגו */
-  .nav .logo img{height:22px;width:auto;object-fit:contain;display:block}
+  .nav .logo img{height:18px;width:auto;object-fit:contain;display:block}
   .nav .side{display:flex;align-items:center;gap:14px}
   .nav .talk{font-weight:700;font-size:13px;border:1px solid currentColor;border-radius:99px;padding:8px 18px;transition:.25s}
 
@@ -80,8 +80,7 @@
   /* הלוגו החליף את הטקסט. הרוחב נקבע ביחס למסך (הלוגו ביחס 3.37:1), ו-drop-shadow
      מחליף את ה-text-shadow שנתן לטקסט קריאוּת מעל קיר הווידאו. */
   .hero-title{position:relative;line-height:0}
-  .hero-title img{width:clamp(230px,42vw,620px);height:auto;object-fit:contain;display:block;margin-inline:auto;
-    filter:drop-shadow(0 14px 60px rgba(0,0,0,.85))}
+  .hero-title img{width:clamp(184px,33.6vw,496px);height:auto;object-fit:contain;display:block;margin-inline:auto}
   .hero-hint{position:absolute;bottom:4vh;inset-inline:0;text-align:center;z-index:6;font-size:12px;letter-spacing:.4em;color:var(--dim);pointer-events:none}
 
   /* ── תצוגה מוגדלת ── */
@@ -106,18 +105,6 @@
 
   /* ── סמן-קו עוקב (Mouse Effects #14 — עקומת ספרינג בקנבס) ── */
   #curlyCursor{position:fixed;inset:0;z-index:250;pointer-events:none}
-
-  /* ── מסך טעינה (Animmaster Hero Animations #5 "Awesome Preloader") ──
-     ה-SVG גבוה ב-300px מהמסך כדי שיהיה מקום ל"בטן" של העקומה; ביציאה העקומה
-     מתיישרת בו-זמנית עם הזזת המסך למעלה — משם מגיעה תחושת הגל הנוזלי. */
-  .preloader{position:fixed;inset:0;z-index:400;display:grid;place-items:center;background:var(--page)}
-  .preloader__svg{position:absolute;top:0;left:0;width:100%;height:calc(100% + 300px)}
-  .preloader__svg path{fill:var(--page)}
-  .preloader__logo{position:relative;z-index:2;opacity:0}
-  .preloader__logo img{width:clamp(180px,32vw,420px);height:auto;object-fit:contain;display:block}
-  /* מונע הבהוב של תוכן הדף לפני שהטעינה מסתיימת */
-  body.is-loading{overflow:hidden}
-  @media(prefers-reduced-motion:reduce){.preloader{display:none}}
 
   /* ── מד התקדמות גלילה (מותאם מקומפוננטת scroll-progress של motion-primitives) ──
      transform-origin ימני כי באתר RTL הגלילה "מתחילה" מימין; במקור זה origin-left. */
@@ -237,13 +224,7 @@
   .outro-foot{position:relative;z-index:2;display:flex;justify-content:space-between;padding:26px 4vw;font-size:13px;color:var(--dim);border-top:1px solid var(--line);flex-wrap:wrap;gap:8px}
 </style>
 </head>
-<body class="is-loading">
-
-<!-- מסך טעינה (מותאם מ-Animmaster Hero Animations #5 "Awesome Preloader") -->
-<div class="preloader" id="preloader">
-  <svg class="preloader__svg" id="preloaderSvg" preserveAspectRatio="none" aria-hidden="true"><path id="preloaderPath"></path></svg>
-  <div class="preloader__logo" id="preloaderLogo"><img src="images/logo-jerbi-white.png" alt=""></div>
-</div>
+<body>
 
 <div id="scrollProgress" aria-hidden="true"></div>
 <canvas id="curlyCursor"></canvas>
@@ -404,60 +385,6 @@ lenis.on('scroll', ScrollTrigger.update);
 gsap.ticker.add(t => lenis.raf(t*1000));
 gsap.ticker.lagSmoothing(0);
 
-/* ════ מסך טעינה (מותאם מ-Animmaster Hero Animations #5 "Awesome Preloader") ════
-   במקור זה מחזור מילות שלום ואז חשיפה; כאן הלוגו מחליף את המילים, והמנגנון —
-   עקומת SVG שמתיישרת בזמן שהמסך נגלל למעלה — נשמר כמו שהוא.
-   שינוי מהותי אחד: במקור העיתוי קבוע (~2.7 שנ' תמיד). כאן הוא קשור לטעינה
-   האמיתית של הדף, עם רצפה שלא תבהב ותקרה שלא תתקע אם משהו נתקע ברשת. */
-{
-  const pre = document.getElementById('preloader');
-  const path = document.getElementById('preloaderPath');
-  const logo = document.getElementById('preloaderLogo');
-  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  const finish = () => {
-    document.body.classList.remove('is-loading');
-    lenis.start();
-    ScrollTrigger.refresh();
-  };
-
-  if (!pre || reduced) { finish(); }
-  else {
-    lenis.stop();
-    const W = () => innerWidth, H = () => innerHeight;
-    /* בטן כלפי מטה → קו ישר. זה ההבדל בין "וילון שנגלל" לבין גל */
-    const bulge = () => `M0 0 L${W()} 0 L${W()} ${H()} Q${W()/2} ${H()+300} 0 ${H()} L0 0`;
-    const flat  = () => `M0 0 L${W()} 0 L${W()} ${H()} Q${W()/2} ${H()} 0 ${H()} L0 0`;
-    path.setAttribute('d', bulge());
-    addEventListener('resize', () => { if (document.body.classList.contains('is-loading')) path.setAttribute('d', bulge()); });
-
-    gsap.to(logo, { opacity:1, duration:.55, ease:'power2.out' });
-
-    let done = false;
-    const reveal = () => {
-      if (done) return; done = true;
-      gsap.timeline({ defaults:{ ease:'power4.inOut' }, onComplete:() => { pre.style.display = 'none'; finish(); } })
-        .to(logo, { opacity:0, duration:.3, ease:'power2.in' }, 0)
-        .fromTo(path, { attr:{ d:bulge() } }, { attr:{ d:flat() }, duration:.7 }, .15)
-        .to(pre, { yPercent:-100, duration:.85 }, .2);
-    };
-
-    /* רצפה של 1.1 שנ' כדי שהלוגו לא יבזיק ויעלם, ותקרה של 3 שנ' כדי שתקלה
-       ברשת לא תשאיר את המבקר מול מסך ריק. מה שקורה קודם — מנצח. */
-    const MIN = 1100, MAX = 3000, t0 = performance.now();
-    const onReady = () => setTimeout(reveal, Math.max(0, MIN - (performance.now() - t0)));
-    if (document.readyState === 'complete') onReady();
-    else addEventListener('load', onReady);
-    setTimeout(reveal, MAX);
-
-    /* רשת ביטחון: הסרת המסך תלויה ב-onComplete של GSAP, ולכן אם GSAP נכשל או
-       נתקע — המבקר היה נשאר נעול מול מסך טעינה. זו תקלה גרועה בהרבה מאנימציה
-       שלא רצה, אז כאן מסירים אותו בכוח בלי תלות בשום ספרייה. */
-    setTimeout(() => {
-      if (document.body.classList.contains('is-loading')) { pre.style.display = 'none'; finish(); }
-    }, MAX + 1500);
-  }
-}
 
 const isMobile = matchMedia('(max-width: 760px)').matches;
 
@@ -925,7 +852,7 @@ if(uTransparent){float alpha=length(col);alpha=smoothstep(0.0,0.3,alpha);alpha=m
   const canvas = document.getElementById('curlyCursor');
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
-  let mouseMoved = false;
+  let mouseMoved = false, idle = false;
   const pointer = { x:.5*innerWidth, y:.5*innerHeight };
   const params = { pointsNumber:34, widthFactor:.26, spring:.4, friction:.5 };
   const trail = Array.from({ length: params.pointsNumber }, () => ({ x:pointer.x, y:pointer.y, dx:0, dy:0 }));
@@ -935,15 +862,29 @@ if(uTransparent){float alpha=length(col);alpha=smoothstep(0.0,0.3,alpha);alpha=m
   setupCanvas();
   addEventListener('resize', setupCanvas);
   function update(t){
+    requestAnimationFrame(update);
     if (!mouseMoved){ pointer.x = (.5 + .3*Math.cos(.002*t)*Math.sin(.005*t))*innerWidth; pointer.y = (.5 + .2*Math.cos(.005*t) + .1*Math.cos(.01*t))*innerHeight; }
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    /* מעדכנים את הקפיצים תמיד, אבל מודדים כמה תנועה באמת יש */
+    let motion = 0;
     trail.forEach((p, i) => {
       const prev = i === 0 ? pointer : trail[i-1];
       const spring = i === 0 ? .4*params.spring : params.spring;
       p.dx += (prev.x - p.x)*spring; p.dy += (prev.y - p.y)*spring;
       p.dx *= params.friction; p.dy *= params.friction;
       p.x += p.dx; p.y += p.dy;
+      const m = Math.abs(p.dx) + Math.abs(p.dy);
+      if (m > motion) motion = m;
     });
+
+    /* קודם הלולאה ציירה מחדש את כל המסך 60 פעם בשנייה *לנצח* — גם כשהעכבר
+       עומד והזנב כבר נח לגמרי. ניקוי קנבס בגודל חלון מלא + 32 משיכות בכל
+       פריים מתחרה ישירות בקומפוזיציה של הגלילה, וזה מה שהרגיש כקרטוע.
+       עכשיו כשאין תנועה פשוט לא מציירים — הפריים האחרון נשאר על המסך. */
+    if (motion < .1) { if (!idle) { idle = true; ctx.clearRect(0,0,canvas.width,canvas.height); } return; }
+    idle = false;
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.strokeStyle = 'rgba(253,191,45,.55)'; ctx.lineCap = 'round';
     let prevX = trail[0].x, prevY = trail[0].y;
     for (let i = 1; i < trail.length - 1; i++){
@@ -957,7 +898,6 @@ if(uTransparent){float alpha=length(col);alpha=smoothstep(0.0,0.3,alpha);alpha=m
     }
     ctx.beginPath(); ctx.moveTo(prevX, prevY);
     ctx.lineTo(trail[trail.length-1].x, trail[trail.length-1].y); ctx.stroke();
-    requestAnimationFrame(update);
   }
   requestAnimationFrame(update);
 })();
@@ -975,9 +915,17 @@ if(uTransparent){float alpha=length(col);alpha=smoothstep(0.0,0.3,alpha);alpha=m
   addEventListener('load', measure);
   ScrollTrigger.addEventListener('refresh', measure);
   /* ריכוך: הפס נמשך ליעד ולא קופץ אליו — מחקה את ה-spring של המקור */
+  /* ה-lerp מתקרב ליעד אבל לעולם לא מגיע אליו בדיוק, ולכן בלי הסף הזה נכתב
+     transform חדש בכל פריים *לנצח* — כתיבת סגנון וקומפוזיציה בלי שום שינוי
+     נראה לעין. כשהפער זניח מצמידים ליעד ומפסיקים לכתוב. */
   gsap.ticker.add(() => {
     const target = Math.min(1, Math.max(0, scrollY / max));
-    current += (target - current) * .12;
+    const d = target - current;
+    if (Math.abs(d) < .0004) {
+      if (current !== target) { current = target; bar.style.transform = `scaleX(${current})`; }
+      return;
+    }
+    current += d * .12;
     bar.style.transform = `scaleX(${current})`;
   });
 }
