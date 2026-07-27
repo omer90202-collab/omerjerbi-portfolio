@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>דמו 2 — 3D Card Fan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{--page:#060504;--card:#0d0b09;--ink:#f5f0e6;--dim:#6b6355;--gold:#FDBF2D}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--page);color:var(--ink);font-family:'Heebo',sans-serif;line-height:1.5}
+  .tag{position:fixed;top:20px;inset-inline:0;text-align:center;z-index:9;font-size:12px;letter-spacing:.3em;color:var(--dim)}
+  .spacer{height:60vh;display:grid;place-items:center;text-align:center}
+  .spacer h1{font-size:clamp(32px,5vw,64px);font-weight:900;margin:0 0 14px}
+  .spacer p{color:var(--dim);font-size:14px;letter-spacing:.2em}
+  .fan-stage{height:100vh;overflow:hidden;display:grid;place-items:center;perspective:1300px;position:relative}
+  .card{position:absolute;width:min(300px,58vw);aspect-ratio:3/4.2;border-radius:16px;overflow:hidden;will-change:transform;transform-origin:center 130%;box-shadow:0 30px 80px rgba(0,0,0,.6)}
+  .card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  .card::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(6,5,4,.9) 0%,rgba(6,5,4,.05) 46%,transparent 60%)}
+  .card b{position:absolute;bottom:16px;inset-inline:16px;z-index:1;font-size:clamp(14px,1.6vw,19px);font-weight:700}
+  .card small{position:absolute;top:14px;inset-inline-start:16px;z-index:1;font-size:11px;letter-spacing:.2em;color:var(--gold);font-weight:700}
+  .tail{height:40vh;display:grid;place-items:center;color:var(--dim);font-size:13px;letter-spacing:.3em}
+</style>
+</head>
+<body>
+<div class="tag">דמו 2 · 3D Card Fan</div>
+<div class="spacer"><div><h1>מי אני</h1><p>גלול כדי לפתוח את המניפה</p></div></div>
+
+<section id="scFan">
+  <div class="fan-stage" id="fanStage">
+    <div class="card"><img src="../images/mi-ani/graphic-design.jpg" alt=""><small>01</small><b>עיצוב גרפי</b></div>
+    <div class="card"><img src="../images/mi-ani/video-editing.jpg" alt=""><small>02</small><b>עריכת וידיאו</b></div>
+    <div class="card"><img src="../images/mi-ani/ai-content.jpg" alt=""><small>03</small><b>יצירת תוכן AI</b></div>
+    <div class="card"><img src="../images/mi-ani/podcast-editing.jpg" alt=""><small>04</small><b>עריכת פודקאסטים</b></div>
+    <div class="card"><img src="../images/mi-ani/web-dev.jpg" alt=""><small>05</small><b>בניית אתרים</b></div>
+    <div class="card"><img src="../images/mi-ani/automation.jpg" alt=""><small>06</small><b>אוטומציות AI</b></div>
+  </div>
+</section>
+<div class="tail">סוף הדמו</div>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
+<script src="https://unpkg.com/lenis@1.3.4/dist/lenis.min.js"></script>
+<script>
+window.addEventListener('load', () => {
+  gsap.registerPlugin(ScrollTrigger);
+  const lenis = new Lenis({ lerp:.085 });
+  lenis.on('scroll', ScrollTrigger.update);
+  gsap.ticker.add(t => lenis.raf(t*1000));
+
+  const cards = gsap.utils.toArray('.card'), n = cards.length, spread = 16;
+  const tl = gsap.timeline({ scrollTrigger:{ trigger:'#scFan', start:'top top', end:'+=200%', pin:'#fanStage', scrub:.6 } });
+  cards.forEach((c, i) => {
+    const target = (i - (n-1)/2) * spread;
+    tl.fromTo(c, { rotation:0, y:'16vh', scale:.9 }, { rotation:target, y:'6vh', scale:1, ease:'power2.out', duration:1 }, 0);
+  });
+  tl.to(cards, { y:'0vh', duration:.5, ease:'power2.inOut' }, 1.05)
+    .to(cards[Math.floor(n/2)], { scale:1.14, duration:.5, ease:'power2.out' }, 1.05);
+
+  ScrollTrigger.refresh();
+});
+</script>
+</body>
+</html>

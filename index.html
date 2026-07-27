@@ -145,6 +145,30 @@
 
   /* ════ 5ג — לקוחות ממליצים: קרוסלת מרקיזה כפולה (מותאם מקומפוננטת 21st.dev "testimonials-carousel",
      React+Tailwind+Framer Motion → GSAP ticker+translateX וניל, בלי React/build-step) ════ */
+  /* ── קיר תוצאות: עמודות של צילומי מסך שנסחפות כלפי מעלה ── */
+  .res-sec{padding:12vh 5vw 13vh;overflow:hidden}
+  .res-head{text-align:center;margin-bottom:6vh}
+  .res-head small{display:block;color:var(--gold);letter-spacing:.32em;font-size:12px;font-weight:700;margin-bottom:14px}
+  .res-head h2{font-weight:900;font-size:clamp(32px,4.6vw,64px);letter-spacing:-.01em}
+  .res-head h2 em{font-style:normal;color:var(--gold)}
+  .res-cols{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(14px,1.6vw,26px);
+    height:clamp(460px,74vh,820px);max-width:1280px;margin:0 auto;
+    -webkit-mask:linear-gradient(180deg,transparent 0,#000 13%,#000 87%,transparent 100%);
+    mask:linear-gradient(180deg,transparent 0,#000 13%,#000 87%,transparent 100%)}
+  .res-col{position:relative;overflow:hidden}
+  .res-track{display:flex;flex-direction:column;gap:clamp(14px,1.6vw,26px);
+    will-change:transform;pointer-events:none;user-select:none}
+  .res-card{border-radius:14px;overflow:hidden;background:var(--card);
+    border:1px solid rgba(245,240,230,.09);flex-shrink:0}
+  /* דריסת הכלל הגלובלי img{width:100%;height:100%;object-fit:cover} —
+     צילום מסך חייב להיראות במלואו, בלי חיתוך. */
+  .res-card img{width:100%;height:auto;object-fit:contain;display:block}
+  .res-ph{display:grid;place-items:center;text-align:center;padding:18px;
+    border-style:dashed;border-color:rgba(253,191,45,.28);color:rgba(245,240,230,.34);
+    font-size:12px;letter-spacing:.06em;line-height:1.6}
+  @media(max-width:900px){.res-cols{grid-template-columns:repeat(2,1fr);height:clamp(420px,66vh,620px)}}
+  @media(max-width:560px){.res-cols{grid-template-columns:1fr;height:56vh}}
+
   .testi-sec{padding:14vh 0;overflow:hidden}
   .testi-header{text-align:center;margin-bottom:7vh;padding:0 5vw}
   .testi-header small{display:block;color:var(--gold);letter-spacing:.32em;font-size:12px;font-weight:700;margin-bottom:14px}
@@ -346,6 +370,16 @@
   </div>
 </section>
 
+
+<!-- ═ 5ב ═ קיר תוצאות: צילומי מסך של נתוני מעורבות, נסחפים כלפי מעלה -->
+<section class="res-sec" id="scResults">
+  <div class="res-head"><small>המספרים עצמם</small><h2>מה שהתוכן <em>עשה.</em></h2></div>
+  <div class="res-cols" id="resCols">
+    <div class="res-col"><div class="res-track" id="resTrack0"></div></div>
+    <div class="res-col"><div class="res-track" id="resTrack1"></div></div>
+    <div class="res-col"><div class="res-track" id="resTrack2"></div></div>
+  </div>
+</section>
 
 <!-- ═ 5ג ═ לקוחות ממליצים: קרוסלת מרקיזה כפולה (מותאם מקומפוננטת 21st.dev, וניל JS) -->
 <section class="testi-sec" id="scTesti">
@@ -596,6 +630,92 @@ gsap.utils.toArray('.sec').forEach((sec, i) => {
   new IntersectionObserver(es => { logosVisible = es[0].isIntersecting; }, { rootMargin:'200px' })
     .observe(document.getElementById('scLogos'));
 }
+
+/* ═══ קיר תוצאות — עמודות שנסחפות כלפי מעלה ═══
+   אותו מנגנון מרקיזה של פס הלוגואים, רק אנכי: מרחק מחזור אמיתי (offsetTop של העותק
+   הכפול, לא scrollHeight/2), התקדמות לפי זמן ולא לפי פריים, ו-gating fail-open. */
+(() => {
+  /* ⬇ כאן נכנסים צילומי המסך. שם קובץ אחד לכל שורה, מתוך images/results/.
+     חלוקה לעמודות אוטומטית (0,1,2,0,1,2…) — פשוט להוסיף לרשימה. */
+  const shots = [
+    // 'ig-reach-1m.jpg',
+    // 'ig-views-survivor.jpg',
+  ];
+
+  const COLS = 3;
+  const tracks = [0,1,2].map(i => document.getElementById('resTrack' + i));
+  const speeds = [.34, .47, .39];               /* px למסגרת של 60fps — איטי, זה תוכן לקריאה */
+
+  /* כל עוד אין צילומים אמיתיים הסקשן מוסתר מהאתר החי — אסור שמי שמקבל את הקישור
+     יראה "צילום מסך 1". לצפייה בתנועה עם מציינֵי-מקום: להוסיף ?preview לכתובת. */
+  const preview = location.search.includes('preview');
+  if (!shots.length && !preview) { document.getElementById('scResults').remove(); return; }
+
+  /* עד שהצילומים האמיתיים מגיעים — כרטיסי מציין־מקום בגבהים משתנים,
+     כדי שאפשר יהיה לאשר את התנועה והקצב לפני שיש תוכן. */
+  const buildCard = (item, n) => {
+    const d = document.createElement('div');
+    d.className = 'res-card';
+    if (item) { const img = new Image(); img.src = 'images/results/' + item; img.alt = 'נתוני מעורבות'; img.loading = 'eager'; d.appendChild(img); }
+    else { d.classList.add('res-ph'); d.style.height = [210, 280, 175, 320, 240][n % 5] + 'px';
+           d.textContent = 'צילום מסך ' + (n + 1); }
+    return d;
+  };
+
+  const perCol = [[],[],[]];
+  (shots.length ? shots : Array.from({length: 12}, () => null))
+    .forEach((s, i) => perCol[i % COLS].push({ src: s, n: i }));
+
+  const state = tracks.map((track, c) => {
+    const items = perCol[c];
+    if (!items.length) return null;
+    /* שני עותקים — הכפילות היא מה שמאפשרת לולאה בלי תפר */
+    [...items, ...items].forEach(it => track.appendChild(buildCard(it.src, it.n)));
+    return { track, list: items, items: items.length, y: 0, cycle: 0, speed: speeds[c] };
+  }).filter(Boolean);
+
+  /* עמודה חייבת להיות גבוהה לפחות cycle + גובה החלון, אחרת ברגע הגלישה נפתח
+     חלל ריק בתחתית. עם מעט צילומים (או צילומים גבוהים) שני עותקים לא תמיד מספיקים,
+     ולכן מוסיפים עותקים עד שיש כיסוי. guard כדי שלא ייווצר לולאה אינסופית. */
+  const ensureFill = () => {
+    const boxH = document.getElementById('resCols').getBoundingClientRect().height;
+    state.forEach(s => {
+      if (!s.cycle) return;
+      let guard = 0;
+      while (s.track.getBoundingClientRect().height < s.cycle + boxH && guard++ < 8) {
+        s.list.forEach(it => s.track.appendChild(buildCard(it.src, it.n)));
+      }
+    });
+  };
+
+  const measure = () => {
+    state.forEach(s => {
+      const kids = s.track.children;
+      const imgs = [...s.track.querySelectorAll('img')];
+      if (imgs.length && !imgs.every(i => i.complete && i.naturalHeight > 0)) return;
+      s.cycle = Math.abs(kids[s.items].offsetTop - kids[0].offsetTop);
+    });
+    ensureFill();
+  };
+  state.forEach(s => s.track.querySelectorAll('img').forEach(i => i.addEventListener('load', measure)));
+  window.addEventListener('load', measure);
+  window.addEventListener('resize', measure);
+  measure();
+
+  let resVisible = true;                         /* fail-open: אופטימיזציה לא שוברת פונקציונליות */
+  gsap.ticker.add((time, dt) => {
+    if (!resVisible) return;
+    const k = Math.min(dt, 50) / 16.667;
+    for (const s of state) {
+      if (!s.cycle) continue;
+      s.y -= s.speed * k;                        /* מינוס = כלפי מעלה */
+      if (s.y <= -s.cycle) s.y += s.cycle;
+      s.track.style.transform = `translate3d(0,${s.y}px,0)`;
+    }
+  });
+  new IntersectionObserver(es => { resVisible = es[0].isIntersecting; }, { rootMargin:'200px' })
+    .observe(document.getElementById('scResults'));
+})();
 
 /* ════ 5ג — לקוחות ממליצים: קרוסלת מרקיזה כפולה (מותאם מקומפוננטת React/Tailwind/Framer-Motion של
    21st.dev ל-GSAP ticker + translateX וניל — בלי React/build-step, כי הפרויקט הזה HTML יחיד ללא build.

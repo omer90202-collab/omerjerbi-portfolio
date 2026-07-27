@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>דמו 1 — Sticky Step Showcase</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{--page:#060504;--card:#0d0b09;--ink:#f5f0e6;--dim:#6b6355;--gold:#FDBF2D;--line:rgba(245,240,230,.14)}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--page);color:var(--ink);font-family:'Heebo',sans-serif;line-height:1.5}
+  .tag{position:fixed;top:20px;inset-inline:0;text-align:center;z-index:9;font-size:12px;letter-spacing:.3em;color:var(--dim)}
+  .spacer{height:50vh;display:grid;place-items:center;text-align:center}
+  .spacer h1{font-size:clamp(32px,5vw,64px);font-weight:900;margin:0 0 14px}
+  .spacer p{color:var(--dim);font-size:14px;letter-spacing:.2em}
+  .wrap{max-width:1300px;margin:0 auto;padding:6vh 5vw 20vh;display:grid;grid-template-columns:1fr 1fr;gap:6vw;align-items:start}
+  .steps{display:flex;flex-direction:column;gap:30vh;padding-top:4vh}
+  .step{opacity:.3;transition:opacity .4s}
+  .step.active{opacity:1}
+  .step small{display:block;color:var(--gold);letter-spacing:.32em;font-size:12px;margin-bottom:12px;font-weight:700}
+  .step h3{font-size:clamp(28px,3.4vw,48px);font-weight:900;margin:0 0 12px;letter-spacing:-.01em}
+  .step p{color:var(--dim);max-width:38ch;font-size:15.5px;line-height:1.65}
+  .show-col{position:relative}
+  .show-sticky{position:sticky;top:12vh;height:74vh;border-radius:26px;overflow:hidden;background:var(--card);box-shadow:0 30px 90px rgba(0,0,0,.55)}
+  .show-sticky img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .55s ease}
+  .show-sticky img.active{opacity:1}
+  .show-sticky::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(6,5,4,.55) 0%,transparent 45%);pointer-events:none;z-index:1}
+  @media(max-width:860px){.wrap{grid-template-columns:1fr}.show-col{position:static}.show-sticky{position:sticky;top:8vh;height:46vh;margin-bottom:4vh}}
+</style>
+</head>
+<body>
+<div class="tag">דמו 1 · Sticky Step Showcase</div>
+<div class="spacer"><div><h1>מי אני</h1><p>גלול למטה</p></div></div>
+
+<div class="wrap">
+  <div class="steps">
+    <div class="step" data-i="0"><small>01 · עיצוב גרפי</small><h3>עיצוב גרפי</h3><p>בונה שפה חזותית שלמה — מיתוג, גרפיקות שיווקיות ופוסטרים ברמה מקצועית.</p></div>
+    <div class="step" data-i="1"><small>02 · עריכת וידיאו</small><h3>עריכת וידיאו</h3><p>עורך ומרכיב סרטונים בטיימליין מקצועי — מקאט ועד קצב וסאונד.</p></div>
+    <div class="step" data-i="2"><small>03 · AI תוכן</small><h3>יצירת תוכן בבינה מלאכותית</h3><p>מייצר תוכן AI ריאליסטי ברמה קולנועית — מהתסריט ועד הסצנה המוגמרת.</p></div>
+    <div class="step" data-i="3"><small>04 · פודקאסטים</small><h3>עריכת פודקאסטים</h3><p>עורך ומערבב פודקאסטים — סאונד נקי, קצב זורם, הפקה שלמה.</p></div>
+    <div class="step" data-i="4"><small>05 · אתרים</small><h3>בניית אתרים</h3><p>בונה אתרים מאפס — מהקוד ועד חוויית משתמש מלוטשת.</p></div>
+    <div class="step" data-i="5"><small>06 · אוטומציות</small><h3>מערכות ואוטומציות AI</h3><p>מתכנן ובונה מערכות ואוטומציות AI שחוסכות זמן ועובדות לבד.</p></div>
+  </div>
+  <div class="show-col">
+    <div class="show-sticky" id="showImg">
+      <img class="active" src="../images/mi-ani/graphic-design.jpg" alt="">
+      <img src="../images/mi-ani/video-editing.jpg" alt="">
+      <img src="../images/mi-ani/ai-content.jpg" alt="">
+      <img src="../images/mi-ani/podcast-editing.jpg" alt="">
+      <img src="../images/mi-ani/web-dev.jpg" alt="">
+      <img src="../images/mi-ani/automation.jpg" alt="">
+    </div>
+  </div>
+</div>
+<div style="height:20vh"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
+<script src="https://unpkg.com/lenis@1.3.4/dist/lenis.min.js"></script>
+<script>
+window.addEventListener('load', () => {
+  gsap.registerPlugin(ScrollTrigger);
+  const lenis = new Lenis({ lerp:.085 });
+  lenis.on('scroll', ScrollTrigger.update);
+  gsap.ticker.add(t => lenis.raf(t*1000));
+
+  const imgs = document.querySelectorAll('#showImg img');
+  document.querySelectorAll('.step').forEach((step, i) => {
+    ScrollTrigger.create({ trigger:step, start:'top 55%', end:'bottom 45%',
+      onToggle:self => { if (self.isActive) {
+        document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+        step.classList.add('active');
+        imgs.forEach(im => im.classList.remove('active'));
+        imgs[i].classList.add('active');
+      }}});
+  });
+  ScrollTrigger.refresh();
+});
+</script>
+</body>
+</html>

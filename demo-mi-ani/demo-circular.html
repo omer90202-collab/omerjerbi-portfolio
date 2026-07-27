@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>דמו 4 — Circular Gallery (מותאם מ-Sliders/23)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{--page:#060504;--card:#0d0b09;--ink:#f5f0e6;--dim:#6b6355;--gold:#FDBF2D}
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{margin:0;background:var(--page);color:var(--ink);font-family:'Heebo',sans-serif;line-height:1.5;overflow:hidden}
+  .tag{position:fixed;top:20px;inset-inline:0;text-align:center;z-index:9;font-size:12px;letter-spacing:.3em;color:var(--dim);pointer-events:none}
+  .hint{position:fixed;bottom:24px;inset-inline:0;text-align:center;z-index:9;font-size:12px;letter-spacing:.2em;color:var(--dim);pointer-events:none}
+
+  .container{position:relative;width:100vw;height:100vh;overflow:hidden}
+  .gallery-container{position:relative;width:100%;height:100%;display:flex;justify-content:center;align-items:center;transform-style:preserve-3d;perspective:1800px;will-change:transform}
+  .gallery{position:relative;width:1px;height:1px;display:flex;justify-content:center;align-items:center;transform-origin:center;will-change:transform}
+
+  .card{position:absolute;width:240px;aspect-ratio:16/10;border-radius:14px;overflow:hidden;cursor:pointer;transform-origin:center;will-change:transform;transform-style:preserve-3d;backface-visibility:visible;box-shadow:0 20px 60px rgba(0,0,0,.55)}
+  .card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+  .card::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(6,5,4,.82) 0%,transparent 46%);pointer-events:none}
+  .card small{position:absolute;top:12px;inset-inline-start:14px;z-index:1;font-size:10px;letter-spacing:.24em;color:var(--gold);font-weight:700}
+  .card b{position:absolute;bottom:12px;inset-inline:14px;z-index:1;font-size:14px;font-weight:700}
+
+  .title-container{position:fixed;bottom:16%;inset-inline:0;text-align:center;z-index:5;pointer-events:none}
+  .title-container h3{font-size:clamp(26px,4vw,50px);font-weight:900;margin:0 0 8px;letter-spacing:-.01em}
+  .title-container p{color:var(--dim);font-size:15px;max-width:44ch;margin:0 auto}
+  .word{position:relative;display:inline-block;will-change:transform}
+
+  .backdrop{position:fixed;inset:0;background:var(--page);opacity:0;pointer-events:none;z-index:1}
+  .backdrop.on{pointer-events:auto}
+</style>
+</head>
+<body>
+<div class="tag">דמו 4 · Circular Gallery — מותאם מהקומפוננטה האמיתית ב-Sliders/23</div>
+<div class="hint">הזז עכבר סביב הטבעת · לחץ על כרטיס לתקריב · Esc / קליק לחזרה</div>
+
+<div class="container">
+  <div class="backdrop" id="backdrop"></div>
+  <div class="gallery-container" id="galleryContainer">
+    <div class="gallery" id="gallery"></div>
+  </div>
+  <div class="title-container" id="titleContainer"></div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+<script>
+window.addEventListener('load', () => {
+
+/* פיצול מילים בטוח ל-RTL (במקום GSAP SplitText, שלא תומך RTL) */
+function splitWords(el){
+  const out = [];
+  (function walk(node){
+    [...node.childNodes].forEach(n => {
+      if (n.nodeType === 3) {
+        const frag = document.createDocumentFragment();
+        n.textContent.split(/(\s+)/).forEach(part => {
+          if (!part) return;
+          if (/^\s+$/.test(part)) frag.appendChild(document.createTextNode(part));
+          else { const s = document.createElement('span'); s.className='word'; s.style.display='inline-block'; s.textContent=part; out.push(s); frag.appendChild(s); }
+        });
+        n.replaceWith(frag);
+      } else if (n.nodeType === 1) walk(n);
+    });
+  })(el);
+  return out;
+}
+
+const collection = [
+  { title:'עיצוב גרפי', desc:'בונה שפה חזותית שלמה — מיתוג, גרפיקות שיווקיות ופוסטרים ברמה מקצועית.', img:'../images/mi-ani/graphic-design.jpg' },
+  { title:'עריכת וידיאו', desc:'עורך ומרכיב סרטונים בטיימליין מקצועי — מקאט ועד קצב וסאונד.', img:'../images/mi-ani/video-editing.jpg' },
+  { title:'יצירת תוכן בבינה מלאכותית', desc:'מייצר תוכן AI ריאליסטי ברמה קולנועית — מהתסריט ועד הסצנה המוגמרת.', img:'../images/mi-ani/ai-content.jpg' },
+  { title:'עריכת פודקאסטים', desc:'עורך ומערבב פודקאסטים — סאונד נקי, קצב זורם, הפקה שלמה.', img:'../images/mi-ani/podcast-editing.jpg' },
+  { title:'בניית אתרים', desc:'בונה אתרים מאפס — מהקוד ועד חוויית משתמש מלוטשת.', img:'../images/mi-ani/web-dev.jpg' },
+  { title:'מערכות ואוטומציות AI', desc:'מתכנן ובונה מערכות ואוטומציות AI שחוסכות זמן ועובדות לבד.', img:'../images/mi-ani/automation.jpg' },
+];
+
+const gallery = document.getElementById('gallery');
+const galleryContainer = document.getElementById('galleryContainer');
+const titleContainer = document.getElementById('titleContainer');
+const backdrop = document.getElementById('backdrop');
+
+const cards = [];
+const transformState = [];
+let currentTitleEls = null;
+let isPreviewActive = false;
+let isTransitioning = false;
+
+const cardW = 240, cardH = cardW * 10/16, gap = 60;
+const n = collection.length;
+/* רדיוס שנותן מרווח אחיד בין הכרטיסים סביב מעגל שלם (לא הרדיוס-קסם של המקור, שהיה מכוון ל-25 כרטיסים זעירים) */
+const radius = (cardW + gap) / (2 * Math.sin(Math.PI / n));
+
+const config = { sensitivity: 420, effectFalloff: 300, tiltAmount: 16, lerpFactor: .15, isMobile: window.innerWidth < 900 };
+const parallaxState = { targetX:0, targetY:0, currentX:0, currentY:0 };
+
+collection.forEach((item, i) => {
+  const angle = (i / n) * Math.PI * 2 - Math.PI/2; /* מתחיל מלמעלה */
+  const x = radius * Math.cos(angle);
+  const y = radius * Math.sin(angle);
+
+  const card = document.createElement('div');
+  card.className = 'card';
+  card.style.width = cardW + 'px';
+  card.dataset.index = i;
+
+  const img = document.createElement('img');
+  img.src = item.img;
+  card.appendChild(img);
+  const small = document.createElement('small'); small.textContent = String(i+1).padStart(2,'0');
+  const b = document.createElement('b'); b.textContent = item.title;
+  card.appendChild(small); card.appendChild(b);
+
+  gsap.set(card, { x, y, transformPerspective:900, transformOrigin:'center center' });
+  gallery.appendChild(card);
+  cards.push(card);
+  transformState.push({ currentRotY:0, targetRotY:0, currentScale:1, targetScale:1, angle });
+
+  card.addEventListener('click', e => {
+    if (!isPreviewActive && !isTransitioning) { togglePreview(i); e.stopPropagation(); }
+  });
+});
+
+function buildTitle(item){
+  titleContainer.innerHTML = '';
+  const h3 = document.createElement('h3'); h3.textContent = item.title;
+  const p = document.createElement('p'); p.textContent = item.desc;
+  titleContainer.appendChild(h3); titleContainer.appendChild(p);
+  const words = [...splitWords(h3), ...splitWords(p)];
+  gsap.set(words, { y:'125%' });
+  gsap.to(words, { y:'0%', duration:.75, delay:1.1, stagger:.05, ease:'power4.out' });
+  currentTitleEls = words;
+}
+
+function togglePreview(index){
+  isPreviewActive = true; isTransitioning = true;
+  backdrop.classList.add('on');
+  gsap.to(backdrop, { opacity:.55, duration:.9 });
+
+  const angle = transformState[index].angle;
+  const targetPosition = -Math.PI/2; /* מרכז-למעלה, לכיוון המצלמה */
+  let rotationRadians = targetPosition - angle;
+  if (rotationRadians > Math.PI) rotationRadians -= Math.PI*2;
+  else if (rotationRadians < -Math.PI) rotationRadians += Math.PI*2;
+
+  transformState.forEach(s => { s.currentRotY = s.targetRotY = 0; s.currentScale = s.targetScale = 1; });
+
+  gsap.to(gallery, {
+    scale: 3.1,
+    y: '18vh',
+    rotation: (rotationRadians*180/Math.PI),
+    duration: 1.7, ease:'power4.inOut',
+    onComplete: () => { isTransitioning = false; }
+  });
+
+  buildTitle(collection[index]);
+}
+
+function resetGallery(){
+  if (isTransitioning) return;
+  isTransitioning = true;
+  gsap.to(backdrop, { opacity:0, duration:.6, onComplete:() => backdrop.classList.remove('on') });
+
+  if (currentTitleEls) {
+    gsap.to(currentTitleEls, { y:'-125%', duration:.6, stagger:.03, ease:'power4.out',
+      onComplete:() => { titleContainer.innerHTML=''; currentTitleEls=null; } });
+  }
+
+  gsap.to(gallery, {
+    scale:1, y:0, rotation:0, duration:1.5, ease:'power4.inOut',
+    onComplete:() => { isPreviewActive = isTransitioning = false; }
+  });
+}
+
+document.addEventListener('click', () => { if (isPreviewActive && !isTransitioning) resetGallery(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && isPreviewActive && !isTransitioning) resetGallery(); });
+
+document.addEventListener('mousemove', e => {
+  if (isPreviewActive || isTransitioning || config.isMobile) return;
+  const cx = window.innerWidth/2, cy = window.innerHeight/2;
+  const px = (e.clientX - cx) / cx, py = (e.clientY - cy) / cy;
+  parallaxState.targetY = px * 10;
+  parallaxState.targetX = -py * 10;
+
+  cards.forEach((card, i) => {
+    const r = card.getBoundingClientRect();
+    const dx = e.clientX - (r.left + r.width/2), dy = e.clientY - (r.top + r.height/2);
+    const dist = Math.sqrt(dx*dx + dy*dy);
+    if (dist < config.sensitivity) {
+      const f = Math.max(0, 1 - dist/config.effectFalloff);
+      transformState[i].targetRotY = config.tiltAmount * f * (dx > 0 ? 1 : -1);
+      transformState[i].targetScale = 1 + .18*f;
+    } else {
+      transformState[i].targetRotY = 0; transformState[i].targetScale = 1;
+    }
+  });
+});
+
+document.addEventListener('mouseout', e => {
+  if ((e.relatedTarget === null || e.relatedTarget.nodeName === 'HTML') && !isPreviewActive && !isTransitioning) {
+    transformState.forEach(s => { s.targetRotY = 0; s.targetScale = 1; });
+    parallaxState.targetX = 0; parallaxState.targetY = 0;
+  }
+});
+
+function animate(){
+  if (!isPreviewActive && !isTransitioning) {
+    parallaxState.currentX += (parallaxState.targetX - parallaxState.currentX) * config.lerpFactor;
+    parallaxState.currentY += (parallaxState.targetY - parallaxState.currentY) * config.lerpFactor;
+    gsap.set(galleryContainer, { rotateX:parallaxState.currentX, rotateY:parallaxState.currentY, transformOrigin:'center center' });
+
+    cards.forEach((card, i) => {
+      const s = transformState[i];
+      s.currentRotY += (s.targetRotY - s.currentRotY) * config.lerpFactor;
+      s.currentScale += (s.targetScale - s.currentScale) * config.lerpFactor;
+      const angle = s.angle;
+      const x = radius * Math.cos(angle), y = radius * Math.sin(angle);
+      gsap.set(card, { x, y, rotationY:s.currentRotY, scale:s.currentScale, transformPerspective:900 });
+    });
+  }
+  requestAnimationFrame(animate);
+}
+animate();
+
+window.addEventListener('resize', () => { config.isMobile = window.innerWidth < 900; });
+
+/* כניסה ראשונית */
+gsap.from(cards, { opacity:0, scale:.4, duration:1.1, stagger:{ each:.05, from:'center' }, ease:'power3.out', delay:.2 });
+gsap.from('.tag, .hint', { opacity:0, duration:1, delay:.6 });
+
+});
+</script>
+</body>
+</html>
