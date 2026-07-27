@@ -151,10 +151,13 @@
   .res-head small{display:block;color:var(--gold);letter-spacing:.32em;font-size:12px;font-weight:700;margin-bottom:14px}
   .res-head h2{font-weight:900;font-size:clamp(32px,4.6vw,64px);letter-spacing:-.01em}
   .res-head h2 em{font-style:normal;color:var(--gold)}
-  .res-cols{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(14px,1.6vw,26px);
-    height:clamp(460px,74vh,820px);max-width:1280px;margin:0 auto;
-    -webkit-mask:linear-gradient(180deg,transparent 0,#000 13%,#000 87%,transparent 100%);
-    mask:linear-gradient(180deg,transparent 0,#000 13%,#000 87%,transparent 100%)}
+  /* חמש עמודות בדסקטופ: צילומי טלפון הם ביחס 1:1.8, ובעמודה רחבה כרטיס בודד
+     גבוה מהחלון כולו — כלומר לא רואים אפילו אחד שלם. עמודות צרות יותר נותנות
+     קיר צפוף של הוכחות, וזה גם מה שהופך את זה למשכנע. */
+  .res-cols{display:grid;grid-template-columns:repeat(5,1fr);gap:clamp(12px,1.4vw,22px);
+    height:clamp(480px,78vh,900px);max-width:1280px;margin:0 auto;
+    -webkit-mask:linear-gradient(180deg,transparent 0,#000 11%,#000 89%,transparent 100%);
+    mask:linear-gradient(180deg,transparent 0,#000 11%,#000 89%,transparent 100%)}
   .res-col{position:relative;overflow:hidden}
   .res-track{display:flex;flex-direction:column;gap:clamp(14px,1.6vw,26px);
     will-change:transform;pointer-events:none;user-select:none}
@@ -166,8 +169,9 @@
   .res-ph{display:grid;place-items:center;text-align:center;padding:18px;
     border-style:dashed;border-color:rgba(253,191,45,.28);color:rgba(245,240,230,.34);
     font-size:12px;letter-spacing:.06em;line-height:1.6}
-  @media(max-width:900px){.res-cols{grid-template-columns:repeat(2,1fr);height:clamp(420px,66vh,620px)}}
-  @media(max-width:560px){.res-cols{grid-template-columns:1fr;height:56vh}}
+  @media(max-width:1199px){.res-cols{grid-template-columns:repeat(4,1fr)}}
+  @media(max-width:899px){.res-cols{grid-template-columns:repeat(3,1fr);height:clamp(440px,64vh,640px)}}
+  @media(max-width:559px){.res-cols{grid-template-columns:repeat(2,1fr);height:56vh}}
 
   .testi-sec{padding:14vh 0;overflow:hidden}
   .testi-header{text-align:center;margin-bottom:7vh;padding:0 5vw}
@@ -373,12 +377,9 @@
 
 <!-- ═ 5ב ═ קיר תוצאות: צילומי מסך של נתוני מעורבות, נסחפים כלפי מעלה -->
 <section class="res-sec" id="scResults">
-  <div class="res-head"><small>המספרים עצמם</small><h2>מה שהתוכן <em>עשה.</em></h2></div>
-  <div class="res-cols" id="resCols">
-    <div class="res-col"><div class="res-track" id="resTrack0"></div></div>
-    <div class="res-col"><div class="res-track" id="resTrack1"></div></div>
-    <div class="res-col"><div class="res-track" id="resTrack2"></div></div>
-  </div>
+  <div class="res-head"><small>תיוגים ושיתופים</small><h2>העבודות שלי <em>אצלם.</em></h2></div>
+  <!-- העמודות נבנות ב-JS, כי מספרן משתנה לפי רוחב המסך -->
+  <div class="res-cols" id="resCols"></div>
 </section>
 
 <!-- ═ 5ג ═ לקוחות ממליצים: קרוסלת מרקיזה כפולה (מותאם מקומפוננטת 21st.dev, וניל JS) -->
@@ -631,64 +632,85 @@ gsap.utils.toArray('.sec').forEach((sec, i) => {
     .observe(document.getElementById('scLogos'));
 }
 
-/* ═══ קיר תוצאות — עמודות שנסחפות כלפי מעלה ═══
+/* ═══ קיר תוצאות — עמודות של צילומי מסך שנסחפות כלפי מעלה ═══
    אותו מנגנון מרקיזה של פס הלוגואים, רק אנכי: מרחק מחזור אמיתי (offsetTop של העותק
    הכפול, לא scrollHeight/2), התקדמות לפי זמן ולא לפי פריים, ו-gating fail-open. */
 (() => {
-  /* ⬇ כאן נכנסים צילומי המסך. שם קובץ אחד לכל שורה, מתוך images/results/.
-     חלוקה לעמודות אוטומטית (0,1,2,0,1,2…) — פשוט להוסיף לרשימה. */
+  /* ⬇ צילומי המסך, מתוך images/results/. הסדר מכוון: ארבעת צילומי ה"פנתר" כמעט
+     זהים ויזואלית, ולכן הם מפוזרים כך שלא ייפלו זה ליד זה באותה עמודה. */
   const shots = [
-    // 'ig-reach-1m.jpg',
-    // 'ig-views-survivor.jpg',
+    'shot-01.jpg',  /* gold.concert — הופעת אייל גולן, קרדיט omerjerbi */
+    'shot-06.jpg',  /* daniellalugassy מתייגת @OMERJERBI */
+    'shot-02.jpg',  /* eyalgolan1 — GOLD 30 */
+    'shot-10.jpg',  /* ONE — העבודה הראשונה לערוץ */
+    'shot-04.jpg',  /* eyalgolan1 — "וואו🙏👏" על סרטון שלי */
+    'shot-07.jpg',  /* mayadaganpfeffer */
+    'shot-12.jpg',  /* תל-חי — הקרנת הסרט בכנס */
+    'shot-03.jpg',  /* eyalgolan1 — 22 */
+    'shot-13.jpg',  /* אם תרצו — הכנס השנתי */
+    'shot-08.jpg',  /* litalschwartz */
+    'shot-05.jpg',  /* תל-חי — קרדיט על המסך */
+    'shot-14.jpg',  /* שוטים בבינה מלאכותית — כדורגל */
+    'shot-09.jpg',  /* maya_buskila */
+    'shot-11.jpg',  /* push.il — הסרטון של אם תרצו */
+    'shot-15.jpg',  /* שיפור איכות שוטים ישנים */
   ];
 
-  const COLS = 3;
-  const tracks = [0,1,2].map(i => document.getElementById('resTrack' + i));
-  const speeds = [.34, .47, .39];               /* px למסגרת של 60fps — איטי, זה תוכן לקריאה */
+  const box = document.getElementById('resCols');
+  const speeds = [.34, .47, .39, .52, .42];
 
-  /* כל עוד אין צילומים אמיתיים הסקשן מוסתר מהאתר החי — אסור שמי שמקבל את הקישור
-     יראה "צילום מסך 1". לצפייה בתנועה עם מציינֵי-מקום: להוסיף ?preview לכתובת. */
+  /* כל עוד אין צילומים הסקשן מוסר מהאתר החי — אסור שמי שמקבל את הקישור
+     יראה "צילום מסך 1". לצפייה עם מציינֵי-מקום: להוסיף ?preview לכתובת. */
   const preview = location.search.includes('preview');
   if (!shots.length && !preview) { document.getElementById('scResults').remove(); return; }
 
-  /* עד שהצילומים האמיתיים מגיעים — כרטיסי מציין־מקום בגבהים משתנים,
-     כדי שאפשר יהיה לאשר את התנועה והקצב לפני שיש תוכן. */
-  const buildCard = (item, n) => {
+  /* מספר העמודות חייב להיות זהה למה שה-CSS מגדיר, אחרת עודף עמודות גולש לשורה
+     נוספת ברשת והפריסה נשברת. לכן בונים מחדש כשחוצים breakpoint. */
+  const colCount = () => { const w = innerWidth;
+    return w <= 559 ? 2 : w <= 899 ? 3 : w <= 1199 ? 4 : 5; };
+
+  const buildCard = (src, n) => {
     const d = document.createElement('div');
     d.className = 'res-card';
-    if (item) { const img = new Image(); img.src = 'images/results/' + item; img.alt = 'נתוני מעורבות'; img.loading = 'eager'; d.appendChild(img); }
-    else { d.classList.add('res-ph'); d.style.height = [210, 280, 175, 320, 240][n % 5] + 'px';
+    if (src) { const img = new Image(); img.src = 'images/results/' + src;
+               img.alt = 'עבודה שלי כפי שפורסמה'; d.appendChild(img); }
+    else { d.classList.add('res-ph'); d.style.height = [210,280,175,320,240][n % 5] + 'px';
            d.textContent = 'צילום מסך ' + (n + 1); }
     return d;
   };
 
-  const perCol = [[],[],[]];
-  (shots.length ? shots : Array.from({length: 12}, () => null))
-    .forEach((s, i) => perCol[i % COLS].push({ src: s, n: i }));
+  let state = [], cols = 0;
 
-  const state = tracks.map((track, c) => {
-    const items = perCol[c];
-    if (!items.length) return null;
-    /* שני עותקים — הכפילות היא מה שמאפשרת לולאה בלי תפר */
-    [...items, ...items].forEach(it => track.appendChild(buildCard(it.src, it.n)));
-    return { track, list: items, items: items.length, y: 0, cycle: 0, speed: speeds[c] };
-  }).filter(Boolean);
+  const build = n => {
+    cols = n; box.textContent = ''; state = [];
+    const list = shots.length ? shots : Array(12).fill(null);
+    for (let c = 0; c < n; c++) {
+      const col = document.createElement('div'); col.className = 'res-col';
+      const track = document.createElement('div'); track.className = 'res-track';
+      col.appendChild(track); box.appendChild(col);
+      const items = list.filter((_, i) => i % n === c).map((src, k) => ({ src, n: c + k * n }));
+      if (!items.length) continue;
+      [...items, ...items].forEach(it => track.appendChild(buildCard(it.src, it.n)));
+      state.push({ track, list: items, items: items.length, y: 0, cycle: 0, speed: speeds[c % speeds.length] });
+    }
+    state.forEach(s => s.track.querySelectorAll('img')
+      .forEach(i => i.addEventListener('load', measure, { once: true })));
+    measure();
+  };
 
   /* עמודה חייבת להיות גבוהה לפחות cycle + גובה החלון, אחרת ברגע הגלישה נפתח
-     חלל ריק בתחתית. עם מעט צילומים (או צילומים גבוהים) שני עותקים לא תמיד מספיקים,
-     ולכן מוסיפים עותקים עד שיש כיסוי. guard כדי שלא ייווצר לולאה אינסופית. */
+     חלל ריק בתחתית. עם מעט צילומים שני עותקים לא תמיד מספיקים. */
   const ensureFill = () => {
-    const boxH = document.getElementById('resCols').getBoundingClientRect().height;
+    const boxH = box.getBoundingClientRect().height;
     state.forEach(s => {
       if (!s.cycle) return;
       let guard = 0;
-      while (s.track.getBoundingClientRect().height < s.cycle + boxH && guard++ < 8) {
+      while (s.track.getBoundingClientRect().height < s.cycle + boxH && guard++ < 8)
         s.list.forEach(it => s.track.appendChild(buildCard(it.src, it.n)));
-      }
     });
   };
 
-  const measure = () => {
+  function measure() {
     state.forEach(s => {
       const kids = s.track.children;
       const imgs = [...s.track.querySelectorAll('img')];
@@ -696,11 +718,14 @@ gsap.utils.toArray('.sec').forEach((sec, i) => {
       s.cycle = Math.abs(kids[s.items].offsetTop - kids[0].offsetTop);
     });
     ensureFill();
-  };
-  state.forEach(s => s.track.querySelectorAll('img').forEach(i => i.addEventListener('load', measure)));
+  }
+
+  build(colCount());
   window.addEventListener('load', measure);
-  window.addEventListener('resize', measure);
-  measure();
+  window.addEventListener('resize', () => {
+    const n = colCount();
+    if (n !== cols) build(n); else measure();
+  });
 
   let resVisible = true;                         /* fail-open: אופטימיזציה לא שוברת פונקציונליות */
   gsap.ticker.add((time, dt) => {
