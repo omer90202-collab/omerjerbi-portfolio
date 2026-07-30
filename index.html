@@ -56,10 +56,15 @@
   .nav .talk{font-weight:700;font-size:13px;border:1px solid currentColor;border-radius:99px;padding:8px 18px;transition:.25s}
 
   /* ── תפריט: פאנל שנפתח מכפתור (Animmaster Navigation Menus #2) ── */
-  .menu-panel{position:fixed;top:16px;left:3.4vw;width:112px;height:44px;background:var(--gold);border-radius:25px;overflow:hidden;z-index:150;box-shadow:0 14px 40px rgba(0,0,0,.4)}
+  .menu-panel{position:fixed;top:16px;left:3.4vw;width:112px;height:44px;background:var(--gold);border-radius:25px;overflow:hidden;z-index:150;box-shadow:0 14px 40px rgba(0,0,0,.4);transition:background-color .4s ease}
+  /* הכפתור הסגור הוא זהב על זהב מעל סקשן צהוב — כלומר נעלם, ורק הצללית מסגירה
+     אותו. מתהפך לשחור בדיוק כמו הלוגו. כשהתפריט *פתוח* הפאנל חוזר לזהב, כי שם
+     הזהב הוא העיצוב עצמו (קישורים כהים על זהב). */
+  .menu-panel.on-gold:not(.is-open){background:var(--paper-ink)}
+  .menu-panel.on-gold:not(.is-open) .menu-btn__item:not(.menu-btn__item--close){background:var(--paper-ink);color:var(--gold)}
   .menu-btn{position:absolute;top:0;left:0;width:112px;height:44px;cursor:pointer;border-radius:25px;overflow:hidden;z-index:10;background:none;border:0;padding:0}
   .menu-btn__slider{position:relative;width:100%;height:200%;top:0;pointer-events:none}
-  .menu-btn__item{width:100%;height:50%;display:flex;align-items:center;justify-content:center;background:var(--gold);font-size:13px;font-weight:700;letter-spacing:.04em;color:#141005}
+  .menu-btn__item{width:100%;height:50%;display:flex;align-items:center;justify-content:center;background:var(--gold);font-size:13px;font-weight:700;letter-spacing:.04em;color:#141005;transition:background-color .4s ease,color .4s ease}
   .menu-btn__item--close{background:#141005;color:var(--gold)}
   .menu-nav{display:flex;flex-direction:column;justify-content:space-between;padding:78px 30px 26px;height:100%;opacity:0;pointer-events:none}
   .menu-nav--visible{opacity:1;pointer-events:auto}
@@ -85,7 +90,11 @@
   /* הלוגו החליף את הטקסט. הרוחב נקבע ביחס למסך (הלוגו ביחס 3.37:1), ו-drop-shadow
      מחליף את ה-text-shadow שנתן לטקסט קריאוּת מעל קיר הווידאו. */
   .hero-title{position:relative;line-height:0}
-  .hero-title img{width:clamp(184px,33.6vw,496px);height:auto;object-fit:contain;display:block;margin-inline:auto}
+  /* גם כאן מסכה ולא <img>, כדי שהצבע ייקבע ב-CSS מאותו קובץ יחיד */
+  .hero-title .mark{width:clamp(184px,33.6vw,496px);aspect-ratio:1400/416;
+    background-color:var(--gold);display:block;margin-inline:auto;
+    -webkit-mask:url(images/logo-jerbi-white.png) no-repeat center/contain;
+    mask:url(images/logo-jerbi-white.png) no-repeat center/contain}
   .hero-hint{position:absolute;bottom:4vh;inset-inline:0;text-align:center;z-index:6;font-size:12px;letter-spacing:.4em;color:var(--dim);pointer-events:none}
 
   /* ── תצוגה מוגדלת ── */
@@ -247,6 +256,7 @@
   .outro-in h2 em{font-style:normal;color:var(--gold)}
   .outro-in p{margin-top:2.6vh;color:var(--dim);font-weight:300;font-size:17px}
   .outro-in .btns{margin-top:5vh;display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+  .outro-in .outro-micro{margin-top:18px;font-size:13px;color:rgba(107,99,85,.85);letter-spacing:.02em}
   .outro-in a{display:inline-block;padding:18px 50px;border-radius:99px;font-weight:700;font-size:17px;transition:.3s}
   .outro-in a.main{background:var(--gold);color:#141005}
   .outro-in a.main:hover{transform:translateY(-4px);box-shadow:0 16px 40px rgba(253,191,45,.3)}
@@ -310,7 +320,7 @@
   </div>
   <div class="hero-textwrap">
     <div>
-      <h1 class="hero-title"><img src="images/logo-jerbi-white.png" alt="jerbi. — עומר ג'רבי"></h1>
+      <h1 class="hero-title"><span class="mark" role="img" aria-label="jerbi. — עומר ג'רבי"></span></h1>
     </div>
   </div>
   <div class="hero-hint">גלול</div>
@@ -395,13 +405,15 @@
 <section class="sec sc-outro" id="scOutro">
   <div id="galaxy"></div>
   <div class="outro-in">
-    <h2>יש לכם מוצר?<br><em>בואו נעשה מזה פרסומת.</em></h2>
-    <p>שיחה ראשונה חינם. תוך ימים — סרטון שנראה כמו הפקה שלמה.</p>
+    <h2>הפקה שלמה.<br><em>בלי הפקה.</em></h2>
+    <p>וידאו, גרפיקה, אתרים ואוטומציות — ברמה שנראית כמו צוות של עשרה, תוך ימים במקום חודשים.<br>
+       היתרון האמיתי ב-AI הוא להיות שם ראשון. עוד שנה זה יהיה סטנדרט; היום זה עדיין מפתיע.</p>
     <div class="btns">
       <a class="main" href="https://ig.me/m/omerjerbi" target="_blank" rel="noopener">שלחו לי הודעה ←</a>
       <a class="ghost" href="projects.html">כל הפרויקטים</a>
       <a class="ghost" href="https://instagram.com/omerjerbi" target="_blank" rel="noopener"><span dir="ltr">@omerjerbi</span></a>
     </div>
+    <p class="outro-micro">שיחה ראשונה חינם, בלי התחייבות.</p>
   </div>
   <div class="outro-foot">
     <span>עומר ג'רבי © 2026</span>
@@ -510,6 +522,7 @@ document.querySelectorAll('.wk:not(.more)').forEach(t => t.addEventListener('cli
 
   const setOpen = v => {
     open = v;
+    menuPanel.classList.toggle('is-open', v);   /* מבטל את היפוך-הצבע בזמן שהפאנל פתוח */
     if (v) { tlMenu.play(); lenis.stop(); }
     else { tlMenu.reverse(); lenis.start(); }
   };
@@ -847,8 +860,12 @@ gsap.utils.toArray('.sec').forEach((sec, i) => {
   const headerEl = document.querySelector('header');
   const HEADER_LINE = 30;                    /* הגובה בפועל שבו יושב הלוגו */
   let logosUnderHeader = false, miUnderHeader = false;
-  const applyHeaderTone = () => headerEl.classList.toggle('on-gold',
-    logosUnderHeader || (miUnderHeader && miShow.classList.contains('on-gold')));
+  const menuPanelEl = document.getElementById('menuPanel');
+  const applyHeaderTone = () => {
+    const onGold = logosUnderHeader || (miUnderHeader && miShow.classList.contains('on-gold'));
+    headerEl.classList.toggle('on-gold', onGold);
+    menuPanelEl.classList.toggle('on-gold', onGold);   /* כפתור "תפריט" מתהפך יחד עם הלוגו */
+  };
 
   ScrollTrigger.create({ trigger:'#scLogos', start:`top ${HEADER_LINE}px`, end:`bottom ${HEADER_LINE}px`,
     onToggle: self => { logosUnderHeader = self.isActive; applyHeaderTone(); } });
