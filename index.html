@@ -52,6 +52,20 @@
     transition:background-color .4s ease}
   header.on-gold .nav{color:var(--paper-ink)}
   header.on-gold .nav .logo .mark{background-color:var(--paper-ink)}
+  /* ── ניווט עליון: דסקטופ בלבד ──
+     במובייל נשאר בדיוק מה שהיה — לוגו + כפתור "תפריט" הצף. מ-1000px ומעלה
+     הקישורים נכנסים לשורה העליונה והכפתור הצף מוסתר, כדי שלא יהיו שתי מערכות
+     ניווט על אותו מסך. */
+  .nav-links{display:none}
+  @media(min-width:1000px){
+    .nav-links{display:flex;align-items:center;gap:clamp(18px,2.2vw,34px)}
+    .nav-links a{font-size:13px;font-weight:500;letter-spacing:.04em;position:relative;padding:4px 0;opacity:.78;transition:opacity .25s}
+    .nav-links a::after{content:"";position:absolute;bottom:0;inset-inline:0;height:1px;
+      background:currentColor;transform:scaleX(0);transform-origin:inline-end;transition:transform .3s ease}
+    .nav-links a:hover{opacity:1}
+    .nav-links a:hover::after{transform:scaleX(1);transform-origin:inline-start}
+    .menu-panel{display:none}
+  }
   .nav .side{display:flex;align-items:center;gap:14px}
   .nav .talk{font-weight:700;font-size:13px;border:1px solid currentColor;border-radius:99px;padding:8px 18px;transition:.25s}
 
@@ -123,7 +137,7 @@
   /* ── מד התקדמות גלילה (מותאם מקומפוננטת scroll-progress של motion-primitives) ──
      transform-origin ימני כי באתר RTL הגלילה "מתחילה" מימין; במקור זה origin-left. */
   #scrollProgress{position:fixed;top:0;inset-inline:0;height:3px;background:var(--gold);z-index:300;
-    transform:scaleX(0);transform-origin:right center;will-change:transform;pointer-events:none}
+    transform:scaleX(0);transform-origin:left center;will-change:transform;pointer-events:none}
 
   /* ── כותרות סקשן אחידות ── */
   .sec-pad{padding:12vh 5vw}
@@ -137,17 +151,28 @@
   /* מרווח עליון: הסקשן הבא (.mi-show) מרכז את תוכנו בבלוקים של 100vh, ולכן נוצר "חלל"
      טבעי של ~25vh מתחת לפס הזהב לפני שהתמונה הראשונה מופיעה. המרווח העליון מאוזן מולו
      ביחידות vh כדי שהסימטריה תישמר גם כשגובה החלון משתנה. */
-  .logos-sec{padding:7vh 0 8vh;overflow:hidden;margin-top:clamp(80px,27vh,260px)}
+  /* הסקשן שומר על class="sec" (זה מה שמחבר אותו לאנימציית הכניסה של כל הסקשנים),
+     אבל המראה של "כרטיס" מבוטל — בלי רקע, בלי פינות מעוגלות, בלי שוליים.
+     הפס הצהוב הוחלף בטקסט ולוגואים בזהב על הרקע השחור של האתר. */
+  .logos-sec{padding:7vh 0 8vh;overflow:hidden;margin-top:clamp(80px,27vh,260px);
+    background:transparent;border-radius:0;margin-inline:0}
   .logos-head{text-align:center;margin-bottom:5vh;padding:0 5vw}
-  .logos-head h2{font-weight:900;font-size:clamp(22px,3vw,40px);letter-spacing:-.01em;color:var(--paper-ink)}
+  .logos-head h2{font-weight:900;font-size:clamp(22px,3vw,40px);letter-spacing:-.01em;color:var(--gold)}
   .logos-viewport{position:relative;overflow:hidden}
   /* הדהיות בקצוות — פיזי left/right בכוונה (האפקט סימטרי, לא תלוי כיוון קריאה) */
   .logos-viewport::before,.logos-viewport::after{content:"";position:absolute;top:0;bottom:0;width:10vw;max-width:150px;z-index:2;pointer-events:none}
-  .logos-viewport::before{left:0;background:linear-gradient(to right,var(--gold),transparent)}
-  .logos-viewport::after{right:0;background:linear-gradient(to left,var(--gold),transparent)}
+  .logos-viewport::before{left:0;background:linear-gradient(to right,var(--page),transparent)}
+  .logos-viewport::after{right:0;background:linear-gradient(to left,var(--page),transparent)}
   .logos-track{display:flex;align-items:center;gap:clamp(38px,5.5vw,88px);width:max-content;will-change:transform;pointer-events:none;user-select:none}
-  /* חובה לדרוס את הכלל הגלובלי img{width:100%;height:100%;object-fit:cover} */
-  .logos-track img{height:clamp(32px,4.2vw,54px);width:auto;max-width:210px;object-fit:contain;flex-shrink:0;display:block}
+  /* הלוגואים הם PNG *שחור* על שקוף — על רקע שחור הם היו נעלמים. לכן הם מצוירים
+     כמסכה על ריבוע זהב, בדיוק כמו הלוגו של ג'רבי. ה-aspect-ratio נקבע לכל לוגו
+     מהמידות האמיתיות שלו, כך שהרוחב ידוע כבר לפני שקובץ המסכה נטען — וזה גם
+     מייתר את ההמתנה לטעינה שהייתה נחוצה קודם למדידת מרחק הלולאה. */
+  .logos-track .logo-mark{height:clamp(32px,4.2vw,54px);width:auto;max-width:210px;
+    flex-shrink:0;display:block;background-color:var(--gold);
+    -webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;
+    -webkit-mask-position:center;mask-position:center;
+    -webkit-mask-size:contain;mask-size:contain}
   /* מתחת ל-820px ה-.mi-show נערם (תמונות static, בלי מרכוז ב-100vh) — החלל שמתחת נעלם,
      ולכן מרווח עליון גדול היה נראה כמו חור. חוזרים למרווח צנוע. */
   @media(max-width:820px){.logos-sec{margin-top:44px}}
@@ -273,6 +298,14 @@
 <header>
   <nav class="nav">
     <a class="logo" href="#scHero" aria-label="עומר ג'רבי — לראש העמוד"><span class="mark" role="img" aria-label="jerbi."></span></a>
+    <!-- ניווט מלא — דסקטופ בלבד. במובייל נשאר כפתור "תפריט" הצף. -->
+    <div class="nav-links">
+      <a href="#scWorks">עבודות</a>
+      <a href="#miShow">מי אני</a>
+      <a href="#scResults">תיוגים</a>
+      <a href="projects.html">כל הפרויקטים</a>
+      <a href="#scOutro">צור קשר</a>
+    </div>
     <div class="side">
       <a class="talk" href="https://ig.me/m/omerjerbi" target="_blank" rel="noopener">בואו נדבר</a>
     </div>
@@ -336,7 +369,7 @@
 
 <!-- ═ 2 ═ יצרתי תכנים עבור: קרוסלת לוגואים על פס זהב (מותאם מקומפוננטת shadcnblocks "Logos3",
      React+Embla AutoScroll → מרקיזה אינסופית וניל, אותו מנגנון מוכח כמו קרוסלת ההמלצות) -->
-<section class="sec goldbg logos-sec" id="scLogos">
+<section class="sec logos-sec" id="scLogos">
   <div class="logos-head"><h2>יצרתי תכנים עבור:</h2></div>
   <div class="logos-viewport">
     <div class="logos-track" id="logosTrack"></div>
@@ -430,6 +463,14 @@ gsap.registerPlugin(ScrollTrigger);
 
 /* ── גלילה חלקה ── */
 const lenis = new Lenis({ lerp:.085 });
+
+/* גלילה רכה גם מקישורי הניווט העליון (דסקטופ), כמו מקישורי התפריט הצף */
+document.querySelectorAll('.nav-links a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    e.preventDefault();
+    lenis.scrollTo(a.getAttribute('href'), { offset:-10 });
+  });
+});
 lenis.on('scroll', ScrollTrigger.update);
 gsap.ticker.add(t => lenis.raf(t*1000));
 gsap.ticker.lagSmoothing(0);
@@ -590,23 +631,29 @@ gsap.utils.toArray('.sec').forEach((sec, i) => {
    מרקיזה אינסופית וניל. אותו מנגנון מוקשח כמו ההמלצות: scrollWidth נמדד פעם אחת (לא בכל טיק),
    ו-IntersectionObserver משהה כשהסקשן לא בתצוגה. RTL: translateX חיובי = הכיוון הטבעי. ════ */
 {
+  /* [slug, שם, יחס רוחב/גובה של הקובץ המקורי] — כל הקבצים בגובה 220px */
   const logos = [
-    ['eyal-golan','אייל גולן'], ['big-brother','האח הגדול'], ['one-channel','ערוץ ONE'],
-    ['survivor','הישרדות'], ['playmobil','פליימוביל'], ['tel-hai','תל חי'],
-    ['im-tirtzu','אם תרצו'], ['aqua','אקווה'], ['win','ווין'],
-    ['noir','נואר'], ['vantage',"ואנטאג'"], ['axis','אקסיס'],
-    ['boi-haruach','בואי הרוח'], ['delarea-tickets','דלראה טיקטס']
+    ['eyal-golan','אייל גולן',2.505], ['big-brother','האח הגדול',2.318], ['one-channel','ערוץ ONE',5.5],
+    ['survivor','הישרדות',4.8], ['playmobil','פליימוביל',2.064], ['tel-hai','תל חי',1],
+    ['im-tirtzu','אם תרצו',3.845], ['aqua','אקווה',2.905], ['win','ווין',3],
+    ['noir','נואר',2.209], ['vantage',"ואנטאג'",3.327], ['axis','אקסיס',1.832],
+    ['boi-haruach','בואי הרוח',2.382], ['delarea-tickets','דלראה טיקטס',3.036]
   ];
   const track = document.getElementById('logosTrack');
-  const imgEls = logos.concat(logos).map(([slug, label]) => {
-    const img = document.createElement('img');
-    img.src = 'images/logos/' + slug + '.png';
-    img.alt = label;
-    /* בכוונה בלי loading="lazy": הסקשן יושב מיד אחרי ההירו (כמעט תמיד בפריים הראשון),
-       וחשוב מזה — תמונה שלא נטענה היא ברוחב 0, ומדידת scrollWidth לפני הטעינה מחזירה
-       רק את סכום ה-gap-ים. זה היה גורם ללולאה להתאפס מוקדם מדי ולקפוץ באמצע. */
-    track.appendChild(img);
-    return img;
+  /* מסכה ולא <img>: הקבצים הם שחור-על-שקוף, ועל הרקע השחור של האתר הם היו נעלמים.
+     ה-aspect-ratio מגיע מהמידות האמיתיות, ולכן הרוחב סופי כבר בפריסה הראשונה —
+     בלי תלות בטעינת הקובץ (מה שקודם חייב להמתין ל-load לפני מדידת הלולאה). */
+  const imgEls = logos.concat(logos).map(([slug, label, ratio]) => {
+    const el = document.createElement('span');
+    el.className = 'logo-mark';
+    el.setAttribute('role', 'img');
+    el.setAttribute('aria-label', label);
+    el.style.aspectRatio = String(ratio);
+    const url = `url(images/logos/${slug}.png)`;
+    el.style.webkitMaskImage = url;
+    el.style.maskImage = url;
+    track.appendChild(el);
+    return el;
   });
 
   /* fail-open בכוונה: מתחיל true ו-IO רק *מכבה* כשיוצאים מהתצוגה. ההשהיה היא אופטימיזציה,
@@ -618,11 +665,8 @@ gsap.utils.toArray('.sec').forEach((sec, i) => {
      חצי gap, וזה גרם לקפיצה של ~40px בכל סיבוב (זה ה"נתקעת"). offsetLeft הוא layout טהור,
      לא מושפע מה-transform של כניסת הסקשן. */
   const measure = () => {
-    if (imgEls.every(i => i.complete && i.naturalWidth > 0)) {
-      cycle = Math.abs(imgEls[logos.length].offsetLeft - imgEls[0].offsetLeft);
-    }
+    cycle = Math.abs(imgEls[logos.length].offsetLeft - imgEls[0].offsetLeft);
   };
-  imgEls.forEach(i => i.addEventListener('load', measure));
   window.addEventListener('load', measure);
   window.addEventListener('resize', measure);
   measure();
@@ -674,7 +718,11 @@ gsap.utils.toArray('.sec').forEach((sec, i) => {
   /* כל עוד אין צילומים הסקשן מוסר מהאתר החי — אסור שמי שמקבל את הקישור
      יראה "צילום מסך 1". לצפייה עם מציינֵי-מקום: להוסיף ?preview לכתובת. */
   const preview = location.search.includes('preview');
-  if (!shots.length && !preview) { document.getElementById('scResults').remove(); return; }
+  if (!shots.length && !preview) {
+    document.getElementById('scResults').remove();
+    document.querySelector('.nav-links a[href="#scResults"]')?.remove();  /* שלא יישאר קישור לשום מקום */
+    return;
+  }
 
   /* מספר העמודות חייב להיות זהה למה שה-CSS מגדיר, אחרת עודף עמודות גולש לשורה
      נוספת ברשת והפריסה נשברת. לכן בונים מחדש כשחוצים breakpoint. */
@@ -858,16 +906,17 @@ gsap.utils.toArray('.sec').forEach((sec, i) => {
      ו-#miShow בזמן שהוא נושא את המחלקה on-gold. */
   const headerEl = document.querySelector('header');
   const HEADER_LINE = 30;                    /* הגובה בפועל שבו יושב הלוגו */
-  let logosUnderHeader = false, miUnderHeader = false;
+  let miUnderHeader = false;
   const menuPanelEl = document.getElementById('menuPanel');
+  /* מאז שפס "יצרתי תכנים עבור" עבר לזהב-על-שחור, #miShow הוא *מקור הצהוב היחיד*
+     באתר. חשוב שההפעלה כאן תישאר מסונכרנת עם מה שבאמת צהוב — טריגר על סקשן שכבר
+     אינו צהוב היה הופך את הלוגו לשחור על רקע שחור, כלומר בלתי נראה. */
   const applyHeaderTone = () => {
-    const onGold = logosUnderHeader || (miUnderHeader && miShow.classList.contains('on-gold'));
+    const onGold = miUnderHeader && miShow.classList.contains('on-gold');
     headerEl.classList.toggle('on-gold', onGold);
     menuPanelEl.classList.toggle('on-gold', onGold);   /* כפתור "תפריט" מתהפך יחד עם הלוגו */
   };
 
-  ScrollTrigger.create({ trigger:'#scLogos', start:`top ${HEADER_LINE}px`, end:`bottom ${HEADER_LINE}px`,
-    onToggle: self => { logosUnderHeader = self.isActive; applyHeaderTone(); } });
   ScrollTrigger.create({ trigger:miShow, start:`top ${HEADER_LINE}px`, end:`bottom ${HEADER_LINE}px`,
     onToggle: self => { miUnderHeader = self.isActive; applyHeaderTone(); } });
 
