@@ -149,29 +149,11 @@
     background:transparent;border-radius:0;margin-inline:0}
   .logos-head{text-align:center;margin-bottom:5vh;padding:0 5vw}
   .logos-head h2{font-weight:900;font-size:clamp(22px,3vw,40px);letter-spacing:-.01em;color:var(--gold)}
-  /* פרספקטיבה תלת-ממדית (פורט מקומפוננטת Remotion). ה-perspective חייב לשבת
-     על האב של האלמנט המסובב, ו-preserve-3d על הבמה עצמה. */
-  .logos-viewport{position:relative;overflow:hidden;perspective:1200px;padding-block:clamp(46px,9vh,92px)}
-  .logos-stage{display:flex;align-items:center;transform:rotateX(8deg) rotateY(-28deg);
-    transform-style:preserve-3d;will-change:transform}
-  /* דהייה אנכית בנוסף לאופקית — ההטיה חושפת את הקצה העליון והתחתון */
-  .logos-viewport::before,.logos-viewport::after{z-index:3}
-  .logos-vfade{position:absolute;inset:0;z-index:2;pointer-events:none;
-    background:linear-gradient(180deg,var(--page) 0%,transparent 26%,transparent 74%,var(--page) 100%)}
-  /* עומק-שדה: שכבה אחת סטטית עם backdrop-filter וממסכה הדרגתית — חד במרכז,
-     מטושטש בקצוות. נבחר על פני חישוב בלר לכל לוגו בכל פריים משתי סיבות:
-     (א) 28 שינויי ערך בלר בפריים מבטלים שכבות רסטר במטמון — בדיוק מקור הקרטוע;
-     (ב) rotateY מקרין את המיקומים באופן לא-לינארי, כך שחישוב במרחב הפריסה נותן
-     סטייה של מאות פיקסלים והבלר מתיישר על המקום הלא נכון. כאן הטשטוש תלוי
-     במיקום על המסך מעצם הגדרתו, ולכן תמיד מדויק. */
-  .logos-dof{position:absolute;inset:0;z-index:1;pointer-events:none;
-    -webkit-backdrop-filter:blur(5px);backdrop-filter:blur(5px);
-    -webkit-mask:linear-gradient(90deg,#000 0%,rgba(0,0,0,.35) 22%,transparent 42%,transparent 58%,rgba(0,0,0,.35) 78%,#000 100%);
-    mask:linear-gradient(90deg,#000 0%,rgba(0,0,0,.35) 22%,transparent 42%,transparent 58%,rgba(0,0,0,.35) 78%,#000 100%)}
+  .logos-viewport{position:relative;overflow:hidden}
   /* הדהיות בקצוות — פיזי left/right בכוונה (האפקט סימטרי, לא תלוי כיוון קריאה) */
   .logos-viewport::before,.logos-viewport::after{content:"";position:absolute;top:0;bottom:0;width:10vw;max-width:150px;z-index:2;pointer-events:none}
-  .logos-viewport::before{left:0;background:linear-gradient(to right,var(--page) 12%,transparent)}
-  .logos-viewport::after{right:0;background:linear-gradient(to left,var(--page) 12%,transparent)}
+  .logos-viewport::before{left:0;background:linear-gradient(to right,var(--page),transparent)}
+  .logos-viewport::after{right:0;background:linear-gradient(to left,var(--page),transparent)}
   .logos-track{display:flex;align-items:center;gap:clamp(38px,5.5vw,88px);width:max-content;will-change:transform;pointer-events:none;user-select:none}
   /* הלוגואים הם PNG *שחור* על שקוף — על רקע שחור הם היו נעלמים. לכן הם מצוירים
      כמסכה על ריבוע זהב, בדיוק כמו הלוגו של ג'רבי. ה-aspect-ratio נקבע לכל לוגו
@@ -183,14 +165,7 @@
     -webkit-mask-position:center;mask-position:center;
     -webkit-mask-size:contain;mask-size:contain}
   /* במובייל החלל מתחת מצטמצם, ומרווח עליון גדול נראה כמו חור. מרווח צנוע. */
-  @media(max-width:820px){
-    .logos-sec{margin-top:44px}
-    /* הטיה מתונה בנייד: ב-400px הסיבוב המלא דוחס את הלוגואים לכדי ארבעה בלבד,
-       וה-backdrop-filter יקר יותר בטלפון. */
-    .logos-stage{transform:rotateX(5deg) rotateY(-16deg)}
-    .logos-dof{-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px)}
-    .logos-viewport{padding-block:clamp(34px,6vh,58px)}
-  }
+  @media(max-width:820px){.logos-sec{margin-top:44px}}
 
   /* ════ 5ג — לקוחות ממליצים: קרוסלת מרקיזה כפולה (מותאם מקומפוננטת 21st.dev "testimonials-carousel",
      React+Tailwind+Framer Motion → GSAP ticker+translateX וניל, בלי React/build-step) ════ */
@@ -410,9 +385,7 @@
 <section class="sec logos-sec" id="scLogos">
   <div class="logos-head"><h2>יצרתי תכנים עבור:</h2></div>
   <div class="logos-viewport">
-    <div class="logos-stage"><div class="logos-track" id="logosTrack"></div></div>
-    <div class="logos-dof"></div>
-    <div class="logos-vfade"></div>
+    <div class="logos-track" id="logosTrack"></div>
   </div>
 </section>
 
@@ -725,7 +698,6 @@ gsap.utils.toArray('.sec').forEach((sec, i) => {
     if (x >= cycle) x %= cycle;
     track.style.transform = `translate3d(${x}px,0,0)`;
   });
-
   new IntersectionObserver(es => { logosVisible = es[0].isIntersecting; }, { rootMargin:'200px' })
     .observe(document.getElementById('scLogos'));
 }
