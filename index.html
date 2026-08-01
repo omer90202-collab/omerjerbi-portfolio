@@ -248,8 +248,9 @@
   .vt-slide{position:absolute;inset:0;cursor:pointer}
   /* דריסת הכלל הגלובלי img{width:100%;height:100%;object-fit:cover} מיותרת כאן —
      cover הוא בדיוק מה שרוצים — אבל מפורש כדי שלא ישתנה בשוגג */
-  .vt-slide img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .7s ease}
-  .vt-gallery:hover .vt-slide.is-current img{transform:scale(1.05)}
+  /* בלי transition/transform ב-CSS: GSAP הוא הבעלים הבלעדי של ה-transform כאן
+     (זום המסגור + הנדידה), ושתי מערכות על אותו מאפיין נלחמות זו בזו. */
+  .vt-slide img{width:100%;height:100%;object-fit:cover;display:block}
   .vt-slide::after{content:"";position:absolute;inset-inline:0;bottom:0;height:33%;
     background:linear-gradient(to top,rgba(0,0,0,.28),transparent);opacity:.6;pointer-events:none}
   .vt-ctrls{position:absolute;bottom:clamp(16px,2vw,32px);inset-inline-end:clamp(16px,2vw,32px);
@@ -897,13 +898,17 @@ gsap.utils.toArray('.sec').forEach((sec, i) => {
    שינוי מכוון אחד: בהשהיה הפס *נעצר* במקומו במקום להתאפס ל-0% כמו במקור;
    איפוס בריחוף נראה כמו תקלה. */
 (() => {
+  /* [מספר, כותרת, תיאור, קובץ, זום, מיקוד] —
+     בשש התמונות עומר יושב באותה פוזה ובאותו מקום בפריים, ורק המסכים משתנים.
+     לכן כל שירות מקבל *מסגור* משלו מתוך אותו קובץ (המקור 1920×1084 מוצג ב-718,
+     כלומר פי 2.67 מרחב) — כך נוצרת שונות קומפוזיציונית בלי לייצר תמונה אחת חדשה. */
   const SERVICES = [
-    ['01','עיצוב גרפי','בונה שפה חזותית שלמה — מיתוג, גרפיקות שיווקיות ופוסטרים ברמה מקצועית.','graphic-design.jpg'],
-    ['02','עריכת וידיאו','עורך ומרכיב סרטונים בטיימליין מקצועי — מהקאט ועד קצב וסאונד.','video-editing.jpg'],
-    ['03','יצירת תוכן AI','מייצר תוכן AI ריאליסטי ברמה קולנועית — מהתסריט ועד הסצנה המוגמרת.','ai-content.jpg'],
-    ['04','עריכת פודקאסטים','עורך ומערבב פודקאסטים — סאונד נקי, קצב זורם, הפקה שלמה.','podcast-editing.jpg'],
-    ['05','בניית אתרים','בונה אתרים מאפס — מהקוד ועד חוויית משתמש מלוטשת.','web-dev.jpg'],
-    ['06','מערכות ואוטומציות AI','מתכנן ובונה מערכות ואוטומציות AI שחוסכות זמן ועובדות לבד.','automation.jpg']
+    ['01','עיצוב גרפי','בונה שפה חזותית שלמה — מיתוג, גרפיקות שיווקיות ופוסטרים ברמה מקצועית.','graphic-design.jpg',1.00,'50% 46%'],
+    ['02','עריכת וידיאו','עורך ומרכיב סרטונים בטיימליין מקצועי — מהקאט ועד קצב וסאונד.','video-editing.jpg',1.26,'60% 44%'],
+    ['03','יצירת תוכן AI','מייצר תוכן AI ריאליסטי ברמה קולנועית — מהתסריט ועד הסצנה המוגמרת.','ai-content.jpg',1.14,'30% 44%'],
+    ['04','עריכת פודקאסטים','עורך ומערבב פודקאסטים — סאונד נקי, קצב זורם, הפקה שלמה.','podcast-editing.jpg',1.20,'36% 52%'],
+    ['05','בניית אתרים','בונה אתרים מאפס — מהקוד ועד חוויית משתמש מלוטשת.','web-dev.jpg',1.32,'64% 42%'],
+    ['06','מערכות ואוטומציות AI','מתכנן ובונה מערכות ואוטומציות AI שחוסכות זמן ועובדות לבד.','automation.jpg',1.06,'44% 46%']
   ];
   const DURATION = 5000;
 
@@ -925,12 +930,14 @@ gsap.utils.toArray('.sec').forEach((sec, i) => {
     return b;
   });
 
-  const slides = SERVICES.map(([, title, , file], i) => {
+  const slides = SERVICES.map(([, title, , file, zoom, focus], i) => {
     const d = document.createElement('div');
     d.className = 'vt-slide';
     const img = new Image();
     img.src = 'images/mi-ani/' + file;
     img.alt = title;
+    img.style.objectPosition = focus;
+    d._zoom = zoom;
     /* בכוונה בלי loading="lazy": הניגון האוטומטי מגיע לכל שש התמונות תוך 30 שניות
        ממילא, וכולן יחד ~2MB מול 62MB של הווידאו בהירו. עצלות כאן הייתה קונה כלום
        ומסכנת שקופית ריקה במעבר — בדיוק הכישלון שכבר ראינו בגלריית העבודות. */
@@ -946,9 +953,19 @@ gsap.utils.toArray('.sec').forEach((sec, i) => {
   let active = 0, paused = false, fillTween = null, timer = null,
       remaining = DURATION, startedAt = 0;
 
-  gsap.set(slides, { yPercent:100, autoAlpha:0 });
-  gsap.set(slides[0], { yPercent:0, autoAlpha:1 });
+  const imgOf = i => slides[i].querySelector('img');
+  gsap.set(slides, { autoAlpha:0 });
+  gsap.set(slides.map((_,i)=>imgOf(i)), { scale:(i)=>slides[i]._zoom });
+  gsap.set(slides[0], { autoAlpha:1 });
   slides[0].classList.add('is-current');
+
+  /* נדידה איטית על השקופית הפעילה — נותנת חיים לפריים גם כשהדמות לא זזה */
+  let drift = null;
+  const startDrift = i => {
+    if (drift) drift.kill();
+    drift = gsap.fromTo(imgOf(i), { scale: slides[i]._zoom },
+      { scale: slides[i]._zoom * 1.07, duration: DURATION/1000 + 1.2, ease:'none' });
+  };
 
   const armTimer = ms => {
     clearTimeout(timer);
@@ -986,12 +1003,14 @@ gsap.utils.toArray('.sec').forEach((sec, i) => {
     const prev = active;
     active = next;
 
-    /* התמונה הנכנסת מגיעה מלמעלה בהתקדמות, והיוצאת יורדת — בדיוק כמו במקור */
+    /* מעבר צולב, לא החלקה. במקור זו הייתה החלקה אנכית, אבל כאן עומר יושב
+       באותו מקום בדיוק בכל שש התמונות — החלקה הזיזה את הדבר היחיד שלא משתנה,
+       והעין קלטה הבהוב במקום מעבר. בצולב הוא נשאר יציב והעולם סביבו מתחלף. */
     slides[prev].classList.remove('is-current');
     slides[next].classList.add('is-current');
-    gsap.to(slides[prev], { yPercent: dir > 0 ? 100 : -100, autoAlpha:0, duration:.7, ease:'power3.out' });
-    gsap.fromTo(slides[next], { yPercent: dir > 0 ? -100 : 100, autoAlpha:0 },
-                              { yPercent:0, autoAlpha:1, duration:.7, ease:'power3.out' });
+    gsap.to(slides[prev], { autoAlpha:0, duration:.55, ease:'power2.inOut' });
+    gsap.fromTo(slides[next], { autoAlpha:0 }, { autoAlpha:1, duration:.55, ease:'power2.inOut' });
+    startDrift(next);
 
     tabs[prev].classList.remove('is-active');
     tabs[next].classList.add('is-active');
@@ -1009,6 +1028,7 @@ gsap.utils.toArray('.sec').forEach((sec, i) => {
 
   tabs[0].classList.add('is-active');
   gsap.set(descOf(0), { height:'auto', opacity:1 });
+  startDrift(0);
   restartCycle();
 
   /* לא מריצים את השעון כשהסקשן מחוץ למסך. fail-open: מתחיל פועל, ה-observer רק *עוצר*. */
