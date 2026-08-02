@@ -304,6 +304,11 @@
 
   /* ════ 5 — עבודות נבחרות: גלריה אופקית מוצמדת ════ */
   .works-pin{overflow:hidden;padding-block:10vh}
+  .works-pin.is-swipe{overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;
+    scroll-snap-type:x proximity;scrollbar-width:none}
+  .works-pin.is-swipe::-webkit-scrollbar{display:none}
+  .works-pin.is-swipe .works-track{will-change:auto;transform:none!important}
+  .works-pin.is-swipe .wk{scroll-snap-align:center}
   .works-track{display:flex;gap:20px;width:max-content;will-change:transform;padding-inline:5vw;align-items:center}
   .works-lead{font-weight:900;font-size:clamp(60px,10vw,150px);color:var(--gold);white-space:nowrap;padding-inline-end:2vw}
   .wk{position:relative;width:clamp(230px,24vw,340px);aspect-ratio:9/16;border-radius:16px;overflow:hidden;flex-shrink:0;cursor:pointer;border:1px solid var(--line)}
@@ -523,6 +528,12 @@ document.addEventListener('DOMContentLoaded', function(){
 gsap.registerPlugin(ScrollTrigger);
 
 /* ── גלילה חלקה ── */
+/* ScrollTrigger מצמיד באמצעות position:fixed, ואייפון לא מצייר מחדש
+   אלמנטים קבועים בזמן גלילת אינרציה — מכאן המסך השחור. Lenis ממילא לא
+   פעיל במגע (smoothTouch כבוי כברירת מחדל), ולכן שם זו גלילה נייטיבית
+   מול pin, השילוב הבעייתי ביותר ב-Safari. במגע מוותרים על ההצמדה. */
+const TOUCH = !window.matchMedia('(hover:hover) and (pointer:fine)').matches;
+
 const lenis = new Lenis({ lerp:.085 });
 
 /* גלילה רכה גם מקישורי הניווט העליון (דסקטופ), כמו מקישורי התפריט הצף */
@@ -648,12 +659,21 @@ document.querySelectorAll('.wk:not(.more)').forEach(t => t.addEventListener('cli
     opacity:0, y:26, duration:1, ease:'power3.out', stagger:.1, delay:.35
   });
 
-  gsap.timeline({
-    scrollTrigger:{ trigger:'#scHero', start:'top top', end:'+=70%', pin:true, scrub:.6 }
-  })
-  .to('#wallGrid', { scale:1.08, ease:'none', duration:1 }, 0)
-  .to('.hero-textwrap', { opacity:0, scale:.92, ease:'none', duration:.6 }, 0)
-  .to('.hero-hint', { opacity:0, duration:.2 }, 0);
+  if (!TOUCH) {
+    gsap.timeline({
+      scrollTrigger:{ trigger:'#scHero', start:'top top', end:'+=70%', pin:true, scrub:.6 }
+    })
+    .to('#wallGrid', { scale:1.08, ease:'none', duration:1 }, 0)
+    .to('.hero-textwrap', { opacity:0, scale:.92, ease:'none', duration:.6 }, 0)
+    .to('.hero-hint', { opacity:0, duration:.2 }, 0);
+  } else {
+    /* אותו רעיון בלי הצמדה: הכיתוב פשוט מתפוגג בגלילה, בלי fixed ובלי scrub
+       על אלמנט ענק. הקיר נשאר סטטי — במסך של טלפון ההבדל כמעט לא מורגש. */
+    gsap.to('.hero-textwrap', { opacity:0, ease:'none',
+      scrollTrigger:{ trigger:'#scHero', start:'top top', end:'40% top', scrub:true } });
+    gsap.to('.hero-hint', { opacity:0, ease:'none',
+      scrollTrigger:{ trigger:'#scHero', start:'top top', end:'15% top', scrub:true } });
+  }
 
   document.querySelectorAll('.wtile').forEach(tile => {
     tile.addEventListener('click', () => openLightboxVideo(tile.querySelector('video'), tile.dataset.label || '', tile.dataset.full));
@@ -1133,9 +1153,16 @@ gsap.utils.toArray('.sec').forEach((sec, i) => {
 /* ════ 5 — עבודות: גלריה אופקית מוצמדת (RTL → x חיובי) ════ */
 {
   const track = document.getElementById('worksTrack');
-  const dist = () => track.scrollWidth - document.documentElement.clientWidth + 80;
-  gsap.to(track, { x:() => dist(), ease:'none',
-    scrollTrigger:{ trigger:'#worksPin', start:'top 12%', end:() => '+=' + dist(), pin:true, scrub:1, invalidateOnRefresh:true } });
+  if (!TOUCH) {
+    const dist = () => track.scrollWidth - document.documentElement.clientWidth + 80;
+    gsap.to(track, { x:() => dist(), ease:'none',
+      scrollTrigger:{ trigger:'#worksPin', start:'top 12%', end:() => '+=' + dist(), pin:true, scrub:1, invalidateOnRefresh:true } });
+  } else {
+    /* במגע: גלילה אופקית נייטיבית במקום הצמדה. זה גם מבטל את ה-pin וגם
+       נותן חוויה טובה יותר בטלפון — מחליקים את הגלריה באצבע במקום
+       שהיא תזוז לבד תוך כדי גלילה אנכית. */
+    document.getElementById('worksPin').classList.add('is-swipe');
+  }
 }
 
 
@@ -1150,7 +1177,7 @@ gsap.from('.outro-in > *', { opacity:0, y:44, duration:.9, stagger:.1, ease:'pow
   /* הקשר WebGL מלא הוא הצרכן הכבד ביותר בעמוד. באייפון, יחד עם 19 מפענחי
      וידאו ושכבות מקודמות, זה חורג מתקציב הזיכרון של הדפדפן והתוצאה היא
      ריבועים שחורים בזמן גלילה. במגע פשוט לא מפעילים אותו. */
-  if (!window.matchMedia('(hover:hover) and (pointer:fine)').matches) { container.remove(); return; }
+  if (TOUCH) { container.remove(); return; }
   const opts = { focal:[.5,.5], rotation:[1,0], starSpeed:.5, density:.7, hueShift:38, speed:1,
     glowIntensity:.22, saturation:.15, repulsionStrength:1.6, twinkleIntensity:.14, rotationSpeed:.05, autoCenterRepulsion:0 };
   const canvas = document.createElement('canvas');
@@ -1256,7 +1283,7 @@ if(uTransparent){float alpha=length(col);alpha=smoothstep(0.0,0.3,alpha);alpha=m
   if (!canvas) return;
   /* במגע אין סמן — לא מאתחלים הקשר 2d ולא לולאת ציור, והאלמנט מוסר
      כדי שלא תישאר שכבה בגודל מסך מלא. */
-  if (!window.matchMedia('(hover:hover) and (pointer:fine)').matches) { canvas.remove(); return; }
+  if (TOUCH) { canvas.remove(); return; }
   const ctx = canvas.getContext('2d');
   let mouseMoved = false, idle = false;
   const pointer = { x:.5*innerWidth, y:.5*innerHeight };
