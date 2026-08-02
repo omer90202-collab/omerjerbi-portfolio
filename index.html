@@ -4,6 +4,16 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>עומר ג'רבי — מומחה תוכן AI · תיק עבודות</title>
+<meta name="description" content="תוכן AI למותגים הגדולים בישראל — וידאו שנראה כמו הפקה שלמה, בלי הפקה. וידאו, גרפיקה, אתרים ואוטומציות.">
+<link rel="icon" href="images/favicon.png" type="image/png">
+<meta property="og:type" content="website">
+<meta property="og:title" content="עומר ג'רבי — מומחה תוכן AI">
+<meta property="og:description" content="הפקה שלמה. בלי הפקה.">
+<meta property="og:image" content="images/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="he_IL">
+<meta name="twitter:card" content="summary_large_image">
 <!--
   ═══════════════════════════════════════════════
   אתר: תיק עבודות — עומר ג'רבי (מומחה תוכן AI)
@@ -169,6 +179,23 @@
 
   /* ════ 5ג — לקוחות ממליצים: קרוסלת מרקיזה כפולה (מותאם מקומפוננטת 21st.dev "testimonials-carousel",
      React+Tailwind+Framer Motion → GSAP ticker+translateX וניל, בלי React/build-step) ════ */
+  /* ── פס מספרים ── */
+  .nums{max-width:1200px;margin:0 auto;padding:clamp(46px,8vh,96px) 5vw;
+    display:grid;grid-template-columns:repeat(4,1fr);gap:22px;text-align:center}
+  .num b{display:block;font-weight:900;letter-spacing:-.02em;line-height:1;color:var(--gold);
+    font-size:clamp(26px,4.4vw,56px)}
+  .num span{display:block;margin-top:10px;color:var(--dim);font-size:12px;line-height:1.55}
+  @media(max-width:720px){.nums{grid-template-columns:repeat(2,1fr);gap:30px 14px}}
+
+  /* ── מי אני: פסקה נרטיבית שנחשפת תו־תו ── */
+  .whoami{padding:clamp(56px,10vh,120px) 5vw;text-align:center}
+  .whoami small{display:block;color:var(--gold);letter-spacing:.3em;font-size:11px;font-weight:700}
+  .whoami h2{margin-top:14px;font-weight:900;letter-spacing:-.02em;
+    font-size:clamp(32px,5.4vw,68px);line-height:1;color:var(--ink)}
+  .whoami p{margin:clamp(22px,4vh,40px) auto 0;max-width:34ch;color:var(--ink);
+    font-weight:400;line-height:1.8;font-size:clamp(16px,1.9vw,22px)}
+  .whoami p span{opacity:.2;transition:opacity .18s linear}
+
   /* ── קיר תוצאות: עמודות של צילומי מסך שנסחפות כלפי מעלה ── */
   .res-sec{padding:12vh 5vw 13vh;overflow:hidden}
   .res-head{text-align:center;margin-bottom:6vh}
@@ -351,18 +378,18 @@
 <!-- ═ 1 ═ הירו: קיר וידאו -->
 <section class="sec sc-hero" id="scHero">
   <div class="wall-grid" id="wallGrid">
-    <div class="wtile" data-label="אייל גולן"><video src="videos/eyal-golan.mp4" muted loop playsinline preload="metadata"></video></div>
-    <div class="wtile" data-label="הישרדות"><video src="videos/survivor.mp4" muted loop playsinline preload="metadata"></video></div>
-    <div class="wtile" data-label="Power Barrier"><video src="videos/power-barrier-1.mp4" muted loop playsinline preload="metadata"></video></div>
-    <div class="wtile" data-label="קרב תל חי" data-full="videos/telhai-en.mp4"><video src="videos/telhai-en-loop.mp4" muted loop playsinline preload="metadata"></video></div>
-    <div class="wtile" data-label="נעליים"><video src="videos/heels.mp4" muted loop playsinline preload="metadata"></video></div>
-    <div class="wtile" data-label="קמפיין כדורגל"><video src="videos/mbappe.mp4" muted loop playsinline preload="metadata"></video></div>
-    <div class="wtile" data-label="האח הגדול"><video src="videos/save1080.mp4" muted loop playsinline preload="metadata"></video></div>
-    <div class="wtile" data-label="בית״ר ירושלים"><video src="videos/beitar-puppets.mp4" muted loop playsinline preload="metadata"></video></div>
-    <div class="wtile" data-label="הפועל"><video src="videos/hapoel.mp4" muted loop playsinline preload="metadata"></video></div>
-    <div class="wtile" data-label="בר נואר"><video src="videos/noir-bar.mp4" muted loop playsinline preload="metadata"></video></div>
-    <div class="wtile" data-label="מגנום"><video src="videos/raw-magnum.mp4" muted loop playsinline preload="metadata"></video></div>
-    <div class="wtile" data-label="נביעות"><video src="videos/raw-neviot.mp4" muted loop playsinline preload="metadata"></video></div>
+    <div class="wtile" data-full="videos/eyal-golan.mp4" data-label="אייל גולן"><video src="videos/loops/eyal-golan.mp4" muted loop playsinline preload="metadata"></video></div>
+    <div class="wtile" data-full="videos/survivor.mp4" data-label="הישרדות"><video src="videos/loops/survivor.mp4" muted loop playsinline preload="metadata"></video></div>
+    <div class="wtile" data-full="videos/power-barrier-1.mp4" data-label="Power Barrier"><video src="videos/loops/power-barrier-1.mp4" muted loop playsinline preload="metadata"></video></div>
+    <div class="wtile" data-label="קרב תל חי" data-full="videos/telhai-en.mp4"><video src="videos/loops/telhai-en-loop.mp4" muted loop playsinline preload="metadata"></video></div>
+    <div class="wtile" data-full="videos/heels.mp4" data-label="נעליים"><video src="videos/loops/heels.mp4" muted loop playsinline preload="metadata"></video></div>
+    <div class="wtile" data-full="videos/mbappe.mp4" data-label="קמפיין כדורגל"><video src="videos/loops/mbappe.mp4" muted loop playsinline preload="metadata"></video></div>
+    <div class="wtile" data-full="videos/save1080.mp4" data-label="האח הגדול"><video src="videos/loops/save1080.mp4" muted loop playsinline preload="metadata"></video></div>
+    <div class="wtile" data-full="videos/beitar-puppets.mp4" data-label="בית״ר ירושלים"><video src="videos/loops/beitar-puppets.mp4" muted loop playsinline preload="metadata"></video></div>
+    <div class="wtile" data-full="videos/hapoel.mp4" data-label="הפועל"><video src="videos/loops/hapoel.mp4" muted loop playsinline preload="metadata"></video></div>
+    <div class="wtile" data-full="videos/noir-bar.mp4" data-label="בר נואר"><video src="videos/loops/noir-bar.mp4" muted loop playsinline preload="metadata"></video></div>
+    <div class="wtile" data-full="videos/raw-magnum.mp4" data-label="מגנום"><video src="videos/loops/raw-magnum.mp4" muted loop playsinline preload="metadata"></video></div>
+    <div class="wtile" data-full="videos/raw-neviot.mp4" data-label="נביעות"><video src="videos/loops/raw-neviot.mp4" muted loop playsinline preload="metadata"></video></div>
   </div>
   <div class="hero-textwrap">
     <div>
@@ -387,6 +414,21 @@
   <div class="logos-viewport">
     <div class="logos-track" id="logosTrack"></div>
   </div>
+</section>
+
+<!-- ═ 2ב ═ מספרים -->
+<section class="nums">
+  <div class="num"><b>1M+</b><span>צפיות על קמפיין אחד</span></div>
+  <div class="num"><b>הכנסת</b><span>סרט שהוקרן<br>במשכן הכנסת</span></div>
+  <div class="num"><b>מיליונים</b><span>גויסו בתרומות<br>בקמפיינים שיצרתי</span></div>
+  <div class="num"><b>6</b><span>תחומים<br>תחת קורת גג אחת</span></div>
+</section>
+
+<!-- ═ 2ג ═ מי אני -->
+<section class="whoami" id="whoami">
+  <small>מי אני</small>
+  <h2>עומר ג'רבי</h2>
+  <p id="whoCopy">יוצר תוכן AI למותגים הגדולים בישראל — וידאו שנראה כמו הפקה שלמה, בלי הפקה. העבודות שלי עברו מיליון צפיות, הוקרנו בכנסת, וגייסו מיליונים בתרומות.</p>
 </section>
 
 <!-- ═ 3ב ═ מי אני: לשוניות אנכיות (פורט מקומפוננטת React ל-GSAP) -->
@@ -420,13 +462,13 @@
   <div class="works-pin" id="worksPin">
     <div class="works-track" id="worksTrack">
       <div class="works-lead">עבודות ←</div>
-      <div class="wk" data-label="אייל גולן"><video src="videos/eyal-golan.mp4" muted loop playsinline preload="auto"></video><b>אייל גולן</b></div>
-      <div class="wk" data-label="הישרדות"><video src="videos/survivor.mp4" muted loop playsinline preload="auto"></video><b>הישרדות</b></div>
-      <div class="wk" data-label="קרב תל חי" data-full="videos/telhai-en.mp4"><video src="videos/telhai-en-loop.mp4" muted loop playsinline preload="auto"></video><b>קרב תל חי</b></div>
-      <div class="wk" data-label="קמפיין כדורגל"><video src="videos/mbappe.mp4" muted loop playsinline preload="auto"></video><b>קמפיין כדורגל</b></div>
-      <div class="wk" data-label="ג'ין טוניק — פורים"><video src="videos/ginton-purim.mp4" muted loop playsinline preload="auto"></video><b>ג'ין טוניק · פורים</b></div>
-      <div class="wk" data-label="בית״ר ירושלים"><video src="videos/beitar-puppets.mp4" muted loop playsinline preload="auto"></video><b>בית״ר ירושלים</b></div>
-      <div class="wk" data-label="ערק נוח"><video src="videos/raw-arak.mp4" muted loop playsinline preload="auto"></video><b>ערק נוח</b></div>
+      <div class="wk" data-full="videos/eyal-golan.mp4" data-label="אייל גולן"><video src="videos/loops/eyal-golan.mp4" muted loop playsinline preload="auto"></video><b>אייל גולן</b></div>
+      <div class="wk" data-full="videos/survivor.mp4" data-label="הישרדות"><video src="videos/loops/survivor.mp4" muted loop playsinline preload="auto"></video><b>הישרדות</b></div>
+      <div class="wk" data-label="קרב תל חי" data-full="videos/telhai-en.mp4"><video src="videos/loops/telhai-en-loop.mp4" muted loop playsinline preload="auto"></video><b>קרב תל חי</b></div>
+      <div class="wk" data-full="videos/mbappe.mp4" data-label="קמפיין כדורגל"><video src="videos/loops/mbappe.mp4" muted loop playsinline preload="auto"></video><b>קמפיין כדורגל</b></div>
+      <div class="wk" data-full="videos/ginton-purim.mp4" data-label="ג'ין טוניק — פורים"><video src="videos/loops/ginton-purim.mp4" muted loop playsinline preload="auto"></video><b>ג'ין טוניק · פורים</b></div>
+      <div class="wk" data-full="videos/beitar-puppets.mp4" data-label="בית״ר ירושלים"><video src="videos/loops/beitar-puppets.mp4" muted loop playsinline preload="auto"></video><b>בית״ר ירושלים</b></div>
+      <div class="wk" data-full="videos/raw-arak.mp4" data-label="ערק נוח"><video src="videos/loops/raw-arak.mp4" muted loop playsinline preload="auto"></video><b>ערק נוח</b></div>
       <a class="wk more" href="projects.html"><span>לכל<br>הפרויקטים ←</span></a>
     </div>
   </div>
@@ -457,6 +499,7 @@
     <p>וידאו, גרפיקה, אתרים ואוטומציות — תוך ימים.</p>
     <div class="btns">
       <a class="main" href="https://ig.me/m/omerjerbi" target="_blank" rel="noopener">שלחו לי הודעה ←</a>
+      <a class="ghost" href="mailto:omer90202@gmail.com">מייל</a>
       <a class="ghost" href="projects.html">כל הפרויקטים</a>
       <a class="ghost" href="https://instagram.com/omerjerbi" target="_blank" rel="noopener"><span dir="ltr">@omerjerbi</span></a>
     </div>
@@ -701,6 +744,48 @@ gsap.utils.toArray('.sec').forEach((sec, i) => {
   new IntersectionObserver(es => { logosVisible = es[0].isIntersecting; }, { rootMargin:'200px' })
     .observe(document.getElementById('scLogos'));
 }
+
+/* ═══ "מי אני" — חשיפת הפסקה תו־תו לפי מיקום הגלילה ═══
+   המיקום מחושב מ-offsetTop שנמדד פעם אחת, ולא מ-getBoundingClientRect בכל
+   פריים — קריאת פריסה בלולאה היא בדיוק מה שמקרטע. אין כאן גם IntersectionObserver:
+   הדילוג נעשה מהמתמטיקה עצמה, כך שאין תלות ב-callback שעלול לא להגיע. */
+(() => {
+  const copy = document.getElementById('whoCopy');
+  if (!copy) return;
+  const chars = (() => {
+    const t = copy.textContent; copy.textContent = '';
+    return [...t].map(ch => { const sp = document.createElement('span');
+      sp.textContent = ch; if (ch === ' ') sp.style.whiteSpace = 'pre';
+      copy.appendChild(sp); return sp; });
+  })();
+
+  let top = 0, h = 0;
+  const measure = () => {
+    let el = copy, y = 0;
+    while (el) { y += el.offsetTop; el = el.offsetParent; }
+    top = y; h = copy.offsetHeight;
+  };
+  measure();
+  addEventListener('resize', measure);
+  addEventListener('load', measure);
+
+  let lastP = -1;
+  gsap.ticker.add(() => {
+    const vh = innerHeight;
+    const rTop = top - scrollY;                 /* שקול ל-r.top, בלי חישוב פריסה */
+    /* בלי יציאה מוקדמת לפי מרחק: היא הייתה משאירה את המצב האחרון "תקוע"
+       כשהסקשן יוצא מהמסך, ואז חזרה למעלה הציגה טקסט חשוף. הערך מוצמד
+       ל-0..1 ממילא, והשמירה מפני כתיבות מיותרות היא בדיקת lastP למטה. */
+    const p = Math.min(1, Math.max(0, (vh*.82 - rTop) / (vh*.5 + h)));
+    if (Math.abs(p - lastP) < .002) return;     /* בלי שינוי — לא כותבים ל-DOM */
+    lastP = p;
+    const upto = p * chars.length * 1.15;
+    for (let i = 0; i < chars.length; i++) {
+      const o = Math.min(1, Math.max(.2, upto - i));
+      chars[i].style.opacity = o < .25 ? .2 : o;
+    }
+  });
+})();
 
 /* ═══ קיר תוצאות — עמודות של צילומי מסך שנסחפות כלפי מעלה ═══
    אותו מנגנון מרקיזה של פס הלוגואים, רק אנכי: מרחק מחזור אמיתי (offsetTop של העותק
