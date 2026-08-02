@@ -135,7 +135,10 @@
   #galaxy canvas{display:block;width:100%;height:100%}
 
   /* ── סמן-קו עוקב (Mouse Effects #14 — עקומת ספרינג בקנבס) ── */
-  #curlyCursor{position:fixed;inset:0;z-index:250;pointer-events:none}
+  /* קנבס בגודל מסך מלא הוא שכבה מקודמת יקרה. במגע אין בו שום שימוש —
+     מוסתר לגמרי, וגם ה-JS לא מאתחל אותו. */
+  #curlyCursor{position:fixed;inset:0;z-index:250;pointer-events:none;display:none}
+  @media(hover:hover) and (pointer:fine){#curlyCursor{display:block}}
 
   /* ── מד התקדמות גלילה (מותאם מקומפוננטת scroll-progress של motion-primitives) ──
      transform-origin ימני כי באתר RTL הגלילה "מתחילה" מימין; במקור זה origin-left. */
@@ -1144,6 +1147,10 @@ gsap.from('.outro-in > *', { opacity:0, y:44, duration:.9, stagger:.1, ease:'pow
 (function initGalaxy(){
   const container = document.getElementById('galaxy');
   if (!container) return;
+  /* הקשר WebGL מלא הוא הצרכן הכבד ביותר בעמוד. באייפון, יחד עם 19 מפענחי
+     וידאו ושכבות מקודמות, זה חורג מתקציב הזיכרון של הדפדפן והתוצאה היא
+     ריבועים שחורים בזמן גלילה. במגע פשוט לא מפעילים אותו. */
+  if (!window.matchMedia('(hover:hover) and (pointer:fine)').matches) { container.remove(); return; }
   const opts = { focal:[.5,.5], rotation:[1,0], starSpeed:.5, density:.7, hueShift:38, speed:1,
     glowIntensity:.22, saturation:.15, repulsionStrength:1.6, twinkleIntensity:.14, rotationSpeed:.05, autoCenterRepulsion:0 };
   const canvas = document.createElement('canvas');
@@ -1247,6 +1254,9 @@ if(uTransparent){float alpha=length(col);alpha=smoothstep(0.0,0.3,alpha);alpha=m
   if (isMobile) return; /* אין עכבר במגע */
   const canvas = document.getElementById('curlyCursor');
   if (!canvas) return;
+  /* במגע אין סמן — לא מאתחלים הקשר 2d ולא לולאת ציור, והאלמנט מוסר
+     כדי שלא תישאר שכבה בגודל מסך מלא. */
+  if (!window.matchMedia('(hover:hover) and (pointer:fine)').matches) { canvas.remove(); return; }
   const ctx = canvas.getContext('2d');
   let mouseMoved = false, idle = false;
   const pointer = { x:.5*innerWidth, y:.5*innerHeight };
