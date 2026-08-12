@@ -506,12 +506,12 @@
   <div class="web-head">
     <small>בניית אתרים</small>
     <h2>לא רק וידאו.<br>גם <em>אתרים.</em></h2>
-    <p>עשרים אתרים שבניתי מאפס — מהעיצוב ועד הקוד. חוויות גלילה עם אנימציה,
-       לא תבניות מוכנות. כל אחד מהם רץ, לא מוקאפ.</p>
+    <p>שמונה־עשר אתרים שבניתי מאפס — מהעיצוב ועד הקוד. מה שאתם רואים זו
+       הקלטת גלילה אמיתית מכל אחד מהם, לא צילום מסך ולא מוקאפ.</p>
   </div>
   <div class="web-grid" id="webGrid"></div>
   <div class="web-foot">
-    <span><b>20</b> אתרים</span><span><b>0</b> תבניות מוכנות</span><span><b>HTML · GSAP</b> נכתב ידנית</span>
+    <span><b>18</b> אתרים</span><span><b>0</b> תבניות מוכנות</span><span><b>HTML · GSAP</b> נכתב ידנית</span>
   </div>
 </section>
 
@@ -959,27 +959,28 @@ gsap.utils.toArray('.sec').forEach((sec, i) => {
    ולא ממוקאפים — סקריפט הלכידה: scratchpad/shots.sh.
    הועברו ל-JPEG ברוחב 900 (20 קבצים ≈ 1.4MB סה"כ). ════ */
 {
+  /* 18 אתרים — כל אחד עם הקלטת גלילה אמיתית שעומר הקליט.
+     12 הטמפלייטים באנגלית ירדו: אין להם הקלטה, וכרטיס סטטי בין
+     כרטיסים מתנגנים נראה כמו תקלה. יחזרו ברגע שיוקלטו. */
   const SITES = [
-    ['showcase',            'שואוקייס',   'אתר חוויה',        'showcase.studio'],
-    ['forge-architecture',  'Forge',      'אדריכלות',         'forge.archi'],
-    ['kav',                 'קו',         'נדל״ן',            'kav-living.co.il'],
-    ['obsidian',            'אובסידיאן',  'תדמית פרימיום',    'obsidian.co.il'],
-    ['pulse-festival',      'Pulse',      'פסטיבל',           'pulsefest.io'],
-    ['halcyon-hotel',       'Halcyon',    'מלונאות',          'halcyon.hotel'],
-    ['verve-fitness',       'Verve',      'כושר',             'verve.fit'],
-    ['studio',              'סטודיו',     'פורטפוליו',        'studio.works'],
-    ['bloom-skincare',      'Bloom',      'טיפוח',            'bloom.skin'],
-    ['aperture-photography','Aperture',   'צילום',            'aperture.photo'],
-    ['nocturne-restaurant', 'Nocturne',   'מסעדה',            'nocturne.dining'],
-    ['taam',                'טעם',        'מסעדה וקפה',       'taam.co.il'],
-    ['atlas-expeditions',   'Atlas',      'טיולי הרפתקה',     'atlas-exp.com'],
-    ['terra-sustainable',   'Terra',      'קיימות',           'terra.eco'],
-    ['signal-podcast',      'Signal',     'פודקאסט',          'signal.fm'],
-    ['kiln-ceramics',       'Kiln',       'קרמיקה',           'kiln.studio'],
-    ['meridian-advisory',   'Meridian',   'ייעוץ פיננסי',     'meridian.advisory'],
-    ['launch',              'לאנץ׳',      'SaaS',             'launch.app'],
-    ['palace',              'פאלס',       'דף נחיתה',         'palace.co.il'],
-    ['clinic',              'קליניקה',    'איש מקצוע',        'clinic.co.il']
+    ['showcase',    'שואוקייס',   'אתר חוויה',      'showcase.studio'],
+    ['iron',        'IRON',       'קרוספיט',        'iron.fit'],
+    ['kav',         'קו',         'נדל״ן',          'kav-living.co.il'],
+    ['obsidian',    'אובסידיאן',  'תדמית פרימיום',  'obsidian.co.il'],
+    ['soul',        'SOUL',       'אופנה',          'soul-label.com'],
+    ['halcyon',     'Halcyon',    'יקב בוטיק',      'halcyon.wine'],
+    ['bedrock',     'Bedrock',    'בנייה ותשתיות',  'bedrock.build'],
+    ['studio',      'סטודיו',     'פורטפוליו',      'studio.works'],
+    ['soundtrack',  'Soundtrack', 'אולפן הקלטות',   'soundtrack.studio'],
+    ['grain-stone', 'Grain&Stone','רהיטים בהזמנה',  'grainandstone.co'],
+    ['taam',        'טעם',        'מסעדה וקפה',     'taam.co.il'],
+    ['vector',      'Vector',     'סייבר',          'vector-sec.io'],
+    ['meridian',    'Meridian',   'תכנון מסלולים',  'meridian.travel'],
+    ['rite',        'Rite',       'הפקת אירועים',   'rite.events'],
+    ['clear',       'Clear',      'מרפאת שיניים',   'clear-dental.co.il'],
+    ['launch',      'לאנץ׳',      'SaaS',           'launch.app'],
+    ['palace',      'פאלס',       'דף נחיתה',       'palace.co.il'],
+    ['clinic',      'קליניקה',    'איש מקצוע',      'clinic.co.il']
   ];
 
   const grid = document.getElementById('webGrid');
@@ -1000,13 +1001,19 @@ gsap.utils.toArray('.sec').forEach((sec, i) => {
 
     const shot = document.createElement('div');
     shot.className = 'web-shot';
-    const img = document.createElement('img');
-    img.src = 'images/sites/' + slug + '.jpg';
-    img.alt = 'אתר ' + name + ' — ' + kind;
-    img.loading = 'lazy';
-    img.decoding = 'async';
-    img.width = 900; img.height = 563;
-    shot.appendChild(img);
+    /* וידאו ולא תמונה: אלה אתרי חוויית-גלילה, וצילום סטטי מוכר בדיוק
+       את מה שהם *לא*. הפוסטר מוצג עד שהקובץ מתחיל, ו-preload="none"
+       מונע משיכה של 13MB בטעינת העמוד. */
+    const vid = document.createElement('video');
+    vid.src = 'videos/sites/' + slug + '.mp4';
+    vid.poster = 'images/sites/' + slug + '.jpg';
+    /* iOS בודק את המאפיינים muted/playsinline, לא את ההצבות על האובייקט */
+    vid.setAttribute('muted','');   vid.setAttribute('playsinline','');
+    vid.setAttribute('loop','');    vid.setAttribute('aria-label','אתר ' + name + ' — ' + kind);
+    vid.muted = vid.loop = vid.playsInline = true;
+    vid.preload = 'none';
+    vid.width = 900; vid.height = 563;
+    shot.appendChild(vid);
 
     const meta = document.createElement('div');
     meta.className = 'web-meta';
@@ -1033,6 +1040,32 @@ gsap.utils.toArray('.sec').forEach((sec, i) => {
   });
   addEventListener('load', () => { sweep(); setTimeout(sweep, 600); });
   addEventListener('hashchange', () => setTimeout(sweep, 700));
+
+  /* ניגון אוטומטי כשהכרטיס נכנס לתצוגה, עצירה כשהוא יוצא — זה מה
+     שהופך את הרשת מ"קיר תמונות" לקיר אתרים חיים.
+     18 מפענחים פעילים בו-זמנית מפילים פריימים, ולכן מוגבל מספר
+     המנגנים והישן ביותר מושהה כדי לפנות מקום לחדש.
+     אסור לשנות preload ואז לקרוא ל-play() באותה נשימה: שינוי preload
+     מפעיל מחדש את בחירת המשאב, מבטל את ההשמעה הממתינה, ו-play() נדחה
+     ב-AbortError — האריח נשאר קפוא על הפוסטר. לכן טוענים ומחכים ל-canplay. */
+  const playing = new Set();
+  const MAX_PLAY = TOUCH ? 3 : 8;
+  const startVid = v => {
+    if (v.readyState >= 2) { v.play().catch(()=>{}); return; }
+    v.addEventListener('canplay', () => { if (playing.has(v)) v.play().catch(()=>{}); }, { once:true });
+    if (v.preload !== 'auto') { v.preload = 'auto'; v.load(); }
+  };
+  const vio = new IntersectionObserver(es => es.forEach(e => {
+    const v = e.target;
+    if (e.isIntersecting) {
+      if (playing.has(v)) return;
+      if (playing.size >= MAX_PLAY) {
+        const old = playing.values().next().value; old.pause(); playing.delete(old);
+      }
+      playing.add(v); startVid(v);
+    } else if (playing.has(v)) { v.pause(); playing.delete(v); }
+  }), { threshold:.35 });
+  grid.querySelectorAll('.web-card video').forEach(v => vio.observe(v));
 }
 
 
