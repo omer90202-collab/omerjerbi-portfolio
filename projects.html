@@ -53,13 +53,19 @@
   @media(max-width:620px){.wall{columns:1;padding-inline:6vw}}
   .p-it{break-inside:avoid;margin-bottom:22px;border-radius:14px;overflow:hidden;position:relative;
     border:1px solid var(--line);cursor:pointer;will-change:transform;
-    transition:transform .45s cubic-bezier(.2,.8,.2,1), box-shadow .45s}
-  .p-it:hover{transform:scale(1.02) rotate(0deg) !important;box-shadow:0 24px 60px rgba(0,0,0,.55);z-index:2}
-  /* סיבובים קלים "זרוקים" — מתאפסים בהובר */
-  .p-it:nth-child(4n+1){transform:rotate(-1.1deg)}
-  .p-it:nth-child(4n+2){transform:rotate(.9deg)}
-  .p-it:nth-child(4n+3){transform:rotate(-.6deg)}
-  .p-it:nth-child(4n+4){transform:rotate(1.2deg)}
+    transition:scale .45s cubic-bezier(.2,.8,.2,1), rotate .45s cubic-bezier(.2,.8,.2,1),
+               box-shadow .45s}
+  /* הסיבוב יושב ב-`rotate` וההגדלה ב-`scale` — מאפייני CSS עצמאיים
+     שמתחברים ל-transform לבד, כך ש-GSAP יכול להנפיש `transform` בכניסה
+     בלי לגעת בסיבוב.
+     קודם הכל ישב ב-transform אחד: GSAP כתב עליו translate בזמן הכניסה,
+     ובסוף הטוין שחרר אותו והסיבוב של ה-CSS חזר בבת אחת — קפיצה גלויה
+     בסוף הכניסה של *כל* כרטיס. */
+  .p-it:hover{scale:1.02;rotate:0deg;box-shadow:0 24px 60px rgba(0,0,0,.55);z-index:2}
+  .p-it:nth-child(4n+1){rotate:-1.1deg}
+  .p-it:nth-child(4n+2){rotate:.9deg}
+  .p-it:nth-child(4n+3){rotate:-.6deg}
+  .p-it:nth-child(4n+4){rotate:1.2deg}
   .p-it b{position:absolute;bottom:12px;right:14px;z-index:2;font-size:14px;font-weight:500;text-shadow:0 2px 12px rgba(0,0,0,.85)}
   .p-it .kind{position:absolute;top:12px;left:14px;z-index:2;font-size:11px;letter-spacing:.18em;color:var(--gold);
     background:rgba(10,9,8,.55);border:1px solid rgba(253,191,45,.35);border-radius:99px;padding:4px 12px}
@@ -94,40 +100,39 @@
 </div>
 
 <div class="wall" id="wall">
-  <div class="p-it"><video src="videos/eyal-golan.mp4" muted loop playsinline preload="metadata"></video><span class="kind">עבודה ללקוח</span><b>אייל גולן</b></div>
-  <div class="p-it"><video src="videos/survivor.mp4" muted loop playsinline preload="metadata"></video><span class="kind">עבודה ללקוח</span><b>הישרדות</b></div>
-  <div class="p-it"><video src="videos/telhai-en.mp4" muted loop playsinline preload="metadata"></video><span class="kind">עבודה ללקוח</span><b>קרב תל חי</b></div>
-  <div class="p-it"><video src="videos/imtirtzu-1.mp4" muted loop playsinline preload="metadata"></video><span class="kind">עבודה ללקוח</span><b>אם תרצו</b></div>
-  <div class="p-it"><video src="videos/imtirtzu-2.mp4" muted loop playsinline preload="metadata"></video><span class="kind">עבודה ללקוח</span><b>אם תרצו — כנס שנתי</b></div>
-  <div class="p-it"><video src="videos/imtirtzu-3.mp4" muted loop playsinline preload="metadata"></video><span class="kind">עבודה ללקוח</span><b>אם תרצו</b></div>
-  <div class="p-it"><video src="videos/hapoel.mp4" muted loop playsinline preload="metadata"></video><span class="kind">עבודה ללקוח</span><b>הפועל</b></div>
-  <div class="p-it"><video src="videos/beitar-puppets.mp4" muted loop playsinline preload="metadata"></video><span class="kind">עבודה ללקוח</span><b>בית״ר ירושלים</b></div>
-  <div class="p-it"><video src="videos/heels.mp4" muted loop playsinline preload="metadata"></video><span class="kind">קריאייטיב</span><b>נעליים</b></div>
-  <div class="p-it"><video src="videos/mbappe.mp4" muted loop playsinline preload="metadata"></video><span class="kind">קריאייטיב</span><b>קמפיין כדורגל</b></div>
-  <div class="p-it"><video src="videos/ginton-purim.mp4" muted loop playsinline preload="metadata"></video><span class="kind">קריאייטיב</span><b>ג'ין טוניק — פורים</b></div>
-  <div class="p-it"><video src="videos/noir-bar.mp4" muted loop playsinline preload="metadata"></video><span class="kind">קריאייטיב</span><b>בר נואר</b></div>
-  <div class="p-it"><video src="videos/matan-asher.mp4" muted loop playsinline preload="metadata"></video><span class="kind">קריאייטיב</span><b>מתן אשר</b></div>
-  <div class="p-it"><video src="videos/expo.mp4" muted loop playsinline preload="metadata"></video><span class="kind">קריאייטיב</span><b>אקספו</b></div>
-  <div class="p-it"><video src="videos/oro.mp4" muted loop playsinline preload="metadata"></video><span class="kind">קריאייטיב</span><b>אורו</b></div>
-  <div class="p-it"><video src="videos/conference.mp4" muted loop playsinline preload="metadata"></video><span class="kind">קריאייטיב</span><b>כנס</b></div>
-  <div class="p-it"><video src="videos/sound2.mp4" muted loop playsinline preload="metadata"></video><span class="kind">קריאייטיב</span><b>סאונד</b></div>
-  <div class="p-it"><video src="videos/save1080.mp4" muted loop playsinline preload="metadata"></video><span class="kind">עבודה ללקוח</span><b>האח הגדול</b></div>
-  <div class="p-it"><video src="videos/mantra-3.mp4" muted loop playsinline preload="metadata"></video><span class="kind">קריאייטיב</span><b>מנטרה — מוצמד</b></div>
-  <div class="p-it"><video src="videos/mantra-what.mp4" muted loop playsinline preload="metadata"></video><span class="kind">קריאייטיב</span><b>מה זה מנטרה</b></div>
-  <div class="p-it"><video src="videos/mantra-who.mp4" muted loop playsinline preload="metadata"></video><span class="kind">קריאייטיב</span><b>מי אנחנו — מנטרה</b></div>
-  <div class="p-it"><video src="videos/raw-arak.mp4" muted loop playsinline preload="metadata"></video><span class="kind">פרסומת</span><b>ערק נוח</b></div>
-  <div class="p-it"><video src="videos/raw-shoko.mp4" muted loop playsinline preload="metadata"></video><span class="kind">פרסומת</span><b>שוקו</b></div>
-  <div class="p-it"><video src="videos/raw-magnum.mp4" muted loop playsinline preload="metadata"></video><span class="kind">פרסומת</span><b>מגנום</b></div>
-  <div class="p-it"><video src="videos/raw-goldstar.mp4" muted loop playsinline preload="metadata"></video><span class="kind">פרסומת</span><b>גולדסטאר</b></div>
-  <div class="p-it"><video src="videos/raw-shampoo.mp4" muted loop playsinline preload="metadata"></video><span class="kind">פרסומת</span><b>שמפו</b></div>
-  <div class="p-it"><video src="videos/raw-coffee.mp4" muted loop playsinline preload="metadata"></video><span class="kind">פרסומת</span><b>חלב קפה</b></div>
-  <div class="p-it"><video src="videos/raw-muller.mp4" muted loop playsinline preload="metadata"></video><span class="kind">פרסומת</span><b>מולר</b></div>
-  <div class="p-it"><video src="videos/raw-neviot.mp4" muted loop playsinline preload="metadata"></video><span class="kind">פרסומת</span><b>נביעות</b></div>
-  <div class="p-it"><video src="videos/raw-taster.mp4" muted loop playsinline preload="metadata"></video><span class="kind">פרסומת</span><b>טייסטרס צ'ויס</b></div>
-  <div class="p-it"><video src="videos/coke-zero.mp4" muted loop playsinline preload="metadata"></video><span class="kind">פרסומת</span><b>קוקה קולה זירו</b></div>
-  <div class="p-it"><video src="videos/power-barrier-1.mp4" muted loop playsinline preload="metadata"></video><span class="kind">פרסומת</span><b>Power Barrier</b></div>
-  <div class="p-it"><video src="videos/power-barrier-2.mp4" muted loop playsinline preload="metadata"></video><span class="kind">פרסומת</span><b>Power Barrier — קמפיין טעמים</b></div>
-  <div class="p-it"><video src="videos/power-barrier-3.mp4" muted loop playsinline preload="metadata"></video><span class="kind">פרסומת</span><b>Power Barrier — מארז</b></div>
+  <div class="p-it"><video src="videos/eyal-golan.mp4" muted loop playsinline preload="none"></video><span class="kind">עבודה ללקוח</span><b>אייל גולן</b></div>
+  <div class="p-it"><video src="videos/survivor.mp4" muted loop playsinline preload="none"></video><span class="kind">עבודה ללקוח</span><b>הישרדות</b></div>
+  <div class="p-it"><video src="videos/telhai-en.mp4" muted loop playsinline preload="none"></video><span class="kind">עבודה ללקוח</span><b>קרב תל חי</b></div>
+  <div class="p-it"><video src="videos/imtirtzu-1.mp4" muted loop playsinline preload="none"></video><span class="kind">עבודה ללקוח</span><b>אם תרצו</b></div>
+  <div class="p-it"><video src="videos/imtirtzu-2.mp4" muted loop playsinline preload="none"></video><span class="kind">עבודה ללקוח</span><b>אם תרצו — כנס שנתי</b></div>
+  <div class="p-it"><video src="videos/imtirtzu-3.mp4" muted loop playsinline preload="none"></video><span class="kind">עבודה ללקוח</span><b>אם תרצו</b></div>
+  <div class="p-it"><video src="videos/hapoel.mp4" muted loop playsinline preload="none"></video><span class="kind">עבודה ללקוח</span><b>הפועל</b></div>
+  <div class="p-it"><video src="videos/beitar-puppets.mp4" muted loop playsinline preload="none"></video><span class="kind">עבודה ללקוח</span><b>בית״ר ירושלים</b></div>
+  <div class="p-it"><video src="videos/heels.mp4" muted loop playsinline preload="none"></video><span class="kind">קריאייטיב</span><b>נעליים</b></div>
+  <div class="p-it"><video src="videos/mbappe.mp4" muted loop playsinline preload="none"></video><span class="kind">קריאייטיב</span><b>קמפיין כדורגל</b></div>
+  <div class="p-it"><video src="videos/ginton-purim.mp4" muted loop playsinline preload="none"></video><span class="kind">קריאייטיב</span><b>ג'ין טוניק — פורים</b></div>
+  <div class="p-it"><video src="videos/noir-bar.mp4" muted loop playsinline preload="none"></video><span class="kind">קריאייטיב</span><b>בר נואר</b></div>
+  <div class="p-it"><video src="videos/expo.mp4" muted loop playsinline preload="none"></video><span class="kind">קריאייטיב</span><b>אקספו</b></div>
+  <div class="p-it"><video src="videos/oro.mp4" muted loop playsinline preload="none"></video><span class="kind">קריאייטיב</span><b>אורו</b></div>
+  <div class="p-it"><video src="videos/conference.mp4" muted loop playsinline preload="none"></video><span class="kind">קריאייטיב</span><b>כנס</b></div>
+  <div class="p-it"><video src="videos/sound2.mp4" muted loop playsinline preload="none"></video><span class="kind">קריאייטיב</span><b>סאונד</b></div>
+  <div class="p-it"><video src="videos/save1080.mp4" muted loop playsinline preload="none"></video><span class="kind">עבודה ללקוח</span><b>האח הגדול</b></div>
+  <div class="p-it"><video src="videos/mantra-3.mp4" muted loop playsinline preload="none"></video><span class="kind">קריאייטיב</span><b>מנטרה — מוצמד</b></div>
+  <div class="p-it"><video src="videos/mantra-what.mp4" muted loop playsinline preload="none"></video><span class="kind">קריאייטיב</span><b>מה זה מנטרה</b></div>
+  <div class="p-it"><video src="videos/mantra-who.mp4" muted loop playsinline preload="none"></video><span class="kind">קריאייטיב</span><b>מי אנחנו — מנטרה</b></div>
+  <div class="p-it"><video src="videos/raw-arak.mp4" muted loop playsinline preload="none"></video><span class="kind">פרסומת</span><b>ערק נוח</b></div>
+  <div class="p-it"><video src="videos/raw-shoko.mp4" muted loop playsinline preload="none"></video><span class="kind">פרסומת</span><b>שוקו</b></div>
+  <div class="p-it"><video src="videos/raw-magnum.mp4" muted loop playsinline preload="none"></video><span class="kind">פרסומת</span><b>מגנום</b></div>
+  <div class="p-it"><video src="videos/raw-goldstar.mp4" muted loop playsinline preload="none"></video><span class="kind">פרסומת</span><b>גולדסטאר</b></div>
+  <div class="p-it"><video src="videos/raw-shampoo.mp4" muted loop playsinline preload="none"></video><span class="kind">פרסומת</span><b>שמפו</b></div>
+  <div class="p-it"><video src="videos/raw-coffee.mp4" muted loop playsinline preload="none"></video><span class="kind">פרסומת</span><b>חלב קפה</b></div>
+  <div class="p-it"><video src="videos/raw-muller.mp4" muted loop playsinline preload="none"></video><span class="kind">פרסומת</span><b>מולר</b></div>
+  <div class="p-it"><video src="videos/raw-neviot.mp4" muted loop playsinline preload="none"></video><span class="kind">פרסומת</span><b>נביעות</b></div>
+  <div class="p-it"><video src="videos/raw-taster.mp4" muted loop playsinline preload="none"></video><span class="kind">פרסומת</span><b>טייסטרס צ'ויס</b></div>
+  <div class="p-it"><video src="videos/coke-zero.mp4" muted loop playsinline preload="none"></video><span class="kind">פרסומת</span><b>קוקה קולה זירו</b></div>
+  <div class="p-it"><video src="videos/power-barrier-1.mp4" muted loop playsinline preload="none"></video><span class="kind">פרסומת</span><b>Power Barrier</b></div>
+  <div class="p-it"><video src="videos/power-barrier-2.mp4" muted loop playsinline preload="none"></video><span class="kind">פרסומת</span><b>Power Barrier — קמפיין טעמים</b></div>
+  <div class="p-it"><video src="videos/power-barrier-3.mp4" muted loop playsinline preload="none"></video><span class="kind">פרסומת</span><b>Power Barrier — מארז</b></div>
 </div>
 
 <div class="wall wall--graphics" id="wallGraphics">
@@ -176,19 +181,37 @@ gsap.ticker.lagSmoothing(0);
 /* כניסת כותרת */
 gsap.from('.head > *', { opacity:0, y:40, duration:1, stagger:.12, ease:'power3.out', delay:.15 });
 
-/* חשיפת פריטים בגלילה */
+/* חשיפת פריטים בגלילה — דהייה בלבד, בלי y.
+   הקיר הוא masonry (columns) וסדר ה-DOM אינו סדר התצוגה, אז הזזה אנכית
+   מדורגת נראתה כמו קפיצות אקראיות בין העמודות. */
 ScrollTrigger.batch('.p-it', {
   start:'top 92%',
-  onEnter:els => gsap.from(els, { opacity:0, y:70, duration:.9, stagger:.09, ease:'power3.out' })
+  onEnter:els => gsap.from(els, { opacity:0, duration:.7, stagger:.05, ease:'power2.out' })
 });
 
-/* וידאו מתנגן רק כשנראה */
-const vids = [...document.querySelectorAll('video')];
+/* וידאו מתנגן רק כשנראה, ועם תקרה. 33 מפענחים פעילים בו-זמנית מפילים
+   פריימים — וזה נראה בדיוק כמו קפיצות. הישן ביותר מושהה כדי לפנות מקום.
+   אסור לשנות preload ואז לקרוא ל-play() באותה נשימה: שינוי preload מפעיל
+   מחדש את בחירת המשאב, מבטל את ההשמעה הממתינה, ו-play() נדחה ב-AbortError
+   והאריח נשאר קפוא. */
+const TOUCH = !matchMedia('(hover:hover) and (pointer:fine)').matches;
+const playing = new Set(), MAX_PLAY = TOUCH ? 3 : 6;
+const startVid = v => {
+  if (v.readyState >= 2) { v.play().catch(()=>{}); return; }
+  v.addEventListener('canplay', () => { if (playing.has(v)) v.play().catch(()=>{}); }, { once:true });
+  if (v.preload !== 'auto') { v.preload = 'auto'; v.load(); }
+};
 const io = new IntersectionObserver(es => es.forEach(e => {
-  if (e.isIntersecting) e.target.play().catch(()=>{});
-  else e.target.pause();
-}), { threshold:.2 });
-vids.forEach(v => io.observe(v));
+  const v = e.target;
+  if (e.isIntersecting) {
+    if (playing.has(v)) return;
+    if (playing.size >= MAX_PLAY) {
+      const old = playing.values().next().value; old.pause(); playing.delete(old);
+    }
+    playing.add(v); startVid(v);
+  } else if (playing.has(v)) { v.pause(); playing.delete(v); }
+}), { threshold:.35 });
+[...document.querySelectorAll('video')].forEach(v => io.observe(v));
 
 /* לחיצה על וידאו = סאונד בלעדי, לחיצה על גרפיקה = תצוגה מוגדלת */
 const lightbox = document.getElementById('lightbox');
@@ -199,7 +222,7 @@ document.querySelectorAll('.p-it').forEach(box => {
     const v = box.querySelector('video');
     if (v) {
       const wasMuted = v.muted;
-      vids.forEach(x => x.muted = true);
+      document.querySelectorAll('video').forEach(x => x.muted = true);
       document.querySelectorAll('.p-it.sound').forEach(s => s.classList.remove('sound'));
       if (wasMuted) { v.muted = false; box.classList.add('sound'); v.play().catch(()=>{}); }
       return;
