@@ -181,18 +181,79 @@
   @media(max-width:820px){.logos-sec{margin-top:44px}}
 
   /* ── מי אני: פסקה נרטיבית שנחשפת תו־תו ── */
-  /* ממורכז במרכז המסך ולא רק אופקית: הבלוק תופס גובה מסך מלא
-     והתוכן יושב באמצעו. min-height ולא height — כדי שבמסך נמוך
-     הטקסט לא ייחתך אלא יידחף את הסקשן. */
-  .whoami{min-height:100svh;display:grid;align-content:center;justify-items:center;
-    padding:clamp(56px,10vh,120px) 5vw;text-align:center}
-  @media(max-width:820px){.whoami{min-height:auto}}
-  .whoami small{display:block;color:var(--gold);letter-spacing:.3em;font-size:11px;font-weight:700}
-  .whoami h2{margin-top:14px;font-weight:900;letter-spacing:-.02em;
-    font-size:clamp(32px,5.4vw,68px);line-height:1;color:var(--ink)}
-  .whoami p{margin:clamp(22px,4vh,40px) auto 0;max-width:34ch;color:var(--ink);
-    font-weight:400;line-height:1.8;font-size:clamp(16px,1.9vw,22px)}
-  .whoami p span{opacity:.2;transition:opacity .18s linear}
+  /* ── מי אני ──
+     קודם זה היה בלוק קטן וממורכז בתוך 100vh שחור, ולכן הרגיש ריק.
+     עכשיו השם הענק הוא שכבת רקע בקו-מתאר, והפסקה גדולה ויושבת עליו.
+     התנועה מגיעה מהטקסט עצמו — ראה fx6 ב-JS. */
+  .whoami{position:relative;min-height:100svh;display:grid;align-content:center;
+    justify-items:center;padding:clamp(70px,12vh,140px) 5vw;text-align:center;overflow:hidden}
+  .whoami small{display:block;color:var(--gold);letter-spacing:.34em;font-size:11px;font-weight:700;
+    position:relative;z-index:2}
+  /* השם כקו-מתאר ענק מאחור — ממלא את החלל בלי להתחרות על הקריאוּת */
+  .whoami-bg{position:absolute;inset-inline:0;top:50%;transform:translateY(-50%);z-index:0;
+    font-weight:900;font-size:clamp(90px,20vw,340px);line-height:.8;letter-spacing:-.05em;
+    white-space:nowrap;text-align:center;pointer-events:none;user-select:none;
+    -webkit-text-stroke:1.5px rgba(253,191,45,.16);color:transparent}
+  .whoami h2{margin-top:16px;font-weight:900;letter-spacing:-.03em;
+    font-size:clamp(30px,4.4vw,58px);line-height:1;color:var(--ink);position:relative;z-index:2}
+  .whoami p{margin:clamp(26px,5vh,52px) auto 0;max-width:24ch;color:var(--ink);
+    font-weight:700;line-height:1.3;letter-spacing:-.02em;position:relative;z-index:2;
+    font-size:clamp(26px,3.9vw,54px)}
+  /* perspective יושב על העוטף של כל מילה — ראה fx6 */
+  .whoami p .w{display:inline-block;perspective:2000px}
+  .whoami p .c{display:inline-block;will-change:transform,opacity}
+  @media(max-width:820px){
+    .whoami{min-height:auto;padding-block:clamp(56px,9vh,90px)}
+    .whoami-bg{font-size:26vw}
+    .whoami p{max-width:18ch}}
+
+  /* ── איך אני יכול לעזור — RapidImageHoverMenu (Animmaster · Hover Effects/11) ──
+     קודם זה היה סליידר לשוניות שהציג את שש התמונות אחת-אחרי-השנייה, וזה
+     בדיוק מה שהדגיש כמה הן דומות (אותו פולו, אותו שולחן, אותה תאורה).
+     כאן הטיפוגרפיה היא התוכן, והתמונה מופיעה רק בריחוף — אצל הסמן, לרגע,
+     מוטה ומולבנת לפי מהירות העכבר. היא נקראת כטקסטורה ולא כדיוקן. */
+  .svc-sec{position:relative;padding:clamp(70px,12vh,150px) 5vw clamp(80px,13vh,170px)}
+  .svc-head{max-width:1400px;margin:0 auto clamp(30px,5vh,64px)}
+  .svc-head small{display:block;color:var(--gold);letter-spacing:.34em;font-size:11px;font-weight:700}
+  .svc-head h2{margin-top:12px;font-weight:900;font-size:clamp(30px,4.6vw,64px);
+    line-height:1.02;letter-spacing:-.03em}
+  .svc-menu{max-width:1400px;margin:0 auto;position:relative}
+  .svc-item{position:relative;display:block;border-top:1px solid var(--line);cursor:pointer;
+    padding:clamp(14px,2.2vh,26px) 0 clamp(14px,2.2vh,26px) clamp(46px,5vw,90px)}
+  .svc-item:last-child{border-bottom:1px solid var(--line)}
+  /* המספר נכנס מהצד בריחוף — כמו ה-::before הממוספר במקור */
+  .svc-item .n{position:absolute;inset-inline-end:0;top:50%;
+    transform:translateY(-50%) translateX(14px);
+    font-size:11px;font-weight:700;color:var(--gold);letter-spacing:.1em;opacity:0;
+    font-variant-numeric:tabular-nums;transition:opacity .35s,transform .35s}
+  .svc-item:hover .n{opacity:1;transform:translateY(-50%) translateX(0)}
+  .svc-item .t{display:block;font-weight:900;letter-spacing:-.035em;line-height:1.04;
+    font-size:clamp(28px,5.4vw,84px);color:var(--dim);
+    transition:color .4s cubic-bezier(.2,.8,.2,1),transform .5s cubic-bezier(.2,.8,.2,1)}
+  .svc-item:hover .t{color:var(--ink);transform:translateX(-14px)}
+  .svc-item .d{display:block;margin-top:8px;color:var(--dim);max-width:46ch;
+    font-size:clamp(13px,1.15vw,16px);line-height:1.6;
+    opacity:0;max-height:0;overflow:hidden;transition:opacity .4s,max-height .5s}
+  .svc-item:hover .d{opacity:1;max-height:6em}
+  /* חלון התמונה שנצמד לסמן. pointer-events:none — אחרת הוא חוטף את
+     ה-mouseleave מהשורה והאפקט מהבהב. */
+  /* left פיזי ולא inset-inline-start: חישוב המיקום מהמקור הוא
+     x = mouse.x − item.left − רוחב/2, כלומר נמדד תמיד מהקצה השמאלי.
+     ב-RTL האינסט הלוגי מתהפך לקצה הימני, וה-x החיובי דחף את התמונה
+     אל מחוץ למסך במקום להצמיד אותה לסמן. */
+  .svc-reveal{position:absolute;top:0;left:0;width:clamp(200px,20vw,330px);
+    aspect-ratio:4/3;overflow:hidden;opacity:0;pointer-events:none;z-index:5;border-radius:6px}
+  .svc-reveal__in{width:100%;height:100%;overflow:hidden}
+  .svc-reveal__img{width:100%;height:100%;background-size:cover;background-position:center}
+  /* במגע אין ריחוף — במקום זה אקורדיון פתוח עם תמונה בפנים */
+  .svc-sec.is-touch .svc-reveal{display:none}
+  .svc-sec.is-touch .svc-item .d{opacity:1;max-height:none}
+  .svc-sec.is-touch .svc-item .t{color:var(--ink);font-size:clamp(24px,7vw,40px)}
+  .svc-sec.is-touch .svc-item .n{opacity:1;transform:translateY(-50%)}
+  .svc-thumb{display:none}
+  .svc-sec.is-touch .svc-thumb{display:block;margin-top:14px;border-radius:10px;
+    overflow:hidden;aspect-ratio:16/10}
+  .svc-sec.is-touch .svc-thumb img{width:100%;height:100%;object-fit:cover}
 
   /* ── קיר תוצאות: עמודות של צילומי מסך שנסחפות כלפי מעלה ── */
   .res-sec{padding:12vh 5vw 13vh;overflow:hidden}
@@ -259,65 +320,6 @@
   .web-foot b{color:var(--gold);font-weight:900;font-size:15px;margin-inline-end:5px}
   @media(max-width:960px){.web-grid{grid-template-columns:repeat(2,1fr)}}
   @media(max-width:600px){.web-grid{grid-template-columns:1fr}}
-  @media(prefers-reduced-motion:reduce){.web-card{opacity:1;transform:none;transition:none}}
-
-  /* ════ 3ב — מי אני: לשוניות אנכיות עם ניגון אוטומטי ════
-     פורט מקומפוננטת React/Framer Motion ל-GSAP. הקפיץ המקורי
-     (stiffness 260 / damping 32) הוא ζ≈0.99, כלומר כמעט ללא קפיצה —
-     ולכן power3.out הוא הקירוב הנכון ולא ease אלסטי. */
-  .vt-sec{padding:clamp(56px,9vh,110px) 5vw clamp(60px,10vh,120px);background:var(--page)}
-  .vt-wrap{max-width:1400px;margin-inline:auto;display:grid;
-    grid-template-columns:5fr 7fr;gap:clamp(36px,4.5vw,72px);align-items:start}
-  .vt-head{margin-bottom:clamp(28px,4.5vh,56px)}
-  .vt-head h2{font-weight:900;font-size:clamp(30px,3.6vw,50px);line-height:1.05;letter-spacing:-.01em;color:var(--ink)}
-  .vt-head small{display:block;margin-top:10px;color:var(--gold);letter-spacing:.3em;font-size:11px;font-weight:700}
-  .vt-tabs{display:flex;flex-direction:column}
-  .vt-tab{position:relative;display:flex;gap:14px;align-items:flex-start;width:100%;
-    padding:clamp(16px,2.6vh,30px) 0;background:none;border:0;border-top:1px solid rgba(245,240,230,.12);
-    text-align:start;cursor:pointer;font:inherit;color:var(--dim);transition:color .45s ease}
-  .vt-tab:first-child{border-top:0}
-  .vt-tab:hover,.vt-tab.is-active{color:var(--ink)}
-  /* המסילה בצד ההתחלה — inset-inline ולא left, כדי שב-RTL תשב מימין */
-  .vt-rail{position:absolute;inset-inline-start:clamp(-22px,-1.4vw,-14px);top:0;bottom:0;width:2px;
-    background:rgba(245,240,230,.13);overflow:hidden;border-radius:2px}
-  .vt-fill{position:absolute;top:0;inset-inline-start:0;width:100%;height:100%;
-    background:var(--gold);transform:scaleY(0);transform-origin:top center}
-  .vt-num{font-size:10px;font-weight:700;opacity:.45;margin-top:.7em;font-variant-numeric:tabular-nums;letter-spacing:.08em}
-  .vt-txt{flex:1;display:flex;flex-direction:column;gap:8px}
-  .vt-title{font-size:clamp(21px,2.5vw,36px);font-weight:700;letter-spacing:-.01em;line-height:1.15}
-  .vt-tab.is-active .vt-title{color:var(--ink)}
-  .vt-desc{overflow:hidden;height:0;opacity:0}
-  .vt-desc p{color:var(--dim);font-size:clamp(14px,1.15vw,17px);line-height:1.65;max-width:42ch;padding-bottom:4px}
-
-  .vt-gallery{position:relative;aspect-ratio:16/11;border-radius:clamp(18px,2.2vw,40px);
-    overflow:hidden;background:var(--card);border:1px solid rgba(245,240,230,.09);
-    box-shadow:0 40px 100px rgba(0,0,0,.5)}
-  .vt-slide{position:absolute;inset:0;cursor:pointer}
-  /* דריסת הכלל הגלובלי img{width:100%;height:100%;object-fit:cover} מיותרת כאן —
-     cover הוא בדיוק מה שרוצים — אבל מפורש כדי שלא ישתנה בשוגג */
-  /* בלי transition/transform ב-CSS: GSAP הוא הבעלים הבלעדי של ה-transform כאן
-     (זום המסגור + הנדידה), ושתי מערכות על אותו מאפיין נלחמות זו בזו. */
-  .vt-slide img{width:100%;height:100%;object-fit:cover;display:block}
-  .vt-slide::after{content:"";position:absolute;inset-inline:0;bottom:0;height:33%;
-    background:linear-gradient(to top,rgba(0,0,0,.28),transparent);opacity:.6;pointer-events:none}
-  .vt-ctrls{position:absolute;bottom:clamp(16px,2vw,32px);inset-inline-end:clamp(16px,2vw,32px);
-    display:flex;gap:10px;z-index:20}
-  .vt-ctrls button{width:clamp(38px,3.4vw,48px);aspect-ratio:1;border-radius:99px;
-    background:rgba(6,5,4,.62);backdrop-filter:blur(10px);border:1px solid rgba(245,240,230,.22);
-    color:var(--ink);display:grid;place-items:center;cursor:pointer;transition:background .25s,transform .15s}
-  .vt-ctrls button:hover{background:rgba(6,5,4,.9)}
-  .vt-ctrls button:active{transform:scale(.9)}
-  .vt-ctrls svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;
-    stroke-linecap:round;stroke-linejoin:round}
-
-  @media(max-width:1000px){
-    .vt-wrap{grid-template-columns:1fr;gap:clamp(28px,4vh,44px)}
-    .vt-right{order:-1}                 /* התמונה למעלה במובייל, כמו במקור */
-    .vt-gallery{aspect-ratio:4/3}
-    .vt-head{margin-bottom:clamp(20px,3vh,32px)}
-    .vt-rail{inset-inline-start:-12px}
-  }
-  @media(max-width:480px){.vt-gallery{aspect-ratio:4/5}}
 
   /* ════ 5 — עבודות נבחרות: גלריה אופקית מוצמדת ════ */
   .works-pin{overflow:hidden;padding-block:10vh}
@@ -445,35 +447,20 @@
 
 <!-- ═ 2ג ═ מי אני -->
 <section class="whoami" id="whoami">
+  <div class="whoami-bg" aria-hidden="true">JERBI</div>
   <small>מי אני</small>
   <h2>עומר ג'רבי</h2>
-  <p id="whoCopy">יוצר תוכן AI למותגים הגדולים בישראל — וידאו שנראה כמו הפקה שלמה, בלי הפקה. העבודות שלי עברו מיליון צפיות, הוקרנו בכנסת, וגייסו מיליונים בתרומות.</p>
+  <p id="whoCopy">יוצר תוכן AI למותגים הגדולים בישראל. העבודות שלי עברו מיליון צפיות, הוקרנו בכנסת, וגייסו מיליונים בתרומות.</p>
 </section>
 
-<!-- ═ 3ב ═ מי אני: לשוניות אנכיות (פורט מקומפוננטת React ל-GSAP) -->
-<section class="vt-sec" id="miShow">
-  <div class="vt-wrap">
-    <div class="vt-left">
-      <div class="vt-head">
-        <h2>איך אני יכול לעזור</h2>
-        <small>השירותים שלי</small>
-      </div>
-      <div class="vt-tabs" id="vtTabs"></div>
-    </div>
-    <div class="vt-right">
-      <div class="vt-gallery" id="vtGallery">
-        <div class="vt-stage" id="vtStage"></div>
-        <div class="vt-ctrls">
-          <button type="button" id="vtNext" aria-label="השירות הבא">
-            <svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg>
-          </button>
-          <button type="button" id="vtPrev" aria-label="השירות הקודם">
-            <svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg>
-          </button>
-        </div>
-      </div>
-    </div>
+<!-- ═ 3ב ═ איך אני יכול לעזור: תפריט טיפוגרפי עם חשיפת תמונה בסמן
+     (Animmaster · Hover Effects/11 · RapidImageHoverMenu) -->
+<section class="svc-sec" id="miShow">
+  <div class="svc-head">
+    <small>השירותים שלי</small>
+    <h2>איך אני יכול לעזור</h2>
   </div>
+  <nav class="svc-menu" id="svcMenu"></nav>
 </section>
 
 <!-- ═ 5 ═ עבודות נבחרות: גלריה אופקית מוצמדת -->
@@ -789,52 +776,55 @@ gsap.utils.toArray('.sec').forEach((sec, i) => {
   new IntersectionObserver(es => { logosVisible = es[0].isIntersecting; }, { rootMargin:'200px' })
     .observe(document.getElementById('scLogos'));
 }
+  /* ═══ "מי אני" — Animmaster · Text Animations/5 · אפקט 6 ═══
+     מקור: js/index.js, fx6Titles. המנגנון: perspective:2000 על עוטף
+     *המילה*, והתווים שבתוכה מסתובבים rotationX ‎-90°→0 יחד עם
+     yPercent ‎50→0, ב-stagger של 0.03 בתוך כל מילה ועם scrub 0.9 —
+     כך שכל מילה "מתהפכת" למקומה בזמן הגלילה.
+     הוחלף: Splitting() ← מפצל ידני. Splitting מפזר מילים עבריות
+     לשורות שגויות; כאן כל מילה עטופה ב-.w וכל תו ב-.c לפי סדר
+     המסמך, והרווחים נשארים צמתי-טקסט חשופים כדי שיישמרו כנקודות
+     שבירה תקינות. */
+  (() => {
+    const copy = document.getElementById('whoCopy');
+    if (!copy) return;
 
-/* ═══ "מי אני" — חשיפת הפסקה תו־תו לפי מיקום הגלילה ═══
-   המיקום מחושב מ-offsetTop שנמדד פעם אחת, ולא מ-getBoundingClientRect בכל
-   פריים — קריאת פריסה בלולאה היא בדיוק מה שמקרטע. אין כאן גם IntersectionObserver:
-   הדילוג נעשה מהמתמטיקה עצמה, כך שאין תלות ב-callback שעלול לא להגיע. */
-(() => {
-  const copy = document.getElementById('whoCopy');
-  if (!copy) return;
-  /* pre-wrap ולא pre על ספאן של רווח: שניהם משמרים את הרווח, אבל `pre`
-     מבטל אותו כנקודת שבירה — וכשכל תו עטוף בספאן, הפסקה כולה הופכת
-     ל"מילה" אחת בלתי-שבירה. התוצאה הייתה שורה אחת באורך 1386px שגלשה
-     148px מחוץ למסך, וזה גם היה המקור לגלישה האופקית של כל העמוד. */
-  const chars = (() => {
-    const t = copy.textContent; copy.textContent = '';
-    return [...t].map(ch => { const sp = document.createElement('span');
-      sp.textContent = ch; if (ch === ' ') sp.style.whiteSpace = 'pre-wrap';
-      copy.appendChild(sp); return sp; });
-  })();
-
-  let top = 0, h = 0;
-  const measure = () => {
-    let el = copy, y = 0;
-    while (el) { y += el.offsetTop; el = el.offsetParent; }
-    top = y; h = copy.offsetHeight;
-  };
-  measure();
-  addEventListener('resize', measure);
-  addEventListener('load', measure);
-
-  let lastP = -1;
-  gsap.ticker.add(() => {
-    const vh = innerHeight;
-    const rTop = top - scrollY;                 /* שקול ל-r.top, בלי חישוב פריסה */
-    /* בלי יציאה מוקדמת לפי מרחק: היא הייתה משאירה את המצב האחרון "תקוע"
-       כשהסקשן יוצא מהמסך, ואז חזרה למעלה הציגה טקסט חשוף. הערך מוצמד
-       ל-0..1 ממילא, והשמירה מפני כתיבות מיותרות היא בדיקת lastP למטה. */
-    const p = Math.min(1, Math.max(0, (vh*.82 - rTop) / (vh*.5 + h)));
-    if (Math.abs(p - lastP) < .002) return;     /* בלי שינוי — לא כותבים ל-DOM */
-    lastP = p;
-    const upto = p * chars.length * 1.15;
-    for (let i = 0; i < chars.length; i++) {
-      const o = Math.min(1, Math.max(.2, upto - i));
-      chars[i].style.opacity = o < .25 ? .2 : o;
+    const words = [];
+    {
+      const text = copy.textContent;
+      copy.textContent = '';
+      text.split(/(\s+)/).forEach(part => {
+        if (!part) return;
+        if (/^\s+$/.test(part)) { copy.appendChild(document.createTextNode(part)); return; }
+        const w = document.createElement('span'); w.className = 'w';
+        const cs = [...part].map(ch => {
+          const c = document.createElement('span'); c.className = 'c';
+          c.textContent = ch; w.appendChild(c); return c;
+        });
+        copy.appendChild(w);
+        words.push(cs);
+      });
     }
-  });
-})();
+
+    words.forEach(chars => {
+      gsap.fromTo(chars,
+        { opacity:0, rotationX:-90, yPercent:50 },
+        { opacity:1, rotationX:0, yPercent:0, ease:'power1.inOut',
+          stagger:{ each:.03, from:0 },
+          scrollTrigger:{
+            trigger: chars[0].parentNode,
+            start:'center bottom+=40%',
+            end:'bottom center-=30%',
+            scrub:.9
+          } });
+    });
+
+    /* השם בקו-מתאר נע לאט יותר מהטקסט — נותן עומק לחלל שהיה ריק */
+    gsap.to('.whoami-bg', {
+      yPercent:-18, ease:'none',
+      scrollTrigger:{ trigger:'#whoami', start:'top bottom', end:'bottom top', scrub:true }
+    });
+  })();
 
 /* ═══ קיר תוצאות — עמודות של צילומי מסך שנסחפות כלפי מעלה ═══
    אותו מנגנון מרקיזה של פס הלוגואים, רק אנכי: מרחק מחזור אמיתי (offsetTop של העותק
@@ -1069,151 +1059,110 @@ gsap.utils.toArray('.sec').forEach((sec, i) => {
 }
 
 
-/* ════ 4 — מי אני: לשוניות אנכיות עם ניגון אוטומטי ════
-   פורט מקומפוננטת React (motion/react) ל-GSAP וניל. מה שנשמר מהמקור:
-   ניגון אוטומטי כל 5 שניות, מסילת התקדמות שמתמלאת, החלקה אנכית של התמונה
-   לפי כיוון המעבר, פתיחת התיאור של הפריט הפעיל, והשהיה בריחוף על הגלריה.
-   הקפיץ המקורי (stiffness 260 / damping 32) הוא ζ≈0.99 — כמעט ללא קפיצה —
-   ולכן power3.out הוא הקירוב הנכון ולא ease אלסטי.
-   שינוי מכוון אחד: בהשהיה הפס *נעצר* במקומו במקום להתאפס ל-0% כמו במקור;
-   איפוס בריחוף נראה כמו תקלה. */
+/* ════ 4 — איך אני יכול לעזור ════
+   Animmaster · Hover Effects/11 · RapidImageHoverMenu.
+   מקור: js/menuItem.js. המנגנון: בריחוף נוצר חלון תמונה שנצמד לסמן
+   ב-lerp (amt 0.08), ושני אלמנטים מקוננים נכנסים מכיוונים מנוגדים —
+   העוטף מ-±100% והתמונה מ-∓100%, מה שנותן את מעבר ה"וילון".
+   הסיבוב והבהירות ממופים ממהירות העכבר האופקית:
+   rotation = map(dist,0,100,0,±60) · brightness = map(dist,0,100,1,4).
+   הכיוון נגזר מ-mousePosCache.x − mousepos.x.
+   הוחלף: LocomotiveScroll → Lenis שכבר רץ בעמוד; ה-preloader ירד
+   (התמונות ממילא נטענות עצלן). ════ */
 (() => {
-  /* [מספר, כותרת, תיאור, קובץ, זום, מיקוד] —
-     בשש התמונות עומר יושב באותה פוזה ובאותו מקום בפריים, ורק המסכים משתנים.
-     לכן כל שירות מקבל *מסגור* משלו מתוך אותו קובץ (המקור 1920×1084 מוצג ב-718,
-     כלומר פי 2.67 מרחב) — כך נוצרת שונות קומפוזיציונית בלי לייצר תמונה אחת חדשה. */
   const SERVICES = [
-    ['01','עיצוב גרפי','בונה שפה חזותית שלמה — מיתוג, גרפיקות שיווקיות ופוסטרים ברמה מקצועית.','graphic-design.jpg',1.00,'50% 46%'],
-    ['02','עריכת וידיאו','עורך ומרכיב סרטונים בטיימליין מקצועי — מהקאט ועד קצב וסאונד.','video-editing.jpg',1.26,'60% 44%'],
-    ['03','יצירת תוכן AI','מייצר תוכן AI ריאליסטי ברמה קולנועית — מהתסריט ועד הסצנה המוגמרת.','ai-content.jpg',1.14,'30% 44%'],
-    ['04','עריכת פודקאסטים','עורך ומערבב פודקאסטים — סאונד נקי, קצב זורם, הפקה שלמה.','podcast-editing.jpg',1.20,'36% 52%'],
-    ['05','בניית אתרים','בונה אתרים מאפס — מהקוד ועד חוויית משתמש מלוטשת.','web-dev.jpg',1.32,'64% 42%'],
-    ['06','מערכות ואוטומציות AI','מתכנן ובונה מערכות ואוטומציות AI שחוסכות זמן ועובדות לבד.','automation.jpg',1.06,'44% 46%']
+    ['01','עיצוב גרפי','מיתוג, גרפיקות שיווקיות ופוסטרים שעובדים בפיד, לא רק בתיקייה.','graphic-design.jpg'],
+    ['02','עריכת וידיאו','קאט, קצב, סאונד וקולור שמחזיקים את הצופה עד הפריים האחרון.','video-editing.jpg'],
+    ['03','יצירת תוכן AI','מהתסריט ועד הסצנה המוגמרת — דמויות, מיקומים, ליפסינג וקריינות.','ai-content.jpg'],
+    ['04','עריכת פודקאסטים','סאונד נקי, קצב זורם, וקליפים מוכנים לרשתות — מקצה לקצה.','podcast-editing.jpg'],
+    ['05','בניית אתרים','מהקוד ועד חוויית גלילה מלוטשת שנראית ומרגישה יקרה.','web-dev.jpg'],
+    ['06','מערכות ואוטומציות AI','מערכות שחוסכות שעות אמיתיות וממשיכות לעבוד גם כשאתה לא.','automation.jpg']
   ];
-  const DURATION = 5000;
+  const menu = document.getElementById('svcMenu');
+  if (!menu) return;
+  const sec = document.getElementById('miShow');
+  if (TOUCH) sec.classList.add('is-touch');
 
-  const tabsBox = document.getElementById('vtTabs');
-  const stage   = document.getElementById('vtStage');
-  const gallery = document.getElementById('vtGallery');
-  if (!tabsBox || !stage || !gallery) return;
+  const clamp = (v,lo,hi) => Math.min(Math.max(v,lo),hi);
+  const map = (x,a,b,c,d) => c + (d-c) * ((x-a)/(b-a));
+  const lerp = (a,b,n) => (1-n)*a + n*b;
 
-  const tabs = SERVICES.map(([num, title, desc], i) => {
-    const b = document.createElement('button');
-    b.type = 'button'; b.className = 'vt-tab';
-    b.innerHTML = `<span class="vt-rail"><span class="vt-fill"></span></span>
-      <span class="vt-num">/${num}</span>
-      <span class="vt-txt"><span class="vt-title"></span><span class="vt-desc"><p></p></span></span>`;
-    b.querySelector('.vt-title').textContent = title;
-    b.querySelector('.vt-desc p').textContent = desc;
-    b.addEventListener('click', () => go(i, i > active ? 1 : -1));
-    tabsBox.appendChild(b);
-    return b;
+  let mouse = {x:0,y:0}, cache = {x:0,y:0}, dir = {x:0,y:0};
+  if (!TOUCH) addEventListener('mousemove', e => { mouse = {x:e.clientX,y:e.clientY}; });
+
+  SERVICES.forEach(([num,title,desc,file]) => {
+    const item = document.createElement('a');
+    item.className = 'svc-item';
+    const n = document.createElement('span'); n.className='n'; n.textContent = num;
+    const t = document.createElement('span'); t.className='t'; t.textContent = title;
+    const d = document.createElement('span'); d.className='d'; d.textContent = desc;
+    item.append(n,t,d);
+
+    if (TOUCH) {
+      const th = document.createElement('div'); th.className='svc-thumb';
+      const im = document.createElement('img');
+      im.src = 'images/mi-ani/' + file; im.alt = title;
+      im.loading = 'lazy'; im.decoding = 'async';
+      th.appendChild(im); item.appendChild(th);
+    } else {
+      const rev = document.createElement('div'); rev.className='svc-reveal';
+      const inr = document.createElement('div'); inr.className='svc-reveal__in';
+      const img = document.createElement('div'); img.className='svc-reveal__img';
+      img.style.backgroundImage = `url(images/mi-ani/${file})`;
+      inr.appendChild(img); rev.appendChild(inr); item.appendChild(rev);
+
+      /* מצב מונפש לכל שורה בנפרד. במקור זה אובייקט אחד משותף לכל
+         התפריט, מה שגורם לתמונה החדשה לרשת את המיקום של הקודמת
+         ולקפוץ; כאן לכל שורה יש משלה. */
+      const st = { tx:{p:0,c:0}, ty:{p:0,c:0}, rot:{p:0,c:0}, br:{p:1,c:1} };
+      let raf = null, first = true, bounds = null;
+
+      const render = () => {
+        raf = null;
+        if (first) bounds = { el:item.getBoundingClientRect(), rev:rev.getBoundingClientRect() };
+        const distX = clamp(Math.abs(cache.x - mouse.x), 0, 100);
+        dir = { x: cache.x - mouse.x, y: cache.y - mouse.y };
+        cache = { x:mouse.x, y:mouse.y };
+
+        st.tx.c  = Math.abs(mouse.x - bounds.el.left) - bounds.rev.width/2;
+        st.ty.c  = Math.abs(mouse.y - bounds.el.top)  - bounds.rev.height/2;
+        st.rot.c = first ? 0 : map(distX,0,100,0, dir.x < 0 ? 60 : -60);
+        st.br.c  = first ? 1 : map(distX,0,100,1,4);
+
+        for (const k of ['tx','ty','rot','br'])
+          st[k].p = first ? st[k].c : lerp(st[k].p, st[k].c, .08);
+
+        gsap.set(rev, { x:st.tx.p, y:st.ty.p, rotation:st.rot.p,
+                        filter:`brightness(${st.br.p})` });
+        first = false;
+        loop();
+      };
+      const loop = () => { if (!raf) raf = requestAnimationFrame(render); };
+
+      item.addEventListener('mouseenter', () => {
+        gsap.killTweensOf([inr,img]);
+        gsap.timeline({ onStart:() => { rev.style.opacity = 1; gsap.set(item,{zIndex:6}); } })
+          .to(inr, { duration:.2, ease:'sine.out', startAt:{ x: dir.x < 0 ? '-100%' : '100%' }, x:'0%' })
+          .to(img, { duration:.2, ease:'sine.out', startAt:{ x: dir.x < 0 ? '100%' : '-100%' }, x:'0%' }, 0);
+        first = true; loop();
+      });
+      item.addEventListener('mouseleave', () => {
+        if (raf) { cancelAnimationFrame(raf); raf = null; }
+        gsap.killTweensOf([inr,img]);
+        gsap.timeline({ onStart:() => gsap.set(item,{zIndex:1}),
+                        onComplete:() => gsap.set(rev,{opacity:0}) })
+          .to(inr, { duration:.2, ease:'sine.out', x: dir.x < 0 ? '100%' : '-100%' })
+          .to(img, { duration:.2, ease:'sine.out', x: dir.x < 0 ? '-100%' : '100%' }, 0);
+      });
+    }
+    menu.appendChild(item);
   });
 
-  const slides = SERVICES.map(([, title, , file, zoom, focus], i) => {
-    const d = document.createElement('div');
-    d.className = 'vt-slide';
-    const img = new Image();
-    img.src = 'images/mi-ani/' + file;
-    img.alt = title;
-    img.style.objectPosition = focus;
-    d._zoom = zoom;
-    /* בכוונה בלי loading="lazy": הניגון האוטומטי מגיע לכל שש התמונות תוך 30 שניות
-       ממילא, וכולן יחד ~2MB מול 62MB של הווידאו בהירו. עצלות כאן הייתה קונה כלום
-       ומסכנת שקופית ריקה במעבר — בדיוק הכישלון שכבר ראינו בגלריית העבודות. */
-    d.appendChild(img);
-    d.addEventListener('click', () => go(active + 1, 1));
-    stage.appendChild(d);
-    return d;
+  /* כניסת השורות — מדורגת, פעם אחת */
+  gsap.from('.svc-item', {
+    opacity:0, y:34, duration:.9, stagger:.07, ease:'power3.out',
+    scrollTrigger:{ trigger:sec, start:'top 78%' }
   });
-
-  const descOf = i => tabs[i].querySelector('.vt-desc');
-  const fillOf = i => tabs[i].querySelector('.vt-fill');
-
-  let active = 0, paused = false, fillTween = null, timer = null,
-      remaining = DURATION, startedAt = 0;
-
-  const imgOf = i => slides[i].querySelector('img');
-  gsap.set(slides, { autoAlpha:0 });
-  gsap.set(slides.map((_,i)=>imgOf(i)), { scale:(i)=>slides[i]._zoom });
-  gsap.set(slides[0], { autoAlpha:1 });
-  slides[0].classList.add('is-current');
-
-  /* נדידה איטית על השקופית הפעילה — נותנת חיים לפריים גם כשהדמות לא זזה */
-  let drift = null;
-  const startDrift = i => {
-    if (drift) drift.kill();
-    drift = gsap.fromTo(imgOf(i), { scale: slides[i]._zoom },
-      { scale: slides[i]._zoom * 1.07, duration: DURATION/1000 + 1.2, ease:'none' });
-  };
-
-  const armTimer = ms => {
-    clearTimeout(timer);
-    remaining = ms; startedAt = Date.now();
-    timer = setTimeout(() => go(active + 1, 1), ms);
-  };
-
-  /* מחזור חדש: מאפס את הפס ואת הזמן. אם אנחנו במצב מושהה — הטוין נוצר עצור,
-     כך שהמחזור ימשיך בדיוק מהרגע שבו העכבר עוזב. */
-  function restartCycle() {
-    if (fillTween) fillTween.kill();
-    gsap.set(fillOf(active), { scaleY:0 });
-    fillTween = gsap.to(fillOf(active), { scaleY:1, duration:DURATION/1000, ease:'none', paused });
-    if (paused) { clearTimeout(timer); remaining = DURATION; }
-    else armTimer(DURATION);
-  }
-
-  function pause() {
-    if (paused) return;
-    paused = true;
-    if (fillTween) fillTween.pause();
-    clearTimeout(timer);
-    remaining = Math.max(0, remaining - (Date.now() - startedAt));
-  }
-  function play() {
-    if (!paused) return;
-    paused = false;
-    if (fillTween) fillTween.resume();
-    armTimer(remaining);
-  }
-
-  function go(next, dir) {
-    next = (next % SERVICES.length + SERVICES.length) % SERVICES.length;
-    if (next === active) return;
-    const prev = active;
-    active = next;
-
-    /* מעבר צולב, לא החלקה. במקור זו הייתה החלקה אנכית, אבל כאן עומר יושב
-       באותו מקום בדיוק בכל שש התמונות — החלקה הזיזה את הדבר היחיד שלא משתנה,
-       והעין קלטה הבהוב במקום מעבר. בצולב הוא נשאר יציב והעולם סביבו מתחלף. */
-    slides[prev].classList.remove('is-current');
-    slides[next].classList.add('is-current');
-    gsap.to(slides[prev], { autoAlpha:0, duration:.55, ease:'power2.inOut' });
-    gsap.fromTo(slides[next], { autoAlpha:0 }, { autoAlpha:1, duration:.55, ease:'power2.inOut' });
-    startDrift(next);
-
-    tabs[prev].classList.remove('is-active');
-    tabs[next].classList.add('is-active');
-    gsap.to(descOf(prev), { height:0, opacity:0, duration:.3, ease:'power4.out' });
-    gsap.to(descOf(next), { height:'auto', opacity:1, duration:.35, ease:'power4.out' });
-    gsap.set(fillOf(prev), { scaleY:0 });
-
-    restartCycle();
-  }
-
-  gallery.addEventListener('mouseenter', pause);
-  gallery.addEventListener('mouseleave', play);
-  document.getElementById('vtNext').addEventListener('click', e => { e.stopPropagation(); go(active + 1, 1); });
-  document.getElementById('vtPrev').addEventListener('click', e => { e.stopPropagation(); go(active - 1, -1); });
-
-  tabs[0].classList.add('is-active');
-  gsap.set(descOf(0), { height:'auto', opacity:1 });
-  startDrift(0);
-  restartCycle();
-
-  /* לא מריצים את השעון כשהסקשן מחוץ למסך. fail-open: מתחיל פועל, ה-observer רק *עוצר*. */
-  new IntersectionObserver(es => { es[0].isIntersecting ? play() : pause(); }, { threshold:.12 })
-    .observe(document.getElementById('miShow'));
 })();
 
 /* ════ 5 — עבודות: גלריה אופקית מוצמדת (RTL → x חיובי) ════ */
