@@ -378,6 +378,42 @@
   .outro-in a.ghost{border:1px solid var(--line);color:var(--ink)}
   .outro-in a.ghost:hover{border-color:var(--gold);color:var(--gold)}
   .outro-foot{position:relative;z-index:2;display:flex;justify-content:space-between;padding:26px 4vw;font-size:13px;color:var(--dim);border-top:1px solid var(--line);flex-wrap:wrap;gap:8px}
+
+  /* ══════════ תיקוני מובייל בלבד ══════════ */
+  @media(max-width:900px){
+
+    /* 1 · נעילת הפאן האופקי.
+       ה-pin-spacer מוסיף ~10px רוחב, וכל האלמנטים ה-fixed (הסרגל, פס
+       ההתקדמות, הלייטבוקס) נמתחים על scrollWidth ולא על clientWidth —
+       ולכן מתחילים ב-‎-10px‎ ואפשר לגרור את העמוד הצידה.
+       `clip` ולא `hidden`: hidden היה הופך את html למכל-גלילה ושובר את
+       ההצמדה, clip רק חותך. */
+    html{overflow-x:clip}
+    body{overflow-x:clip}
+
+    /* 2 · הכפתור "בואו נדבר" יושב בדיוק על פאנל התפריט —
+       שניהם ב-top:16-20px משמאל. בדסקטופ התפריט מוסתר ולכן זה לא נראה;
+       במובייל קיבלנו מסגרת קרם מסביב לכפתור הזהב. */
+    .nav .side{display:none}
+
+    /* 3 · עבודות נבחרות: רשת אנכית במקום גלילה אופקית.
+       גלילה אופקית בתוך עמוד שנגלל אנכית היא מלכודת בטלפון — האצבע לא
+       יודעת איזה ציר היא מזיזה. כאן: שתי עמודות, גלילה אחת, בלי pin. */
+    #scWorks .works-pin,
+    #scWorks .works-pin.is-swipe{overflow:visible;padding-block:6vh}
+    #scWorks .works-track{display:grid;grid-template-columns:1fr 1fr;
+      gap:clamp(8px,2.4vw,14px);width:auto;padding-inline:4vw;
+      transform:none !important;will-change:auto}
+    #scWorks .wk{width:auto;aspect-ratio:9/14;flex-shrink:1;scroll-snap-align:none}
+    #scWorks .works-lead{grid-column:1/-1;font-size:clamp(26px,8vw,40px);
+      text-align:start;padding-bottom:2vh}
+  }
+  /* שתי עמודות עד למטה. עמודה אחת ב-375px נותנת כרטיס ענק אחד למסך
+     ומחייבת גלילה אינסופית — שתי עמודות נותנות ארבעה כרטיסים במבט. */
+  @media(max-width:400px){
+    #scWorks .works-track{gap:7px;padding-inline:3vw}
+    #scWorks .wk{aspect-ratio:9/13}
+  }
 </style>
 </head>
 <body>
@@ -1220,7 +1256,10 @@ gsap.utils.toArray('.sec').forEach((sec, i) => {
 /* ════ 5 — עבודות: גלריה אופקית מוצמדת (RTL → x חיובי) ════ */
 {
   const track = document.getElementById('worksTrack');
-  if (PIN_OK) {
+  /* !TOUCH ולא PIN_OK: הדגל ?pins=1 מחזיר את ההצמדה *להירו* בלבד.
+     בגלריה, גלילה אופקית בתוך עמוד שנגלל אנכית היא מלכודת בטלפון —
+     האצבע לא יודעת איזה ציר היא מזיזה. במגע היא רשת אנכית (ראה CSS). */
+  if (!TOUCH) {
     const dist = () => track.scrollWidth - document.documentElement.clientWidth + 80;
     gsap.to(track, { x:() => dist(), ease:'none',
       scrollTrigger:{ trigger:'#worksPin', start:'top 12%', end:() => '+=' + dist(), pin:true,
@@ -1229,7 +1268,8 @@ gsap.utils.toArray('.sec').forEach((sec, i) => {
     /* במגע: גלילה אופקית נייטיבית במקום הצמדה. זה גם מבטל את ה-pin וגם
        נותן חוויה טובה יותר בטלפון — מחליקים את הגלריה באצבע במקום
        שהיא תזוז לבד תוך כדי גלילה אנכית. */
-    document.getElementById('worksPin').classList.add('is-swipe');
+    /* אין יותר is-swipe — הסקשן הופך לרשת אנכית ב-CSS, בלי שום
+       גלילה אופקית. */
   }
 }
 
