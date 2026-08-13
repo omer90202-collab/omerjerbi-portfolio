@@ -4,11 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>עומר ג'רבי — מומחה תוכן AI · תיק עבודות</title>
-<meta name="description" content="תוכן AI למותגים הגדולים בישראל — וידאו שנראה כמו הפקה שלמה, בלי הפקה. וידאו, גרפיקה, אתרים ואוטומציות.">
+<meta name="description" content="מומחה AI. וידאו, גרפיקה, אתרים ואוטומציות — למותגים המובילים במדינה.">
 <link rel="icon" href="images/favicon.png" type="image/png">
 <meta property="og:type" content="website">
-<meta property="og:title" content="עומר ג'רבי — מומחה תוכן AI">
-<meta property="og:description" content="הפקה שלמה. בלי הפקה.">
+<meta property="og:title" content="עומר ג'רבי — מומחה AI">
+<meta property="og:description" content="וידאו, גרפיקה, אתרים ואוטומציות — למותגים המובילים במדינה.">
 <meta property="og:image" content="images/og.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -106,9 +106,23 @@
   .hero-textwrap::before{content:"";position:absolute;inset:-15%;background:radial-gradient(closest-side,rgba(6,5,4,.75),transparent 68%)}
   /* הלוגו החליף את הטקסט. הרוחב נקבע ביחס למסך (הלוגו ביחס 3.37:1), ו-drop-shadow
      מחליף את ה-text-shadow שנתן לטקסט קריאוּת מעל קיר הווידאו. */
-  .hero-title{position:relative;line-height:0}
+  .hero-in{position:relative}
+  /* line-height:0 היה נחוץ כשה-h1 הכיל רק את מסכת הלוגו. עכשיו יש בו
+     גם טקסט, אז הוא חוזר לערך רגיל. */
+  .hero-title{position:relative;line-height:1}
+  /* המשפט הוא חלק מה-h1 ולא כותרת נפרדת: קודם ה-h1 הכיל רק מסכת לוגו,
+     כלומר גוגל וקורא-מסך קיבלו כותרת ראשית *ריקה*.
+     הגודל מוגבל גם ב-vh ולא רק ב-vw — במסך רחב-ונמוך clamp על vw בלבד
+     דוחף את שורת המשנה ואת "גלול" אל מתחת לקיפול. */
+  .hero-title .claim{display:block;margin-top:clamp(14px,2.2vh,26px);
+    font-weight:900;letter-spacing:-.03em;line-height:1;color:var(--ink);
+    font-size:clamp(30px,min(6vw,7vh),72px);text-shadow:0 2px 30px rgba(6,5,4,.9)}
+  .hero-sub{margin-top:clamp(10px,1.6vh,18px);color:var(--ink);opacity:.82;
+    max-width:30ch;margin-inline:auto;line-height:1.5;
+    font-size:clamp(13px,min(1.55vw,2vh),19px);text-shadow:0 2px 22px rgba(6,5,4,.95)}
+  @media(max-width:600px){.hero-sub{max-width:24ch}}
   /* גם כאן מסכה ולא <img>, כדי שהצבע ייקבע ב-CSS מאותו קובץ יחיד */
-  .hero-title .mark{width:clamp(184px,33.6vw,496px);aspect-ratio:1400/416;
+  .hero-title .mark{width:clamp(150px,min(27vw,30vh),400px);aspect-ratio:1400/416;
     background-color:var(--gold);display:block;margin-inline:auto;
     -webkit-mask:url(images/logo-jerbi-white.png) no-repeat center/contain;
     mask:url(images/logo-jerbi-white.png) no-repeat center/contain}
@@ -421,8 +435,12 @@
     <div class="wtile" data-full="videos/raw-neviot.mp4" data-label="נביעות"><video poster="images/posters/raw-neviot.jpg" src="videos/loops/raw-neviot.mp4" muted loop playsinline preload="metadata"></video></div>
   </div>
   <div class="hero-textwrap">
-    <div>
-      <h1 class="hero-title"><span class="mark" role="img" aria-label="jerbi. — עומר ג'רבי"></span></h1>
+    <div class="hero-in">
+      <h1 class="hero-title">
+        <span class="mark" role="img" aria-label="jerbi."></span>
+        <span class="claim">מומחה AI.</span>
+      </h1>
+      <p class="hero-sub">וידאו, גרפיקה, אתרים ואוטומציות — למותגים המובילים במדינה.</p>
     </div>
   </div>
   <div class="hero-hint">גלול</div>
