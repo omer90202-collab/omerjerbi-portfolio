@@ -117,6 +117,15 @@
   .hero-title .claim{display:block;margin-top:clamp(14px,2.2vh,26px);
     font-weight:900;letter-spacing:-.03em;line-height:1;color:var(--ink);
     font-size:clamp(30px,min(6vw,7vh),72px);text-shadow:0 2px 30px rgba(6,5,4,.9)}
+  /* ל-.hero-textwrap יש pointer-events:none כדי שהקליקים יעברו לאריחי
+     הווידאו שמתחת. הכפתור חייב להחזיר לעצמו auto, אחרת הוא נראה לחיץ
+     ולא מגיב. */
+  .hero-cta{display:inline-flex;align-items:center;gap:9px;pointer-events:auto;
+    margin-top:clamp(16px,2.4vh,28px);background:var(--gold);color:#141005;
+    font-weight:900;font-size:clamp(13px,min(1.1vw,1.7vh),15.5px);
+    padding:clamp(12px,1.5vh,16px) clamp(24px,2.4vw,34px);border-radius:99px;
+    transition:transform .25s,box-shadow .3s}
+  .hero-cta:hover{transform:translateY(-3px);box-shadow:0 16px 46px rgba(253,191,45,.4)}
   .hero-sub{margin-top:clamp(10px,1.6vh,18px);color:var(--ink);opacity:.82;
     max-width:30ch;margin-inline:auto;line-height:1.5;
     font-size:clamp(13px,min(1.55vw,2vh),19px);text-shadow:0 2px 22px rgba(6,5,4,.95)}
@@ -214,8 +223,8 @@
     font-weight:700;line-height:1.3;letter-spacing:-.02em;position:relative;z-index:2;
     font-size:clamp(26px,3.9vw,54px)}
   /* perspective יושב על העוטף של כל מילה — ראה fx6 */
-  .whoami p .w{display:inline-block;perspective:2000px}
-  .whoami p .c{display:inline-block;will-change:transform,opacity}
+  /* אין יותר perspective ואין .c — הפיצול הוא ברמת מילה בלבד */
+  .whoami p .w{display:inline-block;opacity:.16;transition:opacity .12s linear}
   @media(max-width:820px){
     .whoami{min-height:auto;padding-block:clamp(56px,9vh,90px)}
     .whoami-bg{font-size:26vw}
@@ -441,6 +450,7 @@
         <span class="claim">מומחה AI.</span>
       </h1>
       <p class="hero-sub">וידאו, גרפיקה, אתרים ואוטומציות — למותגים המובילים במדינה.</p>
+      <a class="hero-cta" href="https://ig.me/m/omerjerbi" target="_blank" rel="noopener">בואו נדבר ←</a>
     </div>
   </div>
   <div class="hero-hint">גלול</div>
@@ -555,7 +565,22 @@ gsap.registerPlugin(ScrollTrigger);
    מול pin, השילוב הבעייתי ביותר ב-Safari. במגע מוותרים על ההצמדה. */
 const TOUCH = !window.matchMedia('(hover:hover) and (pointer:fine)').matches;
 
+/* ── ניסוי: החזרת שתי הסצנות המוצמדות למגע ──
+   ההצמדה כובתה במגע כי ScrollTrigger מצמיד עם position:fixed, וספארי לא
+   מצייר מחדש אלמנטים קבועים בזמן גלילת אינרציה — מכאן המסך השחור.
+   pinType:'transform' מצמיד ב-transform במקום ב-fixed ובכך עוקף את הבאג
+   בשורש. לא ניתן היה לאמת זאת כאן (אין Xcode → אין סימולטור iOS), ולכן
+   זה מאחורי דגל: רק ‎?pins=1‎ מפעיל. כשעומר יאשר מהאייפון — מוחקים את
+   הדגל וזו ברירת המחדל.
+   גם smoothTouch נדלק עם הדגל: בלי גלילה מנוהלת אין מה שיסנכרן את
+   ה-transform מול האינרציה הנייטיבית. */
+const PIN_TEST = new URLSearchParams(location.search).has('pins');
+const PIN_OK   = !TOUCH || PIN_TEST;
+
 const lenis = new Lenis({ lerp:.085 });
+/* אחרי יצירת lenis ולא לפניה — const נמצא ב-TDZ עד השורה שלו, וקריאה
+   מוקדמת זורקת ReferenceError שמפילה את *כל* הסקריפט. */
+if (PIN_TEST && TOUCH) lenis.options.smoothTouch = true;
 
 /* גלילה רכה גם מקישורי הניווט העליון (דסקטופ), כמו מקישורי התפריט הצף */
 document.querySelectorAll('.nav-links a[href^="#"]').forEach(a => {
@@ -680,9 +705,10 @@ document.querySelectorAll('.wk:not(.more)').forEach(t => t.addEventListener('cli
     opacity:0, y:26, duration:1, ease:'power3.out', stagger:.1, delay:.35
   });
 
-  if (!TOUCH) {
+  if (PIN_OK) {
     gsap.timeline({
-      scrollTrigger:{ trigger:'#scHero', start:'top top', end:'+=70%', pin:true, scrub:.6 }
+      scrollTrigger:{ trigger:'#scHero', start:'top top', end:'+=70%', pin:true,
+        pinType: TOUCH ? 'transform' : 'fixed', scrub:.6 }
     })
     .to('#wallGrid', { scale:1.08, ease:'none', duration:1 }, 0)
     .to('.hero-textwrap', { opacity:0, scale:.92, ease:'none', duration:.6 }, 0)
@@ -793,16 +819,17 @@ gsap.utils.toArray('.sec').forEach((sec, i) => {
   });
   new IntersectionObserver(es => { logosVisible = es[0].isIntersecting; }, { rootMargin:'200px' })
     .observe(document.getElementById('scLogos'));
-}
-  /* ═══ "מי אני" — Animmaster · Text Animations/5 · אפקט 6 ═══
-     מקור: js/index.js, fx6Titles. המנגנון: perspective:2000 על עוטף
-     *המילה*, והתווים שבתוכה מסתובבים rotationX ‎-90°→0 יחד עם
-     yPercent ‎50→0, ב-stagger של 0.03 בתוך כל מילה ועם scrub 0.9 —
-     כך שכל מילה "מתהפכת" למקומה בזמן הגלילה.
-     הוחלף: Splitting() ← מפצל ידני. Splitting מפזר מילים עבריות
-     לשורות שגויות; כאן כל מילה עטופה ב-.w וכל תו ב-.c לפי סדר
-     המסמך, והרווחים נשארים צמתי-טקסט חשופים כדי שיישמרו כנקודות
-     שבירה תקינות. */
+  }
+
+  /* ═══ "מי אני" — צביעה מילה-אחר-מילה ═══
+     כאן ישב קודם fx6 מ-Animmaster (Text Animations/5): perspective 2000
+     והתווים מסתובבים rotationX ‎-90°→0. זה אפקט שנבנה ל**כותרות קצרות**,
+     ועל פסקה של 91 תווים הוא נקרא כתקלה — באמצע הגלילה חצי האותיות
+     שקופות ומסובבות בזוויות שונות מעל קו-המתאר של JERBI.
+     כאן: המילים נצבעות לפי מיקום הגלילה, בלי סיבוב ובלי perspective.
+     שקט, קריא, ועדיין חי.
+     הפיצול ידני ולא SplitText — SplitText מפזר מילים עבריות לשורות
+     שגויות, והרווחים נשארים צמתי-טקסט כדי שיישמרו כנקודות שבירה. */
   (() => {
     const copy = document.getElementById('whoCopy');
     if (!copy) return;
@@ -814,33 +841,40 @@ gsap.utils.toArray('.sec').forEach((sec, i) => {
       text.split(/(\s+)/).forEach(part => {
         if (!part) return;
         if (/^\s+$/.test(part)) { copy.appendChild(document.createTextNode(part)); return; }
-        const w = document.createElement('span'); w.className = 'w';
-        const cs = [...part].map(ch => {
-          const c = document.createElement('span'); c.className = 'c';
-          c.textContent = ch; w.appendChild(c); return c;
-        });
-        copy.appendChild(w);
-        words.push(cs);
+        const w = document.createElement('span');
+        w.className = 'w'; w.textContent = part;
+        copy.appendChild(w); words.push(w);
       });
     }
 
-    words.forEach(chars => {
-      gsap.fromTo(chars,
-        { opacity:0, rotationX:-90, yPercent:50 },
-        { opacity:1, rotationX:0, yPercent:0, ease:'power1.inOut',
-          stagger:{ each:.03, from:0 },
-          scrollTrigger:{
-            trigger: chars[0].parentNode,
-            start:'center bottom+=40%',
-            end:'bottom center-=30%',
-            scrub:.9
-          } });
+    /* המיקום נמדד פעם אחת מ-offsetTop ולא מ-getBoundingClientRect בכל
+       פריים — קריאת פריסה בלולאה היא בדיוק מה שמקרטע. */
+    let top = 0, h = 0;
+    const measure = () => {
+      let el = copy, y = 0;
+      while (el) { y += el.offsetTop; el = el.offsetParent; }
+      top = y; h = copy.offsetHeight;
+    };
+    measure();
+    addEventListener('resize', measure);
+    addEventListener('load', measure);
+
+    let lastP = -1;
+    gsap.ticker.add(() => {
+      const vh = innerHeight;
+      const p = Math.min(1, Math.max(0, (vh * .82 - (top - scrollY)) / (vh * .5 + h)));
+      if (Math.abs(p - lastP) < .004) return;
+      lastP = p;
+      const upto = p * words.length * 1.2;
+      for (let i = 0; i < words.length; i++) {
+        words[i].style.opacity = Math.min(1, Math.max(.16, upto - i));
+      }
     });
 
     /* השם בקו-מתאר נע לאט יותר מהטקסט — נותן עומק לחלל שהיה ריק */
     gsap.to('.whoami-bg', {
-      yPercent:-18, ease:'none',
-      scrollTrigger:{ trigger:'#whoami', start:'top bottom', end:'bottom top', scrub:true }
+      yPercent: -18, ease: 'none',
+      scrollTrigger: { trigger: '#whoami', start: 'top bottom', end: 'bottom top', scrub: true }
     });
   })();
 
@@ -1186,10 +1220,11 @@ gsap.utils.toArray('.sec').forEach((sec, i) => {
 /* ════ 5 — עבודות: גלריה אופקית מוצמדת (RTL → x חיובי) ════ */
 {
   const track = document.getElementById('worksTrack');
-  if (!TOUCH) {
+  if (PIN_OK) {
     const dist = () => track.scrollWidth - document.documentElement.clientWidth + 80;
     gsap.to(track, { x:() => dist(), ease:'none',
-      scrollTrigger:{ trigger:'#worksPin', start:'top 12%', end:() => '+=' + dist(), pin:true, scrub:1, invalidateOnRefresh:true } });
+      scrollTrigger:{ trigger:'#worksPin', start:'top 12%', end:() => '+=' + dist(), pin:true,
+        pinType: TOUCH ? 'transform' : 'fixed', scrub:1, invalidateOnRefresh:true } });
   } else {
     /* במגע: גלילה אופקית נייטיבית במקום הצמדה. זה גם מבטל את ה-pin וגם
        נותן חוויה טובה יותר בטלפון — מחליקים את הגלריה באצבע במקום
