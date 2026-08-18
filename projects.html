@@ -34,7 +34,13 @@
   img,video{display:block;width:100%;object-fit:cover}
   a{color:inherit;text-decoration:none}
 
+  /* רעלה מאחורי ה-header — הוא צף מעל רשת של 50 סרטונים ותמונות,
+     וחלקן בהירות. שכבה נפרדת ולא background, כדי שתדהה לשקוף. */
   header{position:fixed;inset-inline:0;top:0;z-index:90}
+  header::before{content:"";position:absolute;inset-inline:0;top:0;height:132px;
+    pointer-events:none;z-index:-1;
+    background:linear-gradient(to bottom,
+      rgba(6,5,4,.88) 0%, rgba(6,5,4,.66) 42%, rgba(6,5,4,.28) 74%, transparent 100%)}
   .nav{display:flex;justify-content:space-between;align-items:center;padding:22px 4vw;font-size:14px;letter-spacing:.06em}
   .nav .logo{display:block;line-height:0}
   /* הלוגו מצויר כמסכה על ריבוע צבע — הדף כולו כהה, ולכן הלוגו זהב תמיד. */
