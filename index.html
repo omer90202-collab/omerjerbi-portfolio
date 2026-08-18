@@ -344,24 +344,36 @@
   @media(max-width:960px){.web-grid{grid-template-columns:repeat(2,1fr)}}
   @media(max-width:600px){.web-grid{grid-template-columns:1fr}}
 
-  /* ════ 5 — עבודות נבחרות: גלריה אופקית מוצמדת ════ */
-  .works-pin{overflow:hidden;padding-block:10vh}
-  .works-pin.is-swipe{overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;
-    scroll-snap-type:x proximity;scrollbar-width:none}
-  .works-pin.is-swipe::-webkit-scrollbar{display:none}
-  .works-pin.is-swipe .works-track{will-change:auto;transform:none!important}
-  .works-pin.is-swipe .wk{scroll-snap-align:center}
-  .works-track{display:flex;gap:20px;width:max-content;will-change:transform;padding-inline:5vw;align-items:center}
-  .works-lead{font-weight:900;font-size:clamp(60px,10vw,150px);color:var(--gold);white-space:nowrap;padding-inline-end:2vw}
-  .wk{position:relative;width:clamp(230px,24vw,340px);aspect-ratio:9/16;border-radius:16px;overflow:hidden;flex-shrink:0;cursor:pointer;border:1px solid var(--line)}
-  .wk video{transition:transform .6s ease}
-  .wk:hover video{transform:scale(1.06)}
-  .wk::after{content:"";position:absolute;inset:0;background:linear-gradient(transparent 58%,rgba(0,0,0,.62));pointer-events:none}
-  .wk b{position:absolute;bottom:14px;right:16px;left:16px;z-index:2;font-size:15px;font-weight:500;text-shadow:0 2px 12px rgba(0,0,0,.85)}
-  .wk.more{display:flex;align-items:center;justify-content:center;background:transparent;border:1px dashed var(--line)}
-  .wk.more:hover{border-color:var(--gold)}
-  .wk.more span{font-weight:900;font-size:clamp(20px,2.2vw,30px);text-align:center;line-height:1.3}
-  .wk.more:hover span{color:var(--gold)}
+  /* ════ 5 — עבודות: קיר מהעומק ════ */
+  /* ═══ עבודות · קיר מהעומק (מאתר 05) ═══
+     כל אריח עף פנימה מזווית משלו: הזווית בין מרכזו למרכז הגריד
+     קובעת x/y/z ו-rotateX/rotateY, כך שהתנועה מתכנסת למרכז. */
+  .wall{height:100vh;position:relative;display:grid;place-items:center;
+    overflow:hidden;padding:0 clamp(12px,3vw,44px)}
+  /* pointer-events:none — הכותרת יושבת מעל האריחים; בלי זה היא בולעת
+     את הקליקים על הטור הימני ושוברת את הלייטבוקס. הקישור מחזיר auto. */
+  .wall-cap{position:absolute;z-index:20;pointer-events:none;
+    top:clamp(76px,11vh,120px);inset-inline-start:clamp(12px,3vw,44px);
+    max-width:min(40ch,50vw);text-shadow:0 2px 30px rgba(6,5,4,.92)}
+  .wall-cap small{display:block;color:var(--gold);letter-spacing:.4em;font-size:10.5px}
+  .wall-cap h2{margin-top:10px;font-size:clamp(24px,4.6vw,74px);font-weight:900;
+    letter-spacing:-.035em;line-height:.98}
+  .wall-more{display:inline-block;pointer-events:auto;margin-top:clamp(14px,2.4vh,26px);
+    font-size:14px;font-weight:700;color:var(--ink);border-bottom:1px solid var(--line);
+    padding-bottom:3px;transition:color .25s,border-color .25s}
+  .wall-more:hover{color:var(--gold);border-color:var(--gold)}
+  .grid{display:grid;width:100%;max-width:1500px;gap:clamp(6px,.9vw,14px)}
+  .gi{position:relative;overflow:hidden;border-radius:6px;background:#141210;
+    will-change:transform;cursor:pointer}
+  .gi video{width:100%;height:100%;object-fit:cover;display:block}
+  .gi::after{content:"";position:absolute;inset:0;
+    background:linear-gradient(transparent 55%,rgba(0,0,0,.66));
+    opacity:0;transition:opacity .3s;pointer-events:none}
+  .gi b{position:absolute;bottom:10px;right:12px;left:12px;z-index:2;
+    font-size:13px;font-weight:500;opacity:0;transition:opacity .3s;
+    text-shadow:0 2px 12px rgba(0,0,0,.9);pointer-events:none}
+  .gi:hover::after,.gi:hover b{opacity:1}
+  .g-deep{grid-template-columns:repeat(4,1fr);grid-template-rows:repeat(3,1fr);height:72vh}
 
   /* ════ 7 — אאוטרו ════ */
   .sc-outro{min-height:92vh;display:flex;flex-direction:column;justify-content:center;position:relative}
@@ -399,20 +411,14 @@
     /* 3 · עבודות נבחרות: רשת אנכית במקום גלילה אופקית.
        גלילה אופקית בתוך עמוד שנגלל אנכית היא מלכודת בטלפון — האצבע לא
        יודעת איזה ציר היא מזיזה. כאן: שתי עמודות, גלילה אחת, בלי pin. */
-    #scWorks .works-pin,
-    #scWorks .works-pin.is-swipe{overflow:visible;padding-block:6vh}
-    #scWorks .works-track{display:grid;grid-template-columns:1fr 1fr;
-      gap:clamp(8px,2.4vw,14px);width:auto;padding-inline:4vw;
-      transform:none !important;will-change:auto}
-    #scWorks .wk{width:auto;aspect-ratio:9/14;flex-shrink:1;scroll-snap-align:none}
-    #scWorks .works-lead{grid-column:1/-1;font-size:clamp(26px,8vw,40px);
-      text-align:start;padding-bottom:2vh}
-  }
-  /* שתי עמודות עד למטה. עמודה אחת ב-375px נותנת כרטיס ענק אחד למסך
-     ומחייבת גלילה אינסופית — שתי עמודות נותנות ארבעה כרטיסים במבט. */
-  @media(max-width:400px){
-    #scWorks .works-track{gap:7px;padding-inline:3vw}
-    #scWorks .wk{aspect-ratio:9/13}
+    /* בטלפון הקיר לא מוצמד (ראה JS) — רשת אנכית 2 עמודות שנגללת רגיל */
+    #scWorks.wall{height:auto;padding-block:8vh}
+    #scWorks .wall-cap{position:static;max-width:none;padding-bottom:3vh}
+    #scWorks .wall-cap h2{font-size:clamp(26px,8vw,44px)}
+    #scWorks .g-deep{grid-template-columns:1fr 1fr;grid-template-rows:none;
+      grid-auto-rows:minmax(0,1fr);height:auto;gap:clamp(6px,2vw,12px)}
+    #scWorks .gi{aspect-ratio:16/10}
+    #scWorks .gi b,#scWorks .gi::after{opacity:1}
   }
 </style>
 </head>
@@ -528,19 +534,25 @@
 </section>
 
 <!-- ═ 5 ═ עבודות נבחרות: גלריה אופקית מוצמדת -->
-<section class="sec" id="scWorks">
-  <div class="works-pin" id="worksPin">
-    <div class="works-track" id="worksTrack">
-      <div class="works-lead">עבודות ←</div>
-      <div class="wk" data-full="videos/eyal-golan.mp4" data-label="אייל גולן"><video poster="images/posters/eyal-golan.jpg" src="videos/loops/eyal-golan.mp4" muted loop playsinline preload="auto"></video><b>אייל גולן</b></div>
-      <div class="wk" data-full="videos/survivor.mp4" data-label="הישרדות"><video poster="images/posters/survivor.jpg" src="videos/loops/survivor.mp4" muted loop playsinline preload="auto"></video><b>הישרדות</b></div>
-      <div class="wk" data-label="קרב תל חי" data-full="videos/telhai-en.mp4"><video poster="images/posters/telhai-en-loop.jpg" src="videos/loops/telhai-en-loop.mp4" muted loop playsinline preload="auto"></video><b>קרב תל חי</b></div>
-      <div class="wk" data-full="videos/mbappe.mp4" data-label="קמפיין כדורגל"><video poster="images/posters/mbappe.jpg" src="videos/loops/mbappe.mp4" muted loop playsinline preload="auto"></video><b>קמפיין כדורגל</b></div>
-      <div class="wk" data-full="videos/ginton-purim.mp4" data-label="ג'ין טוניק — פורים"><video poster="images/posters/ginton-purim.jpg" src="videos/loops/ginton-purim.mp4" muted loop playsinline preload="auto"></video><b>ג'ין טוניק · פורים</b></div>
-      <div class="wk" data-full="videos/beitar-puppets.mp4" data-label="בית״ר ירושלים"><video poster="images/posters/beitar-puppets.jpg" src="videos/loops/beitar-puppets.mp4" muted loop playsinline preload="auto"></video><b>בית״ר ירושלים</b></div>
-      <div class="wk" data-full="videos/raw-arak.mp4" data-label="ערק נוח"><video poster="images/posters/raw-arak.jpg" src="videos/loops/raw-arak.mp4" muted loop playsinline preload="auto"></video><b>ערק נוח</b></div>
-      <a class="wk more" href="projects.html"><span>לכל<br>הפרויקטים ←</span></a>
-    </div>
+<section class="sec wall" id="scWorks">
+  <div class="wall-cap">
+    <small>עבודות</small>
+    <h2>מפרסומת מוצר<br>עד סרט בכנסת.</h2>
+    <a class="wall-more" href="projects.html">לכל הפרויקטים ←</a>
+  </div>
+  <div class="grid g-deep" id="worksGrid">
+      <div class="gi" data-full="videos/telhai-en.mp4" data-label="קרב תל חי"><video poster="images/posters/telhai-en-loop.jpg" src="videos/loops/telhai-en-loop.mp4" muted loop playsinline preload="none"></video><b>קרב תל חי</b></div>
+      <div class="gi" data-full="videos/save1080.mp4" data-label="האח הגדול"><video poster="images/posters/save1080.jpg" src="videos/loops/save1080.mp4" muted loop playsinline preload="none"></video><b>האח הגדול</b></div>
+      <div class="gi" data-full="videos/eyal-golan.mp4" data-label="אייל גולן"><video poster="images/posters/eyal-golan.jpg" src="videos/loops/eyal-golan.mp4" muted loop playsinline preload="none"></video><b>אייל גולן</b></div>
+      <div class="gi" data-full="videos/survivor.mp4" data-label="הישרדות"><video poster="images/posters/survivor.jpg" src="videos/loops/survivor.mp4" muted loop playsinline preload="none"></video><b>הישרדות</b></div>
+      <div class="gi" data-full="videos/beitar-puppets.mp4" data-label="בית״ר ירושלים"><video poster="images/posters/beitar-puppets.jpg" src="videos/loops/beitar-puppets.mp4" muted loop playsinline preload="none"></video><b>בית״ר ירושלים</b></div>
+      <div class="gi" data-full="videos/mbappe.mp4" data-label="קמפיין כדורגל"><video poster="images/posters/mbappe.jpg" src="videos/loops/mbappe.mp4" muted loop playsinline preload="none"></video><b>קמפיין כדורגל</b></div>
+      <div class="gi" data-full="videos/noir-bar.mp4" data-label="בר נואר"><video poster="images/posters/noir-bar.jpg" src="videos/loops/noir-bar.mp4" muted loop playsinline preload="none"></video><b>בר נואר</b></div>
+      <div class="gi" data-full="videos/raw-magnum.mp4" data-label="מגנום"><video poster="images/posters/raw-magnum.jpg" src="videos/loops/raw-magnum.mp4" muted loop playsinline preload="none"></video><b>מגנום</b></div>
+      <div class="gi" data-full="videos/raw-arak.mp4" data-label="ערק נוח"><video poster="images/posters/raw-arak.jpg" src="videos/loops/raw-arak.mp4" muted loop playsinline preload="none"></video><b>ערק נוח</b></div>
+      <div class="gi" data-full="videos/raw-neviot.mp4" data-label="נביעות"><video poster="images/posters/raw-neviot.jpg" src="videos/loops/raw-neviot.mp4" muted loop playsinline preload="none"></video><b>נביעות</b></div>
+      <div class="gi" data-full="videos/heels.mp4" data-label="נעליים"><video poster="images/posters/heels.jpg" src="videos/loops/heels.mp4" muted loop playsinline preload="none"></video><b>נעליים</b></div>
+      <div class="gi" data-full="videos/ginton-purim.mp4" data-label="ג׳ין טוניק · פורים"><video poster="images/posters/ginton-purim.jpg" src="videos/loops/ginton-purim.mp4" muted loop playsinline preload="none"></video><b>ג׳ין טוניק · פורים</b></div>
   </div>
 </section>
 
@@ -693,7 +705,7 @@ document.getElementById('lbClose').addEventListener('click', closeLB);
 lightbox.addEventListener('click', e => { if (e.target === lightbox) closeLB(); });
 addEventListener('keydown', e => { if (e.key === 'Escape') closeLB(); });
 
-document.querySelectorAll('.wk:not(.more)').forEach(t => t.addEventListener('click', () => openLightboxVideo(t.querySelector('video'), t.dataset.label || '', t.dataset.full)));
+document.querySelectorAll('.gi[data-full]').forEach(t => t.addEventListener('click', () => openLightboxVideo(t.querySelector('video'), t.dataset.label || '', t.dataset.full)));
 
 /* ── תפריט: פאנל שנפתח מכפתור (מבוסס Animmaster Navigation Menus #2) ── */
 {
@@ -781,7 +793,7 @@ document.querySelectorAll('.wk:not(.more)').forEach(t => t.addEventListener('cli
 gsap.utils.toArray('.sec').forEach((sec, i) => {
   if (i === 0) return; /* להירו יש כניסה משלו (קיר הוידאו) */
   if (sec.id === 'scWorks') {
-    /* עבודות נבחרות מכיל pin מוצמד (#worksPin) — אסור לתת ל-scWorks עצמו transform כלשהו (גם scale/y/rotationX בלבד, לא רק CSS perspective),
+    /* קיר העבודות מצמיד את #scWorks עצמו — אסור לתת לו transform כלשהו (גם scale/y/rotationX בלבד, לא רק CSS perspective),
        כי transform לא-none על אב הופך אותו ל-containing block לילד ה-position:fixed שלו וישבור את ה-pin (בדיוק כמו שקרה עם body{perspective}).
        לכן כאן רק opacity — לא נוגע ב-transform. */
     gsap.fromTo(sec, { opacity:.35 }, { opacity:1, ease:'power3.out',
@@ -1253,24 +1265,52 @@ gsap.utils.toArray('.sec').forEach((sec, i) => {
   });
 })();
 
-/* ════ 5 — עבודות: גלריה אופקית מוצמדת (RTL → x חיובי) ════ */
+/* ════ 5 — עבודות: קיר מהעומק (מאתר 05 · Grid Animations/7 תבנית ג') ════
+   לכל אריח מחושבת הזווית בין מרכזו למרכז הגריד, ומתוכה x/y/z ו-
+   rotateX/rotateY פרופורציונליים למרחק — כך התנועה מתכנסת פנימה.
+   ⚠️ המקור מדד מול מרכז ה-*חלון*; כשהסקשן עמוק בעמוד זה נתן מרחקים של
+   אלפי פיקסלים → z≈15,000 ו-autoAlpha 0, כלומר גריד בלתי-נראה.
+   כאן מודדים מול מרכז ה-*גריד*, ושני ה-rect נלקחים באותו רגע. */
 {
-  const track = document.getElementById('worksTrack');
-  /* !TOUCH ולא PIN_OK: הדגל ?pins=1 מחזיר את ההצמדה *להירו* בלבד.
-     בגלריה, גלילה אופקית בתוך עמוד שנגלל אנכית היא מלכודת בטלפון —
-     האצבע לא יודעת איזה ציר היא מזיזה. במגע היא רשת אנכית (ראה CSS). */
-  if (!TOUCH) {
-    const dist = () => track.scrollWidth - document.documentElement.clientWidth + 80;
-    gsap.to(track, { x:() => dist(), ease:'none',
-      scrollTrigger:{ trigger:'#worksPin', start:'top 12%', end:() => '+=' + dist(), pin:true,
-        pinType: TOUCH ? 'transform' : 'fixed', scrub:1, invalidateOnRefresh:true } });
-  } else {
-    /* במגע: גלילה אופקית נייטיבית במקום הצמדה. זה גם מבטל את ה-pin וגם
-       נותן חוויה טובה יותר בטלפון — מחליקים את הגלריה באצבע במקום
-       שהיא תזוז לבד תוך כדי גלילה אנכית. */
-    /* אין יותר is-swipe — הסקשן הופך לרשת אנכית ב-CSS, בלי שום
-       גלילה אופקית. */
+  const grid = document.getElementById('worksGrid');
+  const tiles = [...grid.querySelectorAll('.gi')];
+
+  function calcTransform(el, offset=250, maxRot=300, maxZ=2000){
+    const gr = grid.getBoundingClientRect(), r = el.getBoundingClientRect();
+    const cx = gr.width/2, cy = gr.height/2;
+    const ex = r.left-gr.left+r.width/2, ey = r.top-gr.top+r.height/2;
+    const angle = Math.atan2(Math.abs(cy-ey), Math.abs(cx-ex));
+    const tx = Math.abs(Math.cos(angle)*offset), ty = Math.abs(Math.sin(angle)*offset);
+    const f = Math.hypot(cx-ex, cy-ey)/Math.hypot(cx, cy);
+    return { x: ex<cx?-tx:tx, y: ey<cy?-ty:ty, z: maxZ*f,
+      rotateX:(ey<cy?-1:1)*(ty/offset)*maxRot*f,
+      rotateY:(ex<cx?1:-1)*(tx/offset)*maxRot*f };
   }
+
+  /* נמדד מראש ונשמר: מדידה בתוך כל fromTo הייתה רצה *אחרי* שה-transform
+     הראשון כבר הוחל, ומחזירה ערכים לא עקביים בין האריחים. */
+  const T = new WeakMap();
+  const measure = () => tiles.forEach(el => T.set(el, calcTransform(el)));
+  measure();
+
+  /* scrub:true ולא מספרי — עם סקראב מספרי ScrollTrigger מניע את הטיימליין
+     דרך טוין-השלמה פנימי שלא רץ כאן: ה-trigger מדווח progress 0.98 בזמן
+     שהטיימליין נשאר על 0 והאריחים נתקעים בלתי-נראים. */
+  gsap.timeline({ defaults:{ease:'expo'}, scrollTrigger:{
+    trigger: grid, start:'center center', end:'+=200%',
+    pin: !TOUCH && grid.parentNode, pinType:'fixed',
+    scrub:true, invalidateOnRefresh:true, onRefreshInit:measure
+  }})
+  .set(grid, { perspective:1000 })
+  .fromTo(tiles, {
+    x:(_,el)=>T.get(el).x, y:(_,el)=>T.get(el).y, z:(_,el)=>T.get(el).z,
+    rotateX:(_,el)=>T.get(el).rotateX*.5, rotateY:(_,el)=>T.get(el).rotateY,
+    autoAlpha:0, scale:.7
+  },{
+    x:0, y:0, z:0, rotateX:0, rotateY:0, autoAlpha:1, scale:1,
+    stagger:{ amount:.2, from:'center', grid:[3,4] }
+  })
+  .from(grid.parentNode.querySelector('.wall-cap'), { autoAlpha:0 }, 0);
 }
 
 
