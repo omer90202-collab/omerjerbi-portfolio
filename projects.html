@@ -20,7 +20,18 @@
     --line:rgba(245,240,230,.12);
   }
   *{margin:0;padding:0;box-sizing:border-box}
-  body{background:var(--bg);color:var(--ink);font-family:'Heebo',sans-serif;overflow-x:hidden;line-height:1.5}
+
+  /* ═══ Tel Aviv Brutalist — 3 משקלים (ניסוי פונט 18/08) ═══
+     לכל קובץ טווח font-weight מפורש ולא ערך יחיד: באתר יש 200/300/500/900
+     שאין להם קובץ, וטווח ממפה אותם חד-משמעית במקום להשאיר לדפדפן לנחש. */
+  @font-face{font-family:'TelAvivBrutalist';src:url('fonts/telaviv-brutalist-light.woff2') format('woff2');
+    font-weight:100 350;font-style:normal;font-display:swap}
+  @font-face{font-family:'TelAvivBrutalist';src:url('fonts/telaviv-brutalist-regular.woff2') format('woff2');
+    font-weight:351 550;font-style:normal;font-display:swap}
+  @font-face{font-family:'TelAvivBrutalist';src:url('fonts/telaviv-brutalist-bold.woff2') format('woff2');
+    font-weight:551 1000;font-style:normal;font-display:swap}
+
+  body{background:var(--bg);color:var(--ink);font-family:'TelAvivBrutalist','Heebo',sans-serif;overflow-x:hidden;line-height:1.5}
   ::selection{background:var(--gold);color:#0a0908}
   img,video{display:block;width:100%;object-fit:cover}
   a{color:inherit;text-decoration:none}
