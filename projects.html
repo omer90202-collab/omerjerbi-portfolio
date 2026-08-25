@@ -3,6 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- ═══ אבטחה ═══
+     האתר סטטי לגמרי (אין שרת/DB/טופס), אז מרבית איומי הרשת לא רלוונטיים.
+     מה שכן רלוונטי: אם ספריית צד-שלישי תיפרץ ב-CDN, קוד זר ירוץ כאן.
+     ההגנה היא דו-שכבתית — SRI על כל סקריפט חיצוני (הדפדפן מסרב להריץ
+     קובץ ששונה ולו בבית אחד), ומדיניות התוכן שמתחת.
+     'unsafe-inline' הכרחי: כל ה-CSS וה-JS של האתר יושבים inline ו-GSAP
+     כותב style ישירות. הערך עדיין אמיתי — connect-src 'self' חוסם
+     הדלפת מידע החוצה, object-src ו-base-uri חוסמים השתלטות על העמוד. -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://unpkg.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' blob:; font-src 'self'; connect-src 'self' https://cdn.jsdelivr.net https://unpkg.com; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'">
+<meta name="referrer" content="strict-origin-when-cross-origin">
 <title>כל הפרויקטים — עומר ג'רבי</title>
 <!--
   ═══════════════════════════════════════════════
@@ -183,9 +193,9 @@
   <span><a href="https://instagram.com/omerjerbi" target="_blank" rel="noopener">@omerjerbi</a></span>
 </footer>
 
-<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
-<script src="https://unpkg.com/lenis@1.3.4/dist/lenis.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js" integrity="sha384-HOvlOYPIs/zjoIkWUGXkVmXsjr8GuZLV+Q+rcPwmJOVZVpvTSXQChiN4t9Euv9Vc" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js" integrity="sha384-P8VzCVnT9NBUkMrpcIZrJbA7EBjJvh/fJS6PmP+4nLIM284DtsImIv8D0fFjIkeh" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://unpkg.com/lenis@1.3.4/dist/lenis.min.js" integrity="sha384-FKTX0CNJ8ngN1oGMBReVu7mvjTJyjFiD5etb1NKnYxc+8eFI2O0KWnksTN+oTFcu" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
 gsap.registerPlugin(ScrollTrigger);
 const lenis = new Lenis({ lerp:.09 });
