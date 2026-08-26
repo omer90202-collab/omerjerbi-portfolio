@@ -13,6 +13,22 @@
      הדלפת מידע החוצה, object-src ו-base-uri חוסמים השתלטות על העמוד. -->
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://unpkg.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' blob:; font-src 'self'; connect-src 'self' https://cdn.jsdelivr.net https://unpkg.com; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
+<link rel="canonical" href="https://jerbi.ai/">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "עומר ג'רבי",
+  "alternateName": "Omer Jerbi",
+  "url": "https://jerbi.ai/",
+  "image": "https://jerbi.ai/images/og.jpg",
+  "jobTitle": "מומחה AI",
+  "description": "יוצר תוכן AI למותגים הגדולים בישראל — וידאו, גרפיקה, אתרים ואוטומציות.",
+  "address": { "@type": "PostalAddress", "addressCountry": "IL" },
+  "sameAs": ["https://www.instagram.com/omerjerbi"],
+  "knowsAbout": ["יצירת תוכן AI","עריכת וידאו","עיצוב גרפי","בניית אתרים","אוטומציות AI"]
+}
+</script>
 <title>עומר ג'רבי — מומחה תוכן AI · תיק עבודות</title>
 <meta name="description" content="מומחה AI. וידאו, גרפיקה, אתרים ואוטומציות — למותגים המובילים במדינה.">
 <link rel="icon" href="images/favicon.png" type="image/png">
@@ -533,7 +549,7 @@
 <!-- תצוגה מוגדלת -->
 <div class="lightbox" id="lightbox">
   <video id="lightboxVideo" playsinline controls></video>
-  <img id="lightboxImg" alt="">
+  <img loading="lazy" decoding="async" id="lightboxImg" alt="">
   <button class="lb-close" id="lbClose" aria-label="סגור">×</button>
   <div class="lb-label" id="lbLabel"></div>
 </div>
@@ -1002,7 +1018,11 @@ gsap.utils.toArray('.sec').forEach((sec, i) => {
   const buildCard = (src, n) => {
     const d = document.createElement('div');
     d.className = 'res-card';
-    if (src) { const img = new Image(); img.src = 'images/results/' + src;
+    if (src) { const img = new Image();
+               /* עצלנות: 15 צילומי המסך של התיוגים נטענו מיד עם העמוד
+                  למרות שהסקשן נמצא כמה מסכים למטה. */
+               img.loading = 'lazy'; img.decoding = 'async';
+               img.src = 'images/results/' + src;
                img.alt = 'עבודה שלי כפי שפורסמה'; d.appendChild(img); }
     else { d.classList.add('res-ph'); d.style.height = [210,280,175,320,240][n % 5] + 'px';
            d.textContent = 'צילום מסך ' + (n + 1); }
