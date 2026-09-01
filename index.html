@@ -199,8 +199,6 @@
   .sec-pad > *{position:relative;z-index:1}
 
   /* ── רקע גלקסיה (Background Animations #7 — WebGL כוכבים אמיתי, מגיב לעכבר) ── */
-  #galaxy{position:absolute;inset:0;z-index:0;opacity:.85}
-  #galaxy canvas{display:block;width:100%;height:100%}
 
   /* ── סמן-קו עוקב (Mouse Effects #14 — עקומת ספרינג בקנבס) ── */
   /* קנבס בגודל מסך מלא הוא שכבה מקודמת יקרה. במגע אין בו שום שימוש —
@@ -415,11 +413,20 @@
   /* ════ 7 — אאוטרו ════ */
   .sc-outro{min-height:92vh;display:flex;flex-direction:column;justify-content:center;position:relative}
   .sc-outro::after{content:"";position:absolute;inset:0;background:radial-gradient(95% 60% at 50% 115%,rgba(253,191,45,.3),transparent 60%);pointer-events:none}
-  .outro-in{position:relative;z-index:2;text-align:center;padding:14vh 6vw 10vh}
+  .outro-in{position:relative;z-index:20;pointer-events:none;text-align:center;padding:14vh 6vw 10vh}
+  /* ═══ אאוטרו · שובל תמונות אחרי העכבר ═══
+     Animmaster · Mouse Effects/16 (image-cursor-trail), תבנית flame.
+     הוסב מהמקור: התמונות = פוסטרים של העבודות, הסקשן הוא המכל
+     (לא document), וה-rAF רץ רק כשהאאוטרו על המסך. החליף את
+     גלקסיית ה-WebGL — הצרכן הכבד ביותר בעמוד. */
+  .sc-outro{overflow:hidden;touch-action:pan-y}
+  .trail-img{position:absolute;object-fit:cover;transform-origin:center;
+    pointer-events:none;will-change:transform;z-index:5;border-radius:8px;
+    filter:saturate(1.05)}
   .outro-in h2{font-weight:900;font-size:clamp(40px,7vw,110px);line-height:1.14;letter-spacing:-.02em}
   .outro-in h2 em{font-style:normal;color:var(--gold)}
   .outro-in p{margin-top:2.6vh;color:var(--dim);font-weight:300;font-size:17px}
-  .outro-in .btns{margin-top:5vh;display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+  .outro-in .btns{pointer-events:auto;margin-top:5vh;display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
   .outro-in a{display:inline-block;padding:18px 50px;border-radius:99px;font-weight:700;font-size:17px;transition:.3s}
   .outro-in a.main{background:var(--gold);color:#141005}
   .outro-in a.main:hover{transform:translateY(-4px);box-shadow:0 16px 40px rgba(253,191,45,.3)}
@@ -613,7 +620,6 @@
 
 <!-- ═ 7 ═ אאוטרו -->
 <section class="sec sc-outro" id="scOutro">
-  <div id="galaxy"></div>
   <div class="outro-in">
     <h2>הפרויקט הבא שלכם<br><em>מתחיל בשיחה.</em></h2>
     <p>עובד עם מותגים, סוכנויות ובתי הפקה.</p>
@@ -1350,111 +1356,122 @@ gsap.utils.toArray('.sec').forEach((sec, i) => {
 gsap.from('.outro-in > *', { opacity:0, y:44, duration:.9, stagger:.1, ease:'power3.out',
   scrollTrigger:{ trigger:'#scOutro', start:'top 65%' } });
 
-/* ════ רקע גלקסיה באאוטרו (Background Animations #7, מקור אמיתי — WebGL, מגיב לעכבר) ════ */
-(function initGalaxy(){
-  const container = document.getElementById('galaxy');
+/* ════ אאוטרו — שובל תמונות אחרי העכבר ════
+   Animmaster · Mouse Effects/16 (image-cursor-trail), תבנית flame בלבד.
+   שינויים מהמקור: (1) המכל הוא #scOutro ולא המסמך; (2) התמונות הן
+   פוסטרי העבודות; (3) לולאת ה-rAF חיה רק כשהאאוטרו נראה —
+   IntersectionObserver מדליק ומכבה; (4) בלי מחליף אפקטים ובלי מד מהירות. */
+(function initTrail(){
+  const container = document.getElementById('scOutro');
   if (!container) return;
-  /* הקשר WebGL מלא הוא הצרכן הכבד ביותר בעמוד. באייפון, יחד עם 19 מפענחי
-     וידאו ושכבות מקודמות, זה חורג מתקציב הזיכרון של הדפדפן והתוצאה היא
-     ריבועים שחורים בזמן גלילה. במגע פשוט לא מפעילים אותו. */
-  if (TOUCH) { container.remove(); return; }
-  const opts = { focal:[.5,.5], rotation:[1,0], starSpeed:.5, density:.7, hueShift:38, speed:1,
-    glowIntensity:.22, saturation:.15, repulsionStrength:1.6, twinkleIntensity:.14, rotationSpeed:.05, autoCenterRepulsion:0 };
-  const canvas = document.createElement('canvas');
-  canvas.style.width = '100%'; canvas.style.height = '100%'; canvas.style.display = 'block';
-  container.appendChild(canvas);
-  const gl = canvas.getContext('webgl', { alpha:true, antialias:false, premultipliedAlpha:false })
-          || canvas.getContext('experimental-webgl', { alpha:true, antialias:false, premultipliedAlpha:false });
-  if (!gl) return;
-  gl.enable(gl.BLEND); gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA); gl.clearColor(0,0,0,0);
-  const vertexSrc = `attribute vec2 uv;attribute vec2 position;varying vec2 vUv;void main(){vUv=uv;gl_Position=vec4(position,0.0,1.0);}`;
-  const fragmentSrc = `precision mediump float;
-uniform float uTime;uniform vec3 uResolution;uniform vec2 uFocal;uniform vec2 uRotation;uniform float uStarSpeed;uniform float uDensity;
-uniform float uHueShift;uniform float uSpeed;uniform vec2 uMouse;uniform float uGlowIntensity;uniform float uSaturation;uniform bool uMouseRepulsion;
-uniform float uTwinkleIntensity;uniform float uRotationSpeed;uniform float uRepulsionStrength;uniform float uMouseActiveFactor;uniform float uAutoCenterRepulsion;uniform bool uTransparent;
-varying vec2 vUv;
-#define NUM_LAYER 2.0
-#define STAR_COLOR_CUTOFF 0.2
-#define MAT45 mat2(0.7071,-0.7071,0.7071,0.7071)
-#define PERIOD 3.0
-float Hash21(vec2 p){p=fract(p*vec2(123.34,456.21));p+=dot(p,p+45.32);return fract(p.x*p.y);}
-float tri(float x){return abs(fract(x)*2.0-1.0);}
-float tris(float x){float t=fract(x);return 1.0-smoothstep(0.0,1.0,abs(2.0*t-1.0));}
-float trisn(float x){float t=fract(x);return 2.0*(1.0-smoothstep(0.0,1.0,abs(2.0*t-1.0)))-1.0;}
-vec3 hsv2rgb(vec3 c){vec4 K=vec4(1.0,2.0/3.0,1.0/3.0,3.0);vec3 p=abs(fract(c.xxx+K.xyz)*6.0-K.www);return c.z*mix(K.xxx,clamp(p-K.xxx,0.0,1.0),c.y);}
-float Star(vec2 uv,float flare){float d=length(uv);float m=(0.05*uGlowIntensity)/max(d,1e-4);float rays=smoothstep(0.0,1.0,1.0-abs(uv.x*uv.y*800.0));m+=rays*flare*uGlowIntensity;uv*=MAT45;rays=smoothstep(0.0,1.0,1.0-abs(uv.x*uv.y*800.0));m+=rays*0.25*flare*uGlowIntensity;m*=smoothstep(1.0,0.2,d);return m;}
-vec3 StarLayer(vec2 uv){vec3 col=vec3(0.0);vec2 gv=fract(uv)-0.5;vec2 id=floor(uv);
-for(int y=-1;y<=1;y++){for(int x=-1;x<=1;x++){vec2 offset=vec2(float(x),float(y));vec2 si=id+vec2(float(x),float(y));float seed=Hash21(si);float size=fract(seed*345.32);float glossLocal=tri(uStarSpeed/(PERIOD*seed+1.0));float flareSize=smoothstep(0.9,1.0,size)*glossLocal;
-float red=smoothstep(STAR_COLOR_CUTOFF,1.0,Hash21(si+1.0))+STAR_COLOR_CUTOFF;float blu=smoothstep(STAR_COLOR_CUTOFF,1.0,Hash21(si+3.0))+STAR_COLOR_CUTOFF;float grn=min(red,blu)*seed;vec3 base=vec3(red,grn,blu);
-float hue=atan(base.g-base.r,base.b-base.r)/(2.0*3.14159)+0.5;hue=fract(hue+uHueShift/360.0);float sat=length(base-vec3(dot(base,vec3(0.299,0.587,0.114))))*uSaturation;float val=max(max(base.r,base.g),base.b);base=hsv2rgb(vec3(hue,sat,val));
-vec2 pad=vec2(tris(seed*34.0+uTime*uSpeed/10.0),tris(seed*38.0+uTime*uSpeed/30.0))-0.5;float star=Star(gv-offset-pad,flareSize);vec3 color=base;
-float twinkle=trisn(uTime*uSpeed+seed*6.2831)*0.5+1.0;twinkle=mix(1.0,twinkle,uTwinkleIntensity);star*=twinkle;col+=star*size*color;}}return col;}
-void main(){vec2 focalPx=uFocal*uResolution.xy;vec2 uv=(vUv*uResolution.xy-focalPx)/uResolution.y;vec2 mouseNorm=uMouse-vec2(0.5);
-if(uAutoCenterRepulsion>0.0){vec2 centerUV=vec2(0.0,0.0);float centerDist=length(uv-centerUV);vec2 repulsion=normalize(uv-centerUV)*(uAutoCenterRepulsion/(centerDist+0.1));uv+=repulsion*0.05;}
-else if(uMouseRepulsion){vec2 mousePosUV=(uMouse*uResolution.xy-focalPx)/uResolution.y;float mouseDist=length(uv-mousePosUV);vec2 repulsion=normalize(uv-mousePosUV)*(uRepulsionStrength/(mouseDist+0.1));uv+=repulsion*0.05*uMouseActiveFactor;}
-else{vec2 mouseOffset=mouseNorm*0.1*uMouseActiveFactor;uv+=mouseOffset;}
-float autoRotAngle=uTime*uRotationSpeed;mat2 autoRot=mat2(cos(autoRotAngle),-sin(autoRotAngle),sin(autoRotAngle),cos(autoRotAngle));uv=autoRot*uv;uv=mat2(uRotation.x,-uRotation.y,uRotation.y,uRotation.x)*uv;
-vec3 col=vec3(0.0);for(float i=0.0;i<1.0;i+=1.0/NUM_LAYER){float depth=fract(i+uStarSpeed*uSpeed);float scale=mix(20.0*uDensity,0.5*uDensity,depth);float fade=depth*smoothstep(1.0,0.9,depth);col+=StarLayer(uv*scale+i*453.32)*fade;}
-if(uTransparent){float alpha=length(col);alpha=smoothstep(0.0,0.3,alpha);alpha=min(alpha,1.0);gl_FragColor=vec4(col,alpha);}else{gl_FragColor=vec4(col,1.0);}}`;
-  function compile(type, src){ const sh = gl.createShader(type); gl.shaderSource(sh, src); gl.compileShader(sh); return gl.getShaderParameter(sh, gl.COMPILE_STATUS) ? sh : null; }
-  function link(vs2, fs2){ const p = gl.createProgram(); gl.attachShader(p, vs2); gl.attachShader(p, fs2); gl.linkProgram(p); return gl.getProgramParameter(p, gl.LINK_STATUS) ? p : null; }
-  const vs = compile(gl.VERTEX_SHADER, vertexSrc), fs = compile(gl.FRAGMENT_SHADER, fragmentSrc);
-  if (!vs || !fs) return;
-  const program = link(vs, fs);
-  if (!program) return;
-  gl.useProgram(program);
-  const posLoc = gl.getAttribLocation(program,'position'), uvLoc = gl.getAttribLocation(program,'uv');
-  const loc = name => gl.getUniformLocation(program, name);
-  const uTimeLoc=loc('uTime'), uResolutionLoc=loc('uResolution'), uFocalLoc=loc('uFocal'), uRotationLoc=loc('uRotation'),
-    uStarSpeedLoc=loc('uStarSpeed'), uDensityLoc=loc('uDensity'), uHueShiftLoc=loc('uHueShift'), uSpeedLoc=loc('uSpeed'),
-    uMouseLoc=loc('uMouse'), uGlowIntensityLoc=loc('uGlowIntensity'), uSaturationLoc=loc('uSaturation'), uMouseRepulsionLoc=loc('uMouseRepulsion'),
-    uTwinkleIntensityLoc=loc('uTwinkleIntensity'), uRotationSpeedLoc=loc('uRotationSpeed'), uRepulsionStrengthLoc=loc('uRepulsionStrength'),
-    uMouseActiveFactorLoc=loc('uMouseActiveFactor'), uAutoCenterRepulsionLoc=loc('uAutoCenterRepulsion'), uTransparentLoc=loc('uTransparent');
-  const posBuffer = gl.createBuffer();
-  gl.bindBuffer(gl.ARRAY_BUFFER, posBuffer); gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1,3,-1,-1,3]), gl.STATIC_DRAW);
-  gl.enableVertexAttribArray(posLoc); gl.vertexAttribPointer(posLoc,2,gl.FLOAT,false,0,0);
-  const uvBuffer = gl.createBuffer();
-  gl.bindBuffer(gl.ARRAY_BUFFER, uvBuffer); gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([0,0,2,0,0,2]), gl.STATIC_DRAW);
-  gl.enableVertexAttribArray(uvLoc); gl.vertexAttribPointer(uvLoc,2,gl.FLOAT,false,0,0);
-  const targetMouse = { x:.5, y:.5 }, smoothMouse = { x:.5, y:.5 };
-  let targetActive = 0, smoothActive = 0, lastT = 0;
-  function resize(){
-    const rect = container.getBoundingClientRect();
-    const w = Math.max(1, Math.floor(rect.width)), h = Math.max(1, Math.floor(rect.height));
-    canvas.width = w; canvas.height = h; gl.viewport(0,0,w,h);
-    gl.uniform3fv(uResolutionLoc, new Float32Array([w,h,w/h]));
-  }
-  function setUniformsOnce(){
-    gl.uniform2fv(uFocalLoc, new Float32Array(opts.focal)); gl.uniform2fv(uRotationLoc, new Float32Array(opts.rotation));
-    gl.uniform1f(uStarSpeedLoc, opts.starSpeed); gl.uniform1f(uDensityLoc, opts.density); gl.uniform1f(uHueShiftLoc, opts.hueShift);
-    gl.uniform1f(uSpeedLoc, opts.speed); gl.uniform1f(uGlowIntensityLoc, opts.glowIntensity); gl.uniform1f(uSaturationLoc, opts.saturation);
-    gl.uniform1i(uMouseRepulsionLoc, 1); gl.uniform1f(uTwinkleIntensityLoc, opts.twinkleIntensity); gl.uniform1f(uRotationSpeedLoc, opts.rotationSpeed);
-    gl.uniform1f(uRepulsionStrengthLoc, opts.repulsionStrength); gl.uniform1f(uAutoCenterRepulsionLoc, opts.autoCenterRepulsion); gl.uniform1i(uTransparentLoc, 1);
-  }
-  resize(); setUniformsOnce();
-  addEventListener('resize', resize, false);
-  container.addEventListener('mousemove', e => {
-    const rect = container.getBoundingClientRect();
-    targetMouse.x = (e.clientX - rect.left) / rect.width; targetMouse.y = 1 - (e.clientY - rect.top) / rect.height; targetActive = 1;
-  });
-  container.addEventListener('mouseleave', () => { targetActive = 0; });
-  /* לא מרנדרים כשהאאוטרו לא בתצוגה — בלי זה ה-WebGL הזה רץ לנצח ברקע גם עשרות מסכים אחרי שגללנו הלאה */
-  let visible = false, running = false;
-  new IntersectionObserver(es => {
-    visible = es[0].isIntersecting;
-    if (visible && !running) { running = true; requestAnimationFrame(frame); }
-  }).observe(container);
-  function frame(t){
-    if (!visible) { running = false; return; }
-    requestAnimationFrame(frame);
-    if (t - lastT < 42) return;
-    lastT = t;
-    gl.uniform1f(uTimeLoc, t*1e-3); gl.uniform1f(uStarSpeedLoc, (t*1e-3*opts.starSpeed)/10);
-    smoothMouse.x += (targetMouse.x - smoothMouse.x)*.05; smoothMouse.y += (targetMouse.y - smoothMouse.y)*.05; smoothActive += (targetActive - smoothActive)*.05;
-    gl.uniform2fv(uMouseLoc, new Float32Array([smoothMouse.x, smoothMouse.y])); gl.uniform1f(uMouseActiveFactorLoc, smoothActive);
-    gl.drawArrays(gl.TRIANGLES, 0, 3);
-  }
+
+  const IMAGES = ['beitar-puppets','eyal-golan','ginton-purim','hapoel','heels',
+    'mbappe','noir-bar','power-barrier-1','raw-arak','raw-magnum','raw-neviot',
+    'save1080','survivor','telhai-en-loop'].map(n => 'images/posters/' + n + '.jpg');
+
+  const cfg = {
+    lifespan: 700, removalDelay: 16,
+    mouseThreshold: TOUCH ? 20 : 40, minMove: TOUCH ? 3 : 5,
+    minSize: TOUCH ? 110 : 150, maxSize: TOUCH ? 230 : 320,
+    baseRotation: 30, maxRotFactor: 3, smooth: .25,
+    inDur: 600, outDur: 800,
+    inEase: 'cubic-bezier(.07,.5,.5,1)', outEase: 'cubic-bezier(.87,0,.13,1)',
+    touchInterval: 40
+  };
+
+  let active = false, preloaded = false;
+  const preload = () => {
+    if (preloaded) return; preloaded = true;
+    IMAGES.forEach(src => { const i = new Image(); i.src = src; });
+  };
+
+  const trail = [];
+  let mx=0, my=0, lastX=0, lastY=0, prevX=0, prevY=0;
+  let moving=false, inside=false, touching=false;
+  let lastRemoval=0, lastTouchImg=0, lastMove=Date.now();
+  let smoothed=0, maxSpeed=0, idx=0;
+
+  const inContainer = (x,y) => {
+    const r = container.getBoundingClientRect();
+    return x>=r.left && x<=r.right && y>=r.top && y<=r.bottom;
+  };
+  const movedEnough = () => Math.hypot(mx-lastX, my-lastY) > cfg.mouseThreshold;
+  const movedAtAll  = () => Math.hypot(mx-prevX, my-prevY) > cfg.minMove;
+
+  const speedNow = () => {
+    const now = Date.now(), dt = now - lastMove;
+    if (dt <= 0) return smoothed;
+    const raw = Math.hypot(mx-prevX, my-prevY) / dt;
+    if (raw > maxSpeed) maxSpeed = raw;
+    smoothed = smoothed*(1-cfg.smooth) + Math.min(raw/(maxSpeed||.5),1)*cfg.smooth;
+    lastMove = now;
+    return smoothed;
+  };
+
+  const spawn = speed => {
+    const src = IMAGES[idx]; idx = (idx+1) % IMAGES.length;
+    const size = cfg.minSize + (cfg.maxSize-cfg.minSize)*speed;
+    const rot = (Math.random()-.5) * cfg.baseRotation * (1 + speed*(cfg.maxRotFactor-1));
+    const img = document.createElement('img');
+    img.className = 'trail-img';
+    img.src = src; img.width = img.height = size; img.alt = '';
+    const r = container.getBoundingClientRect();
+    img.style.left = (mx-r.left)+'px'; img.style.top = (my-r.top)+'px';
+    img.style.transform = 'translate(-50%,-50%) rotate('+rot+'deg) scale(0)';
+    img.style.transition = 'transform '+cfg.inDur+'ms '+cfg.inEase;
+    container.appendChild(img);
+    setTimeout(() => { img.style.transform = 'translate(-50%,-50%) rotate('+rot+'deg) scale(1)'; }, 10);
+    trail.push({ el:img, rot, dieAt: Date.now()+cfg.lifespan });
+  };
+
+  const tick = () => {
+    if (inside && (moving||touching) && movedEnough() && movedAtAll()) {
+      lastX=mx; lastY=my; spawn(speedNow()); prevX=mx; prevY=my;
+    }
+    const now = Date.now();
+    if (trail.length && now-lastRemoval>=cfg.removalDelay && now>=trail[0].dieAt) {
+      const t = trail.shift();
+      t.el.style.transition = 'transform '+cfg.outDur+'ms '+cfg.outEase;
+      /* הסיבוב המלא ביציאה — חתימת האפקט במקור */
+      t.el.style.transform = 'translate(-50%,-50%) rotate('+(t.rot+360)+'deg) scale(0)';
+      setTimeout(() => t.el.remove(), cfg.outDur);
+      lastRemoval = now;
+    }
+    if (active) requestAnimationFrame(tick);
+  };
+
+  document.addEventListener('mousemove', e => {
+    prevX=mx; prevY=my; mx=e.clientX; my=e.clientY;
+    inside = active && inContainer(mx,my);
+    if (inside && movedAtAll()) {
+      moving = true;
+      clearTimeout(initTrail._t);
+      initTrail._t = setTimeout(() => moving=false, 100);
+    }
+  }, { passive:true });
+
+  container.addEventListener('touchstart', e => {
+    const t=e.touches[0]; prevX=mx=lastX=t.clientX; prevY=my=lastY=t.clientY;
+    inside = touching = true; lastMove = Date.now();
+  }, { passive:true });
+  container.addEventListener('touchmove', e => {
+    const t=e.touches[0];
+    const dx=Math.abs(t.clientX-prevX), dy=Math.abs(t.clientY-prevY);
+    prevX=mx; prevY=my; mx=t.clientX; my=t.clientY;
+    if (dy>dx) return;                        /* גלילה אנכית עוברת חופשי */
+    const now=Date.now();
+    if (now-lastTouchImg < cfg.touchInterval || !movedAtAll()) return;
+    lastTouchImg=now; spawn(speedNow()); prevX=mx; prevY=my;
+  }, { passive:true });
+  container.addEventListener('touchend', () => { touching=false; }, { passive:true });
+
+  new IntersectionObserver(es => es.forEach(e => {
+    if (e.isIntersecting && !active) { active=true; preload(); requestAnimationFrame(tick); }
+    else if (!e.isIntersecting) { active=false; inside=false; }
+  }), { threshold:.15 }).observe(container);
 })();
+
+/* ════ רקע גלקסיה באאוטרו (Background Animations #7, מקור אמיתי — WebGL, מגיב לעכבר) ════ */
 
 /* ════ סמן-קו עוקב (Mouse Effects #14, מקור אמיתי — עקומת ספרינג בקנבס) ════ */
 (function initCurlyCursor(){
