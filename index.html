@@ -413,20 +413,15 @@
   /* ════ 7 — אאוטרו ════ */
   .sc-outro{min-height:92vh;display:flex;flex-direction:column;justify-content:center;position:relative}
   .sc-outro::after{content:"";position:absolute;inset:0;background:radial-gradient(95% 60% at 50% 115%,rgba(253,191,45,.3),transparent 60%);pointer-events:none}
-  .outro-in{position:relative;z-index:20;pointer-events:none;text-align:center;padding:14vh 6vw 10vh}
-  /* ═══ אאוטרו · שובל תמונות אחרי העכבר ═══
-     Animmaster · Mouse Effects/16 (image-cursor-trail), תבנית flame.
-     הוסב מהמקור: התמונות = פוסטרים של העבודות, הסקשן הוא המכל
-     (לא document), וה-rAF רץ רק כשהאאוטרו על המסך. החליף את
-     גלקסיית ה-WebGL — הצרכן הכבד ביותר בעמוד. */
-  .sc-outro{overflow:hidden;touch-action:pan-y}
-  .trail-img{position:absolute;object-fit:cover;transform-origin:center;
-    pointer-events:none;will-change:transform;z-index:5;border-radius:8px;
-    filter:saturate(1.05)}
+  .outro-in{position:relative;z-index:2;text-align:center;padding:14vh 6vw 10vh}
+  /* רקע האאוטרו: זוהר זהב סטטי ועדין — החליף את גלקסיית ה-WebGL
+     ואת שובל התמונות (עומר: "עדין יותר"). CSS בלבד, אפס עלות. */
+  .sc-outro::after{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;
+    background:radial-gradient(ellipse 70% 45% at 50% 100%, rgba(253,191,45,.09), transparent 70%)}
   .outro-in h2{font-weight:900;font-size:clamp(40px,7vw,110px);line-height:1.14;letter-spacing:-.02em}
   .outro-in h2 em{font-style:normal;color:var(--gold)}
   .outro-in p{margin-top:2.6vh;color:var(--dim);font-weight:300;font-size:17px}
-  .outro-in .btns{pointer-events:auto;margin-top:5vh;display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+  .outro-in .btns{margin-top:5vh;display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
   .outro-in a{display:inline-block;padding:18px 50px;border-radius:99px;font-weight:700;font-size:17px;transition:.3s}
   .outro-in a.main{background:var(--gold);color:#141005}
   .outro-in a.main:hover{transform:translateY(-4px);box-shadow:0 16px 40px rgba(253,191,45,.3)}
@@ -1356,120 +1351,25 @@ gsap.utils.toArray('.sec').forEach((sec, i) => {
 gsap.from('.outro-in > *', { opacity:0, y:44, duration:.9, stagger:.1, ease:'power3.out',
   scrollTrigger:{ trigger:'#scOutro', start:'top 65%' } });
 
-/* ════ אאוטרו — שובל תמונות אחרי העכבר ════
-   Animmaster · Mouse Effects/16 (image-cursor-trail), תבנית flame בלבד.
-   שינויים מהמקור: (1) המכל הוא #scOutro ולא המסמך; (2) התמונות הן
-   פוסטרי העבודות; (3) לולאת ה-rAF חיה רק כשהאאוטרו נראה —
-   IntersectionObserver מדליק ומכבה; (4) בלי מחליף אפקטים ובלי מד מהירות. */
-(function initTrail(){
-  const container = document.getElementById('scOutro');
-  if (!container) return;
-
-  const IMAGES = ['beitar-puppets','eyal-golan','ginton-purim','hapoel','heels',
-    'mbappe','noir-bar','power-barrier-1','raw-arak','raw-magnum','raw-neviot',
-    'save1080','survivor','telhai-en-loop'].map(n => 'images/posters/' + n + '.jpg');
-
-  const cfg = {
-    lifespan: 700, removalDelay: 16,
-    mouseThreshold: TOUCH ? 20 : 40, minMove: TOUCH ? 3 : 5,
-    minSize: TOUCH ? 50 : 68, maxSize: TOUCH ? 105 : 145,
-    baseRotation: 30, maxRotFactor: 3, smooth: .25,
-    inDur: 600, outDur: 800,
-    inEase: 'cubic-bezier(.07,.5,.5,1)', outEase: 'cubic-bezier(.87,0,.13,1)',
-    touchInterval: 40
-  };
-
-  let active = false, preloaded = false;
-  const preload = () => {
-    if (preloaded) return; preloaded = true;
-    IMAGES.forEach(src => { const i = new Image(); i.src = src; });
-  };
-
-  const trail = [];
-  let mx=0, my=0, lastX=0, lastY=0, prevX=0, prevY=0;
-  let moving=false, inside=false, touching=false;
-  let lastRemoval=0, lastTouchImg=0, lastMove=Date.now();
-  let smoothed=0, maxSpeed=0, idx=0;
-
-  const inContainer = (x,y) => {
-    const r = container.getBoundingClientRect();
-    return x>=r.left && x<=r.right && y>=r.top && y<=r.bottom;
-  };
-  const movedEnough = () => Math.hypot(mx-lastX, my-lastY) > cfg.mouseThreshold;
-  const movedAtAll  = () => Math.hypot(mx-prevX, my-prevY) > cfg.minMove;
-
-  const speedNow = () => {
-    const now = Date.now(), dt = now - lastMove;
-    if (dt <= 0) return smoothed;
-    const raw = Math.hypot(mx-prevX, my-prevY) / dt;
-    if (raw > maxSpeed) maxSpeed = raw;
-    smoothed = smoothed*(1-cfg.smooth) + Math.min(raw/(maxSpeed||.5),1)*cfg.smooth;
-    lastMove = now;
-    return smoothed;
-  };
-
-  const spawn = speed => {
-    const src = IMAGES[idx]; idx = (idx+1) % IMAGES.length;
-    const size = cfg.minSize + (cfg.maxSize-cfg.minSize)*speed;
-    const rot = (Math.random()-.5) * cfg.baseRotation * (1 + speed*(cfg.maxRotFactor-1));
-    const img = document.createElement('img');
-    img.className = 'trail-img';
-    img.src = src; img.width = img.height = size; img.alt = '';
-    const r = container.getBoundingClientRect();
-    img.style.left = (mx-r.left)+'px'; img.style.top = (my-r.top)+'px';
-    img.style.transform = 'translate(-50%,-50%) rotate('+rot+'deg) scale(0)';
-    img.style.transition = 'transform '+cfg.inDur+'ms '+cfg.inEase;
-    container.appendChild(img);
-    setTimeout(() => { img.style.transform = 'translate(-50%,-50%) rotate('+rot+'deg) scale(1)'; }, 10);
-    trail.push({ el:img, rot, dieAt: Date.now()+cfg.lifespan });
-  };
-
-  const tick = () => {
-    if (inside && (moving||touching) && movedEnough() && movedAtAll()) {
-      lastX=mx; lastY=my; spawn(speedNow()); prevX=mx; prevY=my;
-    }
-    const now = Date.now();
-    if (trail.length && now-lastRemoval>=cfg.removalDelay && now>=trail[0].dieAt) {
-      const t = trail.shift();
-      t.el.style.transition = 'transform '+cfg.outDur+'ms '+cfg.outEase;
-      /* הסיבוב המלא ביציאה — חתימת האפקט במקור */
-      t.el.style.transform = 'translate(-50%,-50%) rotate('+(t.rot+360)+'deg) scale(0)';
-      setTimeout(() => t.el.remove(), cfg.outDur);
-      lastRemoval = now;
-    }
-    if (active) requestAnimationFrame(tick);
-  };
-
-  document.addEventListener('mousemove', e => {
-    prevX=mx; prevY=my; mx=e.clientX; my=e.clientY;
-    inside = active && inContainer(mx,my);
-    if (inside && movedAtAll()) {
-      moving = true;
-      clearTimeout(initTrail._t);
-      initTrail._t = setTimeout(() => moving=false, 100);
-    }
-  }, { passive:true });
-
-  container.addEventListener('touchstart', e => {
-    const t=e.touches[0]; prevX=mx=lastX=t.clientX; prevY=my=lastY=t.clientY;
-    inside = touching = true; lastMove = Date.now();
-  }, { passive:true });
-  container.addEventListener('touchmove', e => {
-    const t=e.touches[0];
-    const dx=Math.abs(t.clientX-prevX), dy=Math.abs(t.clientY-prevY);
-    prevX=mx; prevY=my; mx=t.clientX; my=t.clientY;
-    if (dy>dx) return;                        /* גלילה אנכית עוברת חופשי */
-    const now=Date.now();
-    if (now-lastTouchImg < cfg.touchInterval || !movedAtAll()) return;
-    lastTouchImg=now; spawn(speedNow()); prevX=mx; prevY=my;
-  }, { passive:true });
-  container.addEventListener('touchend', () => { touching=false; }, { passive:true });
-
-  new IntersectionObserver(es => es.forEach(e => {
-    if (e.isIntersecting && !active) { active=true; preload(); requestAnimationFrame(tick); }
-    else if (!e.isIntersecting) { active=false; inside=false; }
-  }), { threshold:.15 }).observe(container);
-})();
+/* ════ כפתורים מגנטיים ════
+   Animmaster · Physics Effects/3 (magnetic-button) — הבחירה של עומר.
+   המנגנון מהמקור: gsap.quickTo על x/y עם elastic.out(1,0.3), הכפתור
+   נמשך אל הסמן בתוך שטחו וקופץ חזרה ביציאה. שינויים מההסבה:
+   (1) וניל במקום React ref; (2) ההיסט מוכפל ב-0.5 — עדין, לא קרקסי;
+   (3) כבוי במגע — אין שם ריחוף. חל על כפתורי האאוטרו ועל "בואו נדבר"
+   שבהדר. */
+if (!TOUCH) {
+  document.querySelectorAll('.outro-in .btns a, .nav .talk').forEach(el => {
+    const xTo = gsap.quickTo(el, 'x', { duration: 1, ease: 'elastic.out(1, 0.3)' });
+    const yTo = gsap.quickTo(el, 'y', { duration: 1, ease: 'elastic.out(1, 0.3)' });
+    el.addEventListener('mousemove', e => {
+      const r = el.getBoundingClientRect();
+      xTo((e.clientX - (r.left + r.width / 2)) * .5);
+      yTo((e.clientY - (r.top + r.height / 2)) * .5);
+    });
+    el.addEventListener('mouseleave', () => { xTo(0); yTo(0); });
+  });
+}
 
 /* ════ רקע גלקסיה באאוטרו (Background Animations #7, מקור אמיתי — WebGL, מגיב לעכבר) ════ */
 
