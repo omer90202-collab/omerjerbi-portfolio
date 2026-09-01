@@ -299,10 +299,6 @@
     font-size:clamp(28px,5.4vw,84px);color:var(--dim);
     transition:color .4s cubic-bezier(.2,.8,.2,1),transform .5s cubic-bezier(.2,.8,.2,1)}
   .svc-item:hover .t{color:var(--ink);transform:translateX(-14px)}
-  .svc-item .d{display:block;margin-top:8px;color:var(--dim);max-width:46ch;
-    font-size:clamp(13px,1.15vw,16px);line-height:1.6;
-    opacity:0;max-height:0;overflow:hidden;transition:opacity .4s,max-height .5s}
-  .svc-item:hover .d{opacity:1;max-height:6em}
   /* חלון התמונה שנצמד לסמן. pointer-events:none — אחרת הוא חוטף את
      ה-mouseleave מהשורה והאפקט מהבהב. */
   /* left פיזי ולא inset-inline-start: חישוב המיקום מהמקור הוא
@@ -315,7 +311,6 @@
   .svc-reveal__img{width:100%;height:100%;background-size:cover;background-position:center}
   /* במגע אין ריחוף — במקום זה אקורדיון פתוח עם תמונה בפנים */
   .svc-sec.is-touch .svc-reveal{display:none}
-  .svc-sec.is-touch .svc-item .d{opacity:1;max-height:none}
   .svc-sec.is-touch .svc-item .t{color:var(--ink);font-size:clamp(24px,7vw,40px)}
   .svc-sec.is-touch .svc-item .n{opacity:1;transform:translateY(-50%)}
   .svc-thumb{display:none}
@@ -1209,12 +1204,12 @@ gsap.utils.toArray('.sec').forEach((sec, i) => {
    (התמונות ממילא נטענות עצלן). ════ */
 (() => {
   const SERVICES = [
-    ['01','עיצוב גרפי','מיתוג, גרפיקות שיווקיות ופוסטרים שעובדים בפיד, לא רק בתיקייה.','graphic-design.jpg'],
-    ['02','עריכת וידיאו','קאט, קצב, סאונד וקולור שמחזיקים את הצופה עד הפריים האחרון.','video-editing.jpg'],
-    ['03','יצירת תוכן AI','מהתסריט ועד הסצנה המוגמרת — דמויות, מיקומים, ליפסינג וקריינות.','ai-content.jpg'],
-    ['04','עריכת פודקאסטים','סאונד נקי, קצב זורם, וקליפים מוכנים לרשתות — מקצה לקצה.','podcast-editing.jpg'],
-    ['05','בניית אתרים','מהקוד ועד חוויית גלילה מלוטשת שנראית ומרגישה יקרה.','web-dev.jpg'],
-    ['06','מערכות ואוטומציות AI','מערכות שחוסכות שעות אמיתיות וממשיכות לעבוד גם כשאתה לא.','automation.jpg']
+    ['01','עיצוב גרפי','graphic-design.jpg'],
+    ['02','עריכת וידיאו','video-editing.jpg'],
+    ['03','יצירת תוכן AI','ai-content.jpg'],
+    ['04','עריכת פודקאסטים','podcast-editing.jpg'],
+    ['05','בניית אתרים','web-dev.jpg'],
+    ['06','מערכות ואוטומציות AI','automation.jpg']
   ];
   const menu = document.getElementById('svcMenu');
   if (!menu) return;
@@ -1228,13 +1223,12 @@ gsap.utils.toArray('.sec').forEach((sec, i) => {
   let mouse = {x:0,y:0}, cache = {x:0,y:0}, dir = {x:0,y:0};
   if (!TOUCH) addEventListener('mousemove', e => { mouse = {x:e.clientX,y:e.clientY}; });
 
-  SERVICES.forEach(([num,title,desc,file]) => {
+  SERVICES.forEach(([num,title,file]) => {
     const item = document.createElement('a');
     item.className = 'svc-item';
     const n = document.createElement('span'); n.className='n'; n.textContent = num;
     const t = document.createElement('span'); t.className='t'; t.textContent = title;
-    const d = document.createElement('span'); d.className='d'; d.textContent = desc;
-    item.append(n,t,d);
+    item.append(n,t);
 
     if (TOUCH) {
       const th = document.createElement('div'); th.className='svc-thumb';
