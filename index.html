@@ -449,6 +449,14 @@
     /* 3 · עבודות נבחרות: רשת אנכית במקום גלילה אופקית.
        גלילה אופקית בתוך עמוד שנגלל אנכית היא מלכודת בטלפון — האצבע לא
        יודעת איזה ציר היא מזיזה. כאן: שתי עמודות, גלילה אחת, בלי pin. */
+    /* יעדי מגע: קישורים דקים מ-40px קשים לאצבע */
+    #scWorks .wall-more{padding:10px 0 12px;font-size:15px}
+    .menu-nav__footer a{padding:8px 0;display:inline-block}
+    .nav .logo{padding:10px 12px;margin:-10px -12px}
+    /* תוויות הסקשנים: 10.5px קטן מדי בטלפון */
+    section small{font-size:12px !important}
+    /* אאוטרו: שהשורה השנייה "מתחיל בשיחה." לא תישבר לשתיים */
+    .outro-in h2{font-size:clamp(30px,9.4vw,40px)}
     /* בטלפון הקיר לא מוצמד (ראה JS) — רשת אנכית 2 עמודות שנגללת רגיל */
     #scWorks.wall{height:auto;padding-block:8vh}
     #scWorks .wall-cap{position:static;max-width:none;padding-bottom:3vh}
@@ -1308,6 +1316,11 @@ gsap.utils.toArray('.sec').forEach((sec, i) => {
   const grid = document.getElementById('worksGrid');
   const tiles = [...grid.querySelectorAll('.gi')];
 
+  /* במגע אין pin, אבל הטיימליין המסוקרב רץ בכל זאת — התוצאה בטלפון
+     היתה כותרת בלתי-נראית (autoAlpha 0) ואריחים "באמצע תעופה" עם
+     חורים ברשת. במגע: הכל סטטי, ה-CSS כבר נותן רשת 2 עמודות. */
+  if (!TOUCH) {
+
   function calcTransform(el, offset=250, maxRot=300, maxZ=2000){
     const gr = grid.getBoundingClientRect(), r = el.getBoundingClientRect();
     const cx = gr.width/2, cy = gr.height/2;
@@ -1344,6 +1357,8 @@ gsap.utils.toArray('.sec').forEach((sec, i) => {
     stagger:{ amount:.2, from:'center', grid:[3,4] }
   })
   .from(grid.parentNode.querySelector('.wall-cap'), { autoAlpha:0 }, 0);
+
+  }
 }
 
 
