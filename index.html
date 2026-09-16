@@ -317,7 +317,7 @@
   .svcring-scene{width:100%;height:260px;perspective:900px;touch-action:none}
   .svcring{position:relative;width:1px;height:1px;margin:0 auto;top:110px;
     transform-style:preserve-3d}
-  .svcring .it{position:absolute;width:118px;height:158px;left:-59px;top:-79px;
+  .svcring .it{position:absolute;width:138px;height:184px;left:-69px;top:-92px;
     border-radius:14px;overflow:hidden;background:var(--card);border:1px solid var(--line);
     box-shadow:0 20px 40px rgba(0,0,0,.5)}
   .svcring .it img{width:100%;height:100%;object-fit:cover;display:block}
@@ -1328,7 +1328,7 @@ gsap.utils.toArray('.sec').forEach((sec, i) => {
        ואין בו שום מנגנון מגע; הגרירה כאן (pointerdown/move/up) היא
        ההתאמה שלנו. עומר ראה דמו על מסך טלפון אמיתי ובחר בזה מתוך
        6 חלופות (14/09/2026). */
-    const N = SERVICES.length, RADIUS = 230;
+    const N = SERVICES.length, RADIUS = 155;
     const ring = document.getElementById('svcRingInner');
     const label = document.getElementById('svcRingLabel');
     const items = SERVICES.map(([num,title,file],i)=>{
@@ -1353,17 +1353,35 @@ gsap.utils.toArray('.sec').forEach((sec, i) => {
     }
     render();
 
-    let dragging=false, lastX=0;
+    /* snap: בשחרור, הטבעת לא נשארת תקועה באמצע — היא ננעלת על הכרטיס
+       הקרוב ביותר. velocity (ה-dx של תזוזת האצבע האחרונה) מוסיף תנופה,
+       כך שגרירה חדה קופצת כרטיס-שניים במקום להיעצר בזה שמתחת ליד. */
+    const ANGLE = 360/N;
+    let dragging=false, lastX=0, velocity=0, snapTween=null;
     const scene = document.querySelector('.svcring-scene');
-    scene.addEventListener('pointerdown', e => { dragging=true; lastX=e.clientX; scene.setPointerCapture(e.pointerId); });
+    scene.addEventListener('pointerdown', e => {
+      dragging=true; lastX=e.clientX; velocity=0;
+      if (snapTween) snapTween.kill();
+      scene.setPointerCapture(e.pointerId);
+    });
     scene.addEventListener('pointermove', e => {
       if (!dragging) return;
-      rotation += (e.clientX-lastX) * 0.5;
-      lastX = e.clientX;
+      const dx = (e.clientX-lastX) * 0.5;
+      rotation += dx; velocity = dx; lastX = e.clientX;
       render();
     });
-    scene.addEventListener('pointerup',   () => dragging=false);
-    scene.addEventListener('pointercancel', () => dragging=false);
+    const snapToNearest = () => {
+      if (!dragging) return;
+      dragging = false;
+      const target = Math.round((rotation + velocity*3) / ANGLE) * ANGLE;
+      const proxy = { r: rotation };
+      snapTween = gsap.to(proxy, {
+        r: target, duration:.55, ease:'power3.out',
+        onUpdate(){ rotation = proxy.r; render(); }
+      });
+    };
+    scene.addEventListener('pointerup', snapToNearest);
+    scene.addEventListener('pointercancel', snapToNearest);
 
     gsap.from('#svcRing', {
       opacity:0, y:34, duration:.9, ease:'power3.out',
