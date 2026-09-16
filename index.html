@@ -881,6 +881,24 @@ gsap.utils.toArray('.sec').forEach((sec, i) => {
       scrollTrigger:{ trigger:sec, start:'top bottom', end:'top 42%', scrub:.7 } });
 });
 
+/* הלולאה שמעלינו רק בוחרת elements עם class="sec" — מי אני, השירותים
+   שלי, תיוגים ובניית אתרים בנויים עם class אחר (whoami/svc-sec/
+   res-sec/web-sec) ולכן דילגו עליה ופשוט "הופיעו" בלי שום כניסה.
+   בנייד (עומר, 16/09/2026) זה בדיוק מה שהורגש — מרחיבים את אותה
+   כניסה לארבעתם. לא נוגע בדסקטופ: שם ההופעה המצטברת פחות בולטת
+   ולכל אחד מהם יש כבר אנימציית תוכן פנימית משלו (ריחוף/מילים/וידאו). */
+if (TOUCH) {
+  ['#whoami','#miShow','#scResults','#scWeb'].forEach(sel => {
+    const sec = document.querySelector(sel);
+    if (!sec) return;
+    gsap.set(sec, { transformOrigin:'50% 100%', transformPerspective:1400 });
+    gsap.fromTo(sec,
+      { scale:.9, y:60, opacity:.35, rotationX:5 },
+      { scale:1, y:0, opacity:1, rotationX:0, ease:'power3.out',
+        scrollTrigger:{ trigger:sec, start:'top bottom', end:'top 55%', scrub:.7 } });
+  });
+}
+
 /* ════ 2 — יצרתי תכנים עבור: קרוסלת לוגואים (shadcnblocks "Logos3" — React+Embla AutoScroll →
    מרקיזה אינסופית וניל. אותו מנגנון מוקשח כמו ההמלצות: scrollWidth נמדד פעם אחת (לא בכל טיק),
    ו-IntersectionObserver משהה כשהסקשן לא בתצוגה. RTL: translateX חיובי = הכיוון הטבעי. ════ */
