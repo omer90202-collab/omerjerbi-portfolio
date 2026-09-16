@@ -885,10 +885,22 @@ gsap.utils.toArray('.sec').forEach((sec, i) => {
    שלי, תיוגים ובניית אתרים בנויים עם class אחר (whoami/svc-sec/
    res-sec/web-sec) ולכן דילגו עליה ופשוט "הופיעו" בלי שום כניסה.
    בנייד (עומר, 16/09/2026) זה בדיוק מה שהורגש — מרחיבים את אותה
-   כניסה לארבעתם. לא נוגע בדסקטופ: שם ההופעה המצטברת פחות בולטת
-   ולכל אחד מהם יש כבר אנימציית תוכן פנימית משלו (ריחוף/מילים/וידאו). */
+   כניסה. לא נוגע בדסקטופ: שם ההופעה המצטברת פחות בולטת ולכל אחד
+   מהם יש כבר אנימציית תוכן פנימית משלו (ריחוף/מילים/וידאו).
+
+   #scWeb בנפרד ובגישה שונה: הוא לא כמו שלושת האחרים. אלה קבועים
+   בגובה (100svh / clamp), אבל #scWeb הוא display:grid של 12 כרטיסים
+   שנבנים ב-JS — בנייד-עמודה-אחת הוא מגיע ל-2700+ פיקסלים. scale/
+   rotationX על אלמנט כך גבוה (עם transformOrigin בתחתית) מזיז את
+   הקצה העליון שלו במאות פיקסלים בעצם הסקייל וההטיה — נמדד בפועל
+   פער-פריסה של 985px בין תיוגים לבניית אתרים (מסך שחור), ואז
+   התיקון-העצמי קורה על פני חלון סקרול קצר בהרבה מהעיוות עצמו —
+   זה ה"דילוג על הכותרת" שעומר ראה. הפתרון: מטרגטים רק את הכותרת
+   הקטנה (.web-head, ~110px) ולא את כל הרשת הענקית; הרשת עצמה
+   נשארת ללא טרנספורם, וכל כרטיס בה כבר נכנס בנפרד (IntersectionObserver
+   קיים, .web-card.in). */
 if (TOUCH) {
-  ['#whoami','#miShow','#scResults','#scWeb'].forEach(sel => {
+  ['#whoami','#miShow','#scResults'].forEach(sel => {
     const sec = document.querySelector(sel);
     if (!sec) return;
     gsap.set(sec, { transformOrigin:'50% 100%', transformPerspective:1400 });
@@ -897,6 +909,14 @@ if (TOUCH) {
       { scale:1, y:0, opacity:1, rotationX:0, ease:'power3.out',
         scrollTrigger:{ trigger:sec, start:'top bottom', end:'top 55%', scrub:.7 } });
   });
+  const webHead = document.querySelector('#scWeb .web-head');
+  if (webHead) {
+    gsap.set(webHead, { transformOrigin:'50% 100%', transformPerspective:1400 });
+    gsap.fromTo(webHead,
+      { scale:.9, y:40, opacity:.35, rotationX:5 },
+      { scale:1, y:0, opacity:1, rotationX:0, ease:'power3.out',
+        scrollTrigger:{ trigger:webHead, start:'top bottom', end:'top 55%', scrub:.7 } });
+  }
 }
 
 /* ════ 2 — יצרתי תכנים עבור: קרוסלת לוגואים (shadcnblocks "Logos3" — React+Embla AutoScroll →
