@@ -11,7 +11,7 @@
      'unsafe-inline' הכרחי: כל ה-CSS וה-JS של האתר יושבים inline ו-GSAP
      כותב style ישירות. הערך עדיין אמיתי — connect-src 'self' חוסם
      הדלפת מידע החוצה, object-src ו-base-uri חוסמים השתלטות על העמוד. -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://unpkg.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' blob:; font-src 'self'; connect-src 'self' https://cdn.jsdelivr.net https://unpkg.com; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://unpkg.com https://www.clarity.ms https://*.clarity.ms; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' blob:; font-src 'self'; connect-src 'self' https://cdn.jsdelivr.net https://unpkg.com https://www.clarity.ms https://*.clarity.ms; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <title>כל הפרויקטים — עומר ג'רבי</title>
 <!--
@@ -28,6 +28,10 @@
     --line:rgba(245,240,230,.12);
   }
   *{margin:0;padding:0;box-sizing:border-box}
+  a:focus-visible,button:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+  .skip-link{position:fixed;z-index:400;top:-100px;right:16px;background:var(--gold);color:#141005;
+    font-weight:700;font-size:14px;padding:10px 18px;border-radius:10px;transition:top .2s}
+  .skip-link:focus{top:16px}
 
   /* ═══ Tel Aviv Brutalist — 3 משקלים (ניסוי פונט 18/08) ═══
      לכל קובץ טווח font-weight מפורש ולא ערך יחיד: באתר יש 200/300/500/900
@@ -106,9 +110,67 @@
   .lb-close{position:absolute;top:26px;left:26px;width:46px;height:46px;border-radius:99px;border:1px solid var(--line);color:var(--ink);background:rgba(255,255,255,.06);font-size:18px;cursor:pointer;display:grid;place-items:center;transition:.25s}
   .lb-close:hover{border-color:var(--gold);color:var(--gold)}
   footer{display:flex;justify-content:space-between;padding:26px 4vw;font-size:13px;color:var(--dim);border-top:1px solid var(--line);flex-wrap:wrap;gap:8px}
+  footer a{color:inherit}
+
+  /* ═══ באנר עוגיות ═══ — Clarity נטען רק אחרי אישור, לא לפני */
+  .cookie-bar{position:fixed;z-index:300;inset-inline:0;bottom:0;
+    background:var(--bg);border-top:1px solid var(--line);
+    padding:16px 20px;display:none;align-items:center;gap:18px;flex-wrap:wrap;
+    box-shadow:0 -14px 40px rgba(0,0,0,.4)}
+  .cookie-bar.show{display:flex}
+  .cookie-bar p{flex:1;min-width:220px;font-size:13.5px;color:var(--dim);line-height:1.6;margin:0}
+  .cookie-bar p a{color:var(--gold)}
+  .cookie-bar .btns{display:flex;gap:10px;flex-shrink:0}
+  .cookie-bar button{font-family:inherit;font-size:13.5px;font-weight:700;border:0;border-radius:99px;
+    padding:9px 18px;cursor:pointer}
+  .cookie-bar .ok{background:var(--gold);color:#141005}
+  .cookie-bar .no{background:transparent;color:var(--dim);border:1px solid var(--line)}
+  @media(max-width:600px){.cookie-bar{padding:14px 16px}.cookie-bar .btns{width:100%}
+    .cookie-bar button{flex:1}}
 </style>
 </head>
 <body>
+
+<a class="skip-link" href="#wall">דלג לתוכן הראשי</a>
+<div class="cookie-bar" id="cookieBar" role="dialog" aria-label="עוגיות">
+  <p>האתר משתמש בעוגיית אנליטיקס אנונימית (Microsoft Clarity) כדי להבין איך גולשים משתמשים בו ולשפר אותו. לא נאסף מידע מזהה אישית. <a href="privacy.html">מדיניות פרטיות</a></p>
+  <div class="btns">
+    <button class="no" id="cookieNo">לא תודה</button>
+    <button class="ok" id="cookieOk">מאשר/ת</button>
+  </div>
+</div>
+<script>
+(function(){
+  var CLARITY_ID = 'CLARITY_PROJECT_ID';
+  function loadClarity(){
+    if (CLARITY_ID === 'CLARITY_PROJECT_ID' || window.__clarityLoaded) return;
+    window.__clarityLoaded = true;
+    (function(c,l,a,r,i,t,y){
+      c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+      t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+      y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", CLARITY_ID);
+  }
+  var choice = localStorage.getItem('cookieConsent');
+  if (choice === 'yes') loadClarity();
+  else if (choice !== 'no') {
+    document.addEventListener('DOMContentLoaded', function(){
+      document.getElementById('cookieBar').classList.add('show');
+    });
+  }
+  document.addEventListener('DOMContentLoaded', function(){
+    document.getElementById('cookieOk').addEventListener('click', function(){
+      localStorage.setItem('cookieConsent','yes');
+      document.getElementById('cookieBar').classList.remove('show');
+      loadClarity();
+    });
+    document.getElementById('cookieNo').addEventListener('click', function(){
+      localStorage.setItem('cookieConsent','no');
+      document.getElementById('cookieBar').classList.remove('show');
+    });
+  });
+})();
+</script>
 
 <header>
   <nav class="nav">
@@ -171,6 +233,7 @@
   <span>עומר ג'רבי © 2026</span>
   <span>תוכן AI · ברמה של הפקה</span>
   <span><a href="https://instagram.com/omerjerbi" target="_blank" rel="noopener">@omerjerbi</a></span>
+  <span><a href="privacy.html">מדיניות פרטיות</a> · <a href="accessibility.html">הצהרת נגישות</a></span>
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js" integrity="sha384-HOvlOYPIs/zjoIkWUGXkVmXsjr8GuZLV+Q+rcPwmJOVZVpvTSXQChiN4t9Euv9Vc" crossorigin="anonymous" referrerpolicy="no-referrer"></script>

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.clarity.ms https://*.clarity.ms; style-src 'self' 'unsafe-inline'; img-src 'self' data:; media-src 'self'; font-src 'self'; connect-src 'self' https://www.clarity.ms https://*.clarity.ms; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<link rel="canonical" href="https://jerbi.ai/accessibility.html">
+<title>הצהרת נגישות — עומר ג'רבי</title>
+<meta name="description" content="הצהרת הנגישות של jerbi.ai — רמת ההתאמה, האמצעים שיושמו ופרטי יצירת קשר בנושאי נגישות.">
+<link rel="icon" href="images/favicon.png" type="image/png">
+<meta name="robots" content="noindex">
+<style>
+  :root{--page:#060504;--card:#0d0b09;--ink:#f5f0e6;--dim:#6b6355;--gold:#FDBF2D;--line:rgba(245,240,230,.14)}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--page);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Heebo,sans-serif;
+    line-height:1.75;min-height:100svh;display:flex;flex-direction:column}
+  a{color:var(--gold)}
+  a:focus-visible,button:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+  header{padding:22px 6vw;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line)}
+  header a.home{color:var(--gold);font-weight:900;font-size:20px;text-decoration:none;letter-spacing:-.01em}
+  header a.back{color:var(--dim);font-size:14px;text-decoration:none}
+  header a.back:hover{color:var(--ink)}
+  main{flex:1;max-width:720px;margin:0 auto;padding:7vh 6vw 10vh;width:100%}
+  h1{font-size:clamp(28px,5vw,40px);font-weight:900;margin-bottom:6px}
+  .updated{color:var(--dim);font-size:13px;margin-bottom:5vh}
+  h2{font-size:19px;font-weight:900;color:var(--gold);margin:5vh 0 14px}
+  h2:first-of-type{margin-top:0}
+  p,li{color:var(--ink);opacity:.92;font-size:15.5px}
+  p+p{margin-top:12px}
+  ul{margin-top:10px;padding-inline-start:22px}
+  li+li{margin-top:8px}
+  .box{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px 24px;margin-top:5vh}
+  footer{padding:22px 6vw;border-top:1px solid var(--line);display:flex;gap:18px;flex-wrap:wrap;
+    justify-content:center;font-size:13px;color:var(--dim)}
+  footer a{color:var(--dim);text-decoration:none}
+  footer a:hover{color:var(--gold)}
+</style>
+</head>
+<body>
+
+<header>
+  <a class="home" href="index.html">JERBI.</a>
+  <a class="back" href="index.html">→ חזרה לאתר</a>
+</header>
+
+<main>
+  <h1>הצהרת נגישות</h1>
+  <p class="updated">עודכן ונבדק לאחרונה: ספטמבר 2026</p>
+
+  <h2>המחויבות שלנו</h2>
+  <p>אתר jerbi.ai שואף לאפשר גישה נוחה ושוויונית לכלל המשתמשים, לרבות אנשים עם מוגבלות, בהתאם לחוק שוויון זכויות לאנשים עם מוגבלות, התשנ"ח-1998, ולתקנות הנגישות מכוחו. אנחנו עובדים באופן שוטף לשיפור הנגישות של האתר.</p>
+
+  <h2>רמת ההתאמה</h2>
+  <p>האתר תוכנן ונבדק ברמת התאמה חלקית לתקן WCAG 2.0 ברמה AA, ובהתאם לתקן הישראלי (ת"י 5568). האמצעים שיושמו כוללים:</p>
+  <ul>
+    <li>מבנה סמנטי של כותרות ואזורי תוכן, לניווט נוח עם קורא מסך.</li>
+    <li>טקסט חלופי (alt) לתמונות משמעותיות.</li>
+    <li>ניגודיות צבעים גבוהה בין טקסט לרקע.</li>
+    <li>אפשרות ניווט מלאה באמצעות מקלדת, כולל סימון חזותי ברור (focus) לאלמנט הפעיל.</li>
+    <li>תמיכה בהגדלת טקסט של הדפדפן בלי שבירת התצוגה.</li>
+    <li>כיתוב (aria-label) לכפתורים ואייקונים ללא טקסט גלוי.</li>
+  </ul>
+  <p>חלקים באתר מבוססים על אנימציית גלילה עשירה. למשתמשים המעדיפים תנועה מופחתת מומלץ להפעיל את הגדרת "הפחתת תנועה" (Reduce Motion) במערכת ההפעלה — האתר מכבד הגדרה זו במידת האפשר.</p>
+
+  <div class="box">
+    <h2 style="margin-top:0">נתקלתם בבעיית נגישות?</h2>
+    <p>אם נתקלתם בתוכן או רכיב שאינו נגיש עבורכם, נשמח שתדווחו לנו — כל פנייה נבדקת אישית ומטופלת בהקדם האפשרי.</p>
+    <p style="margin-top:14px"><b>רכז נגישות:</b> עומר ג'רבי<br>
+    <a href="mailto:omer90202@gmail.com">omer90202@gmail.com</a> · <a href="https://wa.me/972542131252" target="_blank" rel="noopener">וואטסאפ</a></p>
+  </div>
+</main>
+
+<footer>
+  <span>עומר ג'רבי © 2026</span>
+  <a href="privacy.html">מדיניות פרטיות</a>
+  <a href="index.html">האתר הראשי</a>
+</footer>
+
+</body>
+</html>
