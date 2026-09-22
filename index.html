@@ -386,6 +386,28 @@
   @media(max-width:960px){.web-grid{grid-template-columns:repeat(2,1fr)}}
   @media(max-width:600px){.web-grid{grid-template-columns:1fr}}
 
+  /* קרוסלת הצצה — תחליף מובייל בלבד לרשת (22/09/2026, אחרי חפיסת קלפים
+     שירדה): כרטיס מרכזי מוגדל + הצצה לשני הצדדים, גרירה עם snap ולופ
+     אינסופי (12→1 ולהפך) — לא נעצר בקצוות. אותה שיטת גרירה+snap
+     כמו בגלריית השירותים המעגלית. web-bar+web-shot האמיתיים (16:10). */
+  .web-car-wrap{display:none}
+  .web-sec.is-touch .web-grid{display:none}
+  .web-sec.is-touch .web-car-wrap{display:flex;flex-direction:column;align-items:center;gap:3vh}
+  .web-car{position:relative;width:100%;touch-action:none}
+  .web-car-track{position:absolute;top:0;left:50%;width:1px;height:100%}
+  .wcar-card{position:absolute;top:0;width:250px;margin-inline-start:-125px;
+    background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden;
+    box-shadow:0 24px 50px rgba(0,0,0,.5)}
+  .wcar-name{position:absolute;bottom:10px;inset-inline:0;text-align:center;
+    font-weight:900;font-size:15px;opacity:0;transition:opacity .25s;pointer-events:none;
+    text-shadow:0 2px 10px rgba(0,0,0,.8)}
+  .wcar-card.is-center .wcar-name{opacity:1}
+  .web-car-dots{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;max-width:220px}
+  .web-car-dots i{width:5px;height:5px;border-radius:99px;background:var(--line);
+    transition:background .25s,width .25s;flex-shrink:0}
+  .web-car-dots i.on{background:var(--gold);width:14px}
+  .web-car-hint{font-size:12px;color:var(--dim);letter-spacing:.03em}
+
   /* ════ 5 — עבודות: קיר מהעומק ════ */
   /* ═══ עבודות · קיר מהעומק (מאתר 05) ═══
      כל אריח עף פנימה מזווית משלו: הזווית בין מרכזו למרכז הגריד
@@ -633,6 +655,13 @@
     <p>אתרים עם חוויית גלילה ואנימציה מתקדמת, שמציגים את העסק שלכם רמה מעל כולם.</p>
   </div>
   <div class="web-grid" id="webGrid"></div>
+  <div class="web-car-wrap" id="webCarWrap">
+    <div class="web-car" id="webCar">
+      <div class="web-car-track" id="webCarTrack"></div>
+    </div>
+    <div class="web-car-dots" id="webCarDots"></div>
+    <div class="web-car-hint">→ גוררים לצדדים ←</div>
+  </div>
 </section>
 
 <!-- ═ 7 ═ אאוטרו -->
@@ -1269,6 +1298,122 @@ if (TOUCH) {
     } else if (playing.has(v)) { v.pause(); playing.delete(v); }
   }), { threshold:.35 });
   grid.querySelectorAll('.web-card video').forEach(v => vio.observe(v));
+
+  /* ═ קרוסלת הצצה — מובייל בלבד ═
+     כרטיס מרכזי בגודל מלא + הצצה לשני הצדדים, גרירה עם snap ולופ
+     אינסופי: pos לא נעצר בקצוות, כל כרטיס ממוקם לפי wrapDelta סביב
+     המרכז הקרוב ביותר, כך שאחרי הכרטיס ה-12 מגיע ה-1 בלי "קיר".
+     web-bar+web-shot האמיתיים (16:10) — אותו "חלון דפדפן" כמו ברשת
+     הדסקטופ, לא צורה חדשה. */
+  if (TOUCH) {
+    document.getElementById('scWeb').classList.add('is-touch');
+
+    const STEP = 268;
+    const track = document.getElementById('webCarTrack');
+    const carEl = document.getElementById('webCar');
+    const dotsWrap = document.getElementById('webCarDots');
+    const N = SITES.length;
+    const LOOPLEN = N * STEP;
+
+    const cards = SITES.map(([slug, name, kind, url]) => {
+      const el = document.createElement('div');
+      el.className = 'wcar-card';
+
+      const bar = document.createElement('div'); bar.className = 'web-bar';
+      for (let d = 0; d < 3; d++) { const dot = document.createElement('span'); dot.className = 'web-dot'; bar.appendChild(dot); }
+      const addr = document.createElement('span'); addr.className = 'web-url'; addr.textContent = url;
+      bar.appendChild(addr);
+
+      const shot = document.createElement('div'); shot.className = 'web-shot';
+      const vid = document.createElement('video');
+      vid.src = 'videos/sites/' + slug + '.mp4';
+      vid.poster = 'images/sites/' + slug + '.jpg';
+      vid.setAttribute('muted', ''); vid.setAttribute('playsinline', '');
+      vid.setAttribute('loop', ''); vid.setAttribute('aria-label', 'אתר ' + name + ' — ' + kind);
+      vid.muted = vid.loop = vid.playsInline = true;
+      vid.preload = 'none';
+      shot.appendChild(vid);
+
+      const nameEl = document.createElement('div'); nameEl.className = 'wcar-name'; nameEl.textContent = name;
+
+      el.appendChild(bar); el.appendChild(shot); el.appendChild(nameEl);
+      track.appendChild(el);
+
+      const dot2 = document.createElement('i'); dotsWrap.appendChild(dot2);
+      return el;
+    });
+    const dots = [...dotsWrap.children];
+
+    function wrapDelta(d) {
+      d = ((d % LOOPLEN) + LOOPLEN) % LOOPLEN;
+      if (d > LOOPLEN / 2) d -= LOOPLEN;
+      return d;
+    }
+
+    /* וידאו: לא IntersectionObserver — עם transform מתעדכן על 12 כרטיסים
+       בכל render(), ה-IO הבנוי-בדפדפן מגיב לפעמים באיטיות/לא עקבית
+       (נצפה: play() מצליח ואז נעצר לבד תוך 50ms, בלי שום קריאה מפורשת
+       ל-pause() שאפשר לתפוס — כנראה race בין re-check של ה-IO
+       לאנימציית ה-transform). לכן ניגון נגזר ישירות מ-dist שכבר מחושב
+       כאן על כל כרטיס — אותו מקור אמת שקובע גם scale/opacity, בלי
+       דיליי ובלי מירוץ. שלושת הקרובים ביותר (מרכז + 2 הצצות) מתנגנים,
+       בדיוק תואם ל-MAX_PLAY של המכשירים הניידים. */
+    function syncVideo(el, dist) {
+      const v = el.querySelector('video');
+      if (dist < 1.05) {
+        if (!playing.has(v)) {
+          if (playing.size >= MAX_PLAY) { const old = playing.values().next().value; old.pause(); playing.delete(old); }
+          playing.add(v); startVid(v);
+        }
+      } else if (playing.has(v)) { v.pause(); playing.delete(v); }
+    }
+
+    let pos = 0;
+    function render() {
+      const centerIdx = (((Math.round(pos / STEP) % N) + N) % N);
+      cards.forEach((el, i) => {
+        const delta = wrapDelta(i * STEP - pos);
+        const dist = Math.min(Math.abs(delta) / STEP, 3);
+        const scale = Math.max(1 - dist * 0.14, .8);
+        const opacity = Math.max(1 - dist * 0.45, 0);
+        gsap.set(el, { x: delta, scale, opacity, y: dist * 6 });
+        el.style.zIndex = 100 - Math.round(dist * 10);
+        el.classList.toggle('is-center', i === centerIdx);
+        syncVideo(el, dist);
+      });
+      dots.forEach((d, i) => d.classList.toggle('on', i === centerIdx));
+    }
+
+    function layout() {
+      carEl.style.height = cards[0].offsetHeight + 'px';
+      render();
+    }
+
+    let dragging = false, lastX = 0, velocity = 0, snapTween = null;
+    carEl.addEventListener('pointerdown', e => {
+      dragging = true; lastX = e.clientX; velocity = 0;
+      if (snapTween) snapTween.kill();
+      carEl.setPointerCapture(e.pointerId);
+    });
+    carEl.addEventListener('pointermove', e => {
+      if (!dragging) return;
+      const dx = e.clientX - lastX;
+      pos -= dx; velocity = -dx; lastX = e.clientX;
+      render();
+    });
+    const snapToNearest = () => {
+      if (!dragging) return;
+      dragging = false;
+      const target = Math.round((pos + velocity * 3) / STEP) * STEP;
+      const proxy = { p: pos };
+      snapTween = gsap.to(proxy, { p: target, duration: .55, ease: 'power3.out', onUpdate() { pos = proxy.p; render(); } });
+    };
+    carEl.addEventListener('pointerup', snapToNearest);
+    carEl.addEventListener('pointercancel', snapToNearest);
+
+    requestAnimationFrame(layout);
+    addEventListener('resize', layout);
+  }
 }
 
 
