@@ -125,7 +125,7 @@
   /* ── תפריט: פאנל שנפתח מכפתור (Animmaster Navigation Menus #2) ── */
   .menu-panel{position:fixed;top:16px;left:3.4vw;width:112px;height:44px;background:var(--gold);border-radius:25px;overflow:hidden;z-index:150;box-shadow:0 14px 40px rgba(0,0,0,.4);transition:background-color .4s ease}
   .menu-btn{position:absolute;top:0;left:0;width:112px;height:44px;cursor:pointer;border-radius:25px;overflow:hidden;z-index:10;background:none;border:0;padding:0}
-  .menu-btn__slider{position:relative;width:100%;height:200%;top:0;pointer-events:none}
+  .menu-btn__slider{position:relative;width:100%;height:200%;top:0;pointer-events:none;will-change:transform}
   .menu-btn__item{width:100%;height:50%;display:flex;align-items:center;justify-content:center;background:var(--gold);font-size:13px;font-weight:700;letter-spacing:.04em;color:#141005;transition:background-color .4s ease,color .4s ease}
   .menu-btn__item--close{background:#141005;color:var(--gold)}
   .menu-nav{display:flex;flex-direction:column;justify-content:space-between;padding:78px 30px 26px;height:100%;opacity:0;pointer-events:none}
@@ -774,7 +774,11 @@ document.querySelectorAll('.gi[data-full]').forEach(t => t.addEventListener('cli
 
   const tlMenu = gsap.timeline({ paused:true, defaults:{ ease:'power3.inOut' } });
   tlMenu.to(menuPanel, { width:380, height:520, borderRadius:26, duration:.75 });
-  tlMenu.to(menuBtnSlider, { top:'-100%', duration:.5 }, 0);
+  /* transform (yPercent) ולא top: ב-iOS Safari הצגת "סגור" נשברה — ה-slider לא
+     צויר מחדש כשהאב (menu-panel) עבר אנימציית width/height (layout, לא transform),
+     וזה השאיר את הכפתור שקוף בזהב אחיד בלי הטקסט ההפוך. transform מקבל שכבת
+     compositing עצמאית וחסין לזה. */
+  tlMenu.to(menuBtnSlider, { yPercent:-50, duration:.5 }, 0);
   tlMenu.add(() => menuNav.classList.add('menu-nav--visible'), .2);
   tlMenu.set(menuLinks, { opacity:0, rotationX:90, y:80, x:-20, transformPerspective:300, transformOrigin:'bottom' }, 0);
   tlMenu.to(menuLinks, { opacity:1, rotationX:0, y:0, x:0, duration:.65, ease:'back.out(1.2)', stagger:.1 }, .5);
