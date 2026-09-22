@@ -386,6 +386,25 @@
   @media(max-width:960px){.web-grid{grid-template-columns:repeat(2,1fr)}}
   @media(max-width:600px){.web-grid{grid-template-columns:1fr}}
 
+  /* חפיסת קלפים — תחליף מובייל בלבד לרשת (18/09/2026): 12 כרטיסים בגלילה
+     אנכית ארוכה הרגישו איטיים ומשעממים. Animmaster · Sliders/3 (Stacked
+     Cards Nature) — אותה חפיסה נשלפת, אבל עם צורת הכרטיס האמיתית של
+     האתר (web-bar+web-shot ביחס 16:10, לא ריבוע/פורטרט) כדי שזה עדיין
+     ייראה כמו חלון דפדפן ולא כמו פוסטר גנרי. */
+  .web-deck-wrap{display:none}
+  .web-sec.is-touch .web-grid{display:none}
+  .web-sec.is-touch .web-deck-wrap{display:flex;flex-direction:column;align-items:center;gap:3.5vh}
+  .web-deck{position:relative;width:100%;perspective:1400px;touch-action:none}
+  .wdeck-card{position:absolute;top:0;left:0;width:100%;background:var(--card);
+    border:1px solid var(--line);border-radius:14px;overflow:hidden;
+    box-shadow:0 30px 60px rgba(0,0,0,.5)}
+  .wdeck-copy{padding:12px 16px;text-align:right}
+  .wdeck-copy h3{font-size:19px;font-weight:900;overflow:hidden;white-space:nowrap}
+  .wdeck-copy h3 span,.wdeck-copy p span{display:inline-block}
+  .wdeck-copy p{margin-top:4px;font-size:12.5px;color:var(--gold);overflow:hidden;white-space:nowrap}
+  .web-deck-hint{font-size:12px;color:var(--dim);letter-spacing:.04em}
+  .web-deck-hint b{color:var(--gold)}
+
   /* ════ 5 — עבודות: קיר מהעומק ════ */
   /* ═══ עבודות · קיר מהעומק (מאתר 05) ═══
      כל אריח עף פנימה מזווית משלו: הזווית בין מרכזו למרכז הגריד
@@ -633,6 +652,10 @@
     <p>אתרים עם חוויית גלילה ואנימציה מתקדמת, שמציגים את העסק שלכם רמה מעל כולם.</p>
   </div>
   <div class="web-grid" id="webGrid"></div>
+  <div class="web-deck-wrap" id="webDeckWrap">
+    <div class="web-deck" id="webDeck"></div>
+    <div class="web-deck-hint">↑ החליקו למעלה לאתר הבא · <b id="webDeckCount">1/12</b></div>
+  </div>
 </section>
 
 <!-- ═ 7 ═ אאוטרו -->
@@ -1269,6 +1292,109 @@ if (TOUCH) {
     } else if (playing.has(v)) { v.pause(); playing.delete(v); }
   }), { threshold:.35 });
   grid.querySelectorAll('.web-card video').forEach(v => vio.observe(v));
+
+  /* ═ חפיסת קלפים — מובייל בלבד ═
+     Animmaster · Sliders/3 (Stacked Cards Nature): עומק לפי אינדקס
+     (y/scale/z יורדים ככל שמתרחקים מהחזית), סוויפ למעלה שולף את
+     הקלף העליון לתחתית הערימה. כאן: web-bar+web-shot האמיתיים
+     (יחס 16:10, בדיוק כמו ברשת הדסקטופ) כשלד לכל קלף — לא צורה
+     חדשה, אותו "חלון דפדפן" בדיוק. */
+  if (TOUCH) {
+    document.getElementById('scWeb').classList.add('is-touch');
+
+    function splitChars(str){
+      return [...str].map(c => `<span>${c===' '?'&nbsp;':c}</span>`).join('');
+    }
+    const HEB_RE = /[֐-׿]/;
+    const PEEK = 14, MAXDEPTH = 3, BASE = PEEK * MAXDEPTH;
+
+    const deck = document.getElementById('webDeck');
+    const counter = document.getElementById('webDeckCount');
+    /* .reverse(): הקלף החזיתי הראשון יהיה index 0 (IRON) ולא האחרון ברשימה */
+    let order = SITES.map((_, i) => i).reverse();
+
+    const deckEls = SITES.map(([slug, name, kind, url]) => {
+      const el = document.createElement('article');
+      el.className = 'wdeck-card';
+
+      const bar = document.createElement('div'); bar.className = 'web-bar';
+      for (let d = 0; d < 3; d++) { const dot = document.createElement('span'); dot.className = 'web-dot'; bar.appendChild(dot); }
+      const addr = document.createElement('span'); addr.className = 'web-url'; addr.textContent = url;
+      bar.appendChild(addr);
+
+      const shot = document.createElement('div'); shot.className = 'web-shot';
+      const vid = document.createElement('video');
+      vid.src = 'videos/sites/' + slug + '.mp4';
+      vid.poster = 'images/sites/' + slug + '.jpg';
+      vid.setAttribute('muted', ''); vid.setAttribute('playsinline', '');
+      vid.setAttribute('loop', ''); vid.setAttribute('aria-label', 'אתר ' + name + ' — ' + kind);
+      vid.muted = vid.loop = vid.playsInline = true;
+      vid.preload = 'none';
+      shot.appendChild(vid);
+      vio.observe(vid);
+
+      const copy = document.createElement('div'); copy.className = 'wdeck-copy';
+      const h3 = document.createElement('h3'); h3.style.direction = HEB_RE.test(name) ? 'rtl' : 'ltr'; h3.innerHTML = splitChars(name);
+      const p = document.createElement('p'); p.style.direction = HEB_RE.test(kind) ? 'rtl' : 'ltr'; p.innerHTML = splitChars(kind);
+      copy.appendChild(h3); copy.appendChild(p);
+
+      el.appendChild(bar); el.appendChild(shot); el.appendChild(copy);
+      deck.appendChild(el);
+      return el;
+    });
+
+    function position(animated) {
+      const front = order.length - 1;
+      order.forEach((siteIdx, stackPos) => {
+        const el = deckEls[siteIdx];
+        const depth = Math.min(front - stackPos, MAXDEPTH);
+        const props = { y: BASE - depth * PEEK, z: -depth * 46, scale: 1 - depth * 0.035,
+          opacity: depth <= MAXDEPTH ? 1 : 0, duration: animated ? .8 : 0, ease: 'power4.inOut' };
+        if (animated) gsap.to(el, props); else gsap.set(el, props);
+        el.style.zIndex = stackPos;
+      });
+    }
+    function prepareText(el, show) {
+      gsap.set(el.querySelectorAll('h3 span'), { y: show ? 0 : -90 });
+      gsap.set(el.querySelectorAll('p span'), { y: show ? 0 : 24, opacity: show ? 1 : 0 });
+    }
+    order.forEach((siteIdx, stackPos) => prepareText(deckEls[siteIdx], stackPos === order.length - 1));
+
+    function layout() {
+      const front = deckEls[order[order.length - 1]];
+      deck.style.height = (front.offsetHeight + BASE) + 'px';
+      position(false);
+    }
+
+    let isAnimating = false;
+    function popTop() {
+      if (isAnimating) return;
+      isAnimating = true;
+      const topIdx = order[order.length - 1], nextIdx = order[order.length - 2];
+      const topEl = deckEls[topIdx], nextEl = deckEls[nextIdx];
+
+      gsap.to(topEl.querySelectorAll('h3 span'), { y: 90, duration: .55, ease: 'power3.in', stagger: .02 });
+      gsap.to(topEl.querySelectorAll('p span'), { y: 24, opacity: 0, duration: .35, ease: 'power3.in', stagger: .01 });
+      gsap.to(topEl, { y: '+=160%', duration: .7, ease: 'power4.inOut', onComplete: () => {
+        order = [topIdx, ...order.slice(0, order.length - 1)];
+        position(false);
+        prepareText(topEl, false);
+        setTimeout(() => { isAnimating = false; }, 260);
+      }});
+      gsap.to(nextEl.querySelectorAll('h3 span'), { y: 0, duration: .85, ease: 'power3.out', stagger: .03 });
+      gsap.to(nextEl.querySelectorAll('p span'), { y: 0, opacity: 1, duration: .5, ease: 'power3.out', stagger: .02, delay: .1 });
+
+      counter.textContent = (nextIdx + 1) + '/' + SITES.length;
+    }
+
+    let sy = 0, sdrag = false;
+    deck.addEventListener('pointerdown', e => { sdrag = true; sy = e.clientY; });
+    deck.addEventListener('pointerup', e => { if (!sdrag) return; sdrag = false; if (e.clientY - sy < -25) popTop(); });
+    deck.addEventListener('pointercancel', () => { sdrag = false; });
+
+    requestAnimationFrame(layout);
+    addEventListener('resize', layout);
+  }
 }
 
 
