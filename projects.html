@@ -11,7 +11,7 @@
      'unsafe-inline' הכרחי: כל ה-CSS וה-JS של האתר יושבים inline ו-GSAP
      כותב style ישירות. הערך עדיין אמיתי — connect-src 'self' חוסם
      הדלפת מידע החוצה, object-src ו-base-uri חוסמים השתלטות על העמוד. -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://unpkg.com https://www.clarity.ms https://*.clarity.ms; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' blob:; font-src 'self'; connect-src 'self' https://cdn.jsdelivr.net https://unpkg.com https://www.clarity.ms https://*.clarity.ms; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://unpkg.com https://www.clarity.ms https://*.clarity.ms; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://c.clarity.ms https://*.clarity.ms; media-src 'self' blob:; font-src 'self'; connect-src 'self' https://cdn.jsdelivr.net https://unpkg.com https://www.clarity.ms https://*.clarity.ms; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <title>כל הפרויקטים — עומר ג'רבי</title>
 <!--
@@ -141,9 +141,9 @@
 </div>
 <script>
 (function(){
-  var CLARITY_ID = 'CLARITY_PROJECT_ID';
+  var CLARITY_ID = 'ymctgqhaum';
   function loadClarity(){
-    if (CLARITY_ID === 'CLARITY_PROJECT_ID' || window.__clarityLoaded) return;
+    if (window.__clarityLoaded) return;
     window.__clarityLoaded = true;
     (function(c,l,a,r,i,t,y){
       c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
