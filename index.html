@@ -472,9 +472,9 @@
      ואת שובל התמונות (עומר: "עדין יותר"). CSS בלבד, אפס עלות. */
   .sc-outro::after{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;
     background:radial-gradient(ellipse 70% 45% at 50% 100%, rgba(253,191,45,.09), transparent 70%)}
-  .outro-in h2{font-weight:900;font-size:clamp(40px,7vw,110px);line-height:1.14;letter-spacing:-.02em}
+  .outro-in h2{font-weight:900;font-size:clamp(28px,4.9vw,77px);line-height:1.14;letter-spacing:-.02em}
   .outro-in h2 em{font-style:normal;color:var(--gold)}
-  .outro-in p{margin-top:2.6vh;color:var(--dim);font-weight:300;font-size:17px}
+  .outro-in p{margin-top:2.6vh;color:var(--dim);font-weight:300;font-size:31px}
   .outro-in .btns{margin-top:5vh;display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
   .outro-in a{display:inline-block;padding:18px 50px;border-radius:99px;font-weight:700;font-size:17px;transition:.3s}
   .outro-in a.main{background:var(--gold);color:#141005}
@@ -510,7 +510,7 @@
     /* תוויות הסקשנים: 10.5px קטן מדי בטלפון */
     section small{font-size:12px !important}
     /* אאוטרו: שהשורה השנייה "מתחיל בשיחה." לא תישבר לשתיים */
-    .outro-in h2{font-size:clamp(30px,9.4vw,40px)}
+    .outro-in h2{font-size:clamp(21px,6.6vw,28px)}
     /* בטלפון הקיר לא מוצמד (ראה JS) — רשת אנכית 2 עמודות שנגללת רגיל */
     #scWorks.wall{height:auto;padding-block:8vh}
     #scWorks .wall-cap{position:static;max-width:none;padding-bottom:3vh}
@@ -568,8 +568,6 @@
   html.a11y-underline a{text-decoration:underline!important}
   html.a11y-motion *{animation-duration:.01ms!important;animation-iteration-count:1!important;
     transition-duration:.01ms!important;scroll-behavior:auto!important}
-  html.a11y-font-1 body{font-size:1.1em}
-  html.a11y-font-2 body{font-size:1.22em}
 </style>
 </head>
 <body>
@@ -650,11 +648,25 @@
   var TOGGLES = ['contrast','gray','underline','motion'];
 
   function save(){ localStorage.setItem(KEY, JSON.stringify(s)); }
+
+  /* הגדלת טקסט אמיתית: font-size ב-em תמיד מחושב יחסית ל-*הורה*, לא לגודל
+     הנוכחי של האלמנט עצמו — ולכן לא ניתן "להכפיל" גודל קיים בלולאת CSS
+     טהורה כשלכל אלמנט יש px/clamp/vw שונה משלו. הפתרון: קוראים את הגודל
+     המחושב בפועל של כל אלמנט (פעם אחת, נשמר ב-dataset), ומכפילים ב-JS. */
+  var FONT_SEL = 'p, li, a, button';
+  var FONT_SCALE = { 1: 1.22, 2: 1.42 };
+  function applyFontScale(){
+    var factor = FONT_SCALE[s.font];
+    document.querySelectorAll(FONT_SEL).forEach(function(el){
+      if (el.closest('.a11y-panel') || el.closest('.a11y-btn')) return;
+      if (!el.dataset.a11yBase) el.dataset.a11yBase = parseFloat(getComputedStyle(el).fontSize);
+      if (factor) el.style.setProperty('font-size', (parseFloat(el.dataset.a11yBase) * factor) + 'px', 'important');
+      else el.style.removeProperty('font-size');
+    });
+  }
   function applyClasses(){
     TOGGLES.forEach(function(t){ html.classList.toggle('a11y-'+t, !!s[t]); });
-    html.classList.remove('a11y-font-1','a11y-font-2');
-    if (s.font === 1) html.classList.add('a11y-font-1');
-    if (s.font === 2) html.classList.add('a11y-font-2');
+    applyFontScale();
   }
   function syncButtons(){
     TOGGLES.forEach(function(t){
@@ -1085,13 +1097,17 @@ document.querySelectorAll('.gi[data-full]').forEach(t => t.addEventListener('cli
      הפענוח תלוי ברזולוציה, ו-12 זעירים זולים מ-4 גדולים. */
   const tiles = [...document.querySelectorAll('.wtile video')];
   const SMALL = window.matchMedia('(max-width:820px)').matches;
+  /* עומר: 120ms לתיל (1.4 שנ' לכל ה-12) מרגיש כמו "הסרטונים לא מתנגנים"
+     בטעינה הראשונה במובייל. 45ms — פרישה כוללת של פחות מחצי שנייה —
+     עדיין מונעת את פרץ-ה-12-בבת-אחת שגרם להיתקעות המקורית. */
   tiles.forEach((v, i) => {
     if (SMALL) v.src = v.src.replace('videos/loops/', 'videos/loops/m/');
-    setTimeout(() => { v.preload = 'auto'; io.observe(v); }, i * 120);
+    setTimeout(() => { v.preload = 'auto'; io.observe(v); }, i * (SMALL ? 45 : 120));
   });
   /* רשת ההנעה של iOS לפעמים משהה חלק גם כשיש תקציב — כמה בעיטות
-     עדינות בשניות הראשונות מרימות את מי שנשאר על הפוסטר */
-  if (SMALL) [2000, 4000, 7000].forEach(t => setTimeout(() => {
+     עדינות בשניות הראשונות מרימות את מי שנשאר על הפוסטר. בעיטה
+     ראשונה מוקדמת (700ms) כדי שהתקיעה הראשונית תיפתר כמה שיותר מהר. */
+  if (SMALL) [700, 1500, 3000, 6000].forEach(t => setTimeout(() => {
     tiles.forEach(v => { if (v.paused && v.getBoundingClientRect().bottom > 0) v.play().catch(()=>{}); });
   }, t));
 }

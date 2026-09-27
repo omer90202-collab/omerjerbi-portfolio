@@ -201,8 +201,6 @@
   html.a11y-underline a{text-decoration:underline!important}
   html.a11y-motion *{animation-duration:.01ms!important;animation-iteration-count:1!important;
     transition-duration:.01ms!important;scroll-behavior:auto!important}
-  html.a11y-font-1 body{font-size:1.1em}
-  html.a11y-font-2 body{font-size:1.22em}
 </style>
 </head>
 <body>
@@ -278,11 +276,21 @@
   var TOGGLES = ['contrast','gray','underline','motion'];
 
   function save(){ localStorage.setItem(KEY, JSON.stringify(s)); }
+
+  var FONT_SEL = 'p, li, a, button';
+  var FONT_SCALE = { 1: 1.22, 2: 1.42 };
+  function applyFontScale(){
+    var factor = FONT_SCALE[s.font];
+    document.querySelectorAll(FONT_SEL).forEach(function(el){
+      if (el.closest('.a11y-panel') || el.closest('.a11y-btn')) return;
+      if (!el.dataset.a11yBase) el.dataset.a11yBase = parseFloat(getComputedStyle(el).fontSize);
+      if (factor) el.style.setProperty('font-size', (parseFloat(el.dataset.a11yBase) * factor) + 'px', 'important');
+      else el.style.removeProperty('font-size');
+    });
+  }
   function applyClasses(){
     TOGGLES.forEach(function(t){ html.classList.toggle('a11y-'+t, !!s[t]); });
-    html.classList.remove('a11y-font-1','a11y-font-2');
-    if (s.font === 1) html.classList.add('a11y-font-1');
-    if (s.font === 2) html.classList.add('a11y-font-2');
+    applyFontScale();
   }
   function syncButtons(){
     TOGGLES.forEach(function(t){
@@ -377,7 +385,7 @@
 
 <div class="head">
   <h1>כל <em>הפרויקטים.</em></h1>
-  <p>פרסומות, קמפיינים וקריאייטיב — הכל נוצר בבינה מלאכותית.</p>
+  <p>פרסומות, קמפיינים וסרטוני תדמית — הכל נוצר בבינה מלאכותית.</p>
 </div>
 
 <div class="wall" id="wall">
