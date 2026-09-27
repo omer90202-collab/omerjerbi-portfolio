@@ -514,6 +514,9 @@
     /* ה-31px של התקציר קבוע בכל הרוחבים — בטלפון זה מתנגש עם ה-h2 שכבר
        הצטמצם ל-21-28px (כמעט אותו גודל, בלי היררכיה ברורה ביניהם). */
     .outro-in p{font-size:clamp(15px,4.3vw,18px)}
+    /* התווית "וידאו · גרפיקה · אתרים · אוטומציה" מעל הכותרת מיותרת בטלפון —
+       עומר: "זה דביל" מעל "בזמן שאתם מתלבטים..." הצפוף ממילא */
+    .outro-in > small{display:none}
     /* בטלפון הקיר לא מוצמד (ראה JS) — רשת אנכית 2 עמודות שנגללת רגיל */
     #scWorks.wall{height:auto;padding-block:8vh}
     #scWorks .wall-cap{position:static;max-width:none;padding-bottom:3vh}
