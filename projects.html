@@ -107,6 +107,9 @@
   .menu-nav__footer{display:flex;flex-wrap:wrap;gap:6px;border-top:1px solid rgba(20,16,5,.15);padding-top:16px;margin-top:10px}
   .menu-nav__footer a{width:50%;font-size:12px;color:rgba(20,16,5,.65);will-change:transform,opacity}
   @media(max-width:480px){.menu-panel{width:96px;height:40px}.menu-btn{width:96px;height:40px}}
+  /* "בואו נדבר" מתנגש עם כפתור התפריט הצף (שניהם ב-fixed top-left) —
+     בדף הבית זה מוסתר במובייל, כאן נשכח. אותו תיקון. */
+  @media(max-width:900px){.nav .side{display:none}}
 
   /* ── ראש העמוד ── */
   .head{padding:20vh 6vw 8vh;text-align:center}
@@ -389,40 +392,40 @@
 </div>
 
 <div class="wall" id="wall">
-  <div class="p-it"><video src="videos/expo.mp4" width="1920" height="1080" muted loop playsinline preload="none"></video><b>אקספו</b></div>
-  <div class="p-it"><video src="videos/almog-shiloni.mp4" width="1280" height="720" muted loop playsinline preload="none"></video><b>בית אלמוג שילוני</b></div>
-  <div class="p-it"><video src="videos/eyal-golan.mp4" width="720" height="402" muted loop playsinline preload="none"></video><b>אייל גולן</b></div>
-  <div class="p-it"><video src="videos/save1080.mp4" width="720" height="406" muted loop playsinline preload="none"></video><b>האח הגדול</b></div>
-  <div class="p-it"><video src="videos/raw-goldstar.mp4" width="720" height="1280" muted loop playsinline preload="none"></video><b>גולדסטאר</b></div>
-  <div class="p-it"><video src="videos/mantra-what.mp4" width="720" height="1280" muted loop playsinline preload="none"></video><b>מה זה מנטרה</b></div>
-  <div class="p-it"><video src="videos/telhai-en.mp4" width="720" height="406" muted loop playsinline preload="none"></video><b>קרב תל חי</b></div>
-  <div class="p-it"><video src="videos/imtirtzu-1.mp4" width="720" height="1280" muted loop playsinline preload="none"></video><b>אם תרצו</b></div>
-  <div class="p-it"><video src="videos/survivor.mp4" width="720" height="406" muted loop playsinline preload="none"></video><b>הישרדות</b></div>
-  <div class="p-it"><video src="videos/imtirtzu-2.mp4" width="720" height="406" muted loop playsinline preload="none"></video><b>אם תרצו — כנס שנתי</b></div>
-  <div class="p-it"><video src="videos/imtirtzu-3.mp4" width="720" height="1280" muted loop playsinline preload="none"></video><b>אם תרצו</b></div>
-  <div class="p-it"><video src="videos/hapoel.mp4" width="720" height="1270" muted loop playsinline preload="none"></video><b>הפועל</b></div>
-  <div class="p-it"><video src="videos/beitar-puppets.mp4" width="720" height="1270" muted loop playsinline preload="none"></video><b>בית״ר ירושלים</b></div>
-  <div class="p-it"><video src="videos/heels.mp4" width="720" height="1294" muted loop playsinline preload="none"></video><b>נעליים</b></div>
-  <div class="p-it"><video src="videos/mbappe.mp4" width="720" height="1280" muted loop playsinline preload="none"></video><b>קמפיין כדורגל</b></div>
-  <div class="p-it"><video src="videos/ginton-purim.mp4" width="720" height="1280" muted loop playsinline preload="none"></video><b>ג'ין טוניק — פורים</b></div>
-  <div class="p-it"><video src="videos/noir-bar.mp4" width="720" height="1280" muted loop playsinline preload="none"></video><b>בר נואר</b></div>
-  <div class="p-it"><video src="videos/oro.mp4" width="720" height="1280" muted loop playsinline preload="none"></video><b>אורו</b></div>
-  <div class="p-it"><video src="videos/conference.mp4" width="720" height="408" muted loop playsinline preload="none"></video><b>כנס</b></div>
-  <div class="p-it"><video src="videos/sound2.mp4" width="720" height="1294" muted loop playsinline preload="none"></video><b>סאונד</b></div>
-  <div class="p-it"><video src="videos/mantra-3.mp4" width="720" height="1280" muted loop playsinline preload="none"></video><b>מנטרה — מוצמד</b></div>
-  <div class="p-it"><video src="videos/mantra-who.mp4" width="720" height="1290" muted loop playsinline preload="none"></video><b>מי אנחנו — מנטרה</b></div>
-  <div class="p-it"><video src="videos/raw-arak.mp4" width="720" height="1280" muted loop playsinline preload="none"></video><b>ערק נוח</b></div>
-  <div class="p-it"><video src="videos/raw-shoko.mp4" width="720" height="1280" muted loop playsinline preload="none"></video><b>שוקו</b></div>
-  <div class="p-it"><video src="videos/raw-magnum.mp4" width="720" height="1280" muted loop playsinline preload="none"></video><b>מגנום</b></div>
-  <div class="p-it"><video src="videos/raw-shampoo.mp4" width="720" height="1280" muted loop playsinline preload="none"></video><b>שמפו</b></div>
-  <div class="p-it"><video src="videos/raw-coffee.mp4" width="720" height="1280" muted loop playsinline preload="none"></video><b>חלב קפה</b></div>
-  <div class="p-it"><video src="videos/raw-muller.mp4" width="720" height="1280" muted loop playsinline preload="none"></video><b>מולר</b></div>
-  <div class="p-it"><video src="videos/raw-neviot.mp4" width="720" height="1280" muted loop playsinline preload="none"></video><b>נביעות</b></div>
-  <div class="p-it"><video src="videos/raw-taster.mp4" width="720" height="1280" muted loop playsinline preload="none"></video><b>טייסטרס צ'ויס</b></div>
-  <div class="p-it"><video src="videos/coke-zero.mp4" width="720" height="1280" muted loop playsinline preload="none"></video><b>קוקה קולה זירו</b></div>
-  <div class="p-it"><video src="videos/power-barrier-1.mp4" width="720" height="1280" muted loop playsinline preload="none"></video><b>Power Barrier</b></div>
-  <div class="p-it"><video src="videos/power-barrier-2.mp4" width="720" height="1280" muted loop playsinline preload="none"></video><b>Power Barrier — קמפיין טעמים</b></div>
-  <div class="p-it"><video src="videos/power-barrier-3.mp4" width="720" height="1280" muted loop playsinline preload="none"></video><b>Power Barrier — מארז</b></div>
+  <div class="p-it"><video src="videos/loops/expo.mp4" width="1920" height="1080" muted loop playsinline preload="none"></video><b>אקספו</b></div>
+  <div class="p-it"><video src="videos/loops/almog-shiloni.mp4" width="1280" height="720" muted loop playsinline preload="none"></video><b>בית אלמוג שילוני</b></div>
+  <div class="p-it"><video src="videos/loops/eyal-golan.mp4" width="720" height="402" muted loop playsinline preload="none"></video><b>אייל גולן</b></div>
+  <div class="p-it"><video src="videos/loops/save1080.mp4" width="720" height="406" muted loop playsinline preload="none"></video><b>האח הגדול</b></div>
+  <div class="p-it"><video src="videos/loops/raw-goldstar.mp4" width="720" height="1280" muted loop playsinline preload="none"></video><b>גולדסטאר</b></div>
+  <div class="p-it"><video src="videos/loops/mantra-what.mp4" width="720" height="1280" muted loop playsinline preload="none"></video><b>מה זה מנטרה</b></div>
+  <div class="p-it"><video src="videos/loops/telhai-en.mp4" width="720" height="406" muted loop playsinline preload="none"></video><b>קרב תל חי</b></div>
+  <div class="p-it"><video src="videos/loops/imtirtzu-1.mp4" width="720" height="1280" muted loop playsinline preload="none"></video><b>אם תרצו</b></div>
+  <div class="p-it"><video src="videos/loops/survivor.mp4" width="720" height="406" muted loop playsinline preload="none"></video><b>הישרדות</b></div>
+  <div class="p-it"><video src="videos/loops/imtirtzu-2.mp4" width="720" height="406" muted loop playsinline preload="none"></video><b>אם תרצו — כנס שנתי</b></div>
+  <div class="p-it"><video src="videos/loops/imtirtzu-3.mp4" width="720" height="1280" muted loop playsinline preload="none"></video><b>אם תרצו</b></div>
+  <div class="p-it"><video src="videos/loops/hapoel.mp4" width="720" height="1270" muted loop playsinline preload="none"></video><b>הפועל</b></div>
+  <div class="p-it"><video src="videos/loops/beitar-puppets.mp4" width="720" height="1270" muted loop playsinline preload="none"></video><b>בית״ר ירושלים</b></div>
+  <div class="p-it"><video src="videos/loops/heels.mp4" width="720" height="1294" muted loop playsinline preload="none"></video><b>נעליים</b></div>
+  <div class="p-it"><video src="videos/loops/mbappe.mp4" width="720" height="1280" muted loop playsinline preload="none"></video><b>קמפיין כדורגל</b></div>
+  <div class="p-it"><video src="videos/loops/ginton-purim.mp4" width="720" height="1280" muted loop playsinline preload="none"></video><b>ג'ין טוניק — פורים</b></div>
+  <div class="p-it"><video src="videos/loops/noir-bar.mp4" width="720" height="1280" muted loop playsinline preload="none"></video><b>בר נואר</b></div>
+  <div class="p-it"><video src="videos/loops/oro.mp4" width="720" height="1280" muted loop playsinline preload="none"></video><b>אורו</b></div>
+  <div class="p-it"><video src="videos/loops/conference.mp4" width="720" height="408" muted loop playsinline preload="none"></video><b>כנס</b></div>
+  <div class="p-it"><video src="videos/loops/sound2.mp4" width="720" height="1294" muted loop playsinline preload="none"></video><b>סאונד</b></div>
+  <div class="p-it"><video src="videos/loops/mantra-3.mp4" width="720" height="1280" muted loop playsinline preload="none"></video><b>מנטרה — מוצמד</b></div>
+  <div class="p-it"><video src="videos/loops/mantra-who.mp4" width="720" height="1290" muted loop playsinline preload="none"></video><b>מי אנחנו — מנטרה</b></div>
+  <div class="p-it"><video src="videos/loops/raw-arak.mp4" width="720" height="1280" muted loop playsinline preload="none"></video><b>ערק נוח</b></div>
+  <div class="p-it"><video src="videos/loops/raw-shoko.mp4" width="720" height="1280" muted loop playsinline preload="none"></video><b>שוקו</b></div>
+  <div class="p-it"><video src="videos/loops/raw-magnum.mp4" width="720" height="1280" muted loop playsinline preload="none"></video><b>מגנום</b></div>
+  <div class="p-it"><video src="videos/loops/raw-shampoo.mp4" width="720" height="1280" muted loop playsinline preload="none"></video><b>שמפו</b></div>
+  <div class="p-it"><video src="videos/loops/raw-coffee.mp4" width="720" height="1280" muted loop playsinline preload="none"></video><b>חלב קפה</b></div>
+  <div class="p-it"><video src="videos/loops/raw-muller.mp4" width="720" height="1280" muted loop playsinline preload="none"></video><b>מולר</b></div>
+  <div class="p-it"><video src="videos/loops/raw-neviot.mp4" width="720" height="1280" muted loop playsinline preload="none"></video><b>נביעות</b></div>
+  <div class="p-it"><video src="videos/loops/raw-taster.mp4" width="720" height="1280" muted loop playsinline preload="none"></video><b>טייסטרס צ'ויס</b></div>
+  <div class="p-it"><video src="videos/loops/coke-zero.mp4" width="720" height="1280" muted loop playsinline preload="none"></video><b>קוקה קולה זירו</b></div>
+  <div class="p-it"><video src="videos/loops/power-barrier-1.mp4" width="720" height="1280" muted loop playsinline preload="none"></video><b>Power Barrier</b></div>
+  <div class="p-it"><video src="videos/loops/power-barrier-2.mp4" width="720" height="1280" muted loop playsinline preload="none"></video><b>Power Barrier — קמפיין טעמים</b></div>
+  <div class="p-it"><video src="videos/loops/power-barrier-3.mp4" width="720" height="1280" muted loop playsinline preload="none"></video><b>Power Barrier — מארז</b></div>
 </div>
 
 
@@ -506,7 +509,21 @@ const io = new IntersectionObserver(es => es.forEach(e => {
     playing.add(v); startVid(v);
   } else if (playing.has(v)) { v.pause(); playing.delete(v); }
 }), { threshold:.35 });
-[...document.querySelectorAll('video')].forEach(v => io.observe(v));
+/* בטלפון מגישים את גרסת ה-m/ הזעירה (~200-350KB, גובה 400) במקום loops/
+   (~1-2MB) — עמוד עם 50 סרטונים דורש את זה עוד יותר מכל עמוד אחר באתר. */
+const SMALL = matchMedia('(max-width:820px)').matches;
+[...document.querySelectorAll('video')].forEach(v => {
+  if (SMALL) v.src = v.src.replace('videos/loops/', 'videos/loops/m/');
+  io.observe(v);
+});
+/* עומר (27/09): בעמוד הזה סרטונים "נתקעים" ב-playing (המצב הפנימי) בלי
+   שבאמת מתנגנים — ה-play() הראשון נדחה בשקט (AbortError/NotAllowedError
+   בטעינה הראשונה, אין ניסיון שני). בדיוק אותה מחלה שהייתה בקיר ההירו,
+   ואותו פתרון: בעיטת התאוששות מחזורית שמזהה video.paused למרות
+   שהוא ב-playing ומנסה שוב. */
+setInterval(() => {
+  playing.forEach(v => { if (v.paused && v.readyState >= 2) v.play().catch(()=>{}); });
+}, 1200);
 
 /* לחיצה על וידאו = סאונד בלעדי, לחיצה על גרפיקה = תצוגה מוגדלת */
 const lightbox = document.getElementById('lightbox');
