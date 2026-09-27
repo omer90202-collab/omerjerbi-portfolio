@@ -904,7 +904,12 @@ const TOUCH = !window.matchMedia('(hover:hover) and (pointer:fine)').matches;
    גם smoothTouch נדלק עם הדגל: בלי גלילה מנוהלת אין מה שיסנכרן את
    ה-transform מול האינרציה הנייטיבית. */
 const PIN_TEST = new URLSearchParams(location.search).has('pins');
-const PIN_OK   = !TOUCH || PIN_TEST;
+/* "הפחתת אנימציות" בסרגל הנגישות (או prefers-reduced-motion של המערכת)
+   מכבה את ההצמדה בהירו — היא סוג התנועה החזק ביותר בעמוד (גלילה נעולה +
+   זום), ולכן מי שביקש להפחית תנועה לא צריך לחוות אותה. */
+const REDUCE_MOTION = document.documentElement.classList.contains('a11y-motion')
+  || window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const PIN_OK   = (!TOUCH || PIN_TEST) && !REDUCE_MOTION;
 
 const lenis = new Lenis({ lerp:.085 });
 /* אחרי יצירת lenis ולא לפניה — const נמצא ב-TDZ עד השורה שלו, וקריאה
@@ -1827,7 +1832,7 @@ if (TOUCH) {
      שהטיימליין נשאר על 0 והאריחים נתקעים בלתי-נראים. */
   gsap.timeline({ defaults:{ease:'expo'}, scrollTrigger:{
     trigger: grid, start:'center center', end:'+=200%',
-    pin: !TOUCH && grid.parentNode, pinType:'fixed',
+    pin: !TOUCH && !REDUCE_MOTION && grid.parentNode, pinType:'fixed',
     scrub:true, invalidateOnRefresh:true, onRefreshInit:measure
   }})
   .set(grid, { perspective:1000 })
