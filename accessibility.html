@@ -3,6 +3,21 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script>
+(function(){
+  try{
+    var s = JSON.parse(localStorage.getItem('a11yPrefs')||'{}');
+    var cls = [];
+    if (s.contrast) cls.push('a11y-contrast');
+    if (s.gray) cls.push('a11y-gray');
+    if (s.underline) cls.push('a11y-underline');
+    if (s.motion) cls.push('a11y-motion');
+    if (s.font === 1) cls.push('a11y-font-1');
+    if (s.font === 2) cls.push('a11y-font-2');
+    if (cls.length) document.documentElement.className += ' ' + cls.join(' ');
+  }catch(e){}
+})();
+</script>
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.clarity.ms https://*.clarity.ms; style-src 'self' 'unsafe-inline'; img-src 'self' data:; media-src 'self'; font-src 'self'; connect-src 'self' https://www.clarity.ms https://*.clarity.ms; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <link rel="canonical" href="https://jerbi.ai/accessibility.html">
@@ -35,6 +50,38 @@
     justify-content:center;font-size:13px;color:var(--dim)}
   footer a{color:var(--dim);text-decoration:none}
   footer a:hover{color:var(--gold)}
+
+  /* ═══ ווידג'ט נגישות ═══ */
+  .a11y-btn{position:fixed;z-index:180;bottom:20px;left:20px;width:50px;height:50px;border-radius:50%;
+    background:var(--gold);color:#141005;border:0;cursor:pointer;display:grid;place-items:center;
+    box-shadow:0 10px 30px rgba(0,0,0,.4);transition:transform .2s}
+  .a11y-btn:hover{transform:scale(1.08)}
+  .a11y-btn svg{width:24px;height:24px}
+  .a11y-panel{position:fixed;z-index:181;bottom:80px;left:20px;width:284px;max-width:calc(100vw - 40px);
+    background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px;
+    box-shadow:0 20px 60px rgba(0,0,0,.5);display:none;flex-direction:column;gap:12px}
+  .a11y-panel.show{display:flex}
+  .a11y-panel h3{font-size:14px;font-weight:900;color:var(--gold)}
+  .a11y-row{display:flex;align-items:center;justify-content:space-between;gap:10px}
+  .a11y-row span{font-size:13px;color:var(--ink)}
+  .a11y-row .a11y-opts{display:flex;gap:6px}
+  .a11y-row button{font-family:inherit;font-size:12.5px;font-weight:700;border:1px solid var(--line);
+    background:transparent;color:var(--ink);border-radius:8px;padding:6px 11px;cursor:pointer;transition:.2s}
+  .a11y-row button:hover{border-color:var(--gold)}
+  .a11y-row button.active{border-color:var(--gold);color:var(--gold);background:rgba(253,191,45,.12)}
+  .a11y-reset{margin-top:2px;font-size:12px;color:var(--dim);text-align:center;cursor:pointer;text-decoration:underline;background:none;border:0;font-family:inherit}
+  .a11y-reset:hover{color:var(--gold)}
+  .a11y-panel .a11y-link{font-size:11.5px;color:var(--dim);text-align:center;border-top:1px solid var(--line);padding-top:10px}
+  .a11y-panel .a11y-link a{color:var(--dim);text-decoration:underline}
+  .a11y-panel .a11y-link a:hover{color:var(--gold)}
+  html.a11y-contrast{filter:contrast(1.35) saturate(1.15)}
+  html.a11y-gray{filter:grayscale(1)}
+  html.a11y-contrast.a11y-gray{filter:grayscale(1) contrast(1.35)}
+  html.a11y-underline a{text-decoration:underline!important}
+  html.a11y-motion *{animation-duration:.01ms!important;animation-iteration-count:1!important;
+    transition-duration:.01ms!important;scroll-behavior:auto!important}
+  html.a11y-font-1 body{font-size:1.1em}
+  html.a11y-font-2 body{font-size:1.22em}
 </style>
 </head>
 <body>
@@ -60,8 +107,9 @@
     <li>אפשרות ניווט מלאה באמצעות מקלדת, כולל סימון חזותי ברור (focus) לאלמנט הפעיל.</li>
     <li>תמיכה בהגדלת טקסט של הדפדפן בלי שבירת התצוגה.</li>
     <li>כיתוב (aria-label) לכפתורים ואייקונים ללא טקסט גלוי.</li>
+    <li>סרגל נגישות צף (הכפתור העגול בפינת המסך) עם הגדלת טקסט, ניגודיות גבוהה, גווני אפור, קו תחתון לקישורים והפחתת אנימציות — ההעדפות נשמרות אוטומטית לביקורים הבאים.</li>
   </ul>
-  <p>חלקים באתר מבוססים על אנימציית גלילה עשירה. למשתמשים המעדיפים תנועה מופחתת מומלץ להפעיל את הגדרת "הפחתת תנועה" (Reduce Motion) במערכת ההפעלה — האתר מכבד הגדרה זו במידת האפשר.</p>
+  <p>חלקים באתר מבוססים על אנימציית גלילה עשירה. למשתמשים המעדיפים תנועה מופחתת מומלץ להפעיל את "הפחתת אנימציות" בסרגל הנגישות הצף, או את הגדרת Reduce Motion במערכת ההפעלה — האתר מכבד את שתי ההגדרות במידת האפשר.</p>
 
   <div class="box">
     <h2 style="margin-top:0">נתקלתם בבעיית נגישות?</h2>
@@ -74,8 +122,85 @@
 <footer>
   <span>עומר ג'רבי © 2026</span>
   <a href="privacy.html">מדיניות פרטיות</a>
+  <a href="terms.html">תקנון האתר</a>
   <a href="index.html">האתר הראשי</a>
 </footer>
+
+<button class="a11y-btn" id="a11yBtn" aria-label="אפשרויות נגישות" aria-haspopup="true" aria-expanded="false">
+  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="12" cy="4" r="2"/><path d="M21 8.5c-2.9.9-5.9 1.4-9 1.4s-6.1-.5-9-1.4L2.4 10c2 .6 4 1.1 6.1 1.3L7 21.7l1.9.3 1.7-8h2.8l1.7 8 1.9-.3-1.5-10.4c2.1-.2 4.1-.7 6.1-1.3L21 8.5z"/></svg>
+</button>
+<div class="a11y-panel" id="a11yPanel" role="dialog" aria-label="אפשרויות נגישות">
+  <h3>נגישות</h3>
+  <div class="a11y-row">
+    <span>גודל טקסט</span>
+    <div class="a11y-opts">
+      <button data-font="0">רגיל</button>
+      <button data-font="1">A+</button>
+      <button data-font="2">A++</button>
+    </div>
+  </div>
+  <div class="a11y-row"><span>ניגודיות גבוהה</span><button data-toggle="contrast">הפעלה</button></div>
+  <div class="a11y-row"><span>גווני אפור</span><button data-toggle="gray">הפעלה</button></div>
+  <div class="a11y-row"><span>קו תחתון לקישורים</span><button data-toggle="underline">הפעלה</button></div>
+  <div class="a11y-row"><span>הפחתת אנימציות</span><button data-toggle="motion">הפעלה</button></div>
+  <button class="a11y-reset" id="a11yReset">איפוס הגדרות</button>
+  <div class="a11y-link"><a href="accessibility.html">הצהרת נגישות מלאה</a></div>
+</div>
+<script>
+(function(){
+  var KEY = 'a11yPrefs';
+  var s = {};
+  try{ s = JSON.parse(localStorage.getItem(KEY)||'{}'); }catch(e){}
+  var html = document.documentElement;
+  var TOGGLES = ['contrast','gray','underline','motion'];
+  function save(){ localStorage.setItem(KEY, JSON.stringify(s)); }
+  function applyClasses(){
+    TOGGLES.forEach(function(t){ html.classList.toggle('a11y-'+t, !!s[t]); });
+    html.classList.remove('a11y-font-1','a11y-font-2');
+    if (s.font === 1) html.classList.add('a11y-font-1');
+    if (s.font === 2) html.classList.add('a11y-font-2');
+  }
+  function syncButtons(){
+    TOGGLES.forEach(function(t){
+      var b = document.querySelector('[data-toggle="'+t+'"]');
+      if (b) { b.classList.toggle('active', !!s[t]); b.textContent = s[t] ? 'כיבוי' : 'הפעלה'; }
+    });
+    document.querySelectorAll('[data-font]').forEach(function(b){
+      b.classList.toggle('active', Number(b.dataset.font) === (s.font||0));
+    });
+  }
+  document.addEventListener('DOMContentLoaded', function(){
+    applyClasses(); syncButtons();
+    var btn = document.getElementById('a11yBtn');
+    var panel = document.getElementById('a11yPanel');
+    btn.addEventListener('click', function(){
+      var open = panel.classList.toggle('show');
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+    document.addEventListener('click', function(e){
+      if (panel.classList.contains('show') && !panel.contains(e.target) && e.target !== btn && !btn.contains(e.target)) {
+        panel.classList.remove('show');
+        btn.setAttribute('aria-expanded','false');
+      }
+    });
+    document.querySelectorAll('[data-toggle]').forEach(function(b){
+      b.addEventListener('click', function(){
+        var t = b.dataset.toggle; s[t] = !s[t];
+        save(); applyClasses(); syncButtons();
+      });
+    });
+    document.querySelectorAll('[data-font]').forEach(function(b){
+      b.addEventListener('click', function(){
+        s.font = Number(b.dataset.font);
+        save(); applyClasses(); syncButtons();
+      });
+    });
+    document.getElementById('a11yReset').addEventListener('click', function(){
+      s = {}; save(); applyClasses(); syncButtons();
+    });
+  });
+})();
+</script>
 
 </body>
 </html>
