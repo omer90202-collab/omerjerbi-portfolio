@@ -974,9 +974,10 @@ const io = new IntersectionObserver(es => es.forEach(e => {
   if (e.isIntersecting) v.play().catch(()=>{});
   else v.pause();
 }), { threshold:.15 });
-/* טעינת קיר-הוידאו של ההירו מדורגת בהמשך (12 סרטונים בבת אחת = מה שגרם לאתר להיתקע) —
-   הוא נרשם ל-io הזה שם, לא כאן, כדי שלא יתחרו שתי מערכות play/pause על אותם אלמנטים */
-allVids.filter(v => !v.closest('.wtile')).forEach(v => io.observe(v));
+/* טעינת קיר-הוידאו של ההירו וקיר "עבודות" מדורגת בהמשך (סרטונים רבים בבת אחת =
+   מה שגרם לאתר להיתקע) — הן נרשמות ל-io הזה שם, לא כאן, כדי שלא יתחרו שתי
+   מערכות play/pause על אותם אלמנטים */
+allVids.filter(v => !v.closest('.wtile') && !v.closest('.gi')).forEach(v => io.observe(v));
 
 /* ── תצוגה מוגדלת (וידאו + תמונה) ── */
 const lightbox = document.getElementById('lightbox');
@@ -1021,17 +1022,21 @@ document.querySelectorAll('.gi[data-full]').forEach(t => t.addEventListener('cli
   let open = false;
 
   const tlMenu = gsap.timeline({ paused:true, defaults:{ ease:'power3.inOut' } });
-  tlMenu.to(menuPanel, { width:380, height:520, borderRadius:26, duration:.75 });
+  /* עומר: התפריט הרגיש איטי במובייל. width/height הם reflow (layout), לא
+     compositor-only כמו transform — לא ניתן לעקוף את זה בלי לעצב את הפאנל
+     מחדש, אז בינתיים מכווצים את משך הזמן בכל שלבי הטיימליין (פחות פריימים
+     של reflow יקר = גם פחות קרטוע, לא רק תחושת מהירות). */
+  tlMenu.to(menuPanel, { width:380, height:520, borderRadius:26, duration:.42 });
   /* transform (yPercent) ולא top: ב-iOS Safari הצגת "סגור" נשברה — ה-slider לא
      צויר מחדש כשהאב (menu-panel) עבר אנימציית width/height (layout, לא transform),
      וזה השאיר את הכפתור שקוף בזהב אחיד בלי הטקסט ההפוך. transform מקבל שכבת
      compositing עצמאית וחסין לזה. */
-  tlMenu.to(menuBtnSlider, { yPercent:-50, duration:.5 }, 0);
-  tlMenu.add(() => menuNav.classList.add('menu-nav--visible'), .2);
+  tlMenu.to(menuBtnSlider, { yPercent:-50, duration:.3 }, 0);
+  tlMenu.add(() => menuNav.classList.add('menu-nav--visible'), .12);
   tlMenu.set(menuLinks, { opacity:0, rotationX:90, y:80, x:-20, transformPerspective:300, transformOrigin:'bottom' }, 0);
-  tlMenu.to(menuLinks, { opacity:1, rotationX:0, y:0, x:0, duration:.65, ease:'back.out(1.2)', stagger:.1 }, .5);
+  tlMenu.to(menuLinks, { opacity:1, rotationX:0, y:0, x:0, duration:.4, ease:'back.out(1.2)', stagger:.05 }, .26);
   tlMenu.set(footerLinks, { opacity:0, y:20 }, 0);
-  tlMenu.to(footerLinks, { opacity:1, y:0, duration:.5, ease:'power2.out', stagger:.1 }, .75);
+  tlMenu.to(footerLinks, { opacity:1, y:0, duration:.3, ease:'power2.out', stagger:.035 }, .42);
   tlMenu.eventCallback('onReverseComplete', () => menuNav.classList.remove('menu-nav--visible'));
 
   const setOpen = v => {
@@ -1115,6 +1120,21 @@ document.querySelectorAll('.gi[data-full]').forEach(t => t.addEventListener('cli
      ראשונה מוקדמת (700ms) כדי שהתקיעה הראשונית תיפתר כמה שיותר מהר. */
   if (SMALL) [700, 1500, 3000, 6000].forEach(t => setTimeout(() => {
     tiles.forEach(v => { if (v.paused && v.getBoundingClientRect().bottom > 0) v.play().catch(()=>{}); });
+  }, t));
+}
+
+/* ── קיר "עבודות" (#scWorks .gi) — אותה מחלה בדיוק כמו קיר ההירו: 12 סרטונים
+   שהיו נטענים בגודל מלא ובבת אחת עם preload="none", בלי שום טיפול מובייל.
+   עומר (27/09): "הסקשן של עבודות אותו דבר" — אותו פתרון בדיוק. ── */
+{
+  const workTiles = [...document.querySelectorAll('.gi video')];
+  const SMALL = window.matchMedia('(max-width:820px)').matches;
+  workTiles.forEach((v, i) => {
+    if (SMALL) v.src = v.src.replace('videos/loops/', 'videos/loops/m/');
+    setTimeout(() => { v.preload = 'auto'; io.observe(v); }, i * (SMALL ? 45 : 90));
+  });
+  if (SMALL) [800, 1600, 3200, 6200].forEach(t => setTimeout(() => {
+    workTiles.forEach(v => { if (v.paused && v.getBoundingClientRect().bottom > 0) v.play().catch(()=>{}); });
   }, t));
 }
 

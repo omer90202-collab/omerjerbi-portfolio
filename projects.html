@@ -458,13 +458,13 @@ gsap.ticker.lagSmoothing(0);
   let open = false;
 
   const tlMenu = gsap.timeline({ paused:true, defaults:{ ease:'power3.inOut' } });
-  tlMenu.to(menuPanel, { width:380, height:520, borderRadius:26, duration:.75 });
-  tlMenu.to(menuBtnSlider, { yPercent:-50, duration:.5 }, 0);
-  tlMenu.add(() => menuNav.classList.add('menu-nav--visible'), .2);
+  tlMenu.to(menuPanel, { width:380, height:520, borderRadius:26, duration:.42 });
+  tlMenu.to(menuBtnSlider, { yPercent:-50, duration:.3 }, 0);
+  tlMenu.add(() => menuNav.classList.add('menu-nav--visible'), .12);
   tlMenu.set(menuLinks, { opacity:0, rotationX:90, y:80, x:-20, transformPerspective:300, transformOrigin:'bottom' }, 0);
-  tlMenu.to(menuLinks, { opacity:1, rotationX:0, y:0, x:0, duration:.65, ease:'back.out(1.2)', stagger:.1 }, .5);
+  tlMenu.to(menuLinks, { opacity:1, rotationX:0, y:0, x:0, duration:.4, ease:'back.out(1.2)', stagger:.05 }, .26);
   tlMenu.set(footerLinks, { opacity:0, y:20 }, 0);
-  tlMenu.to(footerLinks, { opacity:1, y:0, duration:.5, ease:'power2.out', stagger:.1 }, .75);
+  tlMenu.to(footerLinks, { opacity:1, y:0, duration:.3, ease:'power2.out', stagger:.035 }, .42);
   tlMenu.eventCallback('onReverseComplete', () => menuNav.classList.remove('menu-nav--visible'));
 
   const setOpen = v => {
