@@ -1385,14 +1385,29 @@ if (TOUCH) {
   const colCount = () => { const w = innerWidth;
     return w <= 559 ? 2 : w <= 899 ? 3 : w <= 1199 ? 4 : 5; };
 
+  /* גובה כל צילום ברוחב 900. עם width/height על התמונה הדפדפן שומר את המקום
+     הנכון עוד לפני שהיא נטענת — וכך אורך המחזור נמדד נכון מהרגע הראשון. */
+  const H = { 'shot-01.jpg':1620, 'shot-02.jpg':1620, 'shot-03.jpg':1620, 'shot-04.jpg':1620,
+              'shot-05.jpg':1620, 'shot-14.jpg':1502 };   /* כל השאר: 1484 */
+
+  /* טעינה: לא עם העמוד (הסקשן כמה מסכים למטה), אבל גם לא loading="lazy".
+     באייפון, תמונה "עצלה" שנחתכת ע"י overflow:hidden של העמודה עלולה לא
+     להיטען לעולם — והעמודה חיכתה לכל התמונות שלה לפני שזזה, ולכן נתקעה.
+     עכשיו הכתובת נשמרת ב-data-src ונכנסת לכל התמונות יחד כשהסקשן מתקרב. */
+  let resActive = false;
+  const activate = () => {
+    if (resActive) return; resActive = true;
+    box.querySelectorAll('img[data-src]').forEach(i => { i.src = i.dataset.src; i.removeAttribute('data-src'); });
+  };
+
   const buildCard = (src, n) => {
     const d = document.createElement('div');
     d.className = 'res-card';
     if (src) { const img = new Image();
-               /* עצלנות: 15 צילומי המסך של התיוגים נטענו מיד עם העמוד
-                  למרות שהסקשן נמצא כמה מסכים למטה. */
-               img.loading = 'lazy'; img.decoding = 'async';
-               img.src = 'images/results/' + src;
+               img.decoding = 'async';
+               img.width = 900; img.height = H[src] || 1484;
+               const url = 'images/results/' + src;
+               if (resActive) img.src = url; else img.dataset.src = url;
                img.alt = 'עבודה שלי כפי שפורסמה'; d.appendChild(img); }
     else { d.classList.add('res-ph'); d.style.height = [210,280,175,320,240][n % 5] + 'px';
            d.textContent = 'צילום מסך ' + (n + 1); }
@@ -1430,18 +1445,27 @@ if (TOUCH) {
     });
   };
 
+  /* לא מחכים לטעינת התמונות: הגובה שלהן כבר ידוע (width/height), ולכן אורך
+     המחזור נכון מיד. בעבר עמודה זזה רק אחרי שכל תמונה בה נטענה — ובאייפון
+     זה לא קרה אף פעם. */
   function measure() {
     state.forEach(s => {
       const kids = s.track.children;
-      const imgs = [...s.track.querySelectorAll('img')];
-      if (imgs.length && !imgs.every(i => i.complete && i.naturalHeight > 0)) return;
-      s.cycle = Math.abs(kids[s.items].offsetTop - kids[0].offsetTop);
+      const c = Math.abs(kids[s.items].offsetTop - kids[0].offsetTop);
+      if (c > 0) s.cycle = c;
     });
     ensureFill();
   }
 
   build(colCount());
   window.addEventListener('load', measure);
+
+  /* מתחילים לטעון כשהסקשן במרחק כשני מסכים. ואם ה-Observer לא יורה מסיבה
+     כלשהי — טוענים בכל מקרה 3 שניות אחרי שהעמוד נטען (fail-open). */
+  new IntersectionObserver((es, io) => {
+    if (es.some(e => e.isIntersecting)) { activate(); io.disconnect(); }
+  }, { rootMargin: '1500px 0px' }).observe(document.getElementById('scResults'));
+  window.addEventListener('load', () => setTimeout(activate, 3000));
   window.addEventListener('resize', () => {
     const n = colCount();
     if (n !== cols) build(n); else measure();
