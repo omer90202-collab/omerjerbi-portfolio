@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta name="theme-color" content="#060504">
+<title>מגיבים מילה, מקבלים בפרטי · עומר ג'רבי</title>
+<meta property="og:title" content="מגיבים מילה, מקבלים בפרטי">
+<meta property="og:image" content="https://jerbi.ai/images/og.jpg">
+<link rel="icon" href="/images/favicon.png">
+<link rel="stylesheet" href="/gift/gift.css">
+</head>
+<body>
+<a class="skip" href="#main">דלג לתוכן</a>
+<div class="glow"></div>
+<div class="wrap">
+<header><img src="/images/logo-jerbi-white.png" alt="JERBI, עומר ג'רבי"><a class="h" dir="ltr" href="https://instagram.com/omerjerbi">@omerjerbi</a></header>
+<main id="main">
+<div class="hero"><div class="txt">
+<h1>מגיבים מילה.<br><span class="g">מקבלים בפרטי.</span></h1>
+<p class="sub">מה שקרה לכם עכשיו. עם אפליקציה בטלפון לנהל הכל, ו-Claude Code מקים לכם אותה. בלי מנוי חודשי.</p>
+<div class="mob">ההתקנה במחשב. שלחו לעצמכם את הקישור.
+<button class="btn sec" type="button" data-share>שליחה לעצמי</button></div><div class="cta"><a class="btn" href="/gift/files/dm-autopilot.zip" download>הורדה ↓</a></div><p class="note">חינם</p></div><div class="media"><div class="phone"><video src="/gift/media/automation-app.mp4" muted loop playsinline autoplay preload="metadata" aria-hidden="true"></video></div><button class="motion" type="button" data-motion>⏸ עצור תנועה</button></div></div>
+<section><h2>איך זה עובד</h2><ul class="list"><li>מישהו מגיב מילה מתחת לריל, ותוך שניות מקבל הודעה בפרטי</li><li>אפליקציה בטלפון: נתונים, אוטומציות, אנשי קשר ותצוגה מקדימה של ההודעה</li><li>גם לתגובות לסטורי, וכניסה עם Face ID</li><li>Claude מקים הכל ובודק שזה עובד. שום דבר לא עולה בלי האישור שלכם</li></ul></section>
+<section><h2>מה צריך</h2><table class="req"><tr><td>Claude Code</td><td>באפליקציה או בטרמינל</td></tr><tr><td>אינסטגרם מקצועי</td><td>Business או Creator</td></tr><tr><td>חשבון Zernio</td><td>Claude יסביר איך</td></tr><tr><td>חשבון Vercel</td><td>חינם. שם האפליקציה יושבת</td></tr><tr><td>Node.js</td><td>מ-nodejs.org</td></tr></table></section>
+<section><h2>התקנה</h2><div class="steps">
+  <div class="step"><h3>מורידים את הקובץ</h3></div>
+  <div class="step"><h3>גוררים אותו ל-Claude Code וכותבים:</h3><div class="code"><button class="copy" type="button">העתקה</button>תתקין לי את הסקיל הזה</div></div>
+  <div class="step"><h3>סוגרים ופותחים מחדש את Claude Code</h3></div>
+  <div class="step"><h3>מדביקים את זה, והוא כבר מוביל:</h3><div class="code"><button class="copy" type="button">העתקה</button>תפעיל את dm-autopilot ותקים לי את האפליקציה ואוטומציה ראשונה: מגיבים מילה באינסטגרם, מקבלים בפרטי.</div></div>
+</div></section></main>
+<footer><span>עומר ג'רבי · תוכן AI ברמה הוליוודית</span><a dir="ltr" href="https://instagram.com/omerjerbi">@omerjerbi</a>
+<div class="flinks"><a href="/accessibility.html">הצהרת נגישות</a><a href="/privacy.html">מדיניות פרטיות</a><a href="/terms.html">תקנון</a></div>
+<p class="legal">אין לי קשר רשמי לחברות שמוזכרות כאן. Claude, Seedance, Instagram ו-ManyChat הם סימנים מסחריים של בעליהם. העמוד לא אוסף פרטים ולא שם עוגיות.</p></footer>
+</div>
+<script>
+document.querySelectorAll('.copy').forEach(b => b.onclick = () => {
+  const t = b.parentElement.textContent.replace(b.textContent, '').trim();
+  (navigator.clipboard ? navigator.clipboard.writeText(t) : Promise.reject()).then(() => { b.textContent = 'הועתק ✓'; b.classList.add('ok'); setTimeout(() => { b.textContent = 'העתקה'; b.classList.remove('ok'); }, 1600); }).catch(() => {});
+});
+document.querySelectorAll('[data-share]').forEach(b => b.onclick = async () => {
+  const d = {title: document.title, url: location.href};
+  try { if (navigator.share) await navigator.share(d); else { await navigator.clipboard.writeText(location.href); b.textContent = 'הקישור הועתק ✓'; } } catch (e) {}
+});
+const vids = [...document.querySelectorAll('.media video')];
+const setMotion = on => { vids.forEach(v => on ? v.play().catch(() => {}) : v.pause()); document.querySelectorAll('[data-motion]').forEach(b => { b.textContent = on ? '⏸ עצור תנועה' : '▶ הפעל תנועה'; b.setAttribute('aria-pressed', String(!on)); }); };
+if (matchMedia('(prefers-reduced-motion: reduce)').matches) setMotion(false);
+document.querySelectorAll('[data-motion]').forEach(b => b.onclick = () => setMotion(vids.some(v => v.paused)));
+</script>
+</body>
+</html>
