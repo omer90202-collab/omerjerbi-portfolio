@@ -129,42 +129,42 @@
   .head h1 em{font-style:normal;color:transparent;-webkit-text-stroke:1.5px var(--gold)}
   .head p{margin-top:20px;color:var(--dim);font-weight:300;font-size:17px}
 
-  /* ── קיר זרוק: מייסונרי עמודות — כל יחס גובה נשמר טבעי ── */
-  .wall{columns:3;column-gap:22px;padding:4vh 5vw 14vh}
-  /* שני קירות נפרדים: ב-CSS columns התוכן זורם *לאורך העמודה*, ולכן רשימה
-     אחת מעורבת הייתה משבצת גרפיקות באמצע הסרטונים. הפרדה לשני בלוקים היא
-     הדרך היחידה לקבל באמת "סרטונים למעלה, גרפיקות למטה". */
-  #wall{padding-bottom:9vh}
-  @media(max-width:1000px){.wall{columns:2}}
-  @media(max-width:620px){.wall{columns:1;padding-inline:6vw}}
-  .p-it{break-inside:avoid;margin-bottom:22px;border-radius:14px;overflow:hidden;position:relative;
-    border:1px solid var(--line);cursor:pointer;will-change:transform;
-    transition:scale .45s cubic-bezier(.2,.8,.2,1), rotate .45s cubic-bezier(.2,.8,.2,1),
-               box-shadow .45s}
-  /* הסיבוב יושב ב-`rotate` וההגדלה ב-`scale` — מאפייני CSS עצמאיים
-     שמתחברים ל-transform לבד, כך ש-GSAP יכול להנפיש `transform` בכניסה
-     בלי לגעת בסיבוב.
-     קודם הכל ישב ב-transform אחד: GSAP כתב עליו translate בזמן הכניסה,
-     ובסוף הטוין שחרר אותו והסיבוב של ה-CSS חזר בבת אחת — קפיצה גלויה
-     בסוף הכניסה של *כל* כרטיס. */
-  .p-it:hover{scale:1.02;rotate:0deg;box-shadow:0 24px 60px rgba(0,0,0,.55);z-index:2}
-  .p-it:nth-child(4n+1){rotate:-1.1deg}
-  .p-it:nth-child(4n+2){rotate:.9deg}
-  .p-it:nth-child(4n+3){rotate:-.6deg}
-  .p-it:nth-child(4n+4){rotate:1.2deg}
-  .p-it b{position:absolute;bottom:12px;right:14px;z-index:2;font-size:14px;font-weight:500;text-shadow:0 2px 12px rgba(0,0,0,.85)}
-  .p-it::after{content:"";position:absolute;inset:0;background:linear-gradient(transparent 70%,rgba(0,0,0,.5));pointer-events:none}
-  .p-it.sound{outline:2px solid var(--gold);outline-offset:-2px}
+  /* ── קיר הפרויקטים: שורות מוצדקות. כל סרטון ביחס המקורי שלו, השורה ממלאת את הרוחב ── */
+  .wall{display:flex;flex-wrap:wrap;gap:10px;max-width:1240px;margin:0 auto;padding:4vh 20px 14vh}
+  .it{position:relative;flex:none;border-radius:14px;overflow:hidden;background:#000;cursor:pointer}
+  .it video{display:block;width:100%;height:100%;object-fit:cover;background:#000}
+  .it .ov{position:absolute;inset:auto 0 0 0;padding:44px 14px 13px;background:linear-gradient(0deg,rgba(0,0,0,.88),rgba(0,0,0,.55) 55%,transparent);pointer-events:none}
+  .it .tg{display:inline-block;font-size:12px;padding:3px 9px;border-radius:999px;background:rgba(253,191,45,.16);color:var(--gold);border:1px solid rgba(253,191,45,.35)}
+  .it .tg.self{background:rgba(245,240,230,.1);color:var(--ink);border-color:rgba(245,240,230,.2)}
+  .it h3{margin:6px 0 3px;font-size:20px;line-height:1.1;font-weight:700}
+  .it p{margin:0;font-size:13.5px;line-height:1.45;color:rgba(245,240,230,.82);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .it .badge{position:absolute;top:10px;inset-inline-start:10px;font-size:12px;font-weight:700;padding:5px 10px;border-radius:999px;background:var(--gold);color:#060504}
+  .it .play{position:absolute;top:10px;inset-inline-end:10px;font-size:12px;padding:5px 10px;border-radius:999px;background:rgba(0,0,0,.55);opacity:0;transition:opacity .2s}
+  .it:hover .play,.it:focus-visible .play{opacity:1}
+  .it:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+  @media(max-width:699px){.wall{padding-inline:16px}.it h3{font-size:16px}.it p{font-size:12.5px}.it .ov{padding:36px 10px 10px}}
 
   .hint{position:fixed;bottom:22px;inset-inline:0;text-align:center;font-size:12px;letter-spacing:.3em;color:var(--dim);z-index:5;pointer-events:none;transition:opacity .5s}
 
   /* ── תצוגה מוגדלת לגרפיקות ── */
-  .lightbox{position:fixed;inset:0;z-index:200;display:grid;place-items:center;background:rgba(6,5,4,.94);opacity:0;pointer-events:none;transition:opacity .35s}
-  .lightbox.show{opacity:1;pointer-events:auto}
-  .lightbox img{max-width:92vw;max-height:88vh;width:auto;height:auto;object-fit:contain;border-radius:12px;box-shadow:0 40px 120px rgba(0,0,0,.7);transform:scale(.92);transition:transform .35s}
-  .lightbox.show img{transform:scale(1)}
-  .lb-close{position:absolute;top:26px;left:26px;width:46px;height:46px;border-radius:99px;border:1px solid var(--line);color:var(--ink);background:rgba(255,255,255,.06);font-size:18px;cursor:pointer;display:grid;place-items:center;transition:.25s}
-  .lb-close:hover{border-color:var(--gold);color:var(--gold)}
+  /* ── צפייה מוגדלת עם סאונד וסיפור ── */
+  .lb{position:fixed;inset:0;z-index:200;background:rgba(6,5,4,.95);display:none;align-items:center;justify-content:center;padding:16px}
+  .lb.on{display:flex}
+  .lb .box{width:min(1000px,100%);max-height:100%;display:grid;gap:18px;overflow:auto}
+  @media(min-width:900px){.lb .box{grid-template-columns:minmax(0,auto) minmax(300px,360px);align-items:center}}
+  .lb .vid{border-radius:16px;overflow:hidden;background:#000;justify-self:center}
+  .lb .vid video{display:block;object-fit:contain;max-height:74vh;width:auto;max-width:100%}
+  .lb .tg{display:inline-block;font-size:12px;padding:3px 9px;border-radius:999px;background:rgba(253,191,45,.16);color:var(--gold);border:1px solid rgba(253,191,45,.35)}
+  .lb h3{margin:10px 0 8px;font-size:34px;line-height:1.05;font-weight:900}
+  .lb .st{color:var(--gold);font-weight:700;margin-bottom:10px}
+  .lb p{color:var(--dim);line-height:1.7;font-size:16px;margin:0 0 12px}
+  .lb .cta{white-space:nowrap;display:inline-flex;justify-content:center;height:46px;padding:0 20px;border-radius:999px;background:var(--gold);color:#060504;align-items:center;text-decoration:none;font-weight:700}
+  .lb .acts{display:inline-flex;flex-direction:column;align-items:stretch;gap:10px;margin-top:8px}
+  .lb .lb-nav{display:flex;gap:8px}
+  .lb .lb-nav button{flex:1}
+  .lb .lb-nav button,.lb .x{white-space:nowrap;height:40px;padding:0 16px;border-radius:999px;border:1px solid var(--line);background:rgba(255,255,255,.06);color:var(--ink);font:inherit;font-size:14px;cursor:pointer}
+  .lb .x{position:fixed;top:20px;left:20px;width:46px;padding:0;font-size:20px}
+  .lb .x:hover,.lb .lb-nav button:hover{border-color:var(--gold);color:var(--gold)}
   footer{display:flex;justify-content:space-between;padding:26px 4vw;font-size:13px;color:var(--dim);border-top:1px solid var(--line);flex-wrap:wrap;gap:8px}
   footer a{color:inherit}
 
@@ -402,49 +402,23 @@
   <p>פרסומות, קמפיינים וסרטוני תדמית — הכל נוצר בבינה מלאכותית.</p>
 </div>
 
-<div class="wall" id="wall">
-  <div class="p-it"><video src="videos/loops/expo.mp4" width="1920" height="1080" muted loop playsinline preload="none"></video><b>אייל גולן - אקספו</b></div>
-  <div class="p-it"><video src="videos/loops/almog-shiloni.mp4" width="1280" height="720" muted loop playsinline preload="none"></video><b>בית אלמוג שילוני</b></div>
-  <div class="p-it"><video src="videos/loops/eyal-golan.mp4" width="720" height="402" muted loop playsinline preload="none"></video><b>אייל גולן</b></div>
-  <div class="p-it"><video src="videos/loops/save1080.mp4" width="720" height="406" muted loop playsinline preload="none"></video><b>האח הגדול</b></div>
-  <div class="p-it"><video src="videos/loops/raw-goldstar.mp4" width="720" height="1280" muted loop playsinline preload="none"></video><b>בירה גולדסטאר</b></div>
-  <div class="p-it"><video src="videos/loops/mantra-what.mp4" width="720" height="1280" muted loop playsinline preload="none"></video><b>מנטרה-משרד פרסום</b></div>
-  <div class="p-it"><video src="videos/loops/telhai-en.mp4" width="720" height="406" muted loop playsinline preload="none"></video><b>קרב תל חי</b></div>
-  <div class="p-it"><video src="videos/loops/imtirtzu-1.mp4" width="720" height="1280" muted loop playsinline preload="none"></video><b>אם תרצו</b></div>
-  <div class="p-it"><video src="videos/loops/survivor.mp4" width="720" height="406" muted loop playsinline preload="none"></video><b>הישרדות</b></div>
-  <div class="p-it"><video src="videos/loops/imtirtzu-2.mp4" width="720" height="406" muted loop playsinline preload="none"></video><b>אם תרצו — כנס שנתי</b></div>
-  <div class="p-it"><video src="videos/loops/imtirtzu-3.mp4" width="720" height="1280" muted loop playsinline preload="none"></video><b>אם תרצו</b></div>
-  <div class="p-it"><video src="videos/loops/hapoel.mp4" width="720" height="1270" muted loop playsinline preload="none"></video><b>RTM</b></div>
-  <div class="p-it"><video src="videos/loops/beitar-puppets.mp4" width="720" height="1270" muted loop playsinline preload="none"></video><b>ערוץ one</b></div>
-  <div class="p-it"><video src="videos/loops/heels.mp4" width="720" height="1294" muted loop playsinline preload="none"></video><b>נעליים</b></div>
-  <div class="p-it"><video src="videos/loops/mbappe.mp4" width="720" height="1280" muted loop playsinline preload="none"></video><b>משרד כרטיסים</b></div>
-  <div class="p-it"><video src="videos/loops/ginton-purim.mp4" width="720" height="1280" muted loop playsinline preload="none"></video><b>dj ginton</b></div>
-  <div class="p-it"><video src="videos/loops/noir-bar.mp4" width="720" height="1280" muted loop playsinline preload="none"></video><b>בר נואר</b></div>
-  <div class="p-it"><video src="videos/loops/oro.mp4" width="720" height="1280" muted loop playsinline preload="none"></video><b>אורו</b></div>
-  <div class="p-it"><video src="videos/loops/conference.mp4" width="720" height="408" muted loop playsinline preload="none"></video><b>״ועידת בואי הרוח״</b></div>
-  <div class="p-it"><video src="videos/loops/sound2.mp4" width="720" height="1294" muted loop playsinline preload="none"></video><b>ערוץ one</b></div>
-  <div class="p-it"><video src="videos/loops/mantra-3.mp4" width="720" height="1280" muted loop playsinline preload="none"></video><b>מנטרה- משרד פרסום</b></div>
-  <div class="p-it"><video src="videos/loops/mantra-who.mp4" width="720" height="1290" muted loop playsinline preload="none"></video><b>מנטרה - משרד פרסום</b></div>
-  <div class="p-it"><video src="videos/loops/raw-arak.mp4" width="720" height="1280" muted loop playsinline preload="none"></video><b>ערק נח</b></div>
-  <div class="p-it"><video src="videos/loops/raw-shoko.mp4" width="720" height="1280" muted loop playsinline preload="none"></video><b>שוקו</b></div>
-  <div class="p-it"><video src="videos/loops/raw-magnum.mp4" width="720" height="1280" muted loop playsinline preload="none"></video><b>מגנום</b></div>
-  <div class="p-it"><video src="videos/loops/raw-shampoo.mp4" width="720" height="1280" muted loop playsinline preload="none"></video><b>שמפו</b></div>
-  <div class="p-it"><video src="videos/loops/raw-coffee.mp4" width="720" height="1280" muted loop playsinline preload="none"></video><b>חלב קפה</b></div>
-  <div class="p-it"><video src="videos/loops/raw-muller.mp4" width="720" height="1280" muted loop playsinline preload="none"></video><b>מולר</b></div>
-  <div class="p-it"><video src="videos/loops/raw-neviot.mp4" width="720" height="1280" muted loop playsinline preload="none"></video><b>נביעות</b></div>
-  <div class="p-it"><video src="videos/loops/raw-taster.mp4" width="720" height="1280" muted loop playsinline preload="none"></video><b>טייסטרס צ'ויס</b></div>
-  <div class="p-it"><video src="videos/loops/coke-zero.mp4" width="720" height="1280" muted loop playsinline preload="none"></video><b>קוקה קולה זירו</b></div>
-  <div class="p-it"><video src="videos/loops/power-barrier-1.mp4" width="720" height="1280" muted loop playsinline preload="none"></video><b>Barrier</b></div>
-  <div class="p-it"><video src="videos/loops/power-barrier-2.mp4" width="720" height="1280" muted loop playsinline preload="none"></video><b>Barrier</b></div>
-  <div class="p-it"><video src="videos/loops/power-barrier-3.mp4" width="720" height="1280" muted loop playsinline preload="none"></video><b>Barrier</b></div>
-</div>
+<div class="wall" id="wall"></div>
 
+<div class="hint" id="hint">לחיצה על פרויקט = צפייה עם סאונד</div>
 
-<div class="hint" id="hint">לחיצה על פרויקט = סאונד / הגדלה</div>
-
-<div class="lightbox" id="lightbox">
-  <img loading="lazy" decoding="async" id="lightboxImg" alt="">
-  <button class="lb-close" id="lbClose" aria-label="סגור">×</button>
+<div class="lb" id="lb" role="dialog" aria-modal="true" aria-labelledby="lbt">
+  <button class="x" id="lbx" aria-label="סגירה">×</button>
+  <div class="box">
+    <div class="vid"><video id="lbv" playsinline controls></video></div>
+    <div>
+      <h3 id="lbt"></h3>
+      <p id="lbp"></p>
+      <div class="acts">
+        <a class="cta" id="lbwa" href="https://wa.me/972542131252" target="_blank" rel="noopener">אני רוצה סרטון כזה</a>
+        <div class="lb-nav"><button id="lbn" type="button">הבא ←</button><button id="lbb" type="button">→ הקודם</button></div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <footer>
@@ -452,6 +426,8 @@
   <span><a href="privacy.html">מדיניות פרטיות</a> · <a href="accessibility.html">הצהרת נגישות</a> · <a href="terms.html">תקנון האתר</a></span>
 </footer>
 
+<script src="projects-data.js"></script>
+<script src="projects-order.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js" integrity="sha384-HOvlOYPIs/zjoIkWUGXkVmXsjr8GuZLV+Q+rcPwmJOVZVpvTSXQChiN4t9Euv9Vc" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js" integrity="sha384-P8VzCVnT9NBUkMrpcIZrJbA7EBjJvh/fJS6PmP+4nLIM284DtsImIv8D0fFjIkeh" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="https://unpkg.com/lenis@1.3.4/dist/lenis.min.js" integrity="sha384-FKTX0CNJ8ngN1oGMBReVu7mvjTJyjFiD5etb1NKnYxc+8eFI2O0KWnksTN+oTFcu" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -498,11 +474,53 @@ gsap.from('.head > *', { opacity:0, y:40, duration:1, stagger:.12, ease:'power3.
    ארכיון לסריקה מהירה, לא חוויית גלילה. כל אנימציית כניסה כאן רק
    מעכבת את מה שבאו לראות. */
 
+/* ── בניית הקיר מתוך projects-data.js בסדר של projects-order.js ── */
+const P = window.PROJECTS, byId = Object.fromEntries(P.map((p,i) => [p.id, i]));
+const esc = x => String(x||'').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const clean = x => String(x||'').replace(/\s*✎.*$/,'');
+const seq = (window.PROJECTS_ORDER || []).filter(id => id in byId).map(id => byId[id]);
+P.forEach((p,i) => { if (!seq.includes(i)) seq.push(i); });
+const SMALL = matchMedia('(max-width:820px)').matches;
+const wall = document.getElementById('wall');
+wall.innerHTML = seq.map(i => { const p = P[i], src = SMALL ? p.v.replace('videos/loops/','videos/loops/m/') : p.v;
+  return `<div class="it" data-i="${i}" tabindex="0" role="button" aria-label="${esc(p.title)}: לצפייה עם סאונד">
+<video src="${src}" muted loop playsinline preload="none" aria-hidden="true"></video>
+<span class="play">לצפייה ▶</span>
+<div class="ov"><h3>${esc(p.title)}</h3>${clean(p.story)?`<p>${esc(clean(p.story))}</p>`:''}</div></div>`; }).join('');
+
+/* כל שורה מקבלת גובה אחד, וכל סרטון רוחב = יחס × גובה: אין חיתוך ואין רווח מת.
+   בטלפון סרטון רוחבי תמיד לבד בשורה. שתי השורות האחרונות מתאזנות כדי שלא יישאר סרטון יתום. */
+function layout(){
+  const W = wall.clientWidth - parseFloat(getComputedStyle(wall).paddingLeft) - parseFloat(getComputedStyle(wall).paddingRight);
+  const gap = 10, mob = W < 700, target = mob ? 340 : 420;
+  const rows = []; let row = [];
+  const sum = r => r.reduce((t,[,a]) => t + a, 0);
+  const full = r => sum(r)*target + gap*(r.length-1) >= W;
+  const close = () => { if (row.length) rows.push(row); row = []; };
+  [...wall.children].forEach(el => {
+    const a = P[+el.dataset.i].a;
+    if (mob && a > 1) { close(); rows.push([[el,a]]); return; }
+    row.push([el,a]); if (full(row)) close();
+  });
+  close();
+  const L = rows.length;
+  if (L > 1 && !full(rows[L-1])) {
+    const all = [...rows[L-2], ...rows[L-1]], tot = sum(all);
+    if (!(mob && all.some(([,a]) => a > 1)) && (W - gap*(all.length-1))/tot >= target*.75) rows.splice(L-2, 2, all);
+    else if (!mob) { let k = 1, best = Infinity;
+      for (let j = 1; j < all.length; j++) { const d = Math.abs(sum(all.slice(0,j)) - tot/2); if (d < best) { best = d; k = j; } }
+      rows.splice(L-2, 2, all.slice(0,k), all.slice(k)); }
+  }
+  rows.forEach(r => { const h = (W - gap*(r.length-1)) / sum(r);
+    r.forEach(([el,a]) => { el.style.width = (a*h - .01) + 'px'; el.style.height = h + 'px'; }); });
+  ScrollTrigger.refresh();
+}
+layout();
+let rt; addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(layout, 100); });
+
 /* וידאו מתנגן רק כשנראה, ועם תקרה. 33 מפענחים פעילים בו-זמנית מפילים
-   פריימים — וזה נראה בדיוק כמו קפיצות. הישן ביותר מושהה כדי לפנות מקום.
-   אסור לשנות preload ואז לקרוא ל-play() באותה נשימה: שינוי preload מפעיל
-   מחדש את בחירת המשאב, מבטל את ההשמעה הממתינה, ו-play() נדחה ב-AbortError
-   והאריח נשאר קפוא. */
+   פריימים. הישן ביותר מושהה כדי לפנות מקום. אסור לשנות preload ואז לקרוא
+   ל-play() באותה נשימה: play() נדחה ב-AbortError והאריח נשאר קפוא. */
 const TOUCH = !matchMedia('(hover:hover) and (pointer:fine)').matches;
 const playing = new Set(), MAX_PLAY = TOUCH ? 3 : 6;
 const startVid = v => {
@@ -514,49 +532,36 @@ const io = new IntersectionObserver(es => es.forEach(e => {
   const v = e.target;
   if (e.isIntersecting) {
     if (playing.has(v)) return;
-    if (playing.size >= MAX_PLAY) {
-      const old = playing.values().next().value; old.pause(); playing.delete(old);
-    }
+    if (playing.size >= MAX_PLAY) { const old = playing.values().next().value; old.pause(); playing.delete(old); }
     playing.add(v); startVid(v);
   } else if (playing.has(v)) { v.pause(); playing.delete(v); }
 }), { threshold:.35 });
-/* בטלפון מגישים את גרסת ה-m/ הזעירה (~200-350KB, גובה 400) במקום loops/
-   (~1-2MB) — עמוד עם 50 סרטונים דורש את זה עוד יותר מכל עמוד אחר באתר. */
-const SMALL = matchMedia('(max-width:820px)').matches;
-[...document.querySelectorAll('video')].forEach(v => {
-  if (SMALL) v.src = v.src.replace('videos/loops/', 'videos/loops/m/');
-  io.observe(v);
-});
-/* עומר (27/09): בעמוד הזה סרטונים "נתקעים" ב-playing (המצב הפנימי) בלי
-   שבאמת מתנגנים — ה-play() הראשון נדחה בשקט (AbortError/NotAllowedError
-   בטעינה הראשונה, אין ניסיון שני). בדיוק אותה מחלה שהייתה בקיר ההירו,
-   ואותו פתרון: בעיטת התאוששות מחזורית שמזהה video.paused למרות
-   שהוא ב-playing ומנסה שוב. */
-setInterval(() => {
-  playing.forEach(v => { if (v.paused && v.readyState >= 2) v.play().catch(()=>{}); });
-}, 1200);
+wall.querySelectorAll('video').forEach(v => io.observe(v));
+/* בעיטת התאוששות: סרטון שנתקע ב-playing בלי לנגן (27/09) */
+setInterval(() => { playing.forEach(v => { if (v.paused && v.readyState >= 2) v.play().catch(()=>{}); }); }, 1200);
 
-/* לחיצה על וידאו = סאונד בלעדי, לחיצה על גרפיקה = תצוגה מוגדלת */
-const lightbox = document.getElementById('lightbox');
-const lbImg = document.getElementById('lightboxImg');
-const closeLB = () => lightbox.classList.remove('show');
-document.querySelectorAll('.p-it').forEach(box => {
-  box.addEventListener('click', () => {
-    const v = box.querySelector('video');
-    if (v) {
-      const wasMuted = v.muted;
-      document.querySelectorAll('video').forEach(x => x.muted = true);
-      document.querySelectorAll('.p-it.sound').forEach(s => s.classList.remove('sound'));
-      if (wasMuted) { v.muted = false; box.classList.add('sound'); v.play().catch(()=>{}); }
-      return;
-    }
-    const img = box.querySelector('img');
-    if (img) { lbImg.src = img.currentSrc || img.src; lightbox.classList.add('show'); }
-  });
-});
-document.getElementById('lbClose').addEventListener('click', closeLB);
-lightbox.addEventListener('click', e => { if (e.target === lightbox) closeLB(); });
-addEventListener('keydown', e => { if (e.key === 'Escape') closeLB(); });
+/* לחיצה על פרויקט = צפייה מוגדלת עם סאונד, שם וסיפור */
+const lb = document.getElementById('lb'), lbv = document.getElementById('lbv');
+let li = 0;
+function openLB(i){ li = i; const p = P[i];
+  // בקיר מתנגנות גרסאות לופ שקטות (videos/loops). בחלון מנגנים את המקור המלא עם הסאונד (videos/)
+  lbv.src = p.v.replace('videos/loops/','videos/'); lbv.muted = false; lbv.play().catch(()=>{});
+  document.getElementById('lbt').textContent = p.title;
+  document.getElementById('lbp').textContent = clean(p.story);
+  // וואטסאפ עם הודעה מוכנה שמזכירה את הסרטון שהלקוח ראה
+  document.getElementById('lbwa').href = 'https://wa.me/972542131252?text=' + encodeURIComponent(`היי עומר, ראיתי באתר את "${p.title}" ואני רוצה סרטון כזה`);
+  lb.classList.add('on'); lenis.stop(); document.getElementById('lbx').focus(); }
+function closeLB(){ lb.classList.remove('on'); lbv.pause(); lenis.start(); }
+const step = d => openLB(seq[(seq.indexOf(li) + d + seq.length) % seq.length]);
+document.getElementById('lbx').addEventListener('click', closeLB);
+lb.addEventListener('click', e => { if (e.target === lb) closeLB(); });
+document.getElementById('lbn').addEventListener('click', () => step(1));
+document.getElementById('lbb').addEventListener('click', () => step(-1));
+wall.addEventListener('click', e => { const t = e.target.closest('.it'); if (t) openLB(+t.dataset.i); });
+addEventListener('keydown', e => {
+  if (e.key === 'Escape' && lb.classList.contains('on')) closeLB();
+  const t = e.target.closest && e.target.closest('.it');
+  if (t && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); openLB(+t.dataset.i); } });
 
 /* הרמז נעלם אחרי אינטראקציה ראשונה */
 addEventListener('click', () => gsap.to('#hint', { opacity:0, duration:.6 }), { once:true });

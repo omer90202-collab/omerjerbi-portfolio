@@ -1,0 +1,2 @@
+// סדר הסרטונים בעמוד הפרויקטים. נכתב מדף הסידור (_edit/order.html)
+window.PROJECTS_ORDER = ["eyal-golan", "big-brother", "imtirtzu-3", "muller", "goldstar", "expo", "mbappe", "telhai", "barrier-1", "mantra-3", "mantra-who", "mantra-what", "almog", "noir", "imtirtzu-1", "sound2", "beitar", "survivor", "hapoel", "neviot", "ginton", "imtirtzu-2", "oro", "barrier-2", "heels", "barrier-3", "conference", "coke", "arak", "shoko", "magnum", "shampoo", "coffee", "taster"];
