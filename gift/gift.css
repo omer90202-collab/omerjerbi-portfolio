@@ -54,8 +54,9 @@ footer{margin:70px 0 40px;padding-top:26px;border-top:1px solid var(--line);disp
 footer a{color:var(--text);text-decoration:none;font-weight:700}
 
 /* ── שדרוג 05/10: גיבור עם מדיה, לוגואים, נגישות ── */
-.skip{position:absolute;inset-inline-start:-9999px;top:8px;background:var(--gold);color:var(--ink);padding:8px 14px;border-radius:8px;z-index:9}
-.skip:focus{inset-inline-start:12px}
+/* מוסתר למעלה ולא בצד: -9999px בצד יוצר בעמוד RTL רצועה ריקה של 10,000px לגלילה הצידה */
+.skip{position:absolute;inset-inline-start:12px;top:-60px;background:var(--gold);color:var(--ink);padding:8px 14px;border-radius:8px;z-index:9}
+.skip:focus{top:8px}
 :focus-visible{outline:3px solid var(--gold);outline-offset:3px;border-radius:6px}
 .hero{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:48px;align-items:center;padding:20px 0 10px}
 .hero .txt{min-width:0}
@@ -98,5 +99,6 @@ footer a{color:var(--text);text-decoration:none;font-weight:700}
 .gate .err{margin:0;min-height:0;color:#FF8A7A;font-size:14px}
 .gate .err:empty{display:none}
 .gate .note a{color:var(--muted)}
-.hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+.hp{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}   /* מלכודת בוטים; לא -9999px, שיוצר גלילה הצידה ב-RTL */
 [hidden]{display:none!important}
+.tbd{display:inline-block;padding:2px 10px;border-radius:8px;border:1.5px dashed var(--gold);color:var(--gold);font-size:15px}
