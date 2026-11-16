@@ -1,2 +1,3 @@
-// סדר הסרטונים בעמוד הפרויקטים. נכתב מדף הסידור (_edit/order.html)
-window.PROJECTS_ORDER = ["eyal-golan", "big-brother", "imtirtzu-3", "muller", "goldstar", "expo", "mbappe", "telhai", "barrier-1", "mantra-3", "mantra-who", "mantra-what", "almog", "noir", "imtirtzu-1", "sound2", "beitar", "survivor", "hapoel", "neviot", "ginton", "imtirtzu-2", "oro", "barrier-2", "heels", "barrier-3", "conference", "coke", "arak", "shoko", "magnum", "shampoo", "coffee", "taster"];
+// סדר הסרטונים בעמוד הפרויקטים, ומי מוסתר ממנו. נכתב מדף הבקרה (_edit/control.html)
+window.PROJECTS_ORDER = ["intezer", "eyal-golan", "habosem", "mantra-what", "paytex", "almog", "imtirtzu-3", "closet", "expo", "mbappe", "big-brother", "mantra-3", "telhai", "mantra-who", "noir", "imtirtzu-1", "beitar", "survivor", "playmobil", "goldstar", "hapoel", "neviot", "barrier-1", "shampoo", "conference", "imtirtzu-2", "oro", "barrier-2", "barrier-3", "muller", "ginton", "coke", "arak", "shoko", "magnum", "coffee", "taster"];
+window.PROJECTS_HIDDEN = ["sound2", "heels"];

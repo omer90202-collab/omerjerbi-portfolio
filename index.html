@@ -39,19 +39,19 @@
   "alternateName": "Omer Jerbi",
   "url": "https://jerbi.ai/",
   "image": "https://jerbi.ai/images/og.jpg",
-  "jobTitle": "מומחה AI",
-  "description": "יוצר תוכן AI למותגים המובילים בישראל — וידאו, גרפיקה, אתרים ואוטומציות.",
+  "jobTitle": "יוצר סרטוני AI",
+  "description": "יוצר סרטוני AI לעמותות, לסוכנויות ולמותגים. וגם גרפיקה, עריכה וניהול רשתות.",
   "address": { "@type": "PostalAddress", "addressCountry": "IL" },
-  "sameAs": ["https://www.instagram.com/omerjerbi"],
+  "sameAs": ["https://www.instagram.com/omerjerbi.ai"],
   "knowsAbout": ["יצירת תוכן AI","עריכת וידאו","עיצוב גרפי","בניית אתרים","אוטומציות AI"]
 }
 </script>
-<title>עומר ג'רבי — מומחה AI · תיק עבודות</title>
-<meta name="description" content="וידאו, גרפיקה, אתרים ואוטומציות בבינה מלאכותית — למותגים המובילים בישראל.">
+<title>עומר ג'רבי | סרטוני AI לעמותות, לסוכנויות ולמותגים</title>
+<meta name="description" content="סרטוני AI לעמותות, לסוכנויות ולמותגים: קמפיינים, פרסומות וסרטוני תדמית. וגם גרפיקה, עריכה וניהול רשתות.">
 <link rel="icon" href="images/favicon.png" type="image/png">
 <meta property="og:type" content="website">
-<meta property="og:title" content="עומר ג'רבי — מומחה AI">
-<meta property="og:description" content="וידאו, גרפיקה, אתרים ואוטומציות בבינה מלאכותית — למותגים המובילים בישראל.">
+<meta property="og:title" content="עומר ג'רבי | סרטוני AI">
+<meta property="og:description" content="סרטוני AI לעמותות, לסוכנויות ולמותגים: קמפיינים, פרסומות וסרטוני תדמית. וגם גרפיקה, עריכה וניהול רשתות.">
 <meta property="og:image" content="images/og.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -306,58 +306,47 @@
     .whoami-bg{font-size:26vw}
     .whoami p{max-width:18ch}}
 
-  /* ── איך אני יכול לעזור — RapidImageHoverMenu (Animmaster · Hover Effects/11) ──
-     קודם זה היה סליידר לשוניות שהציג את שש התמונות אחת-אחרי-השנייה, וזה
-     בדיוק מה שהדגיש כמה הן דומות (אותו פולו, אותו שולחן, אותה תאורה).
-     כאן הטיפוגרפיה היא התוכן, והתמונה מופיעה רק בריחוף — אצל הסמן, לרגע,
-     מוטה ומולבנת לפי מהירות העכבר. היא נקראת כטקסטורה ולא כדיוקן. */
-  .svc-sec{position:relative;padding:clamp(70px,12vh,150px) 5vw clamp(80px,13vh,170px)}
-  .svc-head{max-width:1400px;margin:0 auto clamp(30px,5vh,64px)}
-  .svc-head small{display:block;color:var(--gold);letter-spacing:.34em;font-size:11px;font-weight:700}
-  .svc-head h2{margin-top:12px;font-weight:900;font-size:clamp(30px,4.6vw,64px);
-    line-height:1.02;letter-spacing:-.03em}
-  .svc-menu{max-width:1400px;margin:0 auto;position:relative}
-  .svc-item{position:relative;display:block;border-top:1px solid var(--line);cursor:pointer;
-    padding:clamp(14px,2.2vh,26px) 0 clamp(14px,2.2vh,26px) clamp(46px,5vw,90px)}
-  .svc-item:last-child{border-bottom:1px solid var(--line)}
-  /* המספר נכנס מהצד בריחוף — כמו ה-::before הממוספר במקור */
-  .svc-item .n{position:absolute;inset-inline-end:0;top:50%;
-    transform:translateY(-50%) translateX(14px);
-    font-size:11px;font-weight:700;color:var(--gold);letter-spacing:.1em;opacity:0;
-    font-variant-numeric:tabular-nums;transition:opacity .35s,transform .35s}
-  .svc-item:hover .n{opacity:1;transform:translateY(-50%) translateX(0)}
-  .svc-item .t{display:block;font-weight:900;letter-spacing:-.035em;line-height:1.04;
-    font-size:clamp(28px,5.4vw,84px);color:var(--dim);
-    transition:color .4s cubic-bezier(.2,.8,.2,1),transform .5s cubic-bezier(.2,.8,.2,1)}
-  .svc-item:hover .t{color:var(--ink);transform:translateX(-14px)}
-  /* חלון התמונה שנצמד לסמן. pointer-events:none — אחרת הוא חוטף את
-     ה-mouseleave מהשורה והאפקט מהבהב. */
-  /* left פיזי ולא inset-inline-start: חישוב המיקום מהמקור הוא
-     x = mouse.x − item.left − רוחב/2, כלומר נמדד תמיד מהקצה השמאלי.
-     ב-RTL האינסט הלוגי מתהפך לקצה הימני, וה-x החיובי דחף את התמונה
-     אל מחוץ למסך במקום להצמיד אותה לסמן. */
-  .svc-reveal{position:absolute;top:0;left:0;width:clamp(200px,20vw,330px);
-    aspect-ratio:4/3;overflow:hidden;opacity:0;pointer-events:none;z-index:5;border-radius:6px}
-  .svc-reveal__in{width:100%;height:100%;overflow:hidden}
-  .svc-reveal__img{width:100%;height:100%;background-size:cover;background-position:center}
-  /* במגע: לא רשימה/ריחוף — טבעת תלת-ממדית שגוררים באצבע (Animmaster ·
-     Sliders/23, Circular-Gallery). במקור אין שום מנגנון מגע — רק
-     mousemove/hover לדסקטופ וקליק לתצוגה מוגדלת; הגרירה-באצבע כאן היא
-     ההתאמה שלנו למובייל. עומר בחר אותה מתוך 6 חלופות (14/09/2026). */
-  .svc-sec.is-touch .svc-menu{display:none}
-  .svcring-wrap{display:none}
-  .svc-sec.is-touch .svcring-wrap{display:flex;flex-direction:column;gap:5vh;align-items:center}
-  .svcring-scene{width:100%;height:260px;perspective:900px;touch-action:none}
-  .svcring{position:relative;width:1px;height:1px;margin:0 auto;top:110px;
-    transform-style:preserve-3d}
-  .svcring .it{position:absolute;width:138px;height:184px;left:-69px;top:-92px;
-    border-radius:14px;overflow:hidden;background:var(--card);border:1px solid var(--line);
-    box-shadow:0 20px 40px rgba(0,0,0,.5)}
-  .svcring .it img{width:100%;height:100%;object-fit:cover;display:block}
-  .svcring .it::after{content:"";position:absolute;inset:0;
-    background:linear-gradient(transparent 50%,rgba(6,5,4,.75))}
-  .svcring-label{width:100%;height:44px;display:flex;align-items:center;justify-content:center;
-    text-align:center;font-weight:900;font-size:22px;color:var(--gold)}
+  /* ── השירותים שלי: שורת תמונות ושם ענק (Animmaster · Hover Effects/18 · Interactive Team Section) ──
+     עומר בחר בגרסה הזו מתוך שלוש (16/11/2026) וכיוונן אותה בעצמו: תמונות רוחב, השם מעל התמונות,
+     רק הכותרת הקטנה, שורת הסבר לכל שירות. הגדלים עצמם (124/190, 71% רוחב לשם) יושבים ב-JS. */
+  .svc-sec{position:relative;min-height:min(100svh,920px);display:flex;flex-direction:column;
+    padding:clamp(60px,10vh,120px) 0}
+  .svc-kicker{width:100%;max-width:1500px;margin:0 auto;padding:0 5vw;color:var(--gold);
+    letter-spacing:.34em;font-size:11px;font-weight:700}
+  .tm-stage{flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center;
+    gap:clamp(16px,3vh,38px);overflow:hidden;padding-top:clamp(10px,3vh,34px)}
+  /* חלון חתוך: כל שם מחכה מתחתיו (או מעליו) ועולה פנימה אות-אות */
+  .tm-names{position:relative;width:100%;height:var(--tm-h,15rem);overflow:hidden;
+    clip-path:polygon(0 0,100% 0,100% 100%,0 100%)}
+  .tm-name{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+    font-weight:900;line-height:1;letter-spacing:-.03em;white-space:nowrap;color:var(--gold);
+    user-select:none;transform:translateY(100%)}
+  .tm-name.default{color:var(--ink);transform:translateY(-100%)}
+  .tm-name .char,.tm-name .ltr{display:inline-block;will-change:transform}
+  .tm-imgs{display:flex;justify-content:center;align-items:center;width:max-content;max-width:100%}
+  .tm-img{position:relative;flex:none;padding:5px;border:0;background:none;cursor:pointer;
+    will-change:width,height;-webkit-tap-highlight-color:transparent}
+  .tm-img img{display:block;width:100%;height:100%;object-fit:cover;border-radius:18px}
+  .tm-img.on img{outline:3px solid var(--gold);outline-offset:-3px}
+  .tm-img:focus-visible{outline:2px solid var(--gold);outline-offset:2px;border-radius:22px}
+  /* שורת הנחיה קטנה מתחת לתמונות (בקשת עומר, 16/11): שיבינו שאפשר לרחף או ללחוץ */
+  .tm-hint{margin:calc(-1 * clamp(4px,1.4vh,18px)) 0 0;font-size:12px;letter-spacing:.2em;font-weight:700;
+    color:rgba(245,240,230,.5);text-align:center}
+  .tm-hint::before{content:"↑";display:inline-block;margin-inline-end:.7em;color:var(--gold);
+    animation:tmHint 1.6s ease-in-out infinite}
+  @keyframes tmHint{50%{transform:translateY(-4px)}}
+  html.a11y-motion .tm-hint::before{animation:none}
+  /* תוספת שלנו למקור: שורת הסבר שמתחלפת עם השירות */
+  .tm-desc{min-height:3.1em;max-width:46ch;margin:0;padding:0 20px;text-align:center;
+    font-size:clamp(15px,1.5vw,21px);line-height:1.5;color:rgba(245,240,230,.62)}
+  /* טלפון: רשת קבועה של 3 בשורה. הפעילה מסומנת ומוגדלת מעט בלי להזיז את השורות */
+  @media(max-width:899px){
+    .tm-stage{gap:22px}
+    .tm-imgs{flex-wrap:wrap;width:100%;padding:0 12px}
+    .tm-img{padding:3px;transition:transform .35s cubic-bezier(.2,.8,.2,1)}
+    .tm-img.on{transform:scale(1.07);z-index:2}
+    .tm-img img{border-radius:12px}
+    .tm-desc{font-size:15.5px;min-height:3.2em}}
 
   /* ── קיר תוצאות: עמודות של צילומי מסך שנסחפות כלפי מעלה ── */
   .res-sec{padding:12vh 5vw 13vh;overflow:hidden}
@@ -768,7 +757,7 @@
       <div class="menu-nav__link-wrap"><a class="menu-nav__link" href="#scOutro">צור קשר</a></div>
     </div>
     <div class="menu-nav__footer">
-      <a href="https://instagram.com/omerjerbi" target="_blank" rel="noopener"><span dir="ltr">@omerjerbi</span></a>
+      <a href="https://instagram.com/omerjerbi.ai" target="_blank" rel="noopener"><span dir="ltr">@omerjerbi.ai</span></a>
       <a href="https://wa.me/972542131252?text=%D7%94%D7%99%D7%99%20%D7%A2%D7%95%D7%9E%D7%A8%2C%20%D7%94%D7%92%D7%A2%D7%AA%D7%99%20%D7%9E%D7%94%D7%90%D7%AA%D7%A8" target="_blank" rel="noopener">בואו נדבר</a>
       <a href="privacy.html">מדיניות פרטיות</a>
       <a href="accessibility.html">הצהרת נגישות</a>
@@ -799,26 +788,28 @@
 <!-- ═ 1 ═ הירו: קיר וידאו -->
 <section class="sec sc-hero" id="scHero">
   <div class="wall-grid" id="wallGrid">
+    <!-- wall:start (נכתב מדף הבקרה, _edit/control.html) -->
     <div class="wtile" data-full="videos/eyal-golan.mp4" data-label="אייל גולן"><video poster="images/posters/eyal-golan.jpg" src="videos/loops/eyal-golan.mp4" muted loop playsinline preload="metadata"></video></div>
     <div class="wtile" data-full="videos/survivor.mp4" data-label="הישרדות"><video poster="images/posters/survivor.jpg" src="videos/loops/survivor.mp4" muted loop playsinline preload="metadata"></video></div>
     <div class="wtile" data-full="videos/power-barrier-1.mp4" data-label="Barrier"><video poster="images/posters/power-barrier-1.jpg" src="videos/loops/power-barrier-1.mp4" muted loop playsinline preload="metadata"></video></div>
-    <div class="wtile" data-label="קרב תל חי" data-full="videos/telhai-en.mp4"><video poster="images/posters/telhai-en-loop.jpg" src="videos/loops/telhai-en-loop.mp4" muted loop playsinline preload="metadata"></video></div>
-    <div class="wtile" data-full="videos/heels.mp4" data-label="נעליים"><video poster="images/posters/heels.jpg" src="videos/loops/heels.mp4" muted loop playsinline preload="metadata"></video></div>
+    <div class="wtile" data-full="videos/telhai-en.mp4" data-label="קרב תל חי"><video poster="images/posters/telhai-en-loop.jpg" src="videos/loops/telhai-en-loop.mp4" muted loop playsinline preload="metadata"></video></div>
     <div class="wtile" data-full="videos/mbappe.mp4" data-label="משרד כרטיסים"><video poster="images/posters/mbappe.jpg" src="videos/loops/mbappe.mp4" muted loop playsinline preload="metadata"></video></div>
     <div class="wtile" data-full="videos/save1080.mp4" data-label="האח הגדול"><video poster="images/posters/save1080.jpg" src="videos/loops/save1080.mp4" muted loop playsinline preload="metadata"></video></div>
     <div class="wtile" data-full="videos/beitar-puppets.mp4" data-label="ערוץ one"><video poster="images/posters/beitar-puppets.jpg" src="videos/loops/beitar-puppets.mp4" muted loop playsinline preload="metadata"></video></div>
     <div class="wtile" data-full="videos/hapoel.mp4" data-label="RTM"><video poster="images/posters/hapoel.jpg" src="videos/loops/hapoel.mp4" muted loop playsinline preload="metadata"></video></div>
     <div class="wtile" data-full="videos/noir-bar.mp4" data-label="בר נואר"><video poster="images/posters/noir-bar.jpg" src="videos/loops/noir-bar.mp4" muted loop playsinline preload="metadata"></video></div>
-    <div class="wtile" data-full="videos/raw-magnum.mp4" data-label="מגנום"><video poster="images/posters/raw-magnum.jpg" src="videos/loops/raw-magnum.mp4" muted loop playsinline preload="metadata"></video></div>
-    <div class="wtile" data-full="videos/raw-neviot.mp4" data-label="נביעות"><video poster="images/posters/raw-neviot.jpg" src="videos/loops/raw-neviot.mp4" muted loop playsinline preload="metadata"></video></div>
+    <div class="wtile" data-full="videos/raw-goldstar.mp4" data-label="בירה גולדסטאר"><video poster="images/posters/raw-goldstar.jpg" src="videos/loops/raw-goldstar.mp4" muted loop playsinline preload="metadata"></video></div>
+    <div class="wtile" data-full="videos/habosem.mp4" data-label="הבשם · שחר חיון"><video poster="images/posters/habosem-loop.jpg" src="videos/loops/habosem-loop.mp4" muted loop playsinline preload="metadata"></video></div>
+    <div class="wtile" data-full="videos/almog-shiloni.mp4" data-label="בית אלמוג שילוני"><video poster="images/posters/almog-shiloni.jpg" src="videos/loops/almog-shiloni.mp4" muted loop playsinline preload="metadata"></video></div>
+    <!-- wall:end -->
   </div>
   <div class="hero-textwrap">
     <div class="hero-in">
       <h1 class="hero-title">
         <span class="mark" role="img" aria-label="jerbi."></span>
-        <span class="claim">מומחה AI.</span>
+        <span class="claim">סרטוני AI.</span>
       </h1>
-      <p class="hero-sub">וידאו, גרפיקה, אתרים ואוטומציות — למותגים המובילים במדינה.</p>
+      <p class="hero-sub">לעמותות, לסוכנויות ולמותגים.<br>וגם גרפיקה, עריכה וניהול רשתות.</p>
       <a class="hero-cta" href="https://wa.me/972542131252?text=%D7%94%D7%99%D7%99%20%D7%A2%D7%95%D7%9E%D7%A8%2C%20%D7%94%D7%92%D7%A2%D7%AA%D7%99%20%D7%9E%D7%94%D7%90%D7%AA%D7%A8" target="_blank" rel="noopener">בואו נדבר ←</a>
     </div>
   </div>
@@ -847,20 +838,18 @@
   <div class="whoami-bg" aria-hidden="true">JERBI</div>
   <small>מי אני</small>
   <h2>עומר ג'רבי</h2>
-  <p id="whoCopy">יוצר תוכן AI למותגים המובילים בישראל. העבודות שלי הוקרנו בכנסת, הניעו קמפיינים ארציים ושימשו את תוכניות הטלוויזיה הגדולות במדינה.</p>
+  <p id="whoCopy">יוצר סרטוני AI לעמותות, לסוכנויות ולמותגים. העבודות שלי הוקרנו בכנסת, הניעו קמפיינים ארציים ושימשו את תוכניות הטלוויזיה הגדולות במדינה.</p>
 </section>
 
-<!-- ═ 3ב ═ איך אני יכול לעזור: תפריט טיפוגרפי עם חשיפת תמונה בסמן
-     (Animmaster · Hover Effects/11 · RapidImageHoverMenu) -->
+<!-- ═ 3ב ═ השירותים שלי: שורת תמונות ושם ענק
+     (Animmaster · Hover Effects/18 · Interactive Team Section) -->
 <section class="svc-sec" id="miShow">
-  <div class="svc-head">
-    <small>השירותים שלי</small>
-    <h2>מקצה לקצה.</h2>
-  </div>
-  <nav class="svc-menu" id="svcMenu"></nav>
-  <div class="svcring-wrap" id="svcRing">
-    <div class="svcring-scene"><div class="svcring" id="svcRingInner"></div></div>
-    <div class="svcring-label" id="svcRingLabel"></div>
+  <h2 class="svc-kicker">השירותים שלי</h2>
+  <div class="tm-stage">
+    <div class="tm-names" id="tmNames" aria-hidden="true"></div>
+    <div class="tm-imgs" id="tmImgs"></div>
+    <p class="tm-hint" id="tmHint"></p>
+    <p class="tm-desc" id="tmDesc" aria-live="polite"></p>
   </div>
 </section>
 
@@ -872,18 +861,20 @@
     <a class="wall-more" href="projects.html">לכל הפרויקטים ←</a>
   </div>
   <div class="grid g-deep" id="worksGrid">
+      <!-- works:start (נכתב מדף הבקרה, _edit/control.html) -->
       <div class="gi" data-full="videos/telhai-en.mp4" data-label="קרב תל חי"><video poster="images/posters/telhai-en-loop.jpg" src="videos/loops/telhai-en-loop.mp4" muted loop playsinline preload="none"></video><b>קרב תל חי</b></div>
       <div class="gi" data-full="videos/save1080.mp4" data-label="האח הגדול"><video poster="images/posters/save1080.jpg" src="videos/loops/save1080.mp4" muted loop playsinline preload="none"></video><b>האח הגדול</b></div>
       <div class="gi" data-full="videos/eyal-golan.mp4" data-label="אייל גולן"><video poster="images/posters/eyal-golan.jpg" src="videos/loops/eyal-golan.mp4" muted loop playsinline preload="none"></video><b>אייל גולן</b></div>
       <div class="gi" data-full="videos/survivor.mp4" data-label="הישרדות"><video poster="images/posters/survivor.jpg" src="videos/loops/survivor.mp4" muted loop playsinline preload="none"></video><b>הישרדות</b></div>
-      <div class="gi" data-full="videos/beitar-puppets.mp4" data-label="ערוץ one"><video poster="images/posters/beitar-puppets.jpg" src="videos/loops/beitar-puppets.mp4" muted loop playsinline preload="none"></video><b>ערוץ one</b></div>
       <div class="gi" data-full="videos/mbappe.mp4" data-label="משרד כרטיסים"><video poster="images/posters/mbappe.jpg" src="videos/loops/mbappe.mp4" muted loop playsinline preload="none"></video><b>משרד כרטיסים</b></div>
-      <div class="gi" data-full="videos/noir-bar.mp4" data-label="בר נואר"><video poster="images/posters/noir-bar.jpg" src="videos/loops/noir-bar.mp4" muted loop playsinline preload="none"></video><b>בר נואר</b></div>
-      <div class="gi" data-full="videos/raw-magnum.mp4" data-label="מגנום"><video poster="images/posters/raw-magnum.jpg" src="videos/loops/raw-magnum.mp4" muted loop playsinline preload="none"></video><b>מגנום</b></div>
-      <div class="gi" data-full="videos/raw-arak.mp4" data-label="ערק נח"><video poster="images/posters/raw-arak.jpg" src="videos/loops/raw-arak.mp4" muted loop playsinline preload="none"></video><b>ערק נח</b></div>
       <div class="gi" data-full="videos/raw-goldstar.mp4" data-label="בירה גולדסטאר"><video poster="images/posters/raw-goldstar.jpg" src="videos/loops/raw-goldstar.mp4" muted loop playsinline preload="none"></video><b>בירה גולדסטאר</b></div>
       <div class="gi" data-full="videos/expo.mp4" data-label="אייל גולן - אקספו"><video poster="images/posters/expo.jpg" src="videos/loops/expo.mp4" muted loop playsinline preload="none"></video><b>אייל גולן - אקספו</b></div>
       <div class="gi" data-full="videos/almog-shiloni.mp4" data-label="בית אלמוג שילוני"><video poster="images/posters/almog-shiloni.jpg" src="videos/loops/almog-shiloni.mp4" muted loop playsinline preload="none"></video><b>בית אלמוג שילוני</b></div>
+      <div class="gi" data-full="videos/paytex.mp4" data-label="Paytex"><video poster="images/posters/paytex-loop.jpg" src="videos/loops/paytex-loop.mp4" muted loop playsinline preload="none"></video><b>Paytex</b></div>
+      <div class="gi" data-full="videos/intezer.mp4" data-label="Intezer"><video poster="images/posters/intezer-loop.jpg" src="videos/loops/intezer-loop.mp4" muted loop playsinline preload="none"></video><b>Intezer</b></div>
+      <div class="gi" data-full="videos/closet.mp4" data-label="יוצא מהארון"><video poster="images/posters/closet-loop.jpg" src="videos/loops/closet-loop.mp4" muted loop playsinline preload="none"></video><b>יוצא מהארון</b></div>
+      <div class="gi" data-full="videos/habosem.mp4" data-label="הבשם · שחר חיון"><video poster="images/posters/habosem-loop.jpg" src="videos/loops/habosem-loop.mp4" muted loop playsinline preload="none"></video><b>הבשם · שחר חיון</b></div>
+      <!-- works:end -->
   </div>
 </section>
 
@@ -915,9 +906,9 @@
 <!-- ═ 7 ═ אאוטרו -->
 <section class="sec sc-outro" id="scOutro">
   <div class="outro-in">
-    <small>וידאו · גרפיקה · אתרים · אוטומציה</small>
-    <h2>בזמן שאתם מתלבטים,<br><em>כל התעשייה כבר עובדת בבינה מלאכותית.</em></h2>
-    <p>ועכשיו זה הזמן שלך.</p>
+    <small>סרטוני AI · גרפיקה · אתרים · אוטומציה</small>
+    <h2>הפרויקט הבא שלכם<br><em>מתחיל בשיחה.</em></h2>
+    <p>עובד עם עמותות, סוכנויות ומותגים.</p>
     <div class="btns">
       <a class="main" href="https://wa.me/972542131252?text=%D7%94%D7%99%D7%99%20%D7%A2%D7%95%D7%9E%D7%A8%2C%20%D7%94%D7%92%D7%A2%D7%AA%D7%99%20%D7%9E%D7%94%D7%90%D7%AA%D7%A8" target="_blank" rel="noopener">בואו נדבר ←</a>
       <a class="ghost" href="mailto:omer@jerbi.ai">מייל</a>
@@ -1495,22 +1486,17 @@ if (TOUCH) {
    ולא ממוקאפים — סקריפט הלכידה: scratchpad/shots.sh.
    הועברו ל-JPEG ברוחב 900 (20 קבצים ≈ 1.4MB סה"כ). ════ */
 {
-  /* 18 אתרים — כל אחד עם הקלטת גלילה אמיתית שעומר הקליט.
-     12 הטמפלייטים באנגלית ירדו: אין להם הקלטה, וכרטיס סטטי בין
-     כרטיסים מתנגנים נראה כמו תקלה. יחזרו ברגע שיוקלטו. */
+  /* האתרים שמוצגים בסקשן, לכל אחד הקלטת גלילה אמיתית. עומר בוחר אילו ובאיזה
+     סדר בדף הבקרה; הקטלוג המלא (12) נמצא ב-_edit/sites.json. */
   const SITES = [
-    ['iron',        'IRON',       'קרוספיט',        'iron.fit'],
-    ['bedrock',     'Bedrock',    'בנייה ותשתיות',  'bedrock.build'],
-    ['board',       'board',      'אפליקציה',       'board.app'],
-    ['grain-stone', 'Grain&Stone','רהיטים בהזמנה',  'grainandstone.co'],
-    ['halcyon',     'Halcyon',    'יקב בוטיק',      'halcyon.wine'],
-    ['nibble',      'Nibble',     'ערכות בישול',    'nibble.co'],
-    ['nordwall',    'FC Nordwall','מועדון כדורגל',  'fcnordwall.com'],
-    ['sitebuild',   'Sitebuild',  'ניהול בנייה',    'sitebuild.io'],
-    ['showcase',    'שואוקייס',   'אתר חוויה',      'showcase.studio'],
-    ['rite',        'Rite',       'הפקת אירועים',   'rite.events'],
-    ['roofline',    'Roofline',   'גגות מתכת',      'roofline.pro'],
-    ['realpic',     'RealPic',    'שחזור תמונות',   'realpic.co.il']
+    /* sites:start (נכתב מדף הבקרה, _edit/control.html) */
+    ['realpic', 'RealPic', 'שחזור תמונות', 'realpic.co.il'],
+    ['fontiada', 'פונטיאדה', 'חנות פונטים עבריים', 'fontiada.com'],
+    ['savethedate', 'Save the Date', 'סרטוני הזמנה לחתונה', 'ai-savethedate.com'],
+    ['iron', 'IRON', 'קרוספיט', 'iron.fit'],
+    ['bedrock', 'Bedrock', 'בנייה ותשתיות', 'bedrock.build'],
+    ['board', 'board', 'אפליקציה', 'board.app'],
+    /* sites:end */
   ];
 
   const grid = document.getElementById('webGrid');
@@ -1718,170 +1704,105 @@ if (TOUCH) {
 }
 
 
-/* ════ 4 — איך אני יכול לעזור ════
-   Animmaster · Hover Effects/11 · RapidImageHoverMenu.
-   מקור: js/menuItem.js. המנגנון: בריחוף נוצר חלון תמונה שנצמד לסמן
-   ב-lerp (amt 0.08), ושני אלמנטים מקוננים נכנסים מכיוונים מנוגדים —
-   העוטף מ-±100% והתמונה מ-∓100%, מה שנותן את מעבר ה"וילון".
-   הסיבוב והבהירות ממופים ממהירות העכבר האופקית:
-   rotation = map(dist,0,100,0,±60) · brightness = map(dist,0,100,1,4).
-   הכיוון נגזר מ-mousePosCache.x − mousepos.x.
-   הוחלף: LocomotiveScroll → Lenis שכבר רץ בעמוד; ה-preloader ירד
-   (התמונות ממילא נטענות עצלן). ════ */
+/* ════ 4 — השירותים שלי: שם ענק ════
+   Animmaster · Hover Effects/18 · Interactive Team Section. מקור: script.js.
+   המנגנון: לכל תמונה יש שם שמחכה מתחת לחלון חתוך. בריחוף האותיות שלו עולות
+   מהמרכז החוצה (stagger from:'center'), שם ברירת המחדל יוצא למעלה, והתמונה
+   שמתחת לעכבר גדלה. ביציאה מהשורה הכול חוזר.
+   מה ששונה מהמקור:
+   · SplitText ירד (שובר עברית). הפיצול ידני, ומילה לטינית ("AI") נשארת יחידה אחת
+     כדי שהסדר שלה לא יתהפך בתוך שורה מימין לשמאל.
+   · כל שם מותאם לרוחב קבוע מהמסך (במקור גודל פונט אחד לשמות קצרים באנגלית).
+   · שורת הסבר מתחלפת לכל שירות.
+   · מגע: אין ריחוף, אז נוגעים בתמונה. הראשונה פתוחה מההתחלה, והתמונה הפעילה
+     לא משנה גודל (רק מסומנת) כדי ששתי השורות לא יקפצו.
+   הגדלים והסדר נקבעו על ידי עומר בדף הכוונון (16/11/2026). התמונות: מסכי עבודה
+   שנוצרו לסקשן הזה, images/services/. ════ */
 (() => {
-  const SERVICES = [
-    ['01','עיצוב גרפי','graphic-design.jpg'],
-    ['02','עריכת וידיאו','video-editing.jpg'],
-    ['03','יצירת תוכן AI','ai-content.jpg'],
-    ['04','עריכת פודקאסטים','podcast-editing.jpg'],
-    ['05','בניית אתרים','web-dev.jpg'],
-    ['06','מערכות ואוטומציות AI','automation.jpg']
-  ];
-  const menu = document.getElementById('svcMenu');
-  if (!menu) return;
   const sec = document.getElementById('miShow');
-  if (TOUCH) sec.classList.add('is-touch');
+  const imgs = document.getElementById('tmImgs'), names = document.getElementById('tmNames'), desc = document.getElementById('tmDesc');
+  if (!sec || !imgs) return;
+  /* הטקסטים של הסקשן (שם, שורת הסבר, שורת ההנחיה). נכתבים מדף העריכה _edit/services-texts.html,
+     ולכן הם שורת JSON אחת בין שני הסימונים. לא לפצל את השורה */
+  const TEXTS = /* services:start */ {"items": [{"t": "סרטוני AI", "d": "סרטוני AI מקצועיים מהתסריט ועד התוצר הסופי - פרסומות, קמפיינים וסרטי תדמית.", "img": "ai.jpg"}, {"t": "עיצוב גרפי", "d": "מיתוג, פוסטים, סטוריז, מודעות וחומרי דפוס.", "img": "graphic.jpg"}, {"t": "עריכת וידיאו", "d": "עריכת רילס וסרטונים לרשתות - כתוביות, סאונד וגרפיקה.", "img": "video.jpg"}, {"t": "עריכת פודקאסטים", "d": "פרקים מלאים וקטעים קצרים לרשתות.", "img": "podcast.jpg"}, {"t": "בניית אתרים", "d": "אתרים מקצועיים עם חוויית גלילה ואנימציה.", "img": "web.jpg"}, {"t": "מערכות ואוטומציות", "d": "אוטומציות וכלים מתקדמים שחוסכים עבודה ידנית, זמן וכסף.", "img": "automation.jpg"}], "hint": {"mouse": "רחפו עם העכבר מעל התמונות", "touch": "לחצו על התמונות"}} /* services:end */;
+  const SERVICES = TEXTS.items.map(x => [x.t, x.d, x.img]);
+  /* thumb/active = גובה התמונה במחשב (רגילה/פעילה) · shape = רוחב חלקי גובה · nameW = חלק מרוחב המסך לשם
+     · mPerRow/mThumb = טלפון: כמה בשורה, וגובה מרבי */
+  const CFG = { thumb:124, active:190, shape:1.6, nameW:.71, mPerRow:3, mThumb:100 };
+  const isMob = () => innerWidth < 900;
 
-  const clamp = (v,lo,hi) => Math.min(Math.max(v,lo),hi);
-  const map = (x,a,b,c,d) => c + (d-c) * ((x-a)/(b-a));
-  const lerp = (a,b,n) => (1-n)*a + n*b;
-
-  let mouse = {x:0,y:0}, cache = {x:0,y:0}, dir = {x:0,y:0};
-  if (!TOUCH) addEventListener('mousemove', e => { mouse = {x:e.clientX,y:e.clientY}; });
-
-  if (!TOUCH) SERVICES.forEach(([num,title,file]) => {
-    const item = document.createElement('a');
-    item.className = 'svc-item';
-    const n = document.createElement('span'); n.className='n'; n.textContent = num;
-    const t = document.createElement('span'); t.className='t'; t.textContent = title;
-    item.append(n,t);
-
-    {
-      const rev = document.createElement('div'); rev.className='svc-reveal';
-      const inr = document.createElement('div'); inr.className='svc-reveal__in';
-      const img = document.createElement('div'); img.className='svc-reveal__img';
-      img.style.backgroundImage = `url(images/mi-ani/${file})`;
-      inr.appendChild(img); rev.appendChild(inr); item.appendChild(rev);
-
-      /* מצב מונפש לכל שורה בנפרד. במקור זה אובייקט אחד משותף לכל
-         התפריט, מה שגורם לתמונה החדשה לרשת את המיקום של הקודמת
-         ולקפוץ; כאן לכל שורה יש משלה. */
-      const st = { tx:{p:0,c:0}, ty:{p:0,c:0}, rot:{p:0,c:0}, br:{p:1,c:1} };
-      let raf = null, first = true, bounds = null;
-
-      const render = () => {
-        raf = null;
-        if (first) bounds = { el:item.getBoundingClientRect(), rev:rev.getBoundingClientRect() };
-        const distX = clamp(Math.abs(cache.x - mouse.x), 0, 100);
-        dir = { x: cache.x - mouse.x, y: cache.y - mouse.y };
-        cache = { x:mouse.x, y:mouse.y };
-
-        st.tx.c  = Math.abs(mouse.x - bounds.el.left) - bounds.rev.width/2;
-        st.ty.c  = Math.abs(mouse.y - bounds.el.top)  - bounds.rev.height/2;
-        st.rot.c = first ? 0 : map(distX,0,100,0, dir.x < 0 ? 60 : -60);
-        st.br.c  = first ? 1 : map(distX,0,100,1,4);
-
-        for (const k of ['tx','ty','rot','br'])
-          st[k].p = first ? st[k].c : lerp(st[k].p, st[k].c, .08);
-
-        gsap.set(rev, { x:st.tx.p, y:st.ty.p, rotation:st.rot.p,
-                        filter:`brightness(${st.br.p})` });
-        first = false;
-        loop();
-      };
-      const loop = () => { if (!raf) raf = requestAnimationFrame(render); };
-
-      item.addEventListener('mouseenter', () => {
-        gsap.killTweensOf([inr,img]);
-        gsap.timeline({ onStart:() => { rev.style.opacity = 1; gsap.set(item,{zIndex:6}); } })
-          .to(inr, { duration:.2, ease:'sine.out', startAt:{ x: dir.x < 0 ? '-100%' : '100%' }, x:'0%' })
-          .to(img, { duration:.2, ease:'sine.out', startAt:{ x: dir.x < 0 ? '100%' : '-100%' }, x:'0%' }, 0);
-        first = true; loop();
-      });
-      item.addEventListener('mouseleave', () => {
-        if (raf) { cancelAnimationFrame(raf); raf = null; }
-        gsap.killTweensOf([inr,img]);
-        gsap.timeline({ onStart:() => gsap.set(item,{zIndex:1}),
-                        onComplete:() => gsap.set(rev,{opacity:0}) })
-          .to(inr, { duration:.2, ease:'sine.out', x: dir.x < 0 ? '100%' : '-100%' })
-          .to(img, { duration:.2, ease:'sine.out', x: dir.x < 0 ? '-100%' : '100%' }, 0);
-      });
-    }
-    menu.appendChild(item);
+  SERVICES.forEach(([title, , file]) => {
+    const b = document.createElement('button');
+    b.type = 'button'; b.className = 'tm-img'; b.setAttribute('aria-label', title);
+    const im = document.createElement('img');
+    im.src = 'images/services/' + file; im.alt = ''; im.width = 1024; im.height = 640; im.decoding = 'async'; im.loading = 'lazy';
+    b.appendChild(im); imgs.appendChild(b);
   });
+  const tiles = [...imgs.children];
+  document.getElementById('tmHint').textContent = TOUCH ? TEXTS.hint.touch : TEXTS.hint.mouse;
 
-  if (!TOUCH) {
-    /* כניסת השורות — פייד מדורג חד-פעמי */
-    gsap.from('.svc-item', {
-      opacity:0, y:34, duration:.9, stagger:.07, ease:'power3.out',
-      scrollTrigger:{ trigger:sec, start:'top 78%' }
-    });
-  } else {
-    /* מובייל: טבעת תלת-ממדית שגוררים באצבע — Animmaster · Sliders/23
-       (Circular-Gallery). המקור בנוי כולו על mousemove+קליק לדסקטופ
-       ואין בו שום מנגנון מגע; הגרירה כאן (pointerdown/move/up) היא
-       ההתאמה שלנו. עומר ראה דמו על מסך טלפון אמיתי ובחר בזה מתוך
-       6 חלופות (14/09/2026). */
-    const N = SERVICES.length, RADIUS = 155;
-    const ring = document.getElementById('svcRingInner');
-    const label = document.getElementById('svcRingLabel');
-    const items = SERVICES.map(([num,title,file],i)=>{
-      const el = document.createElement('div');
-      el.className = 'it';
-      el.style.transform = `rotateY(${i*(360/N)}deg) translateZ(${RADIUS}px)`;
-      el.innerHTML = `<img src="images/mi-ani/${file}" alt="${title}" loading="lazy" decoding="async">`;
-      ring.appendChild(el);
-      return { angle:i*(360/N), num, title };
-    });
+  /* פיצול בטוח לעברית: כל מילה נעטפת (שלא תישבר שורה באמצע), ומילה לטינית לא מתפצלת לאותיות */
+  const split = (el, text) => { const out = [];
+    text.split(/(\s+)/).forEach(part => {
+      if (!part) return;
+      if (/^\s+$/.test(part)) { el.appendChild(document.createTextNode('\u00A0')); return; }
+      const w = document.createElement('span'); w.style.display = 'inline-block'; w.style.whiteSpace = 'nowrap';
+      if (/^[\x00-\x7F]+$/.test(part)) { w.className = 'ltr'; w.textContent = part; out.push(w); }
+      else [...part].forEach(ch => { const c = document.createElement('span'); c.className = 'char'; c.textContent = ch; out.push(c); w.appendChild(c); });
+      el.appendChild(w); });
+    return out; };
+  const letters = ['השירותים', ...SERVICES.map(x => x[0])].map((text, i) => {
+    const n = document.createElement('div'); n.className = 'tm-name' + (i ? '' : ' default');
+    const holder = document.createElement('span'); n.appendChild(holder); names.appendChild(n);
+    return split(holder, text); });
+  const nameEls = [...names.children];
 
-    let rotation = 0;
-    function render(){
-      ring.style.transform = `rotateX(-10deg) rotateY(${rotation}deg)`;
-      /* הפריט הקרוב ביותר לחזית (0°) הוא הפעיל */
-      let best=null, bestDiff=999;
-      items.forEach(it=>{
-        let a = (it.angle + rotation) % 360; if (a<0) a+=360; if (a>180) a=360-a;
-        if (a<bestDiff){ bestDiff=a; best=it; }
-      });
-      if (best) label.textContent = best.title;
-    }
-    render();
-
-    /* snap: בשחרור, הטבעת לא נשארת תקועה באמצע — היא ננעלת על הכרטיס
-       הקרוב ביותר. velocity (ה-dx של תזוזת האצבע האחרונה) מוסיף תנופה,
-       כך שגרירה חדה קופצת כרטיס-שניים במקום להיעצר בזה שמתחת ליד. */
-    const ANGLE = 360/N;
-    let dragging=false, lastX=0, velocity=0, snapTween=null;
-    const scene = document.querySelector('.svcring-scene');
-    scene.addEventListener('pointerdown', e => {
-      dragging=true; lastX=e.clientX; velocity=0;
-      if (snapTween) snapTween.kill();
-      scene.setPointerCapture(e.pointerId);
-    });
-    scene.addEventListener('pointermove', e => {
-      if (!dragging) return;
-      const dx = (e.clientX-lastX) * 0.5;
-      rotation += dx; velocity = dx; lastX = e.clientX;
-      render();
-    });
-    const snapToNearest = () => {
-      if (!dragging) return;
-      dragging = false;
-      const target = Math.round((rotation + velocity*3) / ANGLE) * ANGLE;
-      const proxy = { r: rotation };
-      snapTween = gsap.to(proxy, {
-        r: target, duration:.55, ease:'power3.out',
-        onUpdate(){ rotation = proxy.r; render(); }
-      });
-    };
-    scene.addEventListener('pointerup', snapToNearest);
-    scene.addEventListener('pointercancel', snapToNearest);
-
-    gsap.from('#svcRing', {
-      opacity:0, y:34, duration:.9, ease:'power3.out',
-      scrollTrigger:{ trigger:sec, start:'top 78%' }
-    });
+  const pad = () => isMob() ? 3 : 5;
+  const size = h => ({ width: h * CFG.shape + 2 * pad(), height: h + 2 * pad() });
+  const baseH = () => isMob() ? Math.min(CFG.mThumb, ((innerWidth - 24) / CFG.mPerRow - 2 * pad()) / CFG.shape) : CFG.thumb;
+  let cur = -1, H = 0;   /* H = גובה החלון החתוך. האותיות זזות בפיקסלים של H ולא באחוזים מהגובה של עצמן:
+                            שם ארוך יוצא בפונט קטן, ו-100% מהאות הקטנה לא מספיק כדי להיכנס לחלון */
+  function layout(){
+    const mob = isMob();
+    tiles.forEach((t, i) => gsap.set(t, size(!mob && i === cur ? CFG.active : baseH())));
+    imgs.style.maxWidth = mob ? (size(baseH()).width * CFG.mPerRow + 26) + 'px' : '';
+    /* כל שם ממלא חלק קבוע מרוחב המסך, עד תקרת גובה */
+    const W = names.clientWidth * (mob ? .92 : CFG.nameW); let maxH = 0;
+    nameEls.forEach(n => { n.style.fontSize = '100px'; const w = n.firstChild.offsetWidth || 1;   /* offsetWidth: לא מושפע מה-transform של כניסת הסקשן בנייד */
+      const fs = Math.min(100 * W / w, innerHeight * (mob ? .2 : .36), mob ? 150 : 420); n.style.fontSize = fs + 'px'; maxH = Math.max(maxH, fs); });
+    H = Math.ceil(maxH * 1.14); names.style.setProperty('--tm-h', H + 'px');
+    gsap.set(letters[0], { y: cur < 0 ? H : 0 });
+    letters.slice(1).forEach((l, i) => gsap.set(l, { y: i === cur ? -H : 0 }));
   }
+
+  const K = REDUCE_MOTION ? .01 : 1;   /* "הפחתת אנימציות": אותו מצב סופי, בלי התנועה */
+  const A = { ease:'power4.out', duration:.75 * K, stagger:{ each:.025 * K, from:'center' } };
+  const hide = (i, keep) => { const el = tiles[i]; el.classList.remove('on');
+    if (!isMob()) gsap.to(el, { ...size(baseH()), duration:.5 * K, ease:'power4.out' });
+    gsap.to(letters[i + 1], { y:0, ...A });
+    if (!keep) { cur = -1; gsap.to(letters[0], { y:H, ...A }); gsap.to(desc, { opacity:0, duration:.25 * K }); } };
+  const show = i => { if (cur === i) return;
+    if (cur < 0) gsap.to(letters[0], { y:0, ...A }); else hide(cur, true);
+    cur = i; const el = tiles[i]; el.classList.add('on');
+    if (!isMob()) gsap.to(el, { ...size(CFG.active), duration:.5 * K, ease:'power4.out' });
+    gsap.to(letters[i + 1], { y:-H, ...A });
+    desc.textContent = SERVICES[i][1]; gsap.fromTo(desc, { opacity:0, y:8 }, { opacity:1, y:0, duration:.4 * K }); };
+
+  tiles.forEach((el, i) => {
+    if (!TOUCH) el.addEventListener('mouseenter', () => show(i));
+    el.addEventListener('click', () => show(i));
+    el.addEventListener('focus', () => show(i));       /* מקלדת: טאב בין השירותים */
+  });
+  if (!TOUCH) imgs.addEventListener('mouseleave', () => { if (cur >= 0 && !imgs.contains(document.activeElement)) hide(cur); });
+
+  layout();
+  if (TOUCH) show(0);   /* בלי ריחוף אין "מצב ריק": הראשון פתוח */
+  if (document.fonts) document.fonts.ready.then(layout);
+  let rt; addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(layout, 120); });
+
+  /* כניסה חד-פעמית. בנייד הסקשן כולו כבר נכנס בסקראב (ראה למעלה), אז רק במחשב */
+  if (!TOUCH && !REDUCE_MOTION) gsap.from([names, imgs], { opacity:0, y:34, duration:.9, stagger:.1, ease:'power3.out',
+    scrollTrigger:{ trigger:sec, start:'top 78%' } });
 })();
 
 /* ════ 5 — עבודות: קיר מהעומק (מאתר 05 · Grid Animations/7 תבנית ג') ════
