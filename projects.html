@@ -572,12 +572,13 @@ window.addEventListener('load', () => ScrollTrigger.refresh());
 </script>
 <!-- כפתור וואטסאפ צף: מופיע אחרי גלילה קצרה, נעלם ליד אזור "בואו נדבר" -->
 <style>
-.wa-fab{position:fixed;left:16px;bottom:calc(16px + env(safe-area-inset-bottom));z-index:900;display:flex;align-items:center;gap:8px;height:52px;padding:0 18px 0 14px;border-radius:999px;background:#25D366;color:#06210f;font:700 15px/1 "TelAvivBrutalist","Heebo",system-ui,sans-serif;text-decoration:none;box-shadow:0 10px 30px rgba(0,0,0,.45);opacity:0;transform:translateY(16px);pointer-events:none;transition:opacity .3s,transform .3s}
+/* בצד ימין: בצד שמאל הוא עלה על כפתור הנגישות ברגע שהופיע בגלילה (עומר, 18/11/2026) */
+.wa-fab{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom));z-index:900;display:flex;align-items:center;gap:8px;height:52px;padding:0 18px 0 14px;border-radius:999px;background:#25D366;color:#06210f;font:700 15px/1 "TelAvivBrutalist","Heebo",system-ui,sans-serif;text-decoration:none;box-shadow:0 10px 30px rgba(0,0,0,.45);opacity:0;transform:translateY(16px);pointer-events:none;transition:opacity .3s,transform .3s}
 .wa-fab.on{opacity:1;transform:none;pointer-events:auto}
 .wa-fab svg{width:24px;height:24px;flex-shrink:0}
 .wa-fab:focus-visible{outline:3px solid #FDBF2D;outline-offset:3px}
 body:has(.cookie-bar.show) .wa-fab{bottom:calc(200px + env(safe-area-inset-bottom))}
-@media (min-width:900px){.wa-fab{left:28px;bottom:28px}}
+@media (min-width:900px){.wa-fab{right:28px;bottom:28px}}
 @media (prefers-reduced-motion:reduce){.wa-fab{transition:none}}
 </style>
 <a class="wa-fab" id="waFab" href="https://wa.me/972542131252?text=%D7%94%D7%99%D7%99%20%D7%A2%D7%95%D7%9E%D7%A8%2C%20%D7%A8%D7%90%D7%99%D7%AA%D7%99%20%D7%90%D7%AA%20%D7%94%D7%90%D7%AA%D7%A8%20%D7%95%D7%A8%D7%A6%D7%99%D7%AA%D7%99%20%D7%9C%D7%A9%D7%90%D7%95%D7%9C%20%D7%A2%D7%9C..." target="_blank" rel="noopener" aria-label="שליחת הודעה בוואטסאפ לעומר" tabindex="-1">
