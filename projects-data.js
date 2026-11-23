@@ -38,5 +38,6 @@ window.PROJECTS = [
   {"id": "playmobil", "title": "פארק פליימוביל", "client": "פארק פליימוביל", "cat": "", "kind": "client", "v": "videos/loops/playmobil.mp4", "a": 1.7787, "ratio": "h", "line": "", "story": "פרסומת AI לפארק פליימוביל הבינלאומי", "stat": "", "label": ""},
   {"id": "paytex", "title": "Paytex", "client": "Paytex", "cat": "", "kind": "client", "v": "videos/loops/paytex.mp4", "a": 1.7787, "ratio": "h", "line": "", "story": "פרסומת AI ל-Paytex", "stat": "", "label": ""},
   {"id": "habosem", "title": "הבשם · שחר חיון", "client": "שחר חיון", "cat": "", "kind": "client", "v": "videos/loops/habosem.mp4", "a": 0.563, "ratio": "v", "line": "", "story": "פרסומת AI לבושם ״הבשם״ של שחר חיון", "stat": "", "label": ""},
-  {"id": "closet", "title": "סרטון לסושיאל - יוצא מהארון", "client": "יוזמה", "cat": "", "kind": "self", "v": "videos/loops/closet.mp4", "a": 1.3314, "ratio": "h", "line": "", "story": "סרטון AI לסושיאל ליוצר תוכן", "stat": "", "label": "יוצא מהארון"}
+  {"id": "closet", "title": "סרטון לסושיאל - יוצא מהארון", "client": "יוזמה", "cat": "", "kind": "self", "v": "videos/loops/closet.mp4", "a": 1.3314, "ratio": "h", "line": "", "story": "סרטון AI לסושיאל ליוצר תוכן", "stat": "", "label": "יוצא מהארון"},
+  {"id": "savethedate-case", "title": "Save the Date · לינור ויאיר", "client": "לינור ויאיר", "cat": "אירועים", "kind": "client", "v": "videos/loops/savethedate-case.mp4", "a": 2.3316, "ratio": "h", "line": "", "story": "הזמנה לחתונה בסגנון סדרת פשע: הרווקות שלו נרצחה, והשופטת גוזרת מאסר עולם. ביחד.", "stat": "", "label": ""}
 ];
